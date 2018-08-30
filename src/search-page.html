@@ -1,5 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../bower_components/d2l-icons/tier1-icons.html">
 <link rel="import" href="../bower_components/d2l-search/d2l-search-input.html">
 <link rel="import" href="../bower_components/d2l-colors/d2l-colors.html">
@@ -12,169 +18,187 @@
 <link rel="import" href="components/search-header.html">
 
 <dom-module id="search-page">
-    <template>
-        <style>
-            /* :host {
-                --d2l-alert-call-to-action-color: green;
-            } */
-            /* .item1 {
-                order:0
-            } */
-            /* .item2 {
-                padding-left: 1%;
-                width: 80%;
-            } */
-            search-header {
-                width:100%;
-                
-            }
+  <template>
+    <style>
 
-            app-header {
-                background-color: white;
-                height: 80px;
-            }
-            a:visited {
-                color: blue;
-            }
+      :host {
+        height: 300px;
+      }
 
-            .drawer-content {
-                margin-top: 80px;
-                height: calc(100% - 80px);
-                overflow: auto;
-                /* background-color: grey; */
-            }
-
-            app-drawer {
-                --app-drawer-content-container: {
-                    /* background-color: #eee; */
-                }
-            }
-        </style>
-
-        <app-header-layout fullbleed>
-            <app-header shadow fixed slot="header">
-                <app-toolbar>
-                    <search-header query={{query}}></search-header>
-                    <div>
-                        text
-                    </div>
-                    <!-- <a name="view1" href="[[rootPath]]my-view1"><iron-icon icon="d2l-tier1:home"></iron-icon>Text</iron-icon></a>
-                    <d2l-search-input class="item2"
-                        label="Search"
-                        value="{{query}}" 
-                        placeholder="What do you want to learn?"
-                    >
-                    </d2l-search-input> -->
-
-                </app-toolbar>
-            </app-header>
-
-            <app-drawer-layout>
-                <app-drawer slot="drawer">
-                    <div class="drawer-content">
-                        <template is="dom-repeat" items="{{results}}">
-                                <p>[[item]]</p>
-                        </template>
-                    </div>
-                </app-drawer>
-
-                <template is="dom-repeat" items="{{results}}">
-                    <d2l-tile>
-                        [[item]]
-                    </d2l-tile>
-                </template>
-                
-            
-                hi
-                [[info1]]
-                <d2l-alert
-                    type="call-to-action"
-                    has-close-button
-                    button-text="Do it!"
-                    on-d2l-alert-button-pressed="_doSomething"
-                    on-d2l-alert-closed='_clearInfo'
-                >
-                Hello [[info1]]
-                </d2l-alert>
+      app-drawer-layout {
+        height: 800px;
+      }
+      /* :host {
+        --d2l-alert-call-to-action-color: green;
+      } */
+      /* .item1 {
+        order:0
+      } */
+      /* .item2 {
+        padding-left: 1%;
+        width: 80%;
+      } */
+      search-header {
+        width:100%;
         
-                <d2l-datetime-picker
-                    locale="ar"
-                    timezone="America/Toronto"
-                    datetime="Wed Dec 31 1969 19:00:00 GMT-0500 (EST)",
-                    boundary='{"below":240}'
-                ></d2l-datetime-picker>
-        
-                <a name="view1" href="[[rootPath]]my-new-view">My New View</a>
-            </app-drawer-layout>
-        </app-header-layout>
-    </template>
+      }
 
-    <script>
-        // const supportsCustomElementsV1 = 'customElements' in window;
-        // console.log('supportsCustomElementsV1:', supportsCustomElementsV1);
-        class SearchPage extends Polymer.Element {
-            constructor() {
-                super();
-                this.addEventListener('info1-changed', () => {
-                    console.log('info1 changed to:', this.info1);
-                });
-            }
-            static get is() {
-                return 'search-page';
-            }
+      app-header {
+        background-color: white;
+        height: 80px;
+      }
+      a:visited {
+        color: blue;
+      }
 
-            static get properties() {
-                return {
-                    query: {
-                        type: String,
-                        value: '',
-                        observer: '_queryChanged'
-                    },
-                    results: {
-                        type: Array,
-                        value: [1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10],
-                        observer: '_resultsChanged'
-                    },
-                    info1: {
-                        type: String,
-                        notify: true,
-                        value: (() => 'default1'),
-                    },
-                };
-            }
+      .drawer-content {
+        margin-top: 80px;
+        height: calc(100% - 80px);
+        overflow: auto;
+        /* background-color: grey; */
+      }
 
-            _queryChanged(newValue) {
-                console.log('>> Begin search with query:', this.query);
-                if (newValue) {
-                    this.push('results', newValue);
-                }
-            }
-
-            _resultsChanged(newValue) {
-                console.log('>> Rerender results:', this.results);
-            }
-
-            _clearInfo(e) {
-                console.log(e);
-                console.log('alert cleared');
-                // console.log('actions:', App.ReduxMixin.actions);
-                // this.dispatch(App.actions.clearInfo());
-            }
-
-            _doSomething(e) {
-                console.log(e);
-                console.log('alert clicked');
-                // history.back();
-                console.log('this.info1:', this.info1);
-                this.info1='new value';
-                this.query = 'new value!'
-                // this.dispatch(App.actions.setInfo('hi!!!'));
-            }
+      app-drawer {
+        --app-drawer-content-container: {
+          /* background-color: #eee; */
         }
+      }
+    </style>
 
-        customElements.define(SearchPage.is, SearchPage);
-        customElements.whenDefined(SearchPage.is).then(() => {
-            console.log(`${SearchPage.is} is ready`);
+    <div>
+    <app-header-layout fullbleed>
+      <app-header shadow fixed slot="header">
+        <app-toolbar>
+          <search-header query={{query}}></search-header>
+          <div>
+            text
+          </div>
+          <!-- <a name="view1" href="[[rootPath]]my-view1"><iron-icon icon="d2l-tier1:home"></iron-icon>Text</iron-icon></a>
+          <d2l-search-input class="item2"
+            label="Search"
+            value="{{query}}" 
+            placeholder="What do you want to learn?"
+          >
+          </d2l-search-input> -->
+
+        </app-toolbar>
+      </app-header>
+
+      <app-drawer-layout>
+        <app-drawer slot="drawer">
+          <div class="drawer-content">
+            <template is="dom-repeat" items="{{results}}">
+                <p>[[item]]</p>
+            </template>
+          </div>
+        </app-drawer>
+
+        <template is="dom-repeat" items="{{results}}">
+          <d2l-tile>
+            [[item]]
+          </d2l-tile>
+        </template>
+        
+      
+        hi
+        [[info1]]
+        <d2l-alert
+          type="call-to-action"
+          has-close-button
+          button-text="Do it!"
+          on-d2l-alert-button-pressed="_doSomething"
+          on-d2l-alert-closed='_clearInfo'
+        >
+        Hello [[info1]]
+        </d2l-alert>
+    
+        <d2l-datetime-picker
+          locale="ar"
+          timezone="America/Toronto"
+          datetime="Wed Dec 31 1969 19:00:00 GMT-0500 (EST)",
+          boundary='{"below":240}'
+        ></d2l-datetime-picker>
+    
+        <a name="view1" href="#[[rootPath]]my-new-view">My New View</a>
+        <div>
+          <p>hi1</p>
+        </div>
+      </app-drawer-layout>
+    </app-header-layout>
+    </div>
+  </template>
+
+  <script>
+    // const supportsCustomElementsV1 = 'customElements' in window;
+    // console.log('supportsCustomElementsV1:', supportsCustomElementsV1);
+    class SearchPage extends Polymer.Element {
+      constructor() {
+        super();
+        this.addEventListener('info1-changed', () => {
+          console.log('info1 changed to:', this.info1);
         });
-    </script>
+      }
+      static get is() {
+        return 'search-page';
+      }
+
+      static get properties() {
+        return {
+          query: {
+            type: String,
+            value: '',
+            observer: '_queryChanged'
+          },
+          results: {
+            type: Array,
+            value: [1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10],
+            observer: '_resultsChanged'
+          },
+          info1: {
+            type: String,
+            notify: true,
+            value: (() => 'default1'),
+          },
+        };
+      }
+
+      _queryChanged(newValue) {
+        console.log('>> Begin search with query:', this.query);
+        if (newValue) {
+          this.push('results', newValue);
+        }
+        document.title = newValue;
+      }
+
+      _resultsChanged(newValue) {
+        console.log('>> Rerender results:', this.results);
+      }
+
+      _clearInfo(e) {
+        console.log(e);
+        console.log('alert cleared');
+        // console.log('actions:', App.ReduxMixin.actions);
+        // this.dispatch(App.actions.clearInfo());
+      }
+
+      _doSomething(e) {
+        console.log(e);
+        console.log('alert clicked');
+        // history.back();
+        console.log('this.info1:', this.info1);
+        this.info1='new value';
+        this.query = 'new value!'
+        // this.dispatch(App.actions.setInfo('hi!!!'));
+      }
+    }
+
+    window.customElements.define(SearchPage.is, SearchPage);
+    window.customElements.whenDefined(SearchPage.is).then(() => {
+      console.log(`${SearchPage.is} is ready`);
+      // IFrau = window.IFrau || {};
+      // console.log('>> what is window.IFrau:', IFrau);
+      // console.log('>> what is window.IFrau.client:', IFrau.client);
+      // document.documentElement.style.height = '500px';
+    });
+  </script>
 </dom-module>

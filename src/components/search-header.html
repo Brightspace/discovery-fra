@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../mixins/localize-mixin.html">
 
 <link rel="import" href="../../bower_components/d2l-icons/tier1-icons.html">
 <link rel="import" href="../../bower_components/d2l-search/d2l-search-input.html">
@@ -6,27 +7,25 @@
 <dom-module id="search-header">
   <template>
     <style>
-        .item2 {
+        .searchBar {
             padding-left: 1%;
-            width: 80%;
-        }
-
-        a:visited {
-            color: blue;
+            width: 50%;
         }
     </style>
 
-    <a name="view1" href="[[rootPath]]my-view1"><iron-icon icon="d2l-tier1:home"></iron-icon>Text</iron-icon></a>
-    <d2l-search-input class="item2"
+    <a name="discovery-home" href="#[[rootPath]]discovery-home">[[localize('discover')]]</a>
+    <span>[[localize('searchLabel')]]</span>
+    <d2l-search-input class="searchBar"
         label="Search"
         value="{{query}}" 
-        placeholder="What do you want to learn?"
+        placeholder="[[localize('searchPlaceholder')]]"
     >
     </d2l-search-input>
+    <a name="my-list" href="#[[rootPath]]discovery-home]]"></a>
   </template>
 
   <script>
-    class SearchHeader extends Polymer.Element {
+    class SearchHeader extends D2L.Discovery.LocalizeMixin(Polymer.Element) {
       static get is() { return 'search-header'; }
 
         static get properties() {
@@ -34,7 +33,7 @@
                 query: {
                     type: String,
                     notify: true,
-                }
+                },
             };
         }
     }

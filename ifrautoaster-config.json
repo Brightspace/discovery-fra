@@ -1,0 +1,27 @@
+{
+	"server": {
+		"port": 9090
+	},
+	"profile": {
+		"lang": "en-us"
+	},
+	"appconfig": {
+		"host": "http://127.0.0.1:8081/"
+	},
+	"auth": {
+		"user": "30273",
+		"tenant": "deadbeef-dead-beef-beef-deaddeadbeef"
+	},
+	"fra": {
+		"options": {
+			"discoveryUrl": "https://Discovery.content-service.brightspace.com",
+			"discoveryFeatureEnabled": true,
+			"manageView": false,
+			"orgUnitId": 123
+		},
+		"valenceHost": "http://localhost:3001",
+		"orgUnit": {
+			"OrgUnitId": "6614"
+		}
+	}
+}

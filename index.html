@@ -12,54 +12,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="generator" content="Polymer Starter Kit">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <!-- <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"> -->
 
-    <title>App</title>
-    <meta name="description" content="App description">
+    <title>Discovery</title>
+    <meta name="description" content="Discovery">
 
-    <!--
-      The `<base>` tag below is present to support two advanced deployment options:
-      1) Differential serving. 2) Serving from a non-root path.
+    <style>
+    </style>
 
-      Instead of manually editing the `<base>` tag yourself, you should generally either:
-      a) Add a `basePath` property to the build configuration in your `polymer.json`.
-      b) Use the `--base-path` command-line option for `polymer build`.
-
-      Note: If you intend to serve from a non-root path, see [polymer-root-path] below.
-    -->
-    <!-- <base href="/"> -->
-
-    <link rel="icon" href="images/favicon.ico">
-
-    <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- See https://goo.gl/qRE0vM -->
-    <meta name="theme-color" content="#3f51b5">
-
-    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="My App">
-
-    <!-- Add to homescreen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My App">
-
-    <!-- Homescreen icons -->
-    <link rel="apple-touch-icon" href="images/manifest/icon-48x48.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/manifest/icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="96x96" href="images/manifest/icon-96x96.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="images/manifest/icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="images/manifest/icon-192x192.png">
-
-    <!-- Tile icon for Windows 8 (144x144 + tile color) -->
-    <meta name="msapplication-TileImage" content="images/manifest/icon-144x144.png">
-    <meta name="msapplication-TileColor" content="#3f51b5">
-    <meta name="msapplication-tap-highlight" content="no">
+    <script src="https://s.brightspace.com/lib/ifrau/0.24.1/ifrau/client.js"></script>
 
     <script>
+      'use strict';
+      (() => {
+        window.D2L = window.D2L || {};
+        window.D2L.Discovery = window.D2L.Discovery || {};
+
+        window.D2L.frau = window.D2L.frau || {};
+        window.D2L.frau.options = window.D2L.frau.options || {};
+
+        var client = window.ifrauclient(this._ifrauclientOptions);
+        return client 
+          .connect()
+          .then(() => {
+            return Promise.all([
+              client.request('options'),
+              client.getService('navigation', '0.1'),
+              client.request('valenceHost'),
+            ]);
+          })
+          .then((all) => {
+            console.log('>> index frau: finished requests!');
+            var setup = {
+              client: client,
+              options: all[0],
+              navigation: all[1],
+              valenceHost: all[2],
+            };
+
+            Object.assign(window.D2L.frau.options, setup.options);
+            window.D2L.frau.client = setup.client;
+            window.D2L.frau.navigation = setup.navigation;
+            window.D2L.frau.valenceHost = (setup.valenceHost || '').replace(/\/$/, '');
+
+            return setup;
+          });
+      })();
+    </script>
+
+    <script>
+      
       /**
       * [polymer-root-path]
       *
@@ -75,36 +77,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       window.Polymer = {rootPath: '/'};
 
       // Load and register pre-caching Service Worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('service-worker.js', {
-            scope: Polymer.rootPath,
-          });
-        });
-      }
+      // if ('serviceWorker' in navigator) {
+      //   window.addEventListener('load', function() {
+      //     navigator.serviceWorker.register('service-worker.js', {
+      //       scope: Polymer.rootPath,
+      //     });
+      //   });
+      // }
+
+      window.ShadyDOM = { force: true };
     </script>
 
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
     <!-- Load your application shell -->
-    <link rel="import" href="src/my-app.html">
+    <link rel="import" href="src/discovery-app.html">
 
-    <script src="node_modules/redux/dist/redux.min.js"></script>
-
-    <!-- Add any global styles for body, document, etc. -->
-    <style>
-      body {
-        margin: 0;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        line-height: 1.5;
-        min-height: 100vh;
-        background-color: #eeeeee;
-      }
-    </style>
   </head>
   <body>
-    <my-app></my-app>
+    <discovery-app></discovery-app>
     <noscript>
       Please enable JavaScript to view this website.
     </noscript>

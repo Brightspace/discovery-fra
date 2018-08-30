@@ -1,61 +1,56 @@
 version: 2
 
-references:
-  workspace_root: &workspace_root
-    ./
-        
-  node_container: &node_container
+jobs:
+  build:
     docker:
       - image: dmoscrop/circleci-node8.10-tfenv
 
-  attach_workspace: &attach_workspace
-    attach_workspace:
-      at: *workspace_root
-
-
-jobs:
-  build:
-    dependencies:
-      <<: *node_container
-
     steps:
       - checkout
+      - run: curl -sSf -u$ARTIFACTORY_USER:$ARTIFACTORY_PASS "https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/npm-local/auth/d2l" -o .npmrc
       - run: npm install
+      - run: npm install polymer-cli
       - run: npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths: .
   
   publish: 
-    dependencies:
-      <<: *node_container
+    docker:
+      - image: dmoscrop/circleci-node8.10-tfenv
     
     steps:
-      - *attach_workspace
+      - attach_workspace:
+          at: ~/project
       - run: npm run frau:publish
     
   release:
-    dependencies:
-      <<: *node_container
+    docker:
+      - image: dmoscrop/circleci-node8.10-tfenv
     
     steps:
-      - *attach_workspace
+      - attach_workspace:
+          at: ~/project
       - run: npm run frau:release
 
 workflows:
   version: 2
 
-  build-and-publish:
+  build-and-publish-or-release:
     jobs:
-      - build
+      - build:
+          context: ci-read
       - publish:
           requires:
             - build
-  
-  release:
-    jobs:
-      - build
+          filters:
+            branches:
+              ignore:
+                - /^release.*/
       - release:
-        requires:
-          - build
-        filters:
-          branches:
-            only:
-              - /^release.*/
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - /^release.*/

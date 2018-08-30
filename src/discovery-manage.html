@@ -1,0 +1,173 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="mixins/localize-mixin.html">
+
+<link rel="import" href="../bower_components/d2l-button/d2l-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="discovery-manage">
+  <template>
+    <style>
+      .catalogInformationHeader {
+        display: inline;
+      }
+      .catalogHeaderRightLinks {
+        float: right;
+      }
+    </style>
+
+    <app-route
+      route="{{route}}"
+      pattern="/:courseId"
+      data="{{routeData}}">
+    </app-route>
+
+
+    <h1>[[localize('hello')]]</h1>
+    <h2>[[localize('courseCatalogHeader')]]</h2>
+
+    <div id="selfEnrollmentAndAssignment">
+      <h3>[[localize('selfEnrollmentAndAssignmentHeader')]]</h3>
+      <paper-checkbox checked="[[visibleAndAvailableForDiscovery]]">
+        <span>[[localize('visibleAndAvailableForDiscoveryDescription')]]</span>
+      </paper-checkbox>
+      <br>
+      <paper-checkbox checked="[[availableForAssignment]]">
+        <span>[[localize('availableForAssignmentDescription')]]</span>
+      </paper-checkbox>
+      
+      <p><sub>[[localize('selfEnrollmentNote')]]</sub></p>
+
+      <h4>[[localize('selfEnrollmentAssignmentRoleHeader')]]</h4>
+      <p>[[localize('selfEnrollmentAssignmentRoleDescription')]] [[assignmentRole]]</p>
+      <sub>[[localize('selfEnrollmentAssignmentRoleNote')]]</sub>
+    </div>
+
+    <hr>
+    <br>
+
+    <div id="catalogInformation">
+      <h3 class="catalogInformationHeader">[[localize('catalogInformationHeader')]]</h3>
+      
+      <div class="catalogHeaderRightLinks">
+        <a href="#[[rootPath]]other-view">[[localize('catalogInformationViewInCatalog')]]</a>
+        <d2l-button on-click="_getInfo">[[localize('catalogInformationPreviewChanges')]]</d2l-button>
+      </div>
+
+      <div>
+        <p>[[localize('courseName')]]: [[courseName]]</p>
+        <a href="#/">[[localize('editCourseNameLink')]]</a>
+      </div>
+
+      <br>
+      <div>
+        <p>[[localize('courseDescription')]]</p>
+        <textarea rows="10%" cols="100%">[[courseDescription]]</textarea>
+      </div>
+
+      <br>
+      <div>
+        <p>[[localize('keyOutcomes')]]</p>
+        <textarea rows="10%" cols="100%">[[keyOutcomes]]</textarea>
+      </div>
+
+      <br>
+      <div>
+        [[localize('courseCategory')]]<br>
+        <select>
+          <option value="English">English</option>
+        </select>
+        <a href="#/">[[localize('addNewCategory')]]</a><br>
+        <sub>[[localize('courseCategoryNote')]]</sub>
+      </div>
+
+      <br>
+      <div>
+        [[localize('courseTags')]]<br>
+        <input type="text">
+      </div>
+
+      <br>
+      <div>
+        [[localize('courseFormat')]]<br>
+        <form action="">
+          <input type="radio" name="courseFormat" value="Blended">Blended<br>
+          <input type="radio" name="courseFormat" value="Other">Other
+        </form>
+      </div>
+
+      <br>
+      <div>
+        [[localize('courseDuration')]]<br>
+        <select>
+          <option value="30">30 Minutes</option>
+        </select>
+      </div>
+
+      <br>
+      <div>
+        [[localize('materialLastUpdatedDate')]]<br>
+        <input type="date">
+        <button>Today</button><br> 
+        <sub>[[localize('materialLastUpdatedDateNote')]]</sub>
+      </div>
+    </div>
+
+    <br>
+    <div>
+      <d2l-button>[[localize('save')]]</d2l-button>
+      <d2l-button>[[localize('cancel')]]</d2l-button>
+    </div>
+  </template>
+
+  <script>
+    class DiscoveryManage extends D2L.Discovery.LocalizeMixin(Polymer.Element) {
+      constructor() {
+        super();
+        this.courseName = 'course name';
+        this.courseDescription = 'course description';
+        this.keyOutcomes = 'key outcomes';
+      }
+
+      static get is() {
+        return 'discovery-manage';
+      }
+
+      static get properties() {
+        return {
+          routeData: Object,
+
+          visibleAndAvailableForDiscovery: {
+            type: Boolean,
+            value: true,
+          },
+          availableForAssignment: {
+            type: Boolean,
+            value: false,
+          },
+          assignmentRole: {
+            type: String,
+            value: null,
+          },
+          courseName: {
+            type: String,
+            value: null,
+          },
+          courseDescription: {
+            type: String,
+            value: null,
+          },
+          keyOutcomes: {
+            type: String,
+            value: null,
+          },
+        }
+      }
+
+      _getInfo() {
+        console.log('>> routeData:', this.routeData);
+      }
+    }
+
+    window.customElements.define(DiscoveryManage.is, DiscoveryManage);
+  </script>
+</dom-module>

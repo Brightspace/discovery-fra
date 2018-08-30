@@ -1,0 +1,90 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="mixins/localize-mixin.html">
+<link rel="import" href="components/search-header.html">
+
+<link rel="import" href="../bower_components/d2l-alert/d2l-alert.html">
+
+<dom-module id="discovery-course">
+  <template>
+    <style>
+    </style>
+
+    <app-route
+      route="{{route}}"
+      pattern="/:courseId"
+      data="{{routeData}}">
+    </app-route>
+
+    <d2l-alert
+      type="call-to-action"
+      has-close-button
+      button-text="Do it!"
+      on-d2l-alert-button-pressed="_getInfo"
+      on-d2l-alert-closed="_getInfo">
+    </d2l-alert>
+
+    <h1>[[localize('hello')]]</h1>
+    [[rootPath]]
+    <div>
+      <search-header query={{query}}></search-header>
+    </div>
+
+    <template is="dom-if" if="[[navigatedFromSearch]]">
+      <a>< [[localize('backToSearchResults')]]</a>
+    </template>
+    <template is="dom-if" if="[[!navigatedFromSearch]]">
+      <a href="#[[rootPath]]/">Discover</a>
+      >
+      [[category]]
+    </template>
+
+    <div>
+
+    </div>
+
+  </template>
+
+  <script>
+    // const supportsCustomElementsV1 = 'customElements' in window;
+    // console.log('supportsCustomElementsV1:', supportsCustomElementsV1);
+    class DiscoveryCourse extends D2L.Discovery.LocalizeMixin(Polymer.Element) {
+      constructor() {
+        super();
+        this.category = 'category';
+      }
+
+      static get is() {
+        return 'discovery-course';
+      }
+
+      static get properties() {
+        return {
+          route: Object,
+          routeData: Object,
+          subroute: Object,
+
+          navigatedFromSearch: {
+            type: Boolean,
+            value: false,
+          },
+
+          // queryParams: Object,
+
+          category: String,
+        };
+      }
+
+      _getInfo() {
+        console.log('> discovery-course; route:', this.route);
+        console.log('> discovery-course; rootPath:', this.rootPath);
+        console.log('> discovery-course; routeData:', this.routeData);
+        console.log('> discovery-course; subroute:', this.subroute);
+        
+
+        // console.log('>> what is queryParams', this.queryParams);
+      }
+    }
+
+    window.customElements.define(DiscoveryCourse.is, DiscoveryCourse);
+  </script>
+</dom-module>

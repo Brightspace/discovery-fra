@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/d2l-localize-behavior/d2l-localize-behavior.html">
+<link rel="import" href="../locales/locales.html">
+
+<script>
+  'use strict';
+  
+  (() => {
+
+    window.D2L = window.D2L || {};
+    window.D2L.Discovery = window.D2L.Discovery || {};
+
+    const LocalizeMixin = (superClass) => 
+      class extends Polymer.mixinBehaviors([D2L.PolymerBehaviors.LocalizeBehavior], superClass) {
+        constructor() {
+          super();
+        }
+
+        static get properties() {
+          return {
+            language: {
+              type: String,
+              computed: '_determineLanguage(locale, resources)'
+            },
+            locale: {
+              type: String,
+              value: () => {
+                var langTag = document.documentElement.lang
+                  || document.documentElement.getAttribute('data-lang-default')
+                  || 'en-us';
+                langTag = langTag.trim().toLowerCase();
+                var subtags = langTag.split('-');
+                if (subtags.length < 2) {
+                  return langTag;
+                }
+                var langSubtag = subtags[0];
+                var regionSubtag = subtags[subtags.length - 1].toUpperCase();
+                return langSubtag + '-' + regionSubtag;
+              }
+            },
+            resources: {
+              value: () => {
+                return D2L.Discovery.Locales;
+              },
+            },
+          };
+        }
+
+        _determineLanguage(locale, resources) {
+          locale = locale.toLowerCase();
+          if (resources[locale]) {
+            return locale;
+          }
+          var langAndRegion = locale.split('-');
+          if (resources[langAndRegion[0]]) {
+            return langAndRegion[0];
+          }
+          return 'en';
+        }
+      };
+
+    window.D2L.Discovery.LocalizeMixin = Polymer.dedupingMixin(LocalizeMixin);
+  })();
+</script>

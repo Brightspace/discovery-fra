@@ -1,12 +1,15 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/discovery-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view404.html",
+    "src/discovery-404.html",
     "src/my-new-view.html",
     "src/search-page.html",
-    "src/redux/redux-mixin.html"
+    "src/redux/redux-mixin.html",
+    "src/discovery-home.html",
+    "src/other-view.html",
+    "src/discovery-manage.html",
+    "src/discovery-course.html"
   ],
   "sources": [
     "images/**/*",
@@ -14,10 +17,13 @@
   ],
   "extraDependencies": [
     "bower_components/webcomponentsjs/*.js",
-    "!bower_components/webcomponentsjs/gulpfile.js",
-    "manifest.json"
+    "!bower_components/webcomponentsjs/gulpfile.js"
   ],
   "lint": {
     "rules": ["polymer-2"]
-  }
+  },
+  "builds": [{
+    "preset": "es5-bundled",
+    "addServiceWorker": false
+  }]
 }

@@ -1,0 +1,37 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<script>
+  'use strict';
+  
+  (() => {
+
+    window.D2L = window.D2L || {};
+    window.D2L.Discovery = window.D2L.Discovery || {};
+
+    var discoveryBasePath = '/d2l/le/discovery/view';
+
+    const RouteLocationsMixin = (superClass) => 
+      class extends superClass {
+        constructor() {
+          super();
+        }
+
+        static get properties() {
+          return {
+            
+          };
+        }
+        
+        routeLocations() {
+          return {
+            home: () => `${discoveryBasePath}/home`,
+            course: (courseId) => `${discoveryBasePath}/course/${encodeURIComponent(courseId)}`,
+            manage: (courseId) => `${discoveryBasePath}/manage/${encodeURIComponent(courseId)}`,
+            search: (query) => `${discoveryBasePath}/search/${encodeURIComponent(query)}`,
+          }
+        }
+      };
+
+    window.D2L.Discovery.RouteLocationsMixin = Polymer.dedupingMixin(RouteLocationsMixin);
+  })();
+</script>

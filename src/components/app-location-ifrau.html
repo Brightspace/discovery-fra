@@ -1,0 +1,99 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-route/app-route-converter-behavior.html">
+
+<dom-module id="app-location-ifrau">
+  <script>
+    'use strict';
+    var rePathWhitelist = [
+      /^\/d2l\/le\/discovery\//
+    ];
+    function scrollToTop() {
+      if (window.parentIFrame && window.parentIFrame.scrollTo) {
+        window.parentIFrame.scrollTo(0, 0);
+      }
+    }
+    function intoQueryParams(queryParams, nameAndValue) {
+      queryParams[nameAndValue[0]] = nameAndValue[1];
+      return queryParams;
+    }
+    function createQueryParams(searchParams) {
+      return Array.from(searchParams.entries())
+        .reduce(intoQueryParams, {});
+    }
+    class AppLocationIfrau extends 
+      Polymer.mixinBehaviors(
+        [Polymer.AppRouteConverterBehavior],
+        Polymer.Element
+      ) {
+
+      static get is() {
+        return 'app-location-ifrau';
+      }
+
+      static get properties() {
+        return {
+          _navigation: {
+            type: Object,
+            value: function() {
+              return window.D2L.frau.navigation;
+            }
+          },
+          _frauIsSynchronizing: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          '_handlePathChanged(path)', // path from app-route-converter-behavior
+        ];
+      }
+      
+      ready() {
+        super.ready();
+        var handleLocationChanged = this._handleLocationChanged.bind(this);
+        window.D2L.frau.navigation.get().then(handleLocationChanged);
+        window.D2L.frau.client.onEvent('navigation.statechange', handleLocationChanged);
+      }
+
+      _handleLocationChanged(newLocation) {
+        console.log('_handleLocationChanged: newLocation:', newLocation);
+        this._frauIsSynchronizing = true;
+        var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
+        console.log('_handleLocationChanged: parsed:', parsed);
+        this.path = parsed.pathname;
+        this.queryParams = createQueryParams(parsed.searchParams);
+        this._frauIsSynchronizing = false;
+      }
+
+      rewriteTo(pathAndQuery) {
+        console.log('rewriteTo pathAndQuery:', pathAndQuery);
+        if (this._navigation) {
+          this._navigation.replace(pathAndQuery);
+        }
+      }
+
+      _handlePathChanged(newPath) {
+        console.log('app-location-ifrau: _handlePathChanged: newPath:', newPath);
+        // console.log('app-location-ifrau: _handlePathChanged: this._navigation:', this._navigation);
+        console.log('app-location-ifrau: _handlePathChanged: this._frauIsSynchronizing:', this._frauIsSynchronizing);
+        var shouldReportNavigation =
+          newPath !== undefined &&
+          this._navigation !== undefined &&
+          this._frauIsSynchronizing === false &&
+          rePathWhitelist.some(function(re) {
+            return re.test(newPath);
+          });
+        if (shouldReportNavigation) {
+          console.log('app-location-ifrau: _handlePathChanged: pushing newPath:', newPath);
+          this._navigation.push(newPath, '');
+          scrollToTop();
+        }
+      }
+    }
+
+    window.customElements.define(AppLocationIfrau.is, AppLocationIfrau);
+  </script>
+</dom-module>

@@ -1,0 +1,245 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="components/app-location-ifrau.html">
+<link rel="import" href="mixins/route-locations-mixin.html">
+
+<link rel="lazy-import" href="my-new-view.html">
+<link rel="lazy-import" href="search-page.html">
+<link rel="lazy-import" href="discovery-home.html">
+<link rel="lazy-import" href="discovery-404.html">
+<link rel="lazy-import" href="other-view.html">
+<link rel="lazy-import" href="discovery-manage.html">
+
+<dom-module id="discovery-app">  
+  <template>
+    <style>
+    </style>
+
+    <!-- <app-location-ifrau
+      route="{{route}}"
+      query="{{query}}"
+      query-params="{{queryParams}}"
+      path="{{path}}"
+      page-title="[[_pageTitle]]"></app-location-ifrau> -->
+    <!-- <app-location
+      route="{{route}}"
+      url-space-regex="^[[rootPath]]"
+      use-hash-as-path> -->
+    <!-- <mr-location route="{{route}}"></mr-location> -->
+
+    <!-- <app-route
+      route="{{route}}"
+      pattern="[[rootPath]]:page"
+      data="{{routeData}}"
+      tail="{{subroute}}">
+    </app-route> -->
+
+    <app-location-ifrau
+      route="{{route}}">
+    </app-location-ifrau>
+
+    <app-route
+      route="{{route}}"
+      pattern="/d2l/le/discovery/view/:page"
+      data="{{routeData}}"
+      tail="{{subroute}}">
+    </app-route>
+
+    <iron-pages
+      selected="[[routeData.page]]"
+      attr-for-selected="name"
+      fallback-selection="discovery-404"
+      role="main">
+      <discovery-home
+        name="home"
+        route="{{subroute}}">
+      </discovery-home>
+      <my-new-view name="my-new-view"></my-new-view>
+      <search-page name="search-page"></search-page>
+      <discovery-404 name="404"></discovery-404>
+      <other-view name="other-view"></other-view>
+
+      <discovery-manage
+        name="manage"
+        route="{{subroute}}">
+      </discovery-manage>
+
+      <discovery-course
+        name="course"
+        route="{{subroute}}">
+      </discovery-course>
+    </iron-pages>
+
+  </template>
+  <script src="../node_modules/redux/dist/redux.min.js"></script>
+
+  <script>
+    // Gesture events like tap and track generated from touch will not be
+    // preventable, allowing for better scrolling performance.
+    Polymer.setPassiveTouchGestures(true);
+
+    class DiscoveryApp extends D2L.Discovery.RouteLocationsMixin(Polymer.Element) {
+
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'discovery-app'; }
+
+      static get properties() {
+        return {
+          route: Object,
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          routeData: Object,
+          subroute: Object,
+          // This shouldn't be neccessary, but the Analyzer isn't picking up
+          // Polymer.Element#rootPath
+          rootPath: String,
+          // _pageTitle: String,
+          path: {
+            type: String,
+            // observer: '_pathChanged'
+          },
+        };
+      }
+
+      static get observers() {
+        return [
+          // '_routePageChanged(routeData.page)',
+          '_routePathChanged(route.path)',
+          '_routeDataPageChanged(routeData.page)',
+
+        ];
+      }
+
+      ready() {
+        super.ready();
+        // console.log('> about to add event listener for goTodiscovery-manage');
+        // this.addEventListener('goTodiscovery-manage', this._ondiscovery-manageSelect);
+
+        // console.log('> about to add event listener for reload');
+        // this.addEventListener('reload', this._onReload);
+
+        this.addEventListener('navigate', this._navigate);
+      }
+
+      _navigate(e) {
+        console.log('>> received navigate event:', e);
+        if (e && e.detail && e.detail.path) {
+          this.set('route.path', e.detail.path);
+        }
+      }
+
+      _routePathChanged(path) {
+        var managePathRegex = /^\/d2l\/le\/discovery\/view\/manage\/\d+$/;
+
+        console.log('>> _routePathChanged: path:', path);
+        console.log('>> discovery-manage regex test:', managePathRegex.test(path));
+        window.D2L.frau = window.D2L.frau || {};
+        window.D2L.frau.options = window.D2L.frau.options || {};
+        console.log('>> frau options:', window.D2L.frau.options);
+        console.log('>> is discovery-manage view?:', window.D2L.frau.options.manageView);
+
+        if (path === '/d2l/le/discovery/view/') { // navlink home
+          var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
+          if (appLocationIfrau) {
+            // appLocationIfrau.rewriteTo('/d2l/le/discovery/view/home');
+            appLocationIfrau.rewriteTo(this.routeLocations().home());
+          }
+        }
+        // } else if (!managePathRegex.test(path)) { // discovery-manage
+          // this.set('routeData.page', 'manage');
+        // }
+      }
+
+      _routeDataPageChanged(page) { // this allows us to lazy-import when routeData.page changes
+        console.log('>> _routeDataPageChanged: page:', page);
+        if (page) {
+          this.page = page;
+        }
+      }
+
+      // _routePageChanged(page) {
+      //   // If no page was found in the route data, page will be an empty string.
+      //   console.log('> _routePageChanged; route:', this.route);
+      //   console.log('> _routePageChanged; routeData:', this.routeData);
+      //   console.log('> _routePageChanged; subroute:', this.subroute);
+      //   console.log('> _routePageChanged; page:', page);
+
+      //   window.D2L = window.D2L || {};
+      //   window.D2L.Discovery = window.D2L.Discovery || {};
+      //   window.D2L.frau = window.D2L.frau || {};
+      //   window.D2L.frau.options = window.D2L.frau.options || {};
+      //   console.log('>> frau options:', window.D2L.frau.options);
+      //   console.log('>> is discovery-manage view?:', window.D2L.frau.options.manageViewView);
+      //   if (page) {
+      //     this.page = page;
+
+          
+      //     // window.history.pushState({}, null, `#/${page}`);
+      //     // window.dispatchEvent(new CustomEvent('location-changed'));
+      //   } else if (window.D2L.frau.options.manageViewView) {
+      //     this.page = 'discovery-manage';
+      //   } else {
+      //     this.page = 'discovery-home';
+      //   }
+
+      //   // If no page was found, redirect to home
+      //   // if (!page) {
+      //   //   console.log(`>> page is ${page}, redirect to home: ${this.page}`);
+      //   //   // var appLocationIfrau = this.$$('app-location-ifrau'); // no longer in polymer 2.0
+      //   //   var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
+      //   //   if (appLocationIfrau) {
+      //   //     appLocationIfrau.rewriteTo('/d2l/le/discovery/view/discovery-home');
+      //   //   }
+
+      //   //   this.set('routeData.page', this.page);
+      //   //   this.set('route.path', `/${this.page}`);
+      //   // }
+
+      //   if (page) {
+      //     this.set('routeData.page', this.page);
+      //   } else {
+      //     this.set('route.path', `/${this.page}`);
+      //   }
+      // }
+
+      _pageChanged(page) {
+        // if (page === 'manage') { return; }
+
+        const resolvedPageUrl = this.resolveUrl('discovery-' + page + '.html');
+        // console.log('> _pageChanged; route:', this.route);
+        // console.log('> _pageChanged; routeData:', this.routeData);
+        // console.log('> _pageChanged; subroute:', this.subroute);
+        // console.log('> _pageChanged; page:', page);
+        Polymer.importHref(
+          resolvedPageUrl,
+          null,
+          this._showPage404.bind(this),
+          true);
+      }
+
+      _showPage404() {
+        this.page = '404';
+      }
+    }
+
+    window.customElements.define(DiscoveryApp.is, DiscoveryApp);
+  </script>
+</dom-module>
