@@ -1,0 +1,283 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../mixins/localize-mixin.html">
+<link rel="import" href="../mixins/route-locations-mixin.html">
+
+<link rel="import" href="../styles/discovery-styles.html">
+
+<link rel="import" href="../../bower_components/d2l-link/d2l-link.html">
+<link rel="import" href="../../bower_components/d2l-button/d2l-button.html">
+<link rel="import" href="../../bower_components/d2l-button-group/d2l-button-group.html">
+<link rel="import" href="../../bower_components/d2l-alert/d2l-alert-toast.html">
+
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<dom-module id="course-action">
+  <template>
+    <style include="discovery-styles"></style>
+    <style>
+      :host {
+        display: inline;
+      }
+      
+      .thumbnail {
+        border-radius: 5px;
+        padding-bottom: 1rem;
+      }
+
+      .leftSide {
+        float: left;
+        width: 30%;
+        margin-left: 10%;
+      }
+
+      .rightSide {
+        float: left;
+        width: 40%;
+        margin-left: 20%;
+      }
+
+      .tags {
+        float: left;
+        margin-left: 10%;
+      }
+
+      .tagsList {
+        /* white-space: normal; */
+      }
+
+      .actionButtons {
+        float: left;
+        overflow: hidden;
+        padding: 1%;
+      }
+
+      d2l-button {
+        margin-left: 2rem;
+        max-width: 40%;
+      }
+
+      .alert {
+        width: 35%;
+      }
+
+      .alertLeft{
+        float: left;
+        width: 60%;
+      }
+
+      .alertRight {
+        float: left;
+        width: 30%;
+        margin-left: 10%;
+      }
+
+      .dialog {
+        width: 45%;
+        overflow: auto;
+        border-radius: 5px;
+      }
+
+      .dialogClose {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+
+    <div class="d2l-typography">
+      <img class="thumbnail" width="100%" height="200" src="[[courseThumbnailLink]]">
+
+      <div class="leftSide">
+        <div class="d2l-label-text">[[localize('duration')]]</div>
+        <div class="d2l-body-compact">[[courseDuration]] [[localize('minutes')]]</div>
+        
+      </div>
+
+      <div class="rightSide">
+        <div class="d2l-label-text">[[localize('lastUpdated')]]</div>
+        <div class="d2l-body-compact">[[courseLastUpdated]]</div>
+      </div>
+
+      <template is="dom-if" if="[[tagsExist]]">
+        <div class="tags">
+          <br>
+          <span class="d2l-label-text">[[localize('taggedWith')]]</span><br>
+          <div class="tagsList">
+
+            <template is="dom-repeat" items="[[courseTags]]">
+              <d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
+                <!-- <span>[[item]]<span hidden="[[_isLastTag(index)]]">,<span> </span></span></span> -->
+                <span>[[item]][[_getTagSuffix(index)]]</span>
+              </d2l-link>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <div class="actionButtons">
+        <br>
+        <!-- <d2l-button-group min-to-show="2"> -->
+          <template is="dom-if" if="[[isInMyLearning]]">
+              <d2l-button on-click="_addToMyLearning" primary>[[localize('accessMaterials')]]</d2l-button>
+          </template>
+          <template is="dom-if" if="[[!isInMyLearning]]">
+              <d2l-button on-click="_addToMyLearning" primary>[[localize('addToMyLearning')]]</d2l-button>
+          </template>
+          <template is="dom-if" if="[[isInMyLearning]]">
+              <d2l-button on-click="_addToMyList">[[localize('unenroll')]]</d2l-button>
+          </template>
+          <template is="dom-if" if="[[!isInMyLearning]]">
+              <template is="dom-if" if="[[isOnMyList]]">
+                  <d2l-button on-click="_addToMyList">[[localize('onMyList')]]</d2l-button>
+              </template>
+              <template is="dom-if" if="[[!isOnMyList]]">
+                  <d2l-button on-click="_addToMyList">[[localize('addToMyList')]]</d2l-button>
+              </template>
+          </template>
+        <!-- </d2l-button-group> -->
+      </div>
+
+      <div>
+        <d2l-alert-toast class="alert" id="addedAlert" type="success" hide-close-button>
+          <span class="alertLeft">[[localize('addedToYourList')]]</span>
+          <span class="alertRight">
+            <d2l-link href="javascript:void(0)" on-click="_navigateToMyList">[[localize('viewMyList')]]</d2l-link>
+          </span>
+        </d2l-alert-toast>
+      </div>
+
+      <div>
+        <paper-dialog class="dialog" id="myLearningDialog" always-on-top with-backdrop>
+          <span class="dialogClose" on-click="_closeDialog">&times;</span>
+          <h4 class="d2l-heading-4">[[localize('addedToMyLearningHeader')]]</h4>
+  
+          <h2 class="d2l-heading-2">[[courseTitle]]</h2>
+          <h4 class="d2l-heading-4">[[localize('welcomeToTheCourse')]]</h4>
+          <p class="d2l-body-standard">
+            [[localize('addedToMyLearningMessage')]]
+          </p>
+          <d2l-button on-click="_navigateToHome" primary>[[localize('startLearning')]]</d2l-button>
+          <d2l-button on-click="_closeDialog">[[localize('continueBrowsing')]]</d2l-button>
+        </paper-dialog>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class CourseAction extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'course-action'; }
+
+      static get properties() {
+        return {
+          courseTitle: String,
+          courseThumbnailLink: String,
+          courseDuration: Number,
+          courseLastUpdated: String,
+          courseTags: Array,
+          isInMyLearning: {
+            type: Boolean,
+            notify: true
+          },
+          isOnMyList: {
+            type: Boolean,
+            notify: true
+          },
+
+          tagsExist: {
+            type: Boolean,
+            computed: '_tagsExist(courseTags)',
+          },
+        };
+      }
+
+      _tagsExist(courseTags) {
+        return courseTags && courseTags.length;
+      }
+
+      _getTagSuffix(index) {
+        if (index !== undefined && this.courseTags) {
+          if (index === this.courseTags.length - 1) {
+            return '';
+          } else {
+            return ', ';
+          }
+        }
+        return '';
+      }
+
+      _isLastTag(index) {
+        // console.log('what is index:', index);
+        // console.log('what is this.courseTags.length:', this.courseTags.length);
+        if (index && this.courseTags) {
+          return index == this.courseTags.length - 1;
+        }
+        return false; 
+      }
+
+      _addToMyLearning(e) {
+        this.isInMyLearning = !this.isInMyLearning; // temporary toggle functionality for testing
+
+        var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
+        myLearningDialog.opened = true;
+      }
+
+      _closeDialog(e) {
+        var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
+        myLearningDialog.opened = false;
+      }
+
+      _addToMyList(e) {
+        this.isOnMyList = !this.isOnMyList; // temporary toggle functionality for testing
+
+        var addedAlert = this.shadowRoot.querySelector('#addedAlert');
+        addedAlert.open = true;
+      }
+
+      _navigateToHome(e) {
+        this.dispatchEvent(new CustomEvent('navigate', {
+          detail: {
+            path: this.routeLocations().home(),
+          },
+          bubbles: true,
+          composed: true,
+        }));
+
+        var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
+        myLearningDialog.opened = false;
+      }
+
+      _navigateToMyList(e) {
+        this.dispatchEvent(new CustomEvent('navigate', {
+          detail: {
+            path: this.routeLocations().myList(),
+          },
+          bubbles: true,
+          composed: true,
+        }));
+
+        var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
+        myLearningDialog.opened = false;
+      }
+
+      _navigateToSearch(item) {
+        console.log('>> got navigateToSearch with item:', item);
+        // this.dispatchEvent(new CustomEvent('navigate', {
+        //   detail: {
+        //     path: this.routeLocations().myList(),
+        //   },
+        //   bubbles: true,
+        //   composed: true,
+        // }));
+      }
+    }
+
+    window.customElements.define(CourseAction.is, CourseAction);
+  </script>
+</dom-module>

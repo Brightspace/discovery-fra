@@ -1,98 +1,117 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="./mixins/localize-mixin.html">
-<link rel="import" href="./components/search-header.html">
+<link rel="import" href="./mixins/route-locations-mixin.html">
 
-<link rel="import" href="../bower_components/d2l-alert/d2l-alert.html">
-<link rel="import" href="../bower_components/d2l-tile/d2l-tile.html">
+<link rel="import" href="./components/search-header.html">
+<link rel="import" href="./components/course-card.html">
+
+<link rel="import" href="styles/discovery-styles.html">
 
 <dom-module id="discovery-home">
   <template>
+    <style include="discovery-styles"></style>
     <style>
+      :host {
+        display: inline;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between; 
+      }
+
     </style>
 
     <app-route
       route="{{route}}"
-      pattern="/:page"
+      pattern="/d2l/le/discovery/view/home"
       data="{{routeData}}">
     </app-route>
 
-    <d2l-alert
-      type="call-to-action"
-      has-close-button
-      button-text="Do it!"
-      on-d2l-alert-button-pressed="_getInfo"
-      on-d2l-alert-closed='_getInfo'>
-    </d2l-alert>
-
     <div>
-      Welcome to Discovery
-      <p><a name="rootPath" href="#[[rootPath]]">Index /</a></p>
-      <p><a name="other-view" href="#[[rootPath]]other-view">Other view</a></p>
-      <p><a name="discovery-404" href="#[[rootPath]]discovery-404">404 View</a></p>
-      <p><a name="my-new-view" href="#[[rootPath]]my-new-view">My New View</a></p>
-      <p><a name="search-page" href="#[[rootPath]]search-page">Search Page</a></p>
-      <p><a name="discovery-manage" href="#[[rootPath]]manage">Manage Page</a></p>
-
+      <search-header query="{{searchQuery}}"></search-header>
     </div>
 
-    <h1>[[localize('hello')]]</h1>
-    <div>
-      <search-header query={{query}}></search-header>
+    <div class="d2l-typography">
+      <div>
+        <h2 class="d2l-heading-2">[[localize('recommendationHeader')]]</h2>
+      </div>
+
+      <div>
+        <h3 class="d2l-heading-3">[[localize('jobTitleHeader')]] [[jobTitle]]</h3>
+        <div class="container">
+          <template is="dom-repeat" items="[[jobTitleCourses]]">
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card><br>
+          </template>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="d2l-heading-3">[[localize('listHeader')]]</h3>
+        <div class="container">
+          <template is="dom-repeat" items="[[listCourses]]">
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card><br>
+          </template>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="d2l-heading-3">[[localize('departmentHeader')]] [[department]]</h3>
+        <div class="container">
+          <template is="dom-repeat" items="[[departmentCourses]]">
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card><br>
+          </template>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="d2l-heading-3">[[localize('locationHeader')]] [[location]]</h3>
+        <div class="container">
+          <template is="dom-repeat" items="[[locationCourses]]">
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card><br>
+          </template>
+        </div>
+      </div>
+      
     </div>
-    <div>
-      <h1>[[localize('recommendationHeader')]]</h1>
-
-      <h3>[[localize('jobTitleHeader')]] [[jobTitle]]</h3>
-      <div>
-        <template is="dom-repeat" items="{{jobTitleCourses}}">
-          <!-- <d2l-tile href="?courseId=[[item.courseId]]#[[rootPath]]discovery-course">[[item.name]]</d2l-tile><br> -->
-          <!-- <d2l-tile href="#[[rootPath]]discovery-course/[[item.courseId]]">[[item.name]]</d2l-tile><br> -->
-          <d2l-tile on-click="_goToCourse">[[item.name]]</d2l-tile>
-        </template>
-      </div>
-
-      <h3>[[localize('listHeader')]]</h3>
-      <div>
-        <template is="dom-repeat" items="{{listCourses}}">
-          <d2l-tile href="#[[rootPath]]discovery-course/something in spaces">[[item]]</d2l-tile><br>
-        </template>
-      </div>
-
-      <h3>[[localize('departmentHeader')]] [[department]]</h3>
-      <div>
-        <template is="dom-repeat" items="{{departmentCourses}}">
-          <d2l-tile href="#[[rootPath]]discovery-course">[[item]]</d2l-tile><br>
-        </template>
-      </div>
-
-      <h3>[[localize('locationHeader')]] [[location]]</h3>
-      <div>
-        <template is="dom-repeat" items="{{locationCourses}}">
-          <d2l-tile href="#[[rootPath]]discovery-course">[[item]]</d2l-tile><br>
-        </template>
-      </div>
-    </div>
-
   </template>
 
   <script>
     // const supportsCustomElementsV1 = 'customElements' in window;
     // console.log('supportsCustomElementsV1:', supportsCustomElementsV1);
-    class DiscoveryHome extends D2L.Discovery.LocalizeMixin(Polymer.Element) {
-      constructor() {
-        super();
-        this.jobTitle = 'job title';
-        this.department = 'department';
-        this.location = 'location';
-
-        this.jobTitleCourses = [
-          { name: 'jobTitleCourseA', courseId: 123 },
-          { name: 'jobTitleCourseB', courseId: 124 },
-        ];
-        this.listCourses = ['listCourseA', 'listCourseB'];
-        this.departmentCourses = ['departmentCourseA', 'departmentCourseB'];
-        this.locationCourses = ['locationCourseA', 'locationCoruseB'];
-      }
+    class DiscoveryHome extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
 
       static get is() {
         return 'discovery-home';
@@ -104,6 +123,13 @@
           routeData: Object,
           subroute: Object,
 
+          visible: {
+            type: Boolean,
+            observer: '_visible'
+          },
+
+          searchQuery: String,
+
           jobTitle: String,
           department: String,
           location: String,
@@ -113,40 +139,86 @@
           departmentCourses: Array,
           locationCourses: Array,
 
-          page: String,
         };
       }
 
-      _getInfo() {
-        console.log('> discovery-home; route:', this.route);
-        console.log('> discovery-home; rootPath:', this.rootPath);
-        console.log('> discovery-home; routeData:', this.routeData);
-        console.log('> discovery-home; subroute:', this.subroute);
+      _visible(newVal) {
+        this.searchQuery = "";
 
-        console.log('fire goTodiscovery-manage event');
-        this.dispatchEvent(new CustomEvent('goTodiscovery-manage', {
-          detail: {
-          },
-          bubbles: true,
-          composed: true,
-        }));
-      }
+        // data for recommended courses
+        this.jobTitle = 'job title';
+        this.department = 'department';
+        this.location = 'location';
 
-      _goToCourse() {
-        this.dispatchEvent(new CustomEvent('navigate', {
-          detail: {
-            path: '/d2l/le/discovery/view/course/123'
+        const thumbnailLink = "https://www.d2l.com/wp-content/uploads/2017/02/img_D2L_knockout.jpg";
+
+        this.jobTitleCourses = [
+          { 
+            title: 'jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces',
+            id: 1000,
+            description: "job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined.",
+            thumbnail: thumbnailLink,
+            duration: 60,
+            tags: ['Stocks', 'Finance', 'Marketing'],
           },
-          bubbles: true,
-          composed: true,
-        }));
+          { 
+            title: 'jobTitleCourseB',
+            id: 1001,
+            description: '',
+            thumbnail: thumbnailLink,
+            duration: 30,
+            tags: [],
+          },
+        ];
+        this.listCourses = [
+          { 
+            title: 'listCourseA a lot of characters and spaces. | listCourseA a lot of characters and spaces. |listCourseA a lot of characters and spaces. |listCourseA a lot of characters and spaces. |',
+            id: 2000,
+            description: "job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined.",
+            thumbnail: thumbnailLink,
+            duration: 45,
+            tags: ['Stocks'],
+          },
+          { 
+            title: 'listCourseB',
+            id: 2001,
+            description: '',
+            thumbnail: thumbnailLink,
+            duration: 120,
+            tags: ['Stocks', 'Marketing', 'more tags', 'even more tags', 'even more tags'],
+          },
+          { 
+            title: 'listCourseC',
+            id: 2002,
+            description: "list course c description",
+            thumbnail: thumbnailLink,
+            duration: 120,
+            tags: ['Literature'],
+          },
+        ];
+        this.departmentCourses = [
+          { 
+            title: 'departmentCourseA',
+            id: 3000,
+            description: "department course A description",
+            thumbnail: thumbnailLink,
+            duration: 220,
+            tags: ['Technology', 'Mac OS', 'Efficiency'],
+          },
+        ];
+        this.locationCourses = [
+          { 
+            title: 'locationCourseA',
+            id: 4000,
+            description: "location course A description",
+            thumbnail: thumbnailLink,
+            duration: 10020,
+            tags: ['Technology', 'Mac OS', 'Efficiency'],
+          },
+        ];
       }
     }
 
     window.customElements.define(DiscoveryHome.is, DiscoveryHome);
-    window.customElements.whenDefined(DiscoveryHome.is).then(() => {
-      console.log(`${DiscoveryHome.is} is ready`);
-      console.log('> discovery-home; page:', this.page);
-    });
   </script>
 </dom-module>

@@ -1,56 +1,102 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="mixins/localize-mixin.html">
-<link rel="import" href="components/search-header.html">
 
-<link rel="import" href="../bower_components/d2l-alert/d2l-alert.html">
+<link rel="import" href="./mixins/localize-mixin.html">
+<link rel="import" href="./mixins/route-locations-mixin.html">
+
+<link rel="import" href="components/search-header.html">
+<link rel="import" href="components/course-summary.html">
+<link rel="import" href="components/course-action.html">
+
+<link rel="import" href="../bower_components/d2l-link/d2l-link.html">
+<link rel="import" href="../bower_components/d2l-icons/d2l-icon.html">
+<link rel="import" href="../bower_components/d2l-icons/tier1-icons.html">
 
 <dom-module id="discovery-course">
   <template>
     <style>
+      :host {
+        display: inline;
+      }
+
+      .container {
+        display: flex;
+
+        overflow: auto;
+        /* overflow-x: auto; */
+        /* overflow-y: hidden; */
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: flex-start;
+      }
+
+      .summary {
+        background-color: white;
+        margin-top: 3%;
+        margin-left: 1%;
+        width: 55%;
+        /* min-width: 400px; */
+        height: auto;
+        border-radius: 5px;
+      }
+
+      .action {
+        background-color: white;
+        margin-top: 3%;
+        margin-right: 1%;
+        width: 35%;
+        /* min-width: 200px; */
+        height: auto;
+        border-radius: 5px;
+      }
     </style>
 
     <app-route
       route="{{route}}"
-      pattern="/:courseId"
+      pattern="/d2l/le/discovery/view/course/:courseId"
       data="{{routeData}}">
     </app-route>
 
-    <d2l-alert
-      type="call-to-action"
-      has-close-button
-      button-text="Do it!"
-      on-d2l-alert-button-pressed="_getInfo"
-      on-d2l-alert-closed="_getInfo">
-    </d2l-alert>
-
-    <h1>[[localize('hello')]]</h1>
-    [[rootPath]]
     <div>
-      <search-header query={{query}}></search-header>
+      <search-header query={{searchQuery}}></search-header>
     </div>
 
-    <template is="dom-if" if="[[navigatedFromSearch]]">
-      <a>< [[localize('backToSearchResults')]]</a>
-    </template>
-    <template is="dom-if" if="[[!navigatedFromSearch]]">
-      <a href="#[[rootPath]]/">Discover</a>
-      >
-      [[category]]
-    </template>
+    <div class="container">
+      <div class="summary">
+        <course-summary
+          course-category=[[courseCategory]]
+          course-title=[[courseTitle]]
+          course-key-outcomes=[[courseKeyOutcomes]]
+          course-description=[[courseDescription]]>
+        </course-summary>
+      </div>
 
-    <div>
+      <div class="action">
+        <course-action
+          course-title=[[courseTitle]]
+          course-thumbnail-link=[[courseThumbnailLink]]
+          course-duration=[[courseDuration]]
+          course-last-updated=[[courseLastUpdated]]
+          course-tags=[[courseTags]]
+          is-in-my-learning={{isInMyLearning}}
+          is-on-my-list={{isOnMyList}}>
+        </course-action>
+      </div>
+    </div>
 
+    <div id="debugStuff">
+      <button on-click="_getInfo">debug</button><br>
+      [[localize('hello')]]
     </div>
 
   </template>
 
   <script>
-    // const supportsCustomElementsV1 = 'customElements' in window;
-    // console.log('supportsCustomElementsV1:', supportsCustomElementsV1);
-    class DiscoveryCourse extends D2L.Discovery.LocalizeMixin(Polymer.Element) {
+    class DiscoveryCourse extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
       constructor() {
         super();
-        this.category = 'category';
       }
 
       static get is() {
@@ -63,23 +109,90 @@
           routeData: Object,
           subroute: Object,
 
+          visible: {
+            type: Boolean,
+            observer: '_visible'
+          },
+
           navigatedFromSearch: {
             type: Boolean,
             value: false,
           },
 
           // queryParams: Object,
+          searchQuery: String,
 
-          category: String,
+          courseCategory: String,
+          courseTitle: String,
+          courseKeyOutcomes: Array,
+          courseDescription: String,
+          courseDuration: Number,
+          courseLastUpdated: String,
+          courseTags: Array,
+          courseThumbnailLink: String,
+          isInMyLearning: Boolean,
+          isOnMyList: Boolean,
         };
+      }
+
+      _visible(newVal) {
+        console.log('>> discovery-course visible');
+        this.searchQuery = "";
+        // data for the course summary
+        this.courseCategory = 'Finance Skills';
+        this.courseTitle = 'Excel and Other Tips to Improve Efficiency'
+        this.courseKeyOutcomes = [
+          "You'll be an advanced level user after taking this Microsoft Excel Course",
+          "Use advanced graphs in minutes instead of wasting hours trying to figure them out",
+          "Increase interactivity by automating your spreadsheets with macros and VBA",
+          "Solve complex problems with superpower functions",
+          "Turn raw data into 'must make' decisions using PivotTables and PowerPivots",
+        ];
+        this.courseDescription = 
+"Excel is hype! (Helping Young People Excel) \n\n\
+Common macros and shortcuts in Excel can save tons of time. Here you will learn almost 200 excel shortcuts, with their usage properly demonstrated...\n\n\
+Excel shortcuts can be learned by anybody, but a proper...";
+
+        // data for course action
+        this.courseThumbnailLink = 'https://www.d2l.com/wp-content/uploads/2017/02/img_D2L_knockout.jpg';
+        this.courseDuration = 45;
+        this.courseLastUpdated = 'April 1st, 2018';
+        this.courseTags = [
+          'Accounting',
+          'Business Skills',
+          'Finance',
+          'Software',
+          'Microsoft',
+          'Accounting',
+          'Business Skills',
+          'Finance',
+          'Software',
+          'Microsoft',
+          'Accounting',
+          'Business Skills',
+          'Finance',
+          'Software',
+          'Microsoft',
+        ];
+        this.isInMyLearning = false;
+        this.isOnMyList = false;
+      }
+
+      _navigateToHome(e) {
+        this.dispatchEvent(new CustomEvent('navigate', {
+          detail: {
+            path: this.routeLocations().home(),
+          },
+          bubbles: true,
+          composed: true,
+        }));
       }
 
       _getInfo() {
         console.log('> discovery-course; route:', this.route);
         console.log('> discovery-course; rootPath:', this.rootPath);
-        console.log('> discovery-course; routeData:', this.routeData);
+        console.log('> discovery-course; routeData:', this.routeData); //courseid is under here
         console.log('> discovery-course; subroute:', this.subroute);
-        
 
         // console.log('>> what is queryParams', this.queryParams);
       }

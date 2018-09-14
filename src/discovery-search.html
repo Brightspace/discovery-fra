@@ -1,0 +1,349 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="mixins/localize-mixin.html">
+<link rel="import" href="./mixins/route-locations-mixin.html">
+
+<link rel="import" href="components/app-location-ifrau.html">
+<link rel="import" href="components/search-header.html">
+<link rel="import" href="components/search-filter-sidebar.html">
+<link rel="import" href="components/search-results.html">
+
+<link rel="import" href="../bower_components/d2l-alert/d2l-alert.html">
+
+<dom-module id="discovery-search">
+  <template>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      .search-body {
+        display: flex;
+        /* background-color: lightblue; */
+        /* box-sizing: border-box;
+        overflow: hidden; */
+      }
+
+      .sidebar {
+        /* overflow-y: auto; */
+        flex-shrink: 0;
+        
+        /* border: 1px solid red;
+        border-radius: 1px; */
+
+        padding: 1rem;
+        background-color: white;
+        margin-top: 1px;
+        box-shadow: 1px 3px 5px;
+      }
+
+      .main {
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .test {
+        white-space: pre-wrap;
+      }
+    </style>
+
+    <app-route
+      route="{{route}}"
+      pattern="/d2l/le/discovery/view/search/:searchQuery"
+      data="{{routeData}}"
+      query-params="{{queryParams}}">
+    </app-route>
+    
+    <div>
+      <search-header query="{{searchQuery}}" query-params="{{queryParams}}"></search-header>
+    </div>
+    <div class="search-body">
+
+      <div class="sidebar" id="sidebar">
+        <search-filter-sidebar
+          filters="[[searchFilters]]"
+          query-params="{{queryParams}}">
+        </search-filter-sidebar>
+      </div>
+
+      <div class="main" id="main">
+        <div id="searchResult">
+          <search-results
+            search-results="[[searchResults]]"
+            search-query="[[searchQuery]]">
+          </search-results>
+        </div>
+
+        <div>
+          1:[[searchQuery]]<br>
+          2:[[routeData.searchQuery]]
+        </div>
+
+        <div>
+          results: <br>
+          [[results]]
+        </div>
+        <div class="test">
+          test content:[[testVar]]
+        </div>
+
+        <div id="debugStuff">
+          <button on-click="_getInfo">debug</button><br>
+          [[localize('hello')]]
+        </div>
+      </div>
+
+      <!-- <div style="clear: both;"></div> -->
+
+    </div>
+  </template>
+
+  <script>
+    class DiscoverySearch extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
+      constructor() {
+        super();
+      }
+
+      static get is() {
+        return 'discovery-search';
+      }
+
+      static get properties() {
+        return {
+          route: Object,
+          routeData: Object,
+          subroute: Object,
+          queryParams: {
+            type: Object,
+            notify: true,
+          },
+
+          visible: {
+            type: Boolean,
+            observer: '_visible',
+          },
+
+          searchQuery: {
+            type: String,
+            computed: '_getDecodedQuery(routeData.searchQuery)',
+          },
+
+          searchFilters: {
+            type: Array,
+          },
+
+          results: {
+            type: Array,
+          },
+          searchResults: {
+            type: Object,
+          },
+
+          testVar: String,
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routeDataQueryChanged(routeData.searchQuery)',
+          '_queryParamsChanged(queryParams)',
+        ];
+      }
+
+      ready() {
+        super.ready();
+
+        this.addEventListener('filter-added', this._filterAdded);
+        this.addEventListener('filter-removed', this._filterRemoved);
+        this.addEventListener('search-next', this._searchNext);
+        this.addEventListener('search-prev', this._searchPrev);
+      }
+
+      _visible(newVal) {
+        console.log('>> discovery-search visible:', newVal);
+        this.searchQuery = "";
+      }
+
+      _routeDataQueryChanged(searchQuery) {
+        console.log('>> discovery-search routeData.searchQuery changed to:', searchQuery);
+        this.results = `query: ${this._getDecodedQuery(searchQuery)} and filters: ${JSON.stringify(this.queryParams)}`;
+      }
+
+      _getDecodedQuery(searchQuery) {
+        return decodeURIComponent(searchQuery);
+      }
+
+      _queryParamsChanged(queryParams) {
+        console.log('>> discovery-search: queryParams changed to:', queryParams);
+        this.results = `query: ${this._getDecodedQuery(this.searchQuery)} and filters: ${JSON.stringify(queryParams)}`;
+
+
+        // if (queryParams && Object.keys(queryParams).length === 0) { return ;}
+        console.log(`>> queryParams Changed - going to do an api call with query: ${this.searchQuery} and queryParams:${JSON.stringify(queryParams)}`);
+        // filters
+        this.searchFilters = [
+          { label: "My Status",
+            filters: [
+              {label: "New Courses Only", results: 21},
+              {label: "On My List", results: 1},
+              {label: "In Progress", results: 1},
+              {label: "Completed", results: 1},
+          ]},
+          { label: "Format",
+            filters: [
+              {label: "Online", results: 20},
+              {label: "In-Class", results: 2},
+          ]},
+          { label:"Length",
+            filters: [
+              {label: "0 - 10 min", results: 0},
+              {label: "11 - 25 min", results: 10},
+              {label: "26 - 45 min", results: -11},
+              {label: "46 - 60 min", results: 1 },
+              {label: "1 hour - 2 hours", results: 1},
+              {label: "more than 2 hours", results: 2},
+          ]},
+          { label:"Category",
+            filters: [
+              {label: "Business", results: 7},
+              {label: "Economics", results: 5},
+              {label: "Finance", results: 10},
+          ]},
+        ];
+        this._changeSearchResults("search-next");
+      }
+
+      _filterAdded(e) {
+        console.log('>> got a filter-added event with detail:', e.detail);
+        if (e && e.detail && e.detail.filter) {
+          var newLocation = this.routeLocations().search(
+            this.searchQuery,
+            Object.assign({}, this.queryParams, {[e.detail.filter]: true}));
+
+          console.log('>> new location to go to after applying the filter:', newLocation);
+
+          this.dispatchEvent(new CustomEvent('navigate', {
+            detail: {
+              path: newLocation,
+            },
+            bubbles: true,
+            composed: true,
+          }));
+
+        }
+      }
+
+      _filterRemoved(e) {
+        console.log('>> got a filter-removed event with detail:', e.detail);
+        if (e && e.detail && e.detail.filter) {
+          var newQueryParams = Object.assign({}, this.queryParams);
+          delete newQueryParams[e.detail.filter];
+          var newLocation = this.routeLocations().search(this.searchQuery, newQueryParams);
+
+          console.log('>> new location to go to after applying the filter:', newLocation);
+          this.dispatchEvent(new CustomEvent('navigate', {
+            detail: {
+              path: newLocation,
+            },
+            bubbles: true,
+            composed: true,
+          }));
+        }
+      }
+
+      _searchNext(e) {
+        console.log('>> got a search-next event: about to change stuff');
+        this._changeSearchResults("search-next");
+      }
+
+      _changeSearchResults(prefix) {
+        const thumbnailLink = "https://www.d2l.com/wp-content/uploads/2017/02/img_D2L_knockout.jpg";
+
+        this.searchResults = {
+          metadata: {
+            startIndex: 5,
+            size: 5,
+            total: 15
+          },
+          results: [
+            { 
+              title: prefix + 'jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces',
+              id: 1000,
+              description: prefix + "job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined.",
+              thumbnail: thumbnailLink,
+              duration: Math.random(),
+              tags: ['Stocks', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Microsoft'],
+              online: true,
+            },
+            { 
+              title: prefix + 'Course B',
+              id: 1001,
+              description: prefix + "Some description for Course B",
+              thumbnail: thumbnailLink,
+              duration: Math.random(),
+              tags: ['Stocks', 'Finance', 'Marketing'],
+              online: false,
+            },
+            { 
+              title: prefix + 'Course C',
+              id: 1002,
+              description: prefix + "Some description for Course C",
+              thumbnail: thumbnailLink,
+              duration: Math.random(),
+              tags: [],
+              online: true,
+            },
+            { 
+              title: prefix + 'Course D',
+              id: 1002,
+              description: "a",
+              thumbnail: thumbnailLink,
+              duration: Math.random(),
+              tags: ['new'],
+              online: true,
+            },
+          ],
+        };
+      }
+
+      _getInfo() {
+        console.log('> discovery-search; route:', this.route);
+        console.log('> discovery-search; rootPath:', this.rootPath);
+        console.log('> discovery-search; routeData:', this.routeData);
+        console.log('> discovery-search; routeData.searchQuery:', decodeURIComponent(this.routeData.searchQuery));        
+        console.log('> discovery-search; subroute:', this.subroute);
+        console.log('> discovery-search; this.route.__queryParams:', this.route.__queryParams);
+        console.log('> discovery-search; this.queryParams:', this.queryParams);
+
+
+        var sidebar = this.shadowRoot.querySelector('#sidebar');
+        console.log('>> sidebar element:', sidebar);
+        console.log('>> sidebar offsetHeight:', sidebar.offsetHeight); // other is clientHeight
+
+
+        this.testVar = 'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
+          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n';
+
+      }
+    }
+
+    window.customElements.define(DiscoverySearch.is, DiscoverySearch);
+  </script>
+</dom-module>

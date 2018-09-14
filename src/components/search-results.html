@@ -1,0 +1,141 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../mixins/localize-mixin.html">
+<link rel="import" href="../mixins/route-locations-mixin.html">
+
+<link rel="import" href="../styles/discovery-styles.html">
+
+<link rel="import" href="course-card.html">
+
+<dom-module id="search-results">
+  <template>
+    <style include="discovery-styles"></style>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        display: flex;
+        flex-direction: row;
+      }
+      .sortBy {
+        margin-left: auto;
+      }
+
+    </style>
+
+    <div class="d2l-typography bigcontainer">
+      <template is="dom-if" if="[[!searchResultsExists]]">
+        <h4 class="d2l-heading-4">0 [[localize('resultsFor')]] [[searchQuery]]</h4>
+      </template>
+
+      <template is="dom-if" if="[[searchResultsExists]]">
+        <div class="header">
+          <span class="d2l-body-standard">[[searchResultsRangeToString]] [[localize('of')]] [[searchResultsTotal]] [[localize('resultsFor')]] [[searchQuery]]</span>
+          <div class="sortBy">
+            <span class="d2l-body-standard">[[localize('sortBy')]]: some drop down</span>
+          </div>
+        </div>
+        <br>
+        <div class="container">
+          <template is="dom-repeat" items="[[searchResults.results]]">
+            <div>
+              <course-card
+                course-id="{{item.id}}"
+                course-title="[[item.title]]"
+                course-description="[[item.description]]"
+                course-thumbnail-link="[[item.thumbnail]]"
+                course-duration="[[item.duration]]"
+                course-tags="[[item.tags]]">
+              </course-card>
+            </div>
+          </template>
+        </div>
+
+        <div id="pagination">
+          <button on-click="_doNext">Next</button>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    class SearchResults extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
+
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'search-results'; }
+
+      static get properties() {
+        return {
+          searchQuery: String,
+          searchResults: Object,
+          searchResultsExists: {
+            type: Boolean,
+            computed: '_computeSearchResultsExist(searchResults)'
+          },
+          searchResultsRangeToString: {
+            type: String,
+            computed: '_computeSearchResultsRange(searchResults)',
+          },
+          searchResultsTotal: {
+            type: Number,
+            computed: '_computeTotalSizeOfSearchResults(searchResults)',
+          },
+
+          actualResults: {
+            type: Array,
+            computed: '_getResults(searchResults)',
+          }
+        };
+      }
+
+      _getResults(searchResults) {
+        if (searchResults) {
+          return searchResults.results;
+        }
+        return [];
+      }
+      _computeTotalSizeOfSearchResults(searchResults) {
+        return searchResults && searchResults.metadata && searchResults.metadata.total;
+      }
+
+      _computeSearchResultsExist(searchResults) {
+        return searchResults && searchResults.results && searchResults.results.length > 0;
+      }
+
+      _computeSearchResultsRange(searchResults) {
+        if (searchResults &&
+          searchResults.metadata &&
+          searchResults.metadata.startIndex !== undefined &&
+          searchResults.metadata.size !== undefined) {
+            const startIndex = searchResults.metadata.startIndex + 1;
+            const endIndex = searchResults.metadata.startIndex + searchResults.metadata.size;
+            return `${startIndex} - ${endIndex}`;
+          }
+        return '';
+      }
+
+      _doNext(e) {
+        console.log('do next!');
+        this.dispatchEvent(new CustomEvent('search-next', {
+          detail: {
+          },
+          bubbles: true,
+          composed: true,
+        }));
+      }
+    }
+
+    window.customElements.define(SearchResults.is, SearchResults);
+  </script>
+</dom-module>

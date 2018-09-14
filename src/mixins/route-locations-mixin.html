@@ -21,14 +21,27 @@
             
           };
         }
-        
+
+        search(query, queryParams={}) {
+          var queryParamsKeys = Object.keys(queryParams);
+          var queryParamsUrl = '';
+          console.log('>> converting these queryParamsKeys:', queryParamsKeys);
+          if (queryParamsKeys.length) {
+            console.log('>> converted result should be:', queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&'));
+            queryParamsUrl = queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&');
+          }
+          return `${discoveryBasePath}/search/${encodeURIComponent(query)}/${queryParamsUrl ? `?${queryParamsUrl}` : ''}`;
+        }
+
         routeLocations() {
           return {
+            navLink: () => `${discoveryBasePath}/`,
             home: () => `${discoveryBasePath}/home`,
             course: (courseId) => `${discoveryBasePath}/course/${encodeURIComponent(courseId)}`,
             manage: (courseId) => `${discoveryBasePath}/manage/${encodeURIComponent(courseId)}`,
-            search: (query) => `${discoveryBasePath}/search/${encodeURIComponent(query)}`,
-          }
+            search: (query, queryParams={}) => this.search(query, queryParams),
+            myList: () => this.search('', {'onMyList': true}),
+          };
         }
       };
 

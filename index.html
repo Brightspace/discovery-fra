@@ -17,8 +17,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <title>Discovery</title>
     <meta name="description" content="Discovery">
 
-    <style>
-    </style>
 
     <script src="https://s.brightspace.com/lib/ifrau/0.24.1/ifrau/client.js"></script>
 
@@ -31,7 +29,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.D2L.frau = window.D2L.frau || {};
         window.D2L.frau.options = window.D2L.frau.options || {};
 
-        var client = window.ifrauclient(this._ifrauclientOptions);
+        var ifrauclientOptions = {
+          syncLang: true,
+          syncTitle: true,
+          syncFont: true,
+          resizeFrame: true,
+          resizerOptions: {
+            heightCalculationMethod: 'lowestElement',
+          },
+        };
+        var client = window.ifrauclient(ifrauclientOptions);
         return client 
           .connect()
           .then(() => {
@@ -91,8 +98,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
+    
     <!-- Load your application shell -->
     <link rel="import" href="src/discovery-app.html">
+
+    <!-- <link rel="import" href="bower_components/polymer/lib/elements/custom-style.html">
+    <link rel="import" href="./src/styles/discovery-styles.html">
+    <custom-style include="discovery-styles">
+      <style is="custom-style" include="discovery-styles"></style>
+    </custom-style> -->
+    <style>
+      body {
+        background-color: whitesmoke;
+        margin: 0;
+      }
+    </style>
 
   </head>
   <body>

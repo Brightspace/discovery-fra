@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "ifrau": "^0.24.0",
-    "redux": "^4.0.0",  
+    "redux": "^4.0.0",
     "reselect": "^3.0.1"
   },
   "config": {
@@ -44,7 +44,7 @@
     "frauLocalAppResolver": {
       "appClass": "urn:d2l:fra:class:discovery",
       "dist": "./build",
-      "hostname": "10.128.30.135",
+      "hostname": "10.128.30.132",
       "port": 3000
     },
     "frauPublisher": {

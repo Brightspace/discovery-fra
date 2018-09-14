@@ -1,0 +1,194 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../mixins/localize-mixin.html">
+<link rel="import" href="../mixins/route-locations-mixin.html">
+
+<link rel="import" href="../styles/discovery-styles.html">
+
+<link rel="import" href="../../bower_components/d2l-icons/d2l-icon.html">
+<link rel="import" href="../../bower_components/d2l-icons/tier2-icons.html">
+
+<dom-module id="course-card">
+  <template>
+    <style include="discovery-styles"></style>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      .container {
+        display: flex;
+        background-color: white;
+        cursor: pointer;
+        width: 800px;
+        height: 200px;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .thumbnail{
+        flex-shrink: 0;
+        border-radius: 5px;
+      }
+      
+      .thumbnail.top {
+        padding-bottom: 1rem;
+      }
+
+      .thumbnail.left {
+        padding-right: 1rem;
+      }
+
+      .detail {
+        padding-left: 1rem;
+      }
+      
+      .compactContainer {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        cursor: pointer;
+        width: 250px;
+        height: 200px;
+        border-radius: 5px;
+        text-align: center;
+        overflow: hidden;
+      }
+
+    </style>
+    <div class="d2l-typography">
+
+      <template is="dom-if" if="[[isCompact]]">
+        <div class="compactContainer" on-click="_navigateToCourse">
+          <img class="thumbnail top" width="250" height="100" src="[[courseThumbnailLink]]">
+          <div class="detail">
+            <span class="d2l-label-text">[[processedTitle]]</span>
+            <div>
+              <d2l-icon icon="d2l-tier2:time"></d2l-icon>
+              <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
+              
+              <template is="dom-if" if="[[hasTags]]">
+                <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
+                <span class="d2l-body-small">[[listOfTagsAsString]]</span>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[!isCompact]]">
+        <div class="container" on-click="_navigateToCourse">
+          <div class="thumbnail">
+            <img class="thumbnail left" width="350" height="200" src="[[courseThumbnailLink]]">
+          </div>
+          <div class="detail">
+            <p class="d2l-label-text">[[processedTitle]]</p>
+            <p class="d2l-body-small">[[processedDescription]]</p>
+            <br>
+            <div>
+              <d2l-icon icon="d2l-tier2:time"></d2l-icon>
+              <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
+
+              <template is="dom-if" if="[[hasTags]]">
+                <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
+                <span class="d2l-body-small">[[listOfTagsAsString]]</span>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <br>
+    </div>
+  </template>
+
+  <script>
+    const titleMaxLength = 50;
+    const descriptionMaxLength = 100;
+
+    class CourseCard extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'course-card'; }
+
+      static get properties() {
+        return {
+          courseId: Number,
+          courseTitle: String,
+          courseDescription: String,
+          courseThumbnailLink: String,
+          courseDuration: Number,
+          courseTags: Array,
+
+          isCompact: {
+            type: Boolean,
+            computed: '_computeIsCompact(courseDescription)',
+          },
+          processedTitle: {
+            type: String,
+            computed: '_computeProcessedTitle(courseTitle)',
+          },
+          processedDescription: {
+            type: String,
+            computed: '_computeProcessedDescription(courseDescription)',
+          },
+          hasTags: {
+            type: Boolean,
+            computed: '_computeHasTags(courseTags)',
+          },
+          listOfTagsAsString: {
+            type: String,
+            computed: '_computeListOfTagsAsString(courseTags)',
+          }
+        };
+      }
+
+      _computeIsCompact(courseDescription) {
+        return !courseDescription;
+      }
+
+      _computeHasTags(courseTags) {
+        return courseTags && courseTags.length > 0;
+      }
+
+      _computeListOfTagsAsString(courseTags) {
+        return courseTags && courseTags.join(', ');
+      }
+
+      _computeProcessedTitle(courseTitle) {
+        if (courseTitle && courseTitle.length > titleMaxLength) {
+          return courseTitle.substring(0, titleMaxLength) + '...';
+        }
+        return courseTitle;
+      }
+
+      _computeProcessedDescription(courseDescription) {
+        if (courseDescription && courseDescription.length > descriptionMaxLength) {
+          return courseDescription.substring(0, descriptionMaxLength) + '...';
+        }
+        return courseDescription;
+      }
+
+      _getInfo() {
+        console.log('>> you clicked on this box with id:', this.courseId);
+      }
+
+      _navigateToCourse() {
+        if (this.courseId) {
+          this.dispatchEvent(new CustomEvent('navigate', {
+            detail: {
+              path: this.routeLocations().course(this.courseId),
+            },
+            bubbles: true,
+            composed: true,
+          }));
+        }
+      }
+    }
+
+    window.customElements.define(CourseCard.is, CourseCard);
+  </script>
+</dom-module>

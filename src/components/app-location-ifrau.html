@@ -63,8 +63,12 @@
         this._frauIsSynchronizing = true;
         var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
         console.log('_handleLocationChanged: parsed:', parsed);
-        this.path = parsed.pathname;
+        this.path = newLocation;
+        // this.path = parsed.pathname;
         this.queryParams = createQueryParams(parsed.searchParams);
+        // console.log('_handleLocationChanged: what is parsed.searchParams:', parsed.searchParams);
+        // console.log('_handleLocationChanged: what is result of createQueryParams(parsed.searchParams):', createQueryParams(parsed.searchParams));
+        console.log('_handleLocationChanged: this.queryParams:', this.queryParams);
         this._frauIsSynchronizing = false;
       }
 

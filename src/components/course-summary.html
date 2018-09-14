@@ -1,0 +1,114 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../mixins/localize-mixin.html">
+<link rel="import" href="../mixins/route-locations-mixin.html">
+
+<link rel="import" href="../styles/discovery-styles.html">
+
+<link rel="import" href="../../bower_components/d2l-link/d2l-link.html">
+<link rel="import" href="../../bower_components/d2l-icons/d2l-icon.html">
+<link rel="import" href="../../bower_components/d2l-icons/tier2-icons.html">
+
+<dom-module id="course-summary">
+  <template>
+    <style include="discovery-styles"></style>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      .inner {
+        overflow: hidden;
+        padding: 3%;
+      }
+
+      .description {
+        white-space: pre-wrap;
+      }
+
+      .keyOutcomes ul{
+        list-style-type: disc;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+        columns: 2;
+        list-style-position: inside;
+      }
+
+    </style>
+    <div class="d2l-typography">
+
+      <div class="inner">
+        <template is="dom-if" if="[[navigatedFromSearch]]">
+          <d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>
+          <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('backToSearchResults')]]</d2l-link>
+          
+        </template>
+    
+        <template is="dom-if" if="[[!navigatedFromSearch]]">
+          <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discover')]]</d2l-link>
+          <d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
+          <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[courseCategory]]</d2l-link>
+          <d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
+        </template>
+
+
+        <div class="title">
+          <h1 class="d2l-heading-1">[[courseTitle]]</h1>
+        </div>
+
+        <div class="keyOutcomes">
+          <div class="d2l-label-text">[[localize('keyOutcomes')]]</div>
+          <div class="d2l-body-compact">
+            <ul class="keyOutcomes">
+              <template is="dom-repeat" items="[[courseKeyOutcomes]]">
+                <li>[[item]]</li>
+              </template>
+            </ul>
+          </div>
+        </div>
+        <div class="description">
+          <div class="d2l-label-text">[[localize('courseDescription')]]</div>
+          <div class="d2l-body-compact">[[courseDescription]]</div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class CourseSummary extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'course-summary'; }
+
+      static get properties() {
+        return {
+
+          navigatedFromSearch: {
+            type: Boolean,
+            value: false,
+          },
+          
+          courseCategory: String,
+          courseTitle: String,
+          courseKeyOutcomes: Array,
+          courseDescription: String,
+        };
+      }
+
+      _navigateToHome(e) {
+        this.dispatchEvent(new CustomEvent('navigate', {
+          detail: {
+            path: this.routeLocations().home(),
+          },
+          bubbles: true,
+          composed: true,
+        }));
+      }
+    }
+
+    window.customElements.define(CourseSummary.is, CourseSummary);
+  </script>
+</dom-module>
