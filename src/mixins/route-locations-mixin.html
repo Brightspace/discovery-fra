@@ -25,9 +25,7 @@
         search(query, queryParams={}) {
           var queryParamsKeys = Object.keys(queryParams);
           var queryParamsUrl = '';
-          console.log('>> converting these queryParamsKeys:', queryParamsKeys);
           if (queryParamsKeys.length) {
-            console.log('>> converted result should be:', queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&'));
             queryParamsUrl = queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&');
           }
           return `${discoveryBasePath}/search/${encodeURIComponent(query)}/${queryParamsUrl ? `?${queryParamsUrl}` : ''}`;

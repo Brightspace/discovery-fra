@@ -120,32 +120,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ];
       }
 
-      _equals(a, b) {
-        console.log('a:', a);
-        console.log('b:', b);
-        console.log('a==b', a==b);
-        return a == b;
-      }
-
       ready() {
         super.ready();
         this.addEventListener('navigate', this._navigate);
       }
 
       _navigate(e) {
-        console.log('>> received navigate event:', e);
         if (e && e.detail && e.detail.path) {
-          console.log('>> what is current route.path?:', this.route.path);
-          console.log('>> setting route.path to:', e.detail.path);
           this.set('route.path', e.detail.path);
         }
       }
 
       _routePathChanged(path) {
-        var managePathRegex = /^\/d2l\/le\/discovery\/view\/manage\/\d+$/;
-
-        console.log('>> _routePathChanged: path:', path);
-
         if (path === '/d2l/le/discovery/view/') { // navlink home
           var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
           if (appLocationIfrau) {
@@ -155,7 +141,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _routeDataPageChanged(page) { // this allows us to lazy-import when routeData.page changes
-        console.log('>> _routeDataPageChanged: page:', page);
         if (page) {
           this.page = page;
         }

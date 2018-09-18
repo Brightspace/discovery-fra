@@ -24,7 +24,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: center;
-        border-bottom: 1px #f2f3f5;
+        border-bottom: 1px solid #f2f3f5;
       }
 
       .container d2l-icon {
@@ -138,8 +138,6 @@
       }
 
       _queryChanged(query) {
-        console.log(`>> search-header: query changed to: ${query}`);
-
         if (query) {
           this.dispatchEvent(new CustomEvent('navigate', {
             detail: {

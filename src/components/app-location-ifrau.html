@@ -59,30 +59,20 @@
       }
 
       _handleLocationChanged(newLocation) {
-        console.log('_handleLocationChanged: newLocation:', newLocation);
         this._frauIsSynchronizing = true;
         var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
-        console.log('_handleLocationChanged: parsed:', parsed);
         this.path = newLocation;
-        // this.path = parsed.pathname;
         this.queryParams = createQueryParams(parsed.searchParams);
-        // console.log('_handleLocationChanged: what is parsed.searchParams:', parsed.searchParams);
-        // console.log('_handleLocationChanged: what is result of createQueryParams(parsed.searchParams):', createQueryParams(parsed.searchParams));
-        console.log('_handleLocationChanged: this.queryParams:', this.queryParams);
         this._frauIsSynchronizing = false;
       }
 
       rewriteTo(pathAndQuery) {
-        console.log('rewriteTo pathAndQuery:', pathAndQuery);
         if (this._navigation) {
           this._navigation.replace(pathAndQuery);
         }
       }
 
       _handlePathChanged(newPath) {
-        console.log('app-location-ifrau: _handlePathChanged: newPath:', newPath);
-        // console.log('app-location-ifrau: _handlePathChanged: this._navigation:', this._navigation);
-        console.log('app-location-ifrau: _handlePathChanged: this._frauIsSynchronizing:', this._frauIsSynchronizing);
         var shouldReportNavigation =
           newPath !== undefined &&
           this._navigation !== undefined &&
@@ -91,7 +81,6 @@
             return re.test(newPath);
           });
         if (shouldReportNavigation) {
-          console.log('app-location-ifrau: _handlePathChanged: pushing newPath:', newPath);
           this._navigation.push(newPath, '');
           scrollToTop();
         }

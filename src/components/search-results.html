@@ -177,17 +177,7 @@
       }
 
       _menuItemSelected(e) {
-        console.log('>> got d2l-menu-item-select event e.target.text:', e.target.text);
-      }
-
-      _doNext(e) {
-        console.log('do next!');
-        this.dispatchEvent(new CustomEvent('search-next', {
-          detail: {
-          },
-          bubbles: true,
-          composed: true,
-        }));
+        // console.log('>> got d2l-menu-item-select event e.target.text:', e.target.text);
       }
     }
 

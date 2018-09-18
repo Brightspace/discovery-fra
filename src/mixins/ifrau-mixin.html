@@ -42,36 +42,6 @@
           .connect()
           .then(client.request('navigation', '0.1'));
       }
-
-      frauConnect() {
-        var client = window.ifrauclient(this._ifrauclientOptions);
-
-        return client 
-          .connect()
-          .then(() => {
-            return Promise.all([
-              client.request('options'),
-              client.getService('navigation', '0.1'),
-              client.request('valenceHost'),
-            ]);
-          })
-          .then((all) => {
-            console.log('>> ifrau-mixin: frauConnect: finished requests!');
-            var setup = {
-              client: client,
-              options: all[0],
-              navigation: all[1],
-              valenceHost: all[2],
-            };
-
-            Object.assign(window.D2L.frau.options, setup.options);
-            window.D2L.frau.client = setup.client;
-            window.D2L.frau.navigation = setup.navigation;
-            window.D2L.frau.valenceHost = (setup.valenceHost || '').replace(/\/$/, '');
-
-            return setup;
-          });
-      }
     }
 
     window.D2L.Discovery.IfrauMixin = Polymer.dedupingMixin(IfrauMixin);

@@ -122,8 +122,6 @@
       .secondDialogButton {
         margin-left: 1rem;
       }
-
-      
     </style>
 
     <div class="d2l-typography">
@@ -188,7 +186,7 @@
         </div>
       </d2l-alert-toast>
 
-      <paper-dialog class="dialog" id="myLearningDialog" always-on-top with-backdrop>
+      <paper-dialog class="dialog d2l-typography" id="myLearningDialog" always-on-top with-backdrop>
         
         <div class="dialogContainer">
           <div class="dialogHeaderContainer">
@@ -262,15 +260,6 @@
         return '';
       }
 
-      _isLastTag(index) {
-        // console.log('what is index:', index);
-        // console.log('what is this.courseTags.length:', this.courseTags.length);
-        if (index && this.courseTags) {
-          return index == this.courseTags.length - 1;
-        }
-        return false; 
-      }
-
       _addToMyLearning(e) {
         this.isInMyLearning = !this.isInMyLearning; // temporary toggle functionality for testing
 
@@ -317,7 +306,6 @@
       }
 
       _navigateToSearch(e) {
-        console.log('>> got navigateToSearch with e.target.value:', e.target.value);
         if(e && e.target && e.target.value) {
           this.dispatchEvent(new CustomEvent('navigate', {
             detail: {

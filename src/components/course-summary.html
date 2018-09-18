@@ -75,12 +75,6 @@
     <div class="d2l-typography">
 
       <div class="container">
-        <!-- <template is="dom-if" if="[[navigatedFromSearch]]">
-          <d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>
-          <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('backToSearchResults')]]</d2l-link>
-        </template> -->
-    
-        <!-- <template is="dom-if" if="[[!navigatedFromSearch]]"> -->
         <div class="breadcrumbs">
           <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discover')]]</d2l-link>
           <d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
@@ -89,8 +83,6 @@
           </d2l-link>
           <d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
         </div>
-        <!-- </template> -->
-
 
         <div class="title">
           <h1 class="d2l-heading-1">[[courseTitle]]</h1>
@@ -127,12 +119,6 @@
 
       static get properties() {
         return {
-
-          // navigatedFromSearch: {
-          //   type: Boolean,
-          //   value: false,
-          // },
-          
           courseCategory: String,
           courseTitle: String,
           courseKeyOutcomes: Array,
@@ -151,7 +137,6 @@
       }
 
       _navigateToSearch(e) {
-        console.log('>> got navigateToSearch with e.target.value:', e.target.value);
         if(e && e.target && e.target.value) {
           this.dispatchEvent(new CustomEvent('navigate', {
             detail: {

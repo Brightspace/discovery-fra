@@ -50,7 +50,7 @@
       
       <div class="catalogHeaderRightLinks">
         <a href="#[[rootPath]]other-view">[[localize('catalogInformationViewInCatalog')]]</a>
-        <d2l-button on-click="_getInfo">[[localize('catalogInformationPreviewChanges')]]</d2l-button>
+        <d2l-button>[[localize('catalogInformationPreviewChanges')]]</d2l-button>
       </div>
 
       <div>
@@ -161,10 +161,6 @@
             value: null,
           },
         }
-      }
-
-      _getInfo() {
-        console.log('>> routeData:', this.routeData);
       }
     }
 

@@ -23,11 +23,10 @@
       .sidebar {
         overflow-y: auto;
         flex-shrink: 0;
-        /* width: 15%; */
+        /* width: 15%; */`
         width: 8rem;
         padding: 1rem;
         border-right: 1px solid #d3d9e3;
-        border-top: 1px solid #f2f3f5;
         background-color: white;
       }
 
@@ -38,7 +37,7 @@
         padding-right: 3rem;
         box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
         overflow: auto;
-        /* background-color: white; */
+        background-color: white;
       }
     </style>
 
@@ -68,24 +67,6 @@
             search-query="[[searchQuery]]">
           </search-results>
         </div>
-
-        <!-- <div>
-          1:[[searchQuery]]<br>
-          2:[[routeData.searchQuery]]
-        </div>
-
-        <div>
-          results: <br>
-          [[results]]
-        </div>
-        <div style="white-space: pre-wrap;">
-          test content:[[testVar]]
-        </div>
-
-        <div id="debugStuff">
-          <button on-click="_getInfo">debug</button><br>
-          [[localize('hello')]]
-        </div> -->
       </div>
     </div>
   </template>
@@ -149,17 +130,13 @@
 
         this.addEventListener('filter-added', this._filterAdded);
         this.addEventListener('filter-removed', this._filterRemoved);
-        this.addEventListener('search-next', this._searchNext);
-        this.addEventListener('search-prev', this._searchPrev);
       }
 
       _visible(newVal) {
-        console.log('>> discovery-search visible:', newVal);
         this.searchQuery = "";
       }
 
       _routeDataQueryChanged(searchQuery) {
-        console.log('>> discovery-search routeData.searchQuery changed to:', searchQuery);
         this.results = `query: ${this._getDecodedQuery(searchQuery)} and filters: ${JSON.stringify(this.queryParams)}`;
       }
 
@@ -168,10 +145,8 @@
       }
 
       _queryParamsChanged(queryParams) {
-        console.log('>> discovery-search: queryParams changed to:', queryParams);
         this.results = `query: ${this._getDecodedQuery(this.searchQuery)} and filters: ${JSON.stringify(queryParams)}`;
 
-        console.log(`>> queryParams Changed - going to do an api call with query: ${this.searchQuery} and queryParams:${JSON.stringify(queryParams)}`);
         // filters
         this.searchFilters = [
           { label: "My Status",
@@ -206,13 +181,10 @@
       }
 
       _filterAdded(e) {
-        console.log('>> got a filter-added event with detail:', e.detail);
         if (e && e.detail && e.detail.filter) {
           var newLocation = this.routeLocations().search(
             this.searchQuery,
             Object.assign({}, this.queryParams, {[e.detail.filter]: true}));
-
-          console.log('>> new location to go to after applying the filter:', newLocation);
 
           this.dispatchEvent(new CustomEvent('navigate', {
             detail: {
@@ -226,13 +198,11 @@
       }
 
       _filterRemoved(e) {
-        console.log('>> got a filter-removed event with detail:', e.detail);
         if (e && e.detail && e.detail.filter) {
           var newQueryParams = Object.assign({}, this.queryParams);
           delete newQueryParams[e.detail.filter];
           var newLocation = this.routeLocations().search(this.searchQuery, newQueryParams);
 
-          console.log('>> new location to go to after applying the filter:', newLocation);
           this.dispatchEvent(new CustomEvent('navigate', {
             detail: {
               path: newLocation,
@@ -241,11 +211,6 @@
             composed: true,
           }));
         }
-      }
-
-      _searchNext(e) {
-        console.log('>> got a search-next event: about to change stuff');
-        this._changeSearchResults("search-next");
       }
 
       _changeSearchResults(prefix) {
@@ -296,42 +261,6 @@
             },
           ],
         };
-      }
-
-      _getInfo() {
-        console.log('> discovery-search; route:', this.route);
-        console.log('> discovery-search; rootPath:', this.rootPath);
-        console.log('> discovery-search; routeData:', this.routeData);
-        console.log('> discovery-search; routeData.searchQuery:', decodeURIComponent(this.routeData.searchQuery));        
-        console.log('> discovery-search; subroute:', this.subroute);
-        console.log('> discovery-search; this.route.__queryParams:', this.route.__queryParams);
-        console.log('> discovery-search; this.queryParams:', this.queryParams);
-
-
-        var sidebar = this.shadowRoot.querySelector('#sidebar');
-        console.log('>> sidebar element:', sidebar);
-        console.log('>> sidebar offsetHeight:', sidebar.offsetHeight); // other is clientHeight
-
-
-        this.testVar = 'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n' +
-          'this is a test. \nthis is a test. \nthis is a test. \nthis is a test. \nthis is a test. \n';
-
       }
     }
 
