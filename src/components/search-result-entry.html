@@ -1,0 +1,154 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../mixins/localize-mixin.html">
+<link rel="import" href="../mixins/route-locations-mixin.html">
+
+<link rel="import" href="../styles/discovery-styles.html">
+
+<link rel="import" href="../../bower_components/d2l-icons/d2l-icon.html">
+<link rel="import" href="../../bower_components/d2l-icons/tier2-icons.html">
+
+<dom-module id="search-result-entry">
+  <template>
+    <style include="discovery-styles"></style>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      .container {
+        display: flex;
+        background-color: lightgrey;
+        cursor: pointer;
+        /* width: 100%; */
+        height: 160px;
+        border-radius: 5px;
+        overflow: hidden;
+        min-width: 860px;
+      }
+
+      .detail {
+        overflow: hidden;
+        margin: 1rem;
+        visibility: hidden;
+        min-width: 300px;
+      }
+
+      .tags {
+        margin-left: 5%;
+      }
+
+      .thumbnail {
+        flex-shrink: 0;
+        width: 340px;
+        height: 100%;
+      }
+    </style>
+
+    <div class="d2l-typography">
+      <div class="container" on-click="_navigateToCourse">
+        <img class="thumbnail" src="[[courseThumbnailLink]]">
+        <div class="detail">
+          <p class="d2l-label-text">[[processedTitle]]</p>
+          <p class="d2l-body-small">[[processedDescription]]</p>
+          <p>
+            <d2l-icon icon="d2l-tier2:time"></d2l-icon>
+            <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
+
+            <span class="tags">
+              <template is="dom-if" if="[[hasTags]]">
+                <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
+                <span class="d2l-body-small">[[listOfTagsAsString]]</span>
+              </template>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class SearchResultEntry extends
+      D2L.Discovery.LocalizeMixin(
+      D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'search-result-entry'; }
+
+      static get properties() {
+        return {
+          titleMaxLength: {
+            type: Number,
+            readOnly: true,
+            value: 50,
+          },
+          descriptionMaxLength: {
+            type: Number,
+            readOnly: true,
+            value: 100,
+          },
+          courseId: Number,
+          courseTitle: String,
+          courseDescription: String,
+          courseThumbnailLink: String,
+          courseDuration: Number,
+          courseTags: Array,
+
+          processedTitle: {
+            type: String,
+            computed: '_computeProcessedTitle(courseTitle)',
+          },
+          processedDescription: {
+            type: String,
+            computed: '_computeProcessedDescription(courseDescription)',
+          },
+          hasTags: {
+            type: Boolean,
+            computed: '_computeHasTags(courseTags)',
+          },
+          listOfTagsAsString: {
+            type: String,
+            computed: '_computeListOfTagsAsString(courseTags)',
+          }
+        };
+      }
+
+      _computeHasTags(courseTags) {
+        return courseTags && courseTags.length > 0;
+      }
+
+      _computeListOfTagsAsString(courseTags) {
+        return courseTags && courseTags.join(', ');
+      }
+
+      _computeProcessedTitle(courseTitle) {
+        if (courseTitle && courseTitle.length > this.titleMaxLength) {
+          return courseTitle.substring(0, this.titleMaxLength) + '...';
+        }
+        return courseTitle;
+      }
+
+      _computeProcessedDescription(courseDescription) {
+        if (courseDescription && courseDescription.length > this.descriptionMaxLength) {
+          return courseDescription.substring(0, this.descriptionMaxLength) + '...';
+        }
+        return courseDescription;
+      }
+
+      _navigateToCourse() {
+        if (this.courseId) {
+          this.dispatchEvent(new CustomEvent('navigate', {
+            detail: {
+              path: this.routeLocations().course(this.courseId),
+            },
+            bubbles: true,
+            composed: true,
+          }));
+        }
+      }
+    }
+
+    window.customElements.define(SearchResultEntry.is, SearchResultEntry);
+  </script>
+</dom-module>

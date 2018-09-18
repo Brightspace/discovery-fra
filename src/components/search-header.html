@@ -17,51 +17,75 @@
         display: inline;
       }
 
-      .searchBar {
-        padding-left: 1%;
-        width: 50%;
-      }
-
       .container {
-        overflow: hidden;
+        overflow: auto;
         background-color: white;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        justify-content: space-evenly;
         align-items: center;
-        /* font-size: rem; */
+        border-bottom: 1px #f2f3f5;
       }
 
       .container d2l-icon {
         align-self: auto;
       }
 
-      .child {
+      .content {
         flex-shrink: 0;
+        padding-left: 1rem;
       }
 
-      .test1 {
-        box-shadow: 0 1px 5px rgba(86,86,86,0.2);
+      .box {
+        /* -webkit-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
+        -moz-box-shadow: 0 1px 4px rgba(86,86,86,0.2); */
+        box-shadow: 0 1px 4px rgba(86,86,86,0.2);
       }
+
+      .clickable {
+        cursor: pointer;
+      }
+
+      .searchBar {
+        padding-left: 1rem;
+        width: 50%;
+        min-width: 100px;
+      }
+
+      .endContent {
+        padding-left: 3rem;
+        padding-right: 3rem;
+      }
+
     </style>
 
-    <div class="d2l-typography test1">
+    <div class="d2l-typography box">
       <div class="container">
-        <h2 class="d2l-heading-2">
-          <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discover')]]</d2l-link>
-        </h2>
-        <d2l-icon icon="d2l-tier2:divider-big"></d2l-icon>
-        <h3 class="d2l-heading-3">[[localize('searchLabel')]]</h3>
-        <d2l-search-input class="searchBar"
-          label="Search"
-          value="{{query}}" 
-          placeholder="[[localize('searchPlaceholder')]]"
-        >
-        </d2l-search-input>
-        <div class="child"><h3 class="d2l-heading-3">
+        <div class="content">
+          <h2 class="d2l-heading-2 clickable" on-click="_navigateToHome">
+            [[localize('discover')]]
+          </h2>
+        </div>
+
+        <div class="content">
+          <d2l-icon icon="d2l-tier2:divider"></d2l-icon>
+        </div>
+
+        <div class="content">
+          <span class="d2l-body-standard">[[localize('searchLabel')]]</span>
+        </div>
+
+        <div class="searchBar">
+          <d2l-search-input
+            label="Search"
+            value="{{query}}" 
+            placeholder="[[localize('searchPlaceholder')]]">
+          </d2l-search-input>
+        </div>
+
+        <div class="content endContent">
           <d2l-link href="javascript:void(0)" on-click="_navigateToMyList">[[localize('myList')]]</d2l-link>
-        </h3></div>
+        </div>
       </div>
     </div>
   </template>
@@ -90,20 +114,13 @@
             type: Object,
             notify: true,
           },
-
         };
-      }
-
-      ready() {
-        super.ready();
       }
 
       _navigateToHome(e) {
         this.dispatchEvent(new CustomEvent('navigate', {
           detail: {
-            // path: this.routeLocations().navLink(),
-            path: this.routeLocations().home(),
-            // path: this.routeLocations().course(123),
+            path: this.routeLocations().navLink(),
           },
           bubbles: true,
           composed: true,
@@ -111,7 +128,6 @@
       }
 
       _navigateToMyList(e) {
-        console.log('navigate to mylist');
         this.dispatchEvent(new CustomEvent('navigate', {
           detail: {
             path: this.routeLocations().myList(),
@@ -122,7 +138,7 @@
       }
 
       _queryChanged(query) {
-        console.log(`>>new query: ${query}`);
+        console.log(`>> search-header: query changed to: ${query}`);
 
         if (query) {
           this.dispatchEvent(new CustomEvent('navigate', {

@@ -16,13 +16,38 @@
         display: inline;
       }
 
-      .inner {
+      .container {
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
-        padding: 3%;
+        padding: 1rem;
       }
 
-      .description {
-        white-space: pre-wrap;
+      .breadcrumbs {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .breadcrumbs>* {
+        margin: 2px;
+      }
+
+      .title {
+        margin-top: 0.5rem;
+      }
+
+      .d2l-heading-1 {
+        margin-top: 0 !important;
+      }
+
+      .d2l-heading-4 {
+        margin-top: 0 !important;
+        margin-bottom: 1rem !important;
+      }
+
+      .keyOutcomes {
+        margin-bottom: 1rem;
       }
 
       .keyOutcomes ul{
@@ -31,24 +56,40 @@
         -moz-columns: 2;
         columns: 2;
         list-style-position: inside;
+        -webkit-column-gap: 3rem;
+        -moz-column-gap: 3rem;
+        column-gap: 3rem;
+
+        padding: 0;
+        margin-left: 0.5rem;
+        margin-top: 0;
+        width: 100%;
       }
+
+      .textStuff {
+        white-space: pre-wrap;
+      }
+
 
     </style>
     <div class="d2l-typography">
 
-      <div class="inner">
-        <template is="dom-if" if="[[navigatedFromSearch]]">
+      <div class="container">
+        <!-- <template is="dom-if" if="[[navigatedFromSearch]]">
           <d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>
           <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('backToSearchResults')]]</d2l-link>
-          
-        </template>
+        </template> -->
     
-        <template is="dom-if" if="[[!navigatedFromSearch]]">
+        <!-- <template is="dom-if" if="[[!navigatedFromSearch]]"> -->
+        <div class="breadcrumbs">
           <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discover')]]</d2l-link>
           <d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
-          <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[courseCategory]]</d2l-link>
+          <d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
+            <span value="[[courseCategory]]">[[courseCategory]]</span>
+          </d2l-link>
           <d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
-        </template>
+        </div>
+        <!-- </template> -->
 
 
         <div class="title">
@@ -56,7 +97,7 @@
         </div>
 
         <div class="keyOutcomes">
-          <div class="d2l-label-text">[[localize('keyOutcomes')]]</div>
+          <h4 class="d2l-heading-4">[[localize('keyOutcomes')]]</h4>
           <div class="d2l-body-compact">
             <ul class="keyOutcomes">
               <template is="dom-repeat" items="[[courseKeyOutcomes]]">
@@ -65,9 +106,10 @@
             </ul>
           </div>
         </div>
+
         <div class="description">
-          <div class="d2l-label-text">[[localize('courseDescription')]]</div>
-          <div class="d2l-body-compact">[[courseDescription]]</div>
+          <h4 class="d2l-heading-4">[[localize('courseDescription')]]</h4>
+          <div class="d2l-body-compact textStuff">[[courseDescription]]</div>
         </div>
       </div>
     </div>
@@ -86,10 +128,10 @@
       static get properties() {
         return {
 
-          navigatedFromSearch: {
-            type: Boolean,
-            value: false,
-          },
+          // navigatedFromSearch: {
+          //   type: Boolean,
+          //   value: false,
+          // },
           
           courseCategory: String,
           courseTitle: String,
@@ -106,6 +148,19 @@
           bubbles: true,
           composed: true,
         }));
+      }
+
+      _navigateToSearch(e) {
+        console.log('>> got navigateToSearch with e.target.value:', e.target.value);
+        if(e && e.target && e.target.value) {
+          this.dispatchEvent(new CustomEvent('navigate', {
+            detail: {
+              path: this.routeLocations().search(e.target.value),
+            },
+            bubbles: true,
+            composed: true,
+          }));
+        }
       }
     }
 

@@ -17,87 +17,93 @@
 
       .container {
         display: flex;
-        background-color: white;
+        background-color: lightgrey;
         cursor: pointer;
-        width: 800px;
-        height: 200px;
+        width: 740px;
+        height: 240px;
         border-radius: 5px;
         overflow: hidden;
       }
 
-      .thumbnail{
-        flex-shrink: 0;
-        border-radius: 5px;
-      }
-      
-      .thumbnail.top {
-        padding-bottom: 1rem;
+      .rightDetail {
+        overflow: hidden;
+        margin: 1rem;
+        visibility: hidden;
       }
 
-      .thumbnail.left {
-        padding-right: 1rem;
-      }
-
-      .detail {
-        padding-left: 1rem;
+      .bottomDetail {
+        visibility: hidden;
       }
       
       .compactContainer {
         display: flex;
         flex-direction: column;
-        background-color: white;
+        background-color: lightgrey;
         cursor: pointer;
-        width: 250px;
-        height: 200px;
+        width: 340px;
+        height: 240px;
         border-radius: 5px;
         text-align: center;
         overflow: hidden;
       }
 
-    </style>
-    <div class="d2l-typography">
+      .tags {
+        margin-left: 5%;
+      }
 
+      .thumbnailLeft {
+        flex-shrink: 0;
+        width: 340px;
+        height: 100%;
+      }
+
+      .thumbnailTop {
+        flex-shrink: 0;
+        width: 100%;
+        height: 50%;
+      }
+    </style>
+
+    <div class="d2l-typography">
       <template is="dom-if" if="[[isCompact]]">
         <div class="compactContainer" on-click="_navigateToCourse">
-          <img class="thumbnail top" width="250" height="100" src="[[courseThumbnailLink]]">
-          <div class="detail">
-            <span class="d2l-label-text">[[processedTitle]]</span>
-            <div>
+          <img class="thumbnailTop" src="[[courseThumbnailLink]]">
+          <div class="bottomDetail">
+            <p class="d2l-label-text">[[processedTitle]]</p>
+            <p>
               <d2l-icon icon="d2l-tier2:time"></d2l-icon>
               <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
-              
-              <template is="dom-if" if="[[hasTags]]">
-                <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
-                <span class="d2l-body-small">[[listOfTagsAsString]]</span>
-              </template>
-            </div>
+              <span class="tags">
+                <template is="dom-if" if="[[hasTags]]">
+                  <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
+                  <span class="d2l-body-small">[[listOfTagsAsString]]</span>
+                </template>
+              </span>
+            </p>
           </div>
         </div>
       </template>
 
       <template is="dom-if" if="[[!isCompact]]">
         <div class="container" on-click="_navigateToCourse">
-          <div class="thumbnail">
-            <img class="thumbnail left" width="350" height="200" src="[[courseThumbnailLink]]">
-          </div>
-          <div class="detail">
+          <img class="thumbnailLeft" src="[[courseThumbnailLink]]">
+          <div class="rightDetail">
             <p class="d2l-label-text">[[processedTitle]]</p>
             <p class="d2l-body-small">[[processedDescription]]</p>
-            <br>
-            <div>
+            <p>
               <d2l-icon icon="d2l-tier2:time"></d2l-icon>
               <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
 
-              <template is="dom-if" if="[[hasTags]]">
-                <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
-                <span class="d2l-body-small">[[listOfTagsAsString]]</span>
-              </template>
-            </div>
+              <span class="tags">
+                <template is="dom-if" if="[[hasTags]]">
+                  <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
+                  <span class="d2l-body-small">[[listOfTagsAsString]]</span>
+                </template>
+              </span>
+            </p>
           </div>
         </div>
       </template>
-
-      <br>
     </div>
   </template>
 
@@ -170,10 +176,6 @@
           return courseDescription.substring(0, descriptionMaxLength) + '...';
         }
         return courseDescription;
-      }
-
-      _getInfo() {
-        console.log('>> you clicked on this box with id:', this.courseId);
       }
 
       _navigateToCourse() {

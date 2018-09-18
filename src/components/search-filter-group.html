@@ -15,41 +15,72 @@
         display: inline;
       }
 
-    </style>
-    <div class="d2l-typography">
-      <div class="d2l-label-text">[[filterLabel]]</div>
-      <template is="dom-repeat" items="[[filtersPaginated]]" as="filter">
-        <div class="filterGroup">
-          <paper-checkbox
-            on-change="_filterCheckboxChanged"
-            value="[[filter.label]]"
-            checked="[[filter.checked]]">
-            <div class="d2l-body-compact">[[filter.label]] ([[filter.results]])</div>
-          </paper-checkbox>
-        </div>
-      </template>
+      .container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-bottom: 1rem;
+      }
 
-      <template is="dom-if" if="[[shouldCollapse]]">
-        <template is="dom-if" if="[[collapsed]]">
-          <div class="d2l-body-small">
-            <d2l-link
-              href="javascript:void(0)"
-              on-click="_toggleCollapsed">
-              [[localize('more')]]
-            </d2l-link>
-          </div>
-        </template>
-        <template is="dom-if" if="[[!collapsed]]">
-          <div class="d2l-body-small">
-            <d2l-link
-              class="d2l-body-small" 
-              href="javascript:void(0)"
-              on-click="_toggleCollapsed">
-              [[localize('less')]]
-            </d2l-link>
-          </div>
-        </template>
-      </template>
+      .filterGroup {
+        width: 100%;
+        flex-shrink: 0;
+      }
+
+      .filterBox {
+        background-color: lightgrey;
+        width: 150px;
+        height: 15px;
+        margin-left: 5px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        flex-shrink: 0;
+      }
+
+      .collapse {
+        margin-left: 2rem;
+      }
+
+    </style>
+
+    <div class="d2l-typography">
+      <div class="container">
+        <div class="d2l-label-text">[[filterLabel]]</div>
+        <div class="filterGroup">
+          <template is="dom-repeat" items="[[filtersPaginated]]" as="filter">
+            <div class="filterBox"></div>
+            <!-- <paper-checkbox
+              on-change="_filterCheckboxChanged"
+              value="[[filter.label]]"
+              checked="[[filter.checked]]">
+              <div class="d2l-body-compact">[[filter.label]] ([[filter.results]])</div>
+            </paper-checkbox> -->
+          </template>
+        </div>
+        <div class="collapse">
+          <template is="dom-if" if="[[shouldCollapse]]">
+            <template is="dom-if" if="[[collapsed]]">
+              <div class="d2l-body-small">
+                <d2l-link
+                  href="javascript:void(0)"
+                  on-click="_toggleCollapsed">
+                  [[localize('more')]]
+                </d2l-link>
+              </div>
+            </template>
+            <template is="dom-if" if="[[!collapsed]]">
+              <div class="d2l-body-small">
+                <d2l-link
+                  class="d2l-body-small" 
+                  href="javascript:void(0)"
+                  on-click="_toggleCollapsed">
+                  [[localize('less')]]
+                </d2l-link>
+              </div>
+            </template>
+          </template>
+        </div>
+      </div>
     </div>
   </template>
 

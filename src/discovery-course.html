@@ -20,32 +20,31 @@
 
       .container {
         display: flex;
-
         overflow: auto;
-        /* overflow-x: auto; */
-        /* overflow-y: hidden; */
         flex-direction: row;
         flex-wrap: nowrap;
-        justify-content: space-around;
         align-items: flex-start;
       }
 
       .summary {
         background-color: white;
-        margin-top: 3%;
-        margin-left: 1%;
-        width: 55%;
-        /* min-width: 400px; */
+        margin-top: 2rem;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        min-width: 680px;
+        width: 680px;
         height: auto;
         border-radius: 5px;
+        margin-bottom: 10rem;
       }
 
       .action {
         background-color: white;
-        margin-top: 3%;
-        margin-right: 1%;
-        width: 35%;
-        /* min-width: 200px; */
+        margin-top: 2rem;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        width: 435px;
+        min-width: 435px;
         height: auto;
         border-radius: 5px;
       }
@@ -84,10 +83,10 @@
       </div>
     </div>
 
-    <div id="debugStuff">
+    <!-- <div id="debugStuff">
       <button on-click="_getInfo">debug</button><br>
       [[localize('hello')]]
-    </div>
+    </div> -->
 
   </template>
 
@@ -150,8 +149,8 @@
         ];
         this.courseDescription = 
 "Excel is hype! (Helping Young People Excel) \n\n\
-Common macros and shortcuts in Excel can save tons of time. Here you will learn almost 200 excel shortcuts, with their usage properly demonstrated...\n\n\
-Excel shortcuts can be learned by anybody, but a proper...";
+Common macros and shortcuts in Excel can save tons of time. Here you will learn almost 200 excel shortcuts, with their usage properly demonstrated, to help you become an absolute Excel speedster. You can navigate much faster through worksheets, select and edit cell contents, work on multiple worksheets, work on pivot tables more efficiently, and do most tasks on excel without touching the mouse, and thus saving a whole lot of time. Learning and using these keyboard excel shortcuts will multiply your confidence and add a whole new weapon in your armory, which you can use to impress your bosses and colleagues.\n\n\
+Excel shortcuts can be learned by anybody, but a proper and systematic guidance is necessary to make sure you achieve the best possible speed while working on Excel.";
 
         // data for course action
         this.courseThumbnailLink = 'https://www.d2l.com/wp-content/uploads/2017/02/img_D2L_knockout.jpg';

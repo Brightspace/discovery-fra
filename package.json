@@ -44,7 +44,7 @@
     "frauLocalAppResolver": {
       "appClass": "urn:d2l:fra:class:discovery",
       "dist": "./build",
-      "hostname": "10.128.30.132",
+      "hostname": "10.128.40.137",
       "port": 3000
     },
     "frauPublisher": {

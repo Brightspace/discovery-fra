@@ -16,10 +16,14 @@
         display: inline;
       }
 
+      .topHeader {
+        margin-top: 0 !important;
+      }
     </style>
+
     <div class="d2l-typography" id="main">
       <div>
-        <h3 class="d2l-heading-3">[[localize('refineResults')]]</h3>
+        <h3 class="d2l-heading-3 topHeader">[[localize('refineResults')]]</h3>
       </div>
 
       <template id="filters" is="dom-repeat" items="[[filters]]" as="filter">
@@ -28,7 +32,6 @@
           filters="[[filter.filters]]"
           query-params="{{queryParams}}">
         </search-filter-group>
-        <br>
       </template>
     </div>
   </template>

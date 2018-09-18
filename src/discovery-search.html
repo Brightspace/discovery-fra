@@ -18,31 +18,27 @@
 
       .search-body {
         display: flex;
-        /* background-color: lightblue; */
-        /* box-sizing: border-box;
-        overflow: hidden; */
       }
 
       .sidebar {
-        /* overflow-y: auto; */
+        overflow-y: auto;
         flex-shrink: 0;
-        
-        /* border: 1px solid red;
-        border-radius: 1px; */
-
+        /* width: 15%; */
+        width: 8rem;
         padding: 1rem;
+        border-right: 1px solid #d3d9e3;
+        border-top: 1px solid #f2f3f5;
         background-color: white;
-        margin-top: 1px;
-        box-shadow: 1px 3px 5px;
       }
 
       .main {
         width: 100%;
-        padding: 1rem;
-      }
-
-      .test {
-        white-space: pre-wrap;
+        padding-top: 1rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+        overflow: auto;
+        /* background-color: white; */
       }
     </style>
 
@@ -73,7 +69,7 @@
           </search-results>
         </div>
 
-        <div>
+        <!-- <div>
           1:[[searchQuery]]<br>
           2:[[routeData.searchQuery]]
         </div>
@@ -82,18 +78,15 @@
           results: <br>
           [[results]]
         </div>
-        <div class="test">
+        <div style="white-space: pre-wrap;">
           test content:[[testVar]]
         </div>
 
         <div id="debugStuff">
           <button on-click="_getInfo">debug</button><br>
           [[localize('hello')]]
-        </div>
+        </div> -->
       </div>
-
-      <!-- <div style="clear: both;"></div> -->
-
     </div>
   </template>
 
@@ -178,8 +171,6 @@
         console.log('>> discovery-search: queryParams changed to:', queryParams);
         this.results = `query: ${this._getDecodedQuery(this.searchQuery)} and filters: ${JSON.stringify(queryParams)}`;
 
-
-        // if (queryParams && Object.keys(queryParams).length === 0) { return ;}
         console.log(`>> queryParams Changed - going to do an api call with query: ${this.searchQuery} and queryParams:${JSON.stringify(queryParams)}`);
         // filters
         this.searchFilters = [
@@ -262,7 +253,7 @@
 
         this.searchResults = {
           metadata: {
-            startIndex: 5,
+            startIndex: 0,
             size: 5,
             total: 15
           },

@@ -15,10 +15,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="components/app-location-ifrau.html">
 <link rel="import" href="mixins/route-locations-mixin.html">
 
-<link rel="lazy-import" href="my-new-view.html">
-<link rel="lazy-import" href="search-page.html">
-<link rel="lazy-import" href="other-view.html">
-
 <link rel="lazy-import" href="discovery-home.html">
 <link rel="lazy-import" href="discovery-404.html">
 <link rel="lazy-import" href="discovery-course.html">
@@ -29,25 +25,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
     </style>
-
-    <!-- <app-location-ifrau
-      route="{{route}}"
-      query="{{query}}"
-      query-params="{{queryParams}}"
-      path="{{path}}"
-      page-title="[[_pageTitle]]"></app-location-ifrau> -->
-    <!-- <app-location
-      route="{{route}}"
-      url-space-regex="^[[rootPath]]"
-      use-hash-as-path> -->
-    <!-- <mr-location route="{{route}}"></mr-location> -->
-
-    <!-- <app-route
-      route="{{route}}"
-      pattern="[[rootPath]]:page"
-      data="{{routeData}}"
-      tail="{{subroute}}">
-    </app-route> -->
 
     <app-location-ifrau
       route="{{route}}"
@@ -152,12 +129,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       ready() {
         super.ready();
-        // console.log('> about to add event listener for goTodiscovery-manage');
-        // this.addEventListener('goTodiscovery-manage', this._ondiscovery-manageSelect);
-
-        // console.log('> about to add event listener for reload');
-        // this.addEventListener('reload', this._onReload);
-
         this.addEventListener('navigate', this._navigate);
       }
 
@@ -174,86 +145,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var managePathRegex = /^\/d2l\/le\/discovery\/view\/manage\/\d+$/;
 
         console.log('>> _routePathChanged: path:', path);
-        // console.log('>> discovery-manage regex test:', managePathRegex.test(path));
-        // window.D2L.frau = window.D2L.frau || {};
-        // window.D2L.frau.options = window.D2L.frau.options || {};
-        // console.log('>> frau options:', window.D2L.frau.options);
-        // console.log('>> is discovery-manage view?:', window.D2L.frau.options.manageView);
 
         if (path === '/d2l/le/discovery/view/') { // navlink home
           var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
           if (appLocationIfrau) {
-            // appLocationIfrau.rewriteTo('/d2l/le/discovery/view/home');
             appLocationIfrau.rewriteTo(this.routeLocations().home());
           }
         }
-        // } else if (!managePathRegex.test(path)) { // discovery-manage
-          // this.set('routeData.page', 'manage');
-        // }
       }
 
       _routeDataPageChanged(page) { // this allows us to lazy-import when routeData.page changes
         console.log('>> _routeDataPageChanged: page:', page);
         if (page) {
           this.page = page;
-          // window.location.reload();
-          // console.log('>> what is this.routeData.searchQuery:', this.routeData.searchQuery);
         }
       }
 
-      // _routePageChanged(page) {
-      //   // If no page was found in the route data, page will be an empty string.
-      //   console.log('> _routePageChanged; route:', this.route);
-      //   console.log('> _routePageChanged; routeData:', this.routeData);
-      //   console.log('> _routePageChanged; subroute:', this.subroute);
-      //   console.log('> _routePageChanged; page:', page);
-
-      //   window.D2L = window.D2L || {};
-      //   window.D2L.Discovery = window.D2L.Discovery || {};
-      //   window.D2L.frau = window.D2L.frau || {};
-      //   window.D2L.frau.options = window.D2L.frau.options || {};
-      //   console.log('>> frau options:', window.D2L.frau.options);
-      //   console.log('>> is discovery-manage view?:', window.D2L.frau.options.manageViewView);
-      //   if (page) {
-      //     this.page = page;
-
-          
-      //     // window.history.pushState({}, null, `#/${page}`);
-      //     // window.dispatchEvent(new CustomEvent('location-changed'));
-      //   } else if (window.D2L.frau.options.manageViewView) {
-      //     this.page = 'discovery-manage';
-      //   } else {
-      //     this.page = 'discovery-home';
-      //   }
-
-      //   // If no page was found, redirect to home
-      //   // if (!page) {
-      //   //   console.log(`>> page is ${page}, redirect to home: ${this.page}`);
-      //   //   // var appLocationIfrau = this.$$('app-location-ifrau'); // no longer in polymer 2.0
-      //   //   var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
-      //   //   if (appLocationIfrau) {
-      //   //     appLocationIfrau.rewriteTo('/d2l/le/discovery/view/discovery-home');
-      //   //   }
-
-      //   //   this.set('routeData.page', this.page);
-      //   //   this.set('route.path', `/${this.page}`);
-      //   // }
-
-      //   if (page) {
-      //     this.set('routeData.page', this.page);
-      //   } else {
-      //     this.set('route.path', `/${this.page}`);
-      //   }
-      // }
-
       _pageChanged(page) {
-        // if (page === 'manage') { return; }
-
         const resolvedPageUrl = this.resolveUrl('discovery-' + page + '.html');
-        // console.log('> _pageChanged; route:', this.route);
-        // console.log('> _pageChanged; routeData:', this.routeData);
-        // console.log('> _pageChanged; subroute:', this.subroute);
-        // console.log('> _pageChanged; page:', page);
         Polymer.importHref(
           resolvedPageUrl,
           null,
@@ -263,7 +172,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404() {
         this.set('routeData.page', '404');
-        // this.page = '404';
       }
     }
 
