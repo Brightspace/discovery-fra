@@ -6,7 +6,7 @@
 
 <link rel="import" href="../../bower_components/d2l-link/d2l-link.html">
 <link rel="import" href="../../bower_components/d2l-button/d2l-button.html">
-<!-- <link rel="import" href="../../bower_components/d2l-button-group/d2l-button-group.html"> -->
+
 <link rel="import" href="../../bower_components/d2l-alert/d2l-alert-toast.html">
 
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
@@ -142,7 +142,7 @@
       <template is="dom-if" if="[[tagsExist]]">
         <div class="tagsContainer">
             <span class="d2l-label-text">[[localize('taggedWith')]]</span>
-            <div class="tagsList">
+            <div>
               <template is="dom-repeat" items="[[courseTags]]">
                 <d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
                   <span value="[[item]]">[[item]][[_getTagSuffix(index)]]</span>
@@ -216,9 +216,6 @@
     class CourseAction extends
       D2L.Discovery.LocalizeMixin(
       D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
-      constructor() {
-        super();
-      }
 
       static get is() { return 'course-action'; }
 

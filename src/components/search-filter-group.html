@@ -40,7 +40,6 @@
       .collapse {
         margin-left: 2rem;
       }
-
     </style>
 
     <div class="d2l-typography">
@@ -91,10 +90,6 @@
     class SearchFilterGroup extends
       D2L.Discovery.LocalizeMixin(
       D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
-
-      constructor() {
-        super();
-      }
 
       static get is() { return 'search-filter-group'; }
 
@@ -172,7 +167,6 @@
         return null;
       }
 
-      // Fire an event when a filter is added or removed
       _filterCheckboxChanged(e) {
         var eventToFire = '';
         if (e && e.target && e.target.checked && e.target.value) {

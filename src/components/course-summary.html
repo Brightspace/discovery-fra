@@ -6,7 +6,7 @@
 
 <link rel="import" href="../../bower_components/d2l-link/d2l-link.html">
 <link rel="import" href="../../bower_components/d2l-icons/d2l-icon.html">
-<link rel="import" href="../../bower_components/d2l-icons/tier2-icons.html">
+<link rel="import" href="../../bower_components/d2l-icons/tier1-icons.html">
 
 <dom-module id="course-summary">
   <template>
@@ -69,11 +69,9 @@
       .textStuff {
         white-space: pre-wrap;
       }
-
-
     </style>
-    <div class="d2l-typography">
 
+    <div class="d2l-typography">
       <div class="container">
         <div class="breadcrumbs">
           <d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discover')]]</d2l-link>
@@ -111,9 +109,6 @@
     class CourseSummary extends
       D2L.Discovery.LocalizeMixin(
       D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
-      constructor() {
-        super();
-      }
 
       static get is() { return 'course-summary'; }
 

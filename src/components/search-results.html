@@ -64,7 +64,6 @@
       .searchResult {
         margin-bottom: 2rem;
       }
-
     </style>
 
     <div class="d2l-typography">
@@ -120,10 +119,6 @@
       D2L.Discovery.LocalizeMixin(
       D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
 
-      constructor() {
-        super();
-      }
-
       static get is() { return 'search-results'; }
 
       static get properties() {
@@ -142,20 +137,9 @@
             type: Number,
             computed: '_computeTotalSizeOfSearchResults(searchResults)',
           },
-
-          actualResults: {
-            type: Array,
-            computed: '_getResults(searchResults)',
-          }
         };
       }
 
-      _getResults(searchResults) {
-        if (searchResults) {
-          return searchResults.results;
-        }
-        return [];
-      }
       _computeTotalSizeOfSearchResults(searchResults) {
         return searchResults && searchResults.metadata && searchResults.metadata.total;
       }

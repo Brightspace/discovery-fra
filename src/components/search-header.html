@@ -27,18 +27,14 @@
         border-bottom: 1px solid #f2f3f5;
       }
 
-      .container d2l-icon {
-        align-self: auto;
-      }
-
       .content {
         flex-shrink: 0;
         padding-left: 1rem;
       }
 
       .box {
-        /* -webkit-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
-        -moz-box-shadow: 0 1px 4px rgba(86,86,86,0.2); */
+        -webkit-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
+        -moz-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
         box-shadow: 0 1px 4px rgba(86,86,86,0.2);
       }
 
@@ -53,10 +49,10 @@
       }
 
       .endContent {
+        flex-shrink: 0;
         padding-left: 3rem;
         padding-right: 3rem;
       }
-
     </style>
 
     <div class="d2l-typography box">
@@ -83,7 +79,7 @@
           </d2l-search-input>
         </div>
 
-        <div class="content endContent">
+        <div class="endContent">
           <d2l-link href="javascript:void(0)" on-click="_navigateToMyList">[[localize('myList')]]</d2l-link>
         </div>
       </div>

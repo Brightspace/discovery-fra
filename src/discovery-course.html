@@ -7,10 +7,6 @@
 <link rel="import" href="components/course-summary.html">
 <link rel="import" href="components/course-action.html">
 
-<link rel="import" href="../bower_components/d2l-link/d2l-link.html">
-<link rel="import" href="../bower_components/d2l-icons/d2l-icon.html">
-<link rel="import" href="../bower_components/d2l-icons/tier1-icons.html">
-
 <dom-module id="discovery-course">
   <template>
     <style>
@@ -88,9 +84,6 @@
     class DiscoveryCourse extends
       D2L.Discovery.LocalizeMixin(
       D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
-      constructor() {
-        super();
-      }
 
       static get is() {
         return 'discovery-course';
@@ -100,19 +93,12 @@
         return {
           route: Object,
           routeData: Object,
-          subroute: Object,
 
           visible: {
             type: Boolean,
             observer: '_visible'
           },
 
-          navigatedFromSearch: {
-            type: Boolean,
-            value: false,
-          },
-
-          // queryParams: Object,
           searchQuery: String,
 
           courseCategory: String,

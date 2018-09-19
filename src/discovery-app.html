@@ -9,9 +9,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
 <link rel="import" href="components/app-location-ifrau.html">
 <link rel="import" href="mixins/route-locations-mixin.html">
 
@@ -48,11 +48,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         name="home"
         route="{{route}}">
       </discovery-home>
-      
-      <my-new-view name="my-new-view"></my-new-view>
-      <search-page name="search-page"></search-page>
+
       <discovery-404 name="404"></discovery-404>
-      <other-view name="other-view"></other-view>
 
       <discovery-search
         name="search"
@@ -70,9 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         route="{{route}}">
       </discovery-course>
     </iron-pages>
-
   </template>
-  <script src="../node_modules/redux/dist/redux.min.js"></script>
 
   <script>
     // Gesture events like tap and track generated from touch will not be
@@ -80,10 +75,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer.setPassiveTouchGestures(true);
 
     class DiscoveryApp extends D2L.Discovery.RouteLocationsMixin(Polymer.Element) {
-
-      constructor() {
-        super();
-      }
 
       static get is() { return 'discovery-app'; }
 
@@ -100,10 +91,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
-          // _pageTitle: String,
           path: {
             type: String,
-            // observer: '_pathChanged'
           },
           queryParams: {
             type: Object,
@@ -114,7 +103,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       static get observers() {
         return [
-          // '_routePageChanged(routeData.page)',
           '_routePathChanged(route.path)',
           '_routeDataPageChanged(routeData.page)',
         ];

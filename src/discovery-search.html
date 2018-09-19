@@ -1,13 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="mixins/localize-mixin.html">
-<link rel="import" href="./mixins/route-locations-mixin.html">
+<link rel="import" href="mixins/route-locations-mixin.html">
 
 <link rel="import" href="components/app-location-ifrau.html">
 <link rel="import" href="components/search-header.html">
 <link rel="import" href="components/search-filter-sidebar.html">
 <link rel="import" href="components/search-results.html">
-
-<link rel="import" href="../bower_components/d2l-alert/d2l-alert.html">
 
 <dom-module id="discovery-search">
   <template>
@@ -34,6 +32,8 @@
         padding-top: 1rem;
         padding-left: 3rem;
         padding-right: 3rem;
+        -webkit-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+        -moz-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
         box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
         overflow: auto;
         background-color: white;
@@ -52,14 +52,14 @@
     </div>
     <div class="search-body">
 
-      <div class="sidebar" id="sidebar">
+      <div class="sidebar">
         <search-filter-sidebar
           filters="[[searchFilters]]"
           query-params="{{queryParams}}">
         </search-filter-sidebar>
       </div>
 
-      <div class="main" id="main">
+      <div class="main">
         <div id="searchResult">
           <search-results
             search-results="[[searchResults]]"
@@ -106,20 +106,14 @@
             type: Array,
           },
 
-          results: {
-            type: Array,
-          },
           searchResults: {
             type: Object,
           },
-
-          testVar: String,
         };
       }
 
       static get observers() {
         return [
-          '_routeDataQueryChanged(routeData.searchQuery)',
           '_queryParamsChanged(queryParams)',
         ];
       }
@@ -135,16 +129,11 @@
         this.searchQuery = "";
       }
 
-      _routeDataQueryChanged(searchQuery) {
-        this.results = `query: ${this._getDecodedQuery(searchQuery)} and filters: ${JSON.stringify(this.queryParams)}`;
-      }
-
       _getDecodedQuery(searchQuery) {
         return decodeURIComponent(searchQuery);
       }
 
       _queryParamsChanged(queryParams) {
-        this.results = `query: ${this._getDecodedQuery(this.searchQuery)} and filters: ${JSON.stringify(queryParams)}`;
 
         // filters
         this.searchFilters = [
