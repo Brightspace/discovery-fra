@@ -17,57 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <title>Discovery</title>
     <meta name="description" content="Discovery">
 
-
-    <script src="https://s.brightspace.com/lib/ifrau/0.24.1/ifrau/client.js"></script>
-
     <script>
-      'use strict';
-      (() => {
-        window.D2L = window.D2L || {};
-        window.D2L.Discovery = window.D2L.Discovery || {};
-
-        window.D2L.frau = window.D2L.frau || {};
-        window.D2L.frau.options = window.D2L.frau.options || {};
-
-        var ifrauclientOptions = {
-          syncLang: true,
-          syncTitle: true,
-          syncFont: true,
-          resizeFrame: true,
-          resizerOptions: {
-            heightCalculationMethod: 'lowestElement',
-          },
-        };
-        var client = window.ifrauclient(ifrauclientOptions);
-        return client 
-          .connect()
-          .then(() => {
-            return Promise.all([
-              client.request('options'),
-              client.getService('navigation', '0.1'),
-              client.request('valenceHost'),
-            ]);
-          })
-          .then((all) => {
-            var setup = {
-              client: client,
-              options: all[0],
-              navigation: all[1],
-              valenceHost: all[2],
-            };
-
-            Object.assign(window.D2L.frau.options, setup.options);
-            window.D2L.frau.client = setup.client;
-            window.D2L.frau.navigation = setup.navigation;
-            window.D2L.frau.valenceHost = (setup.valenceHost || '').replace(/\/$/, '');
-
-            return setup;
-          });
-      })();
-    </script>
-
-    <script>
-      
       /**
       * [polymer-root-path]
       *
@@ -100,6 +50,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     
     <!-- Load your application shell -->
     <link rel="import" href="src/discovery-app.html">
+    <link rel="import" href="src/discovery-init.html">
 
     <style>
       body {
@@ -114,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </head>
   <body>
-    <discovery-app></discovery-app>
+    <discovery-init element-name="discovery-app"></discovery-init>
     <noscript>
       Please enable JavaScript to view this website.
     </noscript>
