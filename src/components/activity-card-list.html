@@ -1,0 +1,130 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="activity-card-list">
+  <template>
+    <style include="discovery-styles"></style>
+    <style>
+      :host {
+        display: inline;
+      }
+      .activity-card-list {
+        display: -ms-grid;
+        display: grid;
+      }
+      .activity-card-list::slotted(*) {
+        padding-bottom: var(--activity-card-list-row-gap, 2.5rem);
+        box-sizing: border-box;
+      }
+    </style>
+    <div class="activity-card-list">
+      <slot class="activity-card-list-slot"></slot>
+    </div>
+  </template>
+
+  <script>
+    class ActivityCardList extends Polymer.Element {
+      static get is() { return 'activity-card-list'; }
+
+      static get properties() {
+        return {
+          elementName: String,
+          elementWidthInPx: {
+            type: Number,
+            value: 400
+          },
+          columnGap: {
+            type: String,
+            value: '3rem'
+          },
+          columnSize: {
+            type: String,
+            value: '1fr'
+          },
+          maxColumns: {
+            type: Number,
+            value: 4
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        window.addEventListener('resize', this._onResize.bind(this));
+      }
+
+      ready() {
+        super.ready();
+        var activityCardList = this.shadowRoot.querySelector('.activity-card-list');
+        if (!activityCardList) return;
+
+        activityCardList.style['grid-column-gap'] = this.columnGap;
+      }
+
+      _generateIE11GridColumnsCss(numColumns, columnSize, columnGap) {
+        var gridTemplateColumns = columnSize;
+        for (var i = 1; i < numColumns; i++) {
+          gridTemplateColumns = gridTemplateColumns.concat(` ${columnGap} ${columnSize}`);
+        }
+        return gridTemplateColumns;
+      }
+
+      _getSlottedElementsWithTag(targetTagName) {
+        if (!targetTagName) return [];
+        const slottedElements = [];
+        const slot = this.shadowRoot.querySelector('slot');
+        const slotAssignedNodes = slot ? slot.assignedNodes() : [];
+        slotAssignedNodes.forEach((node) => {
+          const tagName = node.tagName;
+          if (tagName && tagName.toLowerCase() == targetTagName.toLowerCase()) {
+            slottedElements.push(node);
+          }
+        })
+        return slottedElements;
+      }
+
+      _onResize() {
+        var activityCardList = this.shadowRoot.querySelector('.activity-card-list');
+        if (!activityCardList) return;
+
+        // Calculate container width by walking up to its parents
+        var containerWidth = this.offsetWidth;
+        for (var parent = this.parentNode; containerWidth <= 0 && parent; parent = parent.parentNode) {
+          containerWidth = parent.offsetWidth;
+        }
+
+        // Determine number of columns and its appropriate columns css
+        const numColumns = Math.min(Math.floor(containerWidth / this.elementWidthInPx), this.maxColumns) + 1;
+        if (activityCardList.style) {
+          activityCardList.style['-ms-grid-columns'] =
+            this._generateIE11GridColumnsCss(numColumns, this.columnSize, this.columnGap);
+          // Using minmax(0, columnSize) instead of just 'columnSize'
+          //    ensures uniform sizing of cards in cases of long titles
+          activityCardList.style['grid-template-columns'] = `repeat(${numColumns}, minmax(0, ${this.columnSize}))`;
+        }
+
+        var cssGridStyle = document.body.style['grid-template-columns'];
+        // Can be empty string, hence the strict comparison
+        if (cssGridStyle !== undefined) {
+          // Non-IE11 browsers support grid-template-columns, so we're done
+          return;
+        }
+
+        // this.updateStyles({'--course-image-height': containerWidth / numColumns * 0.43 + 'px'});
+
+        // Position every slotted element with specific tag name in IE11 using grid styles
+        const slottedElements = this._getSlottedElementsWithTag(this.elementName);
+        if (slottedElements.length) {
+          for (var c = 0, slotElementIndex = 0; slotElementIndex < slottedElements.length; slotElementIndex++, c++) {
+            if (slottedElements[slotElementIndex].style) {
+              slottedElements[slotElementIndex].style['-ms-grid-row'] = Math.floor(c / numColumns) + 1;
+              // Insert into every odd column since every even column is a gap
+              slottedElements[slotElementIndex].style['-ms-grid-column'] = (c % numColumns) * 2 + 1;
+            }
+          }
+        }
+      }
+    }
+
+    window.customElements.define(ActivityCardList.is, ActivityCardList);
+  </script>
+</dom-module>

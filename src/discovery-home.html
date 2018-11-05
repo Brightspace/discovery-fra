@@ -4,6 +4,7 @@
 
 <link rel="import" href="./components/search-header.html">
 <link rel="import" href="./components/course-card.html">
+<link rel="import" href="./components/activity-card-list.html">
 
 <link rel="import" href="styles/discovery-styles.html">
 
@@ -20,20 +21,8 @@
         overflow: auto;
       }
 
-      .container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        margin: -1.5rem;
-        padding-bottom: 1rem;
-      }
-
       .topHeader {
         margin-top: 0 !important;
-      }
-
-      .cards {
-        margin: 1.5rem;
       }
     </style>
 
@@ -52,76 +41,67 @@
 
       <div>
         <h3 class="d2l-heading-3">[[localize('jobTitleHeader')]] [[jobTitle]]</h3>
-        <div class="container">
+        <activity-card-list element-name="course-card">
           <template is="dom-repeat" items="[[jobTitleCourses]]">
-            <div class="cards">
-              <course-card
-                course-id="{{item.id}}"
-                course-title="[[item.title]]"
-                course-description="[[item.description]]"
-                course-thumbnail-link="[[item.thumbnail]]"
-                course-duration="[[item.duration]]"
-                course-tags="[[item.tags]]">
-              </course-card>
-            </div>
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card>
           </template>
-        </div>
+        </activity-card-list>
       </div>
 
       <div>
         <h3 class="d2l-heading-3">[[localize('listHeader')]]</h3>
-        <div class="container">
+        <activity-card-list element-name="course-card">
           <template is="dom-repeat" items="[[listCourses]]">
-            <div class="cards">
-              <course-card
-                course-id="{{item.id}}"
-                course-title="[[item.title]]"
-                course-description="[[item.description]]"
-                course-thumbnail-link="[[item.thumbnail]]"
-                course-duration="[[item.duration]]"
-                course-tags="[[item.tags]]">
-              </course-card>
-            </div>
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card>
           </template>
-        </div>
+        </activity-card-list>
       </div>
 
       <div>
-        <h3 class="d2l-heading-3">[[localize('departmentHeader')]] [[department]]</h3>
-        <div class="container">
+        <h3 class="d2l-heading-3">[[localize('departmentHeader')]]</h3>
+        <activity-card-list element-name="course-card">
           <template is="dom-repeat" items="[[departmentCourses]]">
-            <div class="cards">
-              <course-card
-                course-id="{{item.id}}"
-                course-title="[[item.title]]"
-                course-description="[[item.description]]"
-                course-thumbnail-link="[[item.thumbnail]]"
-                course-duration="[[item.duration]]"
-                course-tags="[[item.tags]]">
-              </course-card>
-            </div>
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card>
           </template>
-        </div>
+        </activity-card-list>
       </div>
 
       <div>
-        <h3 class="d2l-heading-3">[[localize('locationHeader')]] [[location]]</h3>
-        <div class="container">
+        <h3 class="d2l-heading-3">[[localize('locationHeader')]]</h3>
+        <activity-card-list element-name="course-card">
           <template is="dom-repeat" items="[[locationCourses]]">
-            <div class="cards">
-              <course-card
-                course-id="{{item.id}}"
-                course-title="[[item.title]]"
-                course-description="[[item.description]]"
-                course-thumbnail-link="[[item.thumbnail]]"
-                course-duration="[[item.duration]]"
-                course-tags="[[item.tags]]">
-              </course-card>
-            </div>
+            <course-card
+              course-id="{{item.id}}"
+              course-title="[[item.title]]"
+              course-description="[[item.description]]"
+              course-thumbnail-link="[[item.thumbnail]]"
+              course-duration="[[item.duration]]"
+              course-tags="[[item.tags]]">
+            </course-card>
           </template>
-        </div>
+        </activity-card-list>
       </div>
-      
     </div>
   </template>
 
@@ -153,8 +133,7 @@
           jobTitleCourses: Array,
           listCourses: Array,
           departmentCourses: Array,
-          locationCourses: Array,
-
+          locationCourses: Array
         };
       }
 
@@ -211,6 +190,22 @@
             duration: 120,
             tags: ['Literature'],
           },
+          {
+            title: 'listCourseD',
+            id: 2003,
+            description: "list course d description",
+            thumbnail: thumbnailLink,
+            duration: 120,
+            tags: ['Literature'],
+          },
+          {
+            title: 'listCourseE',
+            id: 2004,
+            description: "list course e description",
+            thumbnail: thumbnailLink,
+            duration: 120,
+            tags: ['Literature'],
+          }
         ];
         this.departmentCourses = [
           { 

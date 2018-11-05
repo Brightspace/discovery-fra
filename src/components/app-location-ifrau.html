@@ -12,14 +12,14 @@
         window.parentIFrame.scrollTo(0, 0);
       }
     }
-    function intoQueryParams(queryParams, nameAndValue) {
-      queryParams[nameAndValue[0]] = nameAndValue[1];
-      return queryParams;
-    }
-    function createQueryParams(searchParams) {
-      return Array.from(searchParams.entries())
-        .reduce(intoQueryParams, {});
-    }
+    // function intoQueryParams(queryParams, nameAndValue) {
+    //   queryParams[nameAndValue[0]] = nameAndValue[1];
+    //   return queryParams;
+    // }
+    // function createQueryParams(searchParams) {
+    //   return Array.from(searchParams.entries())
+    //     .reduce(intoQueryParams, {});
+    // }
     class AppLocationIfrau extends 
       Polymer.mixinBehaviors(
         [Polymer.AppRouteConverterBehavior],
@@ -60,9 +60,11 @@
 
       _handleLocationChanged(newLocation) {
         this._frauIsSynchronizing = true;
-        var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
+        // ie 11 doesn't support URL
+        // var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
         this.path = newLocation;
-        this.queryParams = createQueryParams(parsed.searchParams);
+        // this.queryParams = createQueryParams(parsed.searchParams);
+        this.queryParams = {};
         this._frauIsSynchronizing = false;
       }
 

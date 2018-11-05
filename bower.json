@@ -29,7 +29,8 @@
     "d2l-button-group": "^2.1.0",
     "paper-dialog": "^2.1.1",
     "d2l-dropdown": "^6.6.1",
-    "d2l-menu": "^1.1.0"
+    "d2l-menu": "^1.1.0",
+    "d2l-card": "^4.1.16"
   },
   "resolutions": {
     "polymer": "^2.0.0",

@@ -6,104 +6,58 @@
 
 <link rel="import" href="../../bower_components/d2l-icons/d2l-icon.html">
 <link rel="import" href="../../bower_components/d2l-icons/tier2-icons.html">
+<link rel="import" href="../../bower_components/d2l-card/d2l-card.html">
 
 <dom-module id="course-card">
   <template>
     <style include="discovery-styles"></style>
     <style>
       :host {
-        display: inline;
+        display: block;
+      }
+
+      img {
+        height: var(--course-image-height);
+        width: 100%;
+      }
+
+      d2l-card {
+        height: 100%;
+        width: 100%;
       }
 
       .container {
-        display: flex;
-        background-color: lightgrey;
-        cursor: pointer;
-        width: 740px;
-        height: 240px;
-        border-radius: 5px;
-        overflow: hidden;
+        height: 100%;
+        width: 100%;
       }
-
-      .rightDetail {
-        overflow: hidden;
-        margin: 1rem;
+      .content {
         visibility: hidden;
-      }
-
-      .bottomDetail {
-        visibility: hidden;
-      }
-      
-      .compactContainer {
-        display: flex;
-        flex-direction: column;
-        background-color: lightgrey;
-        cursor: pointer;
-        width: 340px;
-        height: 240px;
-        border-radius: 5px;
+        margin-top: -0.5rem;
+        margin-bottom: 0.35rem;
         text-align: center;
         overflow: hidden;
-      }
-
-      .tags {
-        margin-left: 5%;
-      }
-
-      .thumbnailLeft {
-        flex-shrink: 0;
-        width: 340px;
-        height: 100%;
-      }
-
-      .thumbnailTop {
-        flex-shrink: 0;
-        width: 100%;
-        height: 50%;
+        word-wrap: break-word; /* IE/Edge */
+        overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
+        display: flex;
+        flex-direction: column;
       }
     </style>
-
-    <div class="d2l-typography">
-      <template is="dom-if" if="[[isCompact]]">
-        <div class="compactContainer" on-click="_navigateToCourse">
-          <img class="thumbnailTop" src="[[courseThumbnailLink]]">
-          <div class="bottomDetail">
-            <p class="d2l-label-text">[[processedTitle]]</p>
-            <p>
-              <d2l-icon icon="d2l-tier2:time"></d2l-icon>
-              <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
-              <span class="tags">
-                <template is="dom-if" if="[[hasTags]]">
-                  <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
-                  <span class="d2l-body-small">[[listOfTagsAsString]]</span>
-                </template>
-              </span>
-            </p>
+    <div class="d2l-typography container">
+      <d2l-card
+        on-click="_navigateToCourse"
+        href="javascript:void(0)"
+        on-click="_clicked">
+        <div slot="header" class="image-container">
+          <img src="[[courseThumbnailLink]]">
+        </div>
+        <div class="content" slot="content">
+          <div class="d2l-label-text">[[courseTitle]]</div>
+          <div>
+            <d2l-icon icon="d2l-tier2:time"></d2l-icon>
+            <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
           </div>
         </div>
-      </template>
-
-      <template is="dom-if" if="[[!isCompact]]">
-        <div class="container" on-click="_navigateToCourse">
-          <img class="thumbnailLeft" src="[[courseThumbnailLink]]">
-          <div class="rightDetail">
-            <p class="d2l-label-text">[[processedTitle]]</p>
-            <p class="d2l-body-small">[[processedDescription]]</p>
-            <p>
-              <d2l-icon icon="d2l-tier2:time"></d2l-icon>
-              <span class="d2l-body-small">[[courseDuration]] [[localize('minutes')]]</span>
-
-              <span class="tags">
-                <template is="dom-if" if="[[hasTags]]">
-                  <d2l-icon icon="d2l-tier2:tag"></d2l-icon>
-                  <span class="d2l-body-small">[[listOfTagsAsString]]</span>
-                </template>
-              </span>
-            </p>
-          </div>
-        </div>
-      </template>
+      </d2l-card>
     </div>
   </template>
 
@@ -125,56 +79,8 @@
           courseThumbnailLink: String,
           courseDuration: Number,
           courseTags: Array,
-
-          isCompact: {
-            type: Boolean,
-            computed: '_computeIsCompact(courseDescription)',
-          },
-          processedTitle: {
-            type: String,
-            computed: '_computeProcessedTitle(courseTitle)',
-          },
-          processedDescription: {
-            type: String,
-            computed: '_computeProcessedDescription(courseDescription)',
-          },
-          hasTags: {
-            type: Boolean,
-            computed: '_computeHasTags(courseTags)',
-          },
-          listOfTagsAsString: {
-            type: String,
-            computed: '_computeListOfTagsAsString(courseTags)',
-          }
         };
       }
-
-      _computeIsCompact(courseDescription) {
-        return !courseDescription;
-      }
-
-      _computeHasTags(courseTags) {
-        return courseTags && courseTags.length > 0;
-      }
-
-      _computeListOfTagsAsString(courseTags) {
-        return courseTags && courseTags.join(', ');
-      }
-
-      _computeProcessedTitle(courseTitle) {
-        if (courseTitle && courseTitle.length > titleMaxLength) {
-          return courseTitle.substring(0, titleMaxLength) + '...';
-        }
-        return courseTitle;
-      }
-
-      _computeProcessedDescription(courseDescription) {
-        if (courseDescription && courseDescription.length > descriptionMaxLength) {
-          return courseDescription.substring(0, descriptionMaxLength) + '...';
-        }
-        return courseDescription;
-      }
-
       _navigateToCourse() {
         if (this.courseId) {
           this.dispatchEvent(new CustomEvent('navigate', {
