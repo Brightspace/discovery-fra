@@ -2,7 +2,6 @@
 
 <dom-module id="activity-card-list">
   <template>
-    <style include="discovery-styles"></style>
     <style>
       :host {
         display: inline;
@@ -108,8 +107,6 @@
           // Non-IE11 browsers support grid-template-columns, so we're done
           return;
         }
-
-        // this.updateStyles({'--course-image-height': containerWidth / numColumns * 0.43 + 'px'});
 
         // Position every slotted element with specific tag name in IE11 using grid styles
         const slottedElements = this._getSlottedElementsWithTag(this.elementName);

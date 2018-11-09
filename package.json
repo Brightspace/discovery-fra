@@ -23,8 +23,8 @@
     "build": "polymer build && mv ./build/es5-bundled/* ./build && rmdir ./build/es5-bundled && npm run frau:build-config",
     "start": "npm run build && npm run frau:resolve",
     "ifrautoaster": "ifrautoaster --config ./ifrautoaster-config.json",
-    "frau:build-config": "frau-appconfig-builder",
-    "frau:resolve": "frau-local-appresolver",
+    "frau:build-config": "frau-appconfig-builder --hostname $(node scripts/getHostname.js)",
+    "frau:resolve": "frau-local-appresolver --hostname $(node scripts/getHostname.js)",
     "frau:publish": "frau-publisher",
     "frau:release": "export PACKAGE_VER=$(node scripts/package-version.js) && npm run frau:publish"
   },
@@ -44,7 +44,6 @@
     "frauLocalAppResolver": {
       "appClass": "urn:d2l:fra:class:discovery",
       "dist": "./build",
-      "hostname": "10.128.40.137",
       "port": 3000
     },
     "frauPublisher": {

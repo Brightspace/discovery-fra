@@ -62,9 +62,6 @@
   </template>
 
   <script>
-    const titleMaxLength = 50;
-    const descriptionMaxLength = 100;
-
     class CourseCard extends
       D2L.Discovery.LocalizeMixin(
       D2L.Discovery.RouteLocationsMixin(Polymer.Element)) {
@@ -75,10 +72,8 @@
         return {
           courseId: Number,
           courseTitle: String,
-          courseDescription: String,
           courseThumbnailLink: String,
           courseDuration: Number,
-          courseTags: Array,
         };
       }
       _navigateToCourse() {
