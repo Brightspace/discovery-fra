@@ -26,7 +26,7 @@
     "frau:build-config": "frau-appconfig-builder --hostname $(node scripts/getHostname.js)",
     "frau:resolve": "frau-local-appresolver --hostname $(node scripts/getHostname.js)",
     "frau:publish": "frau-publisher",
-    "frau:release": "export PACKAGE_VER=$(node scripts/package-version.js) && npm run frau:publish"
+    "frau:release": "frau-publisher --version=$(node scripts/package-version.js)"
   },
   "dependencies": {
     "ifrau": "^0.24.0",
@@ -54,8 +54,7 @@
         "key": "AKIAIX4OHXOJHJAHALOQ",
         "secretVar": "FRAU_PUBLISHER_SECRET"
       },
-      "devTagVar": "CIRCLE_SHA1",
-      "versionVar": "PACKAGE_VER"
+      "devTagVar": "CIRCLE_SHA1"
     }
   }
 }
