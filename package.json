@@ -1,23 +1,11 @@
 {
   "name": "discovery",
   "appId": "urn:d2l:fra:class:discovery",
-  "description": "discovery project",
-  "version": "0.0.1",
+  "description": "Discovery",
+  "version": "1.0.1",
   "license": "BSD-3-Clause",
-  "devDependencies": {
-    "@d2l/ifrautoaster": "^0.7.2",
-    "bower": "^1.8.4",
-    "eslint": "^3.19.0",
-    "eslint-config-google": "^0.7.0",
-    "eslint-plugin-html": "^2.0.0",
-    "frau-appconfig-builder": "^0.1.1",
-    "frau-local-appresolver": "^0.3.0",
-    "frau-publisher": "^2.6.2"
-  },
   "scripts": {
-    "postinstall": "bower install",
-    "lint": "npm run lint:javascript && polymer lint",
-    "lint:javascript": "eslint . --ext js,html --ignore-path .gitignore",
+    "lint": "polymer lint",
     "test": "polymer test",
     "test:integration": "polymer build # test that psk builds without error with the CLI",
     "build": "polymer build && mv ./build/es5-bundled/* ./build && rmdir ./build/es5-bundled && npm run frau:build-config",
@@ -29,7 +17,24 @@
     "frau:release": "frau-publisher --version $(node scripts/package-version.js)"
   },
   "dependencies": {
-    "ifrau": "^0.24.0"
+    "@polymer/app-route": "^3.0.0-pre.15",
+    "@polymer/iron-pages": "^3.0.0-pre.15",
+    "@polymer/polymer": "^3.0.0",
+    "@webcomponents/webcomponentsjs": "^2.0.0"
+  },
+  "devDependencies": {
+    "@d2l/ifrautoaster": "^0.7.2",
+    "chai": "^4.2.0",
+    "frau-appconfig-builder": "^1.0.0",
+    "frau-local-appresolver": "^1.0.0",
+    "frau-publisher": "^2.7.1",
+    "mocha": "^5.2.0",
+    "polymer-cli": "^1.7.1",
+    "wct-browser-legacy": "^1.0.0",
+    "wct-mocha": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=8.0"
   },
   "config": {
     "frauAppConfigBuilder": {

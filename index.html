@@ -10,65 +10,71 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>Discovery</title>
-    <meta name="description" content="Discovery">
+		<title>Discovery</title>
+		<meta name="description" content="Discovery">
 
-    <script>
-      /**
-      * [polymer-root-path]
-      *
-      * By default, we set `Polymer.rootPath` to the server root path (`/`).
-      * Leave this line unchanged if you intend to serve your app from the root
-      * path (e.g., with URLs like `my.domain/` and `my.domain/view1`).
-      *
-      * If you intend to serve your app from a non-root path (e.g., with URLs
-      * like `my.domain/my-app/` and `my.domain/my-app/view1`), edit this line
-      * to indicate the path from which you'll be serving, including leading
-      * and trailing slashes (e.g., `/my-app/`).
-      */
-      window.Polymer = {rootPath: '/'};
+		<!-- See https://goo.gl/OOhYW5 -->
+		<link rel="manifest" href="manifest.json">
 
-      // Load and register pre-caching Service Worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('service-worker.js', {
-            scope: Polymer.rootPath,
-          });
-        });
-      }
+		<script>
+			/**
+			 * [polymer-root-path]
+			 *
+			 * By default, we set `Polymer.rootPath` to the server root path (`/`).
+			 * Leave this line unchanged if you intend to serve your app from the root
+			 * path (e.g., with URLs like `my.domain/` and `my.domain/view1`).
+			 *
+			 * If you intend to serve your app from a non-root path (e.g., with URLs
+			 * like `my.domain/my-app/` and `my.domain/my-app/view1`), edit this line
+			 * to indicate the path from which you'll be serving, including leading
+			 * and trailing slashes (e.g., `/my-app/`).
+			 */
+			window.DiscoveryApp = { rootPath: '/' };
 
-      window.ShadyDOM = { force: true };
-    </script>
+			// Load and register pre-caching Service Worker
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('service-worker.js', {
+						scope: DiscoveryApp.rootPath,
+					});
+				});
+			}
 
-    <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
-    <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+			// Shado DOM still has issues with iFrau
+			window.ShadyDOM = { force: true };
+		</script>
 
-    
-    <!-- Load your application shell -->
-    <link rel="import" href="src/discovery-app.html">
-    <link rel="import" href="src/discovery-init.html">
+		<!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+		<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <style>
-      body {
-        background-color: #f9fafb;
-        margin: 0;
-      }
+		<!-- Load IFrau -->
+		<script src="https://s.brightspace.com/lib/ifrau/0.24.1/ifrau/client.js"></script>
 
-      iron-overlay-backdrop {
-        background-color: white;
-      }
-    </style>
+		<!-- Load your application shell -->
+		<script type="module" src="src/discovery-app.js"></script>
+		<script type="module" src="src/discovery-init.js"></script>
 
-  </head>
-  <body>
-    <discovery-init element-name="discovery-app"></discovery-init>
-    <noscript>
-      Please enable JavaScript to view this website.
-    </noscript>
-    <!-- Built with love using Polymer Starter Kit -->
-  </body>
+		<!-- Add any global styles for body, document, etc. -->
+		<style>
+			body {
+				background-color: #f9fafb;
+				margin: 0;
+			}
+
+			iron-overlay-backdrop {
+				background-color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<discovery-init element-name="discovery-app"></discovery-init>
+		<noscript>
+			Please enable JavaScript to view this website.
+		</noscript>
+		<!-- Built with love using Polymer Starter Kit -->
+	</body>
 </html>

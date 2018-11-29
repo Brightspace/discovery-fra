@@ -1,0 +1,7 @@
+{
+  "name": "Discovery",
+  "short_name": "Discovery",
+  "description": "Discovery",
+  "start_url": "/",
+  "display": "standalone"
+}
