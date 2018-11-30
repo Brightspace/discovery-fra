@@ -1,4 +1,3 @@
 #! /usr/bin/env node
-
-var package = require('../package');
-console.log(package.version);
+const pkg = require('../package');
+console.log(pkg.version); // eslint-disable-line no-console

@@ -7,21 +7,7 @@ window.D2L.frau.options = window.D2L.frau.options || {};
 
 /* @polymerMixin */
 const internalIfrauMixin = (superClass) => class extends superClass {
-	static get properties() {
-		return {
-			_ifrauclientOptions: {
-				syncLang: true,
-				syncTitle: true,
-				syncFont: true,
-				resizeFrame: true,
-				resizerOptions: {
-					heightCalculationMethod: 'lowestElement',
-				},
-	  		},
-		};
-  	}
-
-  	frauConnect() {
+	frauConnect() {
 		const _ifrauclientOptions = {
 			syncLang: true,
 			syncTitle: true,
@@ -33,8 +19,9 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 		};
 		const client = window.ifrauclient(_ifrauclientOptions);
 		return client
-	  		.connect()
-	  		.then(() => {
+			.connect()
+			.then(() => {
+				/* global Promise */
 				return Promise.all([
 					client.request('options'),
 					client.getService('navigation', '0.1'),
@@ -54,7 +41,7 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 				window.D2L.frau.valenceHost = (setup.valenceHost || '').replace(/\/$/, '');
 				return setup;
 			});
-  	}
-}
+	}
+};
 
 export const IfrauMixin = dedupingMixin(internalIfrauMixin);

@@ -41,8 +41,7 @@ class DiscoveryApp extends PolymerElement {
 				fallback-selection="discovery-404"
 				role="main">
 				<discovery-home
-					name="home"
-					route="{{route}}">
+					name="home">
 				</discovery-home>
 
 				<discovery-404 name="404"></discovery-404>
@@ -58,7 +57,7 @@ class DiscoveryApp extends PolymerElement {
 			},
 			routeData: Object,
 			subroute: Object,
-		}
+		};
 	}
 	static get observers() {
 		return [
@@ -79,14 +78,13 @@ class DiscoveryApp extends PolymerElement {
 		if (path === '/d2l/le/discovery/view/') { // navlink home
 			var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
 			if (appLocationIfrau) {
-				// appLocationIfrau.rewriteTo(this.routeLocations().home());
 				appLocationIfrau.rewriteTo('/d2l/le/discovery/view/home');
 			}
 		}
 	}
 	_routeDataPageChanged(page) {
 		if (page) {
-		  this.page = page;
+			this.page = page;
 		}
 	}
 	_pageChanged(page) {

@@ -2,12 +2,11 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 class Discovery404 extends PolymerElement {
-  	static get template() {
+	static get template() {
 		return html`
 	  		<style>
 				:host {
 					display: block;
-
 					padding: 10px;
 				}
 	  		</style>

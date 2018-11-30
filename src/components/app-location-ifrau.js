@@ -12,7 +12,7 @@ const rePathWhitelist = [
 	/^\/d2l\/le\/discovery\//
 ];
 class AppLocationIfrau extends
-	mixinBehaviors([AppRouteConverterBehavior], PolymerElement ) {
+	mixinBehaviors([AppRouteConverterBehavior], PolymerElement) {
 	static get properties() {
 		return {
 			_navigation: {
@@ -30,19 +30,21 @@ class AppLocationIfrau extends
 	static get observers() {
 		return [
 			'_handlePathChanged(path)', // path from app-route-converter-behavior
-		]
+		];
 	}
 	ready() {
 		super.ready();
 		const handleLocationChanged = this._handleLocationChanged.bind(this);
+		window.D2L = window.D2L || {};
+		window.D2L.frau = window.D2L.frau || {};
 		window.D2L.frau.navigation.get().then(handleLocationChanged);
 		window.D2L.frau.client.onEvent('navigation.statechange', handleLocationChanged);
 	}
 	_handleLocationChanged(newLocation) {
 		this._frauIsSynchronizing = true;
-		// ie 11 doesn't support URL
-		// var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
 		this.path = newLocation;
+		// Since IE11 doesn't support URL, there's a need to figure out a way to get query params to work with IFrau
+		// var parsed = new window.URL(newLocation, window.D2L.frau.valenceHost);
 		// this.queryParams = createQueryParams(parsed.searchParams);
 		this.queryParams = {};
 		this._frauIsSynchronizing = false;

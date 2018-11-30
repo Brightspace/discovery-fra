@@ -10,13 +10,13 @@
 
 module.exports = {
 	staticFileGlobs: [
-	  'src/**/*',
-	  'manifest.json'
+		'src/**/*',
+		'manifest.json'
 	],
 	runtimeCaching: [
-	  {
-		urlPattern: /\/@webcomponents\/webcomponentsjs\//,
-		handler: 'fastest'
-	  }
+		{
+			urlPattern: /\/@webcomponents\/webcomponentsjs\//,
+			handler: 'fastest'
+		}
 	]
-  };
+};
