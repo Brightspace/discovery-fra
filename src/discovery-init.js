@@ -10,10 +10,10 @@ class DiscoveryInit extends IfrauMixin(PolymerElement) {
 	}
 	ready() {
 		super.ready();
-		this.frauConnect().then((() => {
+		this.frauConnect().then(function() {
 			const element = document.createElement(this.elementName);
 			document.body.appendChild(element);
-		}).bind(this));
+		}.bind(this));
 	}
 }
 
