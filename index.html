@@ -58,6 +58,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		<script type="module" src="src/discovery-app.js"></script>
 		<script type="module" src="src/discovery-init.js"></script>
 
+		<!-- d2l-typography is imported in discovery-init -->
+		<custom-style include="d2l-typography">
+			<style is="custom-style" include="d2l-typography"></style>
+		</custom-style>
 		<!-- Add any global styles for body, document, etc. -->
 		<style>
 			body {
@@ -70,11 +74,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			}
 		</style>
 	</head>
-	<body>
+	<body unresolved class="d2l-typography">
 		<discovery-init element-name="discovery-app"></discovery-init>
 		<noscript>
 			Please enable JavaScript to view this website.
 		</noscript>
 		<!-- Built with love using Polymer Starter Kit -->
 	</body>
+	<script>
+		document.body.classList.add('d2l-typography');
+	</script>
 </html>

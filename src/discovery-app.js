@@ -3,6 +3,7 @@ import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import './components/app-location-ifrau.js';
+import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -13,7 +14,7 @@ setPassiveTouchGestures(true);
 window.DiscoveryApp = window.DiscoveryApp || {};
 setRootPath(window.DiscoveryApp.rootPath);
 
-class DiscoveryApp extends PolymerElement {
+class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 	static get template() {
 		return html`
 			<style>
@@ -38,12 +39,8 @@ class DiscoveryApp extends PolymerElement {
 				selected="[[routeData.page]]"
 				attr-for-selected="name"
 				selected-attribute="visible"
-				fallback-selection="discovery-404"
 				role="main">
-				<discovery-home
-					name="home">
-				</discovery-home>
-
+				<discovery-home name="home"></discovery-home>
 				<discovery-404 name="404"></discovery-404>
 			</iron-pages>
 		`;
@@ -78,13 +75,15 @@ class DiscoveryApp extends PolymerElement {
 		if (path === '/d2l/le/discovery/view/') { // navlink home
 			var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
 			if (appLocationIfrau) {
-				appLocationIfrau.rewriteTo('/d2l/le/discovery/view/home');
+				appLocationIfrau.rewriteTo(this.routeLocations().home());
 			}
 		}
 	}
 	_routeDataPageChanged(page) {
-		if (page) {
+		if (page && ['home'].indexOf(page) !== -1) {
 			this.page = page;
+		} else if (page) {
+			this.page = '404';
 		}
 	}
 	_pageChanged(page) {
@@ -100,6 +99,7 @@ class DiscoveryApp extends PolymerElement {
 				break;
 			case '404':
 				import('./discovery-404.js');
+				this.set('routeData.page', '404');
 				break;
 		}
 	}

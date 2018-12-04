@@ -1,21 +1,29 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import './components/search-header.js';
 
 class DiscoveryHome extends PolymerElement {
 	static get template() {
 		return html`
+			<div>
+				  <search-header query=""></search-header>
+			</div>
 			This is the Discovery home page.
-			<button on-click="_goTo404">Go to the 404 page</button>
 		`;
 	}
-	_goTo404() {
-		this.dispatchEvent(new CustomEvent('navigate', {
-			detail: {
-				path: '/d2l/le/discovery/view/404'
-			},
-			bubbles: true,
-			composed: true,
-		}));
+	static get properties() {
+		return {
+			visible: {
+				type: Boolean,
+				observer: '_visible'
+			}
+		};
+	}
+	_visible() {
+		const searchHeader = this.shadowRoot.querySelector('search-header');
+		if (searchHeader) {
+			searchHeader.clear();
+		}
 	}
 }
 

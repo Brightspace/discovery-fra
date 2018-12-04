@@ -22,7 +22,9 @@
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
     "@polymer/polymer": "^3.0.0",
-    "@webcomponents/webcomponentsjs": "^2.0.0"
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "d2l-icons": "BrightspaceUI/icons#semver:^6.0.0",
+    "d2l-typography": "BrightspaceUI/typography#semver:^7.0.1"
   },
   "devDependencies": {
     "@d2l/ifrautoaster": "^0.7.2",

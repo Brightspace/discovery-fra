@@ -1,6 +1,7 @@
 'use strict';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { IfrauMixin } from './mixins/ifrau-mixin.js';
+import 'd2l-typography/d2l-typography.js';
 
 class DiscoveryInit extends IfrauMixin(PolymerElement) {
 	static get properties() {

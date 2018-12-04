@@ -3,6 +3,7 @@ import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 
 var discoveryBasePath = '/d2l/le/discovery/view';
 
+/* @polymerMixin */
 const internalRouteLocationsMixin = (superClass) =>
 	class extends superClass {
 		constructor() {
