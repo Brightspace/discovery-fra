@@ -13,7 +13,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					display: inline;
 				}
 
-				.container {
+				.discovery-search-header-container {
 					overflow: auto;
 					background-color: white;
 					display: flex;
@@ -23,64 +23,55 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					border-bottom: 1px solid #f2f3f5;
 				}
 
-				.content {
+				.discovery-search-header-content {
 					flex-shrink: 0;
 					padding-left: 1rem;
 				}
 
-				.box {
+				.discovery-search-header-box {
 					-webkit-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
 					-moz-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
 					box-shadow: 0 1px 4px rgba(86,86,86,0.2);
 				}
 
-				.clickable {
+				.discovery-search-header-clickable {
 					cursor: pointer;
 				}
 
-				.searchBarContainer {
+				.discovery-search-header-search-bar-container {
 					padding-left: 1rem;
 					width: 100%;
 				}
-				.searchBar{
+				.discovery-search-header-search-bar{
 					width: 50%;
 					min-width: 100px;
 				}
-
-				.endContent {
-					flex-shrink: 0;
-					padding-left: 3rem;
-					padding-right: 3rem;
-				}
 			</style>
 
-			<div class="box">
-				<div class="container">
-					<div class="content">
-						<h2 class="d2l-heading-2 clickable" on-click="_navigateToHome">
+			<div class="discovery-search-header-box">
+				<div class="discovery-search-header-container">
+					<div class="discovery-search-header-content">
+						<h2 class="d2l-heading-2 discovery-search-header-clickable" on-click="_navigateToHome">
 							[[localize('discover')]]
 						</h2>
 					</div>
 
-					<div class="content">
+					<div class="discovery-search-header-content">
 						<d2l-icon icon="d2l-tier2:divider"></d2l-icon>
 					</div>
 
-					<div class="content">
+					<div class="discovery-search-header-content">
 						<span class="d2l-body-standard">[[localize('searchLabel')]]</span>
 					</div>
 
-					<div class="searchBarContainer">
-						<!-- This is a placeholder search inputbox until d2l-inputs is converted to Polymer 3 -->
+					<div class="discovery-search-header-search-bar-container">
+						<!-- This is a placeholder search input box until d2l-inputs is converted to Polymer 3 -->
 						<input
 							id="search-input"
-							class="searchBar"
+							class="discovery-search-header-search-bar"
 							type="text"
 							placeholder="[[localize('searchPlaceholder')]]"
 							value="[[query]]">
-					</div>
-
-					<div class="endContent">
 					</div>
 				</div>
 			</div>
