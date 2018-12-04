@@ -14,13 +14,13 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				}
 
 				.discovery-search-header-container {
-					overflow: auto;
+					align-items: center;
 					background-color: white;
+					border-bottom: 1px solid #f2f3f5;
 					display: flex;
 					flex-direction: row;
 					flex-wrap: nowrap;
-					align-items: center;
-					border-bottom: 1px solid #f2f3f5;
+					overflow: auto;
 				}
 
 				.discovery-search-header-content {
@@ -43,8 +43,8 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					width: 100%;
 				}
 				.discovery-search-header-search-bar{
-					width: 50%;
 					min-width: 100px;
+					width: 50%;
 				}
 			</style>
 
