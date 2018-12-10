@@ -66,6 +66,7 @@ class AppLocationIfrau extends
 			this._navigation.push(newPath, '');
 			this._scrollToTop();
 		}
+		this.set('route.path', newPath);
 	}
 	_scrollToTop() {
 		if (window.parentIFrame && window.parentIFrame.scrollTo) {

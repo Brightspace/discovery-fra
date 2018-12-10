@@ -24,15 +24,14 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 			</style>
 
 			<app-location-ifrau
-				route="{{route}}"
-				query-params="{{queryParams}}">
+				query-params="[[queryParams]]">
 			</app-location-ifrau>
 
 			<app-route
-				route="{{route}}"
+				route="[[route]]"
 				pattern="/d2l/le/discovery/view/:page"
-				data="{{routeData}}"
-				tail="{{subroute}}">
+				data="[[routeData]]"
+				tail="[[subroute]]">
 			</app-route>
 
 			<iron-pages
@@ -57,22 +56,32 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 			subroute: Object,
 		};
 	}
-	static get observers() {
-		return [
-			'_routePathChanged(route.path)',
-			'_routeDataPageChanged(routeData.page)',
-		];
+	constructor() {
+		super();
+		this._routeDataChangedHandled = this._routeDataChanged.bind(this);
 	}
 	ready() {
 		super.ready();
 		this.addEventListener('navigate', this._navigate);
+
+		const location = this.shadowRoot.querySelector('app-location-ifrau');
+		location.addEventListener('route-changed', this._routeChanged.bind(this));
+		location.addEventListener('query-params-changed', this._queryParamsChanged.bind(this));
+
+		const route = this.shadowRoot.querySelector('app-route');
+		route.addEventListener('route-changed', this._routeChanged.bind(this));
+		route.addEventListener('tail-changed', this._subrouteChanged.bind(this));
+		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
 	}
 	_navigate(e) {
 		if (e && e.detail && e.detail.path) {
 			this.set('route.path', e.detail.path);
 		}
 	}
-	_routePathChanged(path) {
+	_routeChanged(route) {
+		route = route.detail.value || {};
+		this.route = route;
+		const path = route.path || '/d2l/le/discovery/view/';
 		if (path === '/d2l/le/discovery/view/') { // navlink home
 			var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
 			if (appLocationIfrau) {
@@ -80,12 +89,23 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 			}
 		}
 	}
-	_routeDataPageChanged(page) {
+	_routeDataChanged(routeData) {
+		routeData = routeData.detail.value || {};
+		this.routeData = routeData;
+		const page = routeData.page || null;
 		if (page && ['home', 'course'].indexOf(page) !== -1) {
 			this.page = page;
 		} else if (page) {
 			this.page = '404';
 		}
+	}
+	_subrouteChanged(subroute) {
+		subroute = subroute.detail.value || {};
+		this.subroute = subroute;
+	}
+	_queryParamsChanged(queryParams) {
+		queryParams = queryParams.detail.value || {};
+		this.queryParams = queryParams;
 	}
 	_pageChanged(page) {
 		// Import the page component on demand.

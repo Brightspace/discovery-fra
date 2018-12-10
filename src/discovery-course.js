@@ -49,9 +49,9 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 			</style>
 
 			<app-route
-				route="{{route}}"
+				route="[[route]]"
 				pattern="/d2l/le/discovery/view/course/:courseId"
-				data="{{routeData}}">
+				data="[[routeData]]">
 			</app-route>
 
 			<div>
@@ -107,7 +107,12 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 			isOnMyList: Boolean,
 		};
 	}
-
+	ready() {
+		super.ready();
+		const route = this.shadowRoot.querySelector('app-route');
+		route.addEventListener('route-changed', this._routeChanged.bind(this));
+		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
+	}
 	_visible() {
 		this.searchQuery = '';
 		// data for the course summary
@@ -158,6 +163,15 @@ Excel shortcuts can be learned by anybody, but a proper and systematic guidance 
 			bubbles: true,
 			composed: true,
 		}));
+	}
+
+	_routeChanged(route) {
+		route = route.detail.value || {};
+		this.route = route;
+	}
+	_routeDataChanged(routeData) {
+		routeData = routeData.detail.value || {};
+		this.routeData = routeData;
 	}
 }
 
