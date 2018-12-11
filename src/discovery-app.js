@@ -3,6 +3,10 @@ import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import './components/app-location-ifrau.js';
+import './discovery-404.js';
+import './discovery-course.js';
+import './discovery-home.js';
+import './discovery-search.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 
 // Gesture events like tap and track generated from touch will not be
@@ -36,12 +40,13 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 			</app-route>
 
 			<iron-pages
-				selected="[[routeData.page]]"
+				selected="[[page]]"
 				attr-for-selected="name"
 				selected-attribute="visible"
 				role="main">
 				<discovery-home name="home"></discovery-home>
-				<discovery-course name="course"></discovery-course>
+				<discovery-course name="course" route="[[route]]"></discovery-course>
+				<discovery-search name="search" route="[[route]]"></discovery-search>
 				<discovery-404 name="404"></discovery-404>
 			</iron-pages>
 		`;
@@ -50,8 +55,7 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 		return {
 			page: {
 				type: String,
-				reflectToAttribute: true,
-				observer: '_pageChanged',
+				reflectToAttribute: true
 			},
 			routeData: Object,
 			subroute: Object,
@@ -82,8 +86,7 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 	_routeChanged(route) {
 		route = route.detail.value || {};
 		this.route = route;
-		const path = route.path || '/d2l/le/discovery/view/';
-		if (path === '/d2l/le/discovery/view/') { // navlink home
+		if (route.path === '/d2l/le/discovery/view/') { // navlink home
 			var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
 			if (appLocationIfrau) {
 				appLocationIfrau.rewriteTo(this.routeLocations().home());
@@ -94,7 +97,7 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 		routeData = routeData.detail.value || {};
 		this.routeData = routeData;
 		const page = routeData.page || null;
-		if (page && ['home', 'course'].indexOf(page) !== -1) {
+		if (page && ['home', 'course', 'search'].indexOf(page) !== -1) {
 			this.page = page;
 		} else if (page) {
 			this.page = '404';
@@ -107,26 +110,6 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 	_queryParamsChanged(queryParams) {
 		queryParams = queryParams.detail.value || {};
 		this.queryParams = queryParams;
-	}
-	_pageChanged(page) {
-		// Import the page component on demand.
-		//
-		// Note: `polymer build` doesn't like string concatenation in the import
-		// statement, so break it up.
-		//
-		// Polymer lint issue with import: https://github.com/Polymer/polymer-linter/issues/96
-		switch (page) {
-			case 'course':
-				import('./discovery-course.js');
-				break;
-			case 'home':
-				import('./discovery-home.js');
-				break;
-			case '404':
-				import('./discovery-404.js');
-				this.set('routeData.page', '404');
-				break;
-		}
 	}
 }
 

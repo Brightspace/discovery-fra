@@ -113,8 +113,20 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 		route.addEventListener('route-changed', this._routeChanged.bind(this));
 		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
 	}
+	_routeChanged(route) {
+		route = route.detail.value || {};
+		this.route = route;
+	}
+	_routeDataChanged(routeData) {
+		routeData = routeData.detail.value || {};
+		this.routeData = routeData;
+	}
 	_visible() {
-		this.searchQuery = '';
+		const searchHeader = this.shadowRoot.querySelector('search-header');
+		if (searchHeader) {
+			searchHeader.clear();
+		}
+
 		// data for the course summary
 		this.courseCategory = 'Finance Skills';
 		this.courseTitle = 'Excel and Other Tips to Improve Efficiency';
@@ -163,15 +175,6 @@ Excel shortcuts can be learned by anybody, but a proper and systematic guidance 
 			bubbles: true,
 			composed: true,
 		}));
-	}
-
-	_routeChanged(route) {
-		route = route.detail.value || {};
-		this.route = route;
-	}
-	_routeDataChanged(routeData) {
-		routeData = routeData.detail.value || {};
-		this.routeData = routeData;
 	}
 }
 
