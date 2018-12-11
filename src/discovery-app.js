@@ -24,6 +24,7 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 			</style>
 
 			<app-location-ifrau
+				route="[[route]]"
 				query-params="[[queryParams]]">
 			</app-location-ifrau>
 
