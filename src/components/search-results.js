@@ -67,7 +67,7 @@ class SearchResults extends LocalizeMixin(PolymerElement) {
 
 			<template is="dom-if" if="[[searchResultsExists]]">
 				<div class="discovery-search-results-header">
-					<span class="d2l-label-text discovery-search-results-search-message">[[searchResultsRangeToString]] [[localize('of')]] [[searchResultsTotal]] [[localize('resultsFor')]] "[[searchQuery]]"</span>
+					<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', searchResultsRangeToString, 'searchResultsTotal', searchResultsTotal, 'searchQuery', searchQuery)]]</span>
 					<div class="discovery-search-results-sort-by">
 						<span class="d2l-label-text">[[localize('sortBy')]]:</span>
 						<d2l-dropdown>
