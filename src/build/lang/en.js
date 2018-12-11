@@ -56,6 +56,7 @@ window.D2L.Discovery.LangEn = {
 	'resultsFor': 'results for',
 	'sortBy': 'Sort by',
 	'relevance': 'Relevance',
+	'new': 'New',
 
 	// Discovery Home
 	'recommendationHeader': 'Recommended for you:',

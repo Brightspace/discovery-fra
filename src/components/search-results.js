@@ -77,8 +77,8 @@ class SearchResults extends LocalizeMixin(PolymerElement) {
 							</span>
 							<d2l-dropdown-menu>
 								<d2l-menu label="[[localize('sortBy')]]">
-									<d2l-menu-item-link text="Relevance" href="javascript:void(0)"></d2l-menu-item-link>
-									<d2l-menu-item-link text="New" href="javascript:void(0)"></d2l-menu-item-link>
+									<d2l-menu-item-link text="[[localize('relevance')]]" href="javascript:void(0)"></d2l-menu-item-link>
+									<d2l-menu-item-link text="[[localize('new')]]" href="javascript:void(0)"></d2l-menu-item-link>
 								</d2l-menu>
 							</d2l-dropdown-menu>
 						</d2l-dropdown>
