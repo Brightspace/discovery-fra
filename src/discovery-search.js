@@ -19,8 +19,8 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 				data="[[routeData]]">
 			</app-route>
 			<div>
-      			<search-header query="[[searchQuery]]"></search-header>
-    		</div>
+	  			<search-header query="[[searchQuery]]"></search-header>
+			</div>
 			<div class="discovery-search-main">
 				<search-results
 					search-results="[[searchResults]]"
