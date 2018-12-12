@@ -9,7 +9,7 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 	static get template() {
 		return html`
 			<style>
-				.main {
+				.discovery-search-main {
 					padding: 1rem;
 				}
 			</style>
@@ -21,7 +21,7 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 			<div>
       			<search-header query="[[searchQuery]]"></search-header>
     		</div>
-			<div class="main">
+			<div class="discovery-search-main">
 				<search-results
 					search-results="[[searchResults]]"
 					search-query="[[searchQuery]]">
