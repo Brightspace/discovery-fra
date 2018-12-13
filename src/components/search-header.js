@@ -96,11 +96,13 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	ready() {
 		super.ready();
 		const searchInput = this.shadowRoot.querySelector('#search-input');
-		searchInput.addEventListener('d2l-input-search-searched', (e) => {
-			if (e && e.detail && e.detail.value) {
-				this.query = e.detail.value;
-			}
-		});
+		if (searchInput) {
+			searchInput.addEventListener('d2l-input-search-searched', (e) => {
+				if (e && e.detail && e.detail.value) {
+					this.query = e.detail.value;
+				}
+			});
+		}
 	}
 	clear() {
 		this.query = '';
