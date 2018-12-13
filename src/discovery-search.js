@@ -64,6 +64,12 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 		this.routeData = routeData;
 	}
 	_visible() {
+		const searchHeader = this.shadowRoot.querySelector('search-header');
+		if (searchHeader) {
+			searchHeader.showClear(this.searchQuery);
+			searchHeader.focusOnInput();
+		}
+
 		const thumbnailLink = 'https://www.d2l.com/wp-content/uploads/2017/02/img_D2L_knockout.jpg';
 		const prefix = '';
 		this.searchResults = {

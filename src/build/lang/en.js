@@ -47,6 +47,7 @@ window.D2L.Discovery.LangEn = {
 	'cancel': 'Cancel',
 
 	// Search
+	'search': 'Search',
 	'searchLabel': 'What do you want to learn?',
 	'searchPlaceholder': 'Search...',
 	'refineResults': 'Refine Results',

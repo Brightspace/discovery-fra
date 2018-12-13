@@ -25,6 +25,7 @@ class DiscoveryHome extends PolymerElement {
 		const searchHeader = this.shadowRoot.querySelector('search-header');
 		if (searchHeader) {
 			searchHeader.clear();
+			searchHeader.focusOnInput();
 		}
 	}
 }

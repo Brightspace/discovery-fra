@@ -28,6 +28,7 @@
     "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-dropdown": "BrightspaceUI/dropdown#semver:^7",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
+    "d2l-inputs": "BrightspaceUI/inputs#semver:^2",
     "d2l-link": "BrightspaceUI/link#semver:^5",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "d2l-menu": "BrightspaceUI/menu#semver:^2",
