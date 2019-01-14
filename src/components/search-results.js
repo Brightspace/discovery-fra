@@ -143,10 +143,9 @@ class SearchResults extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 	}
 	_navigateToCourse(e) {
 		if (e && e.target && e.target.id) {
-			const targetId = e.target.id;
 			this.dispatchEvent(new CustomEvent('navigate', {
 				detail: {
-					path: this.routeLocations().course(targetId)
+					path: this.routeLocations().course(e.target.id)
 				},
 				bubbles: true,
 				composed: true

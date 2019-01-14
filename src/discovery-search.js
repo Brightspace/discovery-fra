@@ -70,8 +70,6 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 			searchHeader.focusOnInput();
 		}
 
-		const thumbnailLink = 'ImageUrl';
-		const prefix = '';
 		this.searchResults = {
 			metadata: {
 				startIndex: 0,
@@ -82,27 +80,27 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 				{
 					id: 1000,
 					tags: ['Duration 100h30m', 'Stocks', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Microsoft'],
-					category: "Financial Planning"
+					category: 'Financial Planning'
 				},
 				{
 					id: 1001,
 					tags: ['Duration 2h45m', 'Stocks', 'Finance', 'Marketing'],
-					category: "Mathematics"
+					category: 'Mathematics'
 				},
 				{
 					id: 1002,
 					tags: [],
-					category: "Science"
+					category: 'Science'
 				},
 				{
 					id: 1003,
 					tags: ['Duration 1h30m'],
-					category: "Economics"
+					category: 'Economics'
 				},
 				{
 					id: 1004,
 					tags: ['Duration 30m'],
-					category: "English"
+					category: 'English'
 				}
 			]
 		};
