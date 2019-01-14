@@ -1,6 +1,10 @@
 {
   "extends": "brightspace/polymer-3-config",
   "env": {
-    "node": true
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+      "sourceType": "module"
   }
 }

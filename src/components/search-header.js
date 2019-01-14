@@ -2,6 +2,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import 'd2l-icons/d2l-icons.js';
 import 'd2l-icons/tier2-icons.js';
+import 'd2l-inputs/d2l-input-search.js';
 import 'd2l-typography/d2l-typography.js';
 
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
@@ -45,8 +46,8 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					width: 100%;
 				}
 				.discovery-search-header-search-bar{
-					min-width: 100px;
-					width: 50%;
+					min-width: 150px;
+					width: 80%;
 				}
 			</style>
 
@@ -67,13 +68,13 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					</div>
 
 					<div class="discovery-search-header-search-bar-container">
-						<!-- This is a placeholder search input box until d2l-inputs is converted to Polymer 3 -->
-						<input
+						<d2l-input-search
 							id="search-input"
 							class="discovery-search-header-search-bar"
-							type="text"
-							placeholder="[[localize('searchPlaceholder')]]"
-							value="[[query]]">
+							label="[[localize('search')]]"
+							value="[[query]]"
+							placeholder="[[localize('searchPlaceholder')]]">
+						</d2l-input-search>
 					</div>
 				</div>
 			</div>
@@ -96,10 +97,9 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 		super.ready();
 		const searchInput = this.shadowRoot.querySelector('#search-input');
 		if (searchInput) {
-			searchInput.addEventListener('keyup', (e) => {
-				e.preventDefault();
-				if (e.keyCode === 13) { // Enter key
-					this.query = searchInput.value;
+			searchInput.addEventListener('d2l-input-search-searched', (e) => {
+				if (e && e.detail && e.detail.value) {
+					this.query = e.detail.value;
 				}
 			});
 		}
@@ -109,6 +109,18 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 		const searchInput = this.shadowRoot.querySelector('#search-input');
 		if (searchInput) {
 			searchInput.value = '';
+		}
+	}
+	showClear(query) {
+		const searchInput = this.shadowRoot.querySelector('#search-input');
+		if (searchInput) {
+			searchInput._setLastSearchValue(query);
+		}
+	}
+	focusOnInput() {
+		const searchInput = this.shadowRoot.querySelector('#search-input');
+		if (searchInput) {
+			searchInput.focus();
 		}
 	}
 	_navigateToHome() {

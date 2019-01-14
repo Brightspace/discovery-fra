@@ -10,19 +10,22 @@
   ],
   "extraDependencies": [
     "manifest.json",
-    "node_modules/@webcomponents/webcomponentsjs/*.js",
+    "node_modules/@webcomponents/webcomponentsjs/**/*.js",
     "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
-    "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
+    "node_modules/d2l-*/*.js"
   ],
   "builds": [{
     "preset": "es5-bundled",
     "addServiceWorker": true
   }],
-  "moduleResolution": "node",
   "npm": true,
   "lint": {
     "rules": [
       "polymer-3"
+    ],
+    "ignoreWarnings": [
+      "databind-with-unknown-property",
+      "undefined-elements"
     ]
   }
 }

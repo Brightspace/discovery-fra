@@ -4,6 +4,7 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { IfrauMixin } from './mixins/ifrau-mixin.js';
 import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
+import 'd2l-colors/d2l-colors.js';
 import './components/course-action.js';
 import './components/course-summary.js';
 import './components/search-header.js';
@@ -26,26 +27,72 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 				}
 
 				.discovery-course-summary {
-					background-color: white;
 					border-radius: 5px;
+					display: flex;
 					height: auto;
-					margin-bottom: 10rem;
 					margin-left: 1.5rem;
 					margin-right: 1.5rem;
 					margin-top: 2rem;
-					min-width: 680px;
-					width: 680px;
+					max-width: 760px;
+					min-width: 560px;
 				}
 
 				.discovery-course-action {
 					background-color: white;
+					border: 1px solid var(--d2l-color-mica);
 					border-radius: 5px;
+					box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+					display: flex;
 					height: auto;
 					margin-left: 1.5rem;
 					margin-right: 1.5rem;
 					margin-top: 2rem;
-					min-width: 435px;
-					width: 435px;
+					max-width: 350px;
+					min-width: 250px;
+				}
+
+				@media only screen and (max-width: 929px) {
+					.discovery-course-container {
+						align-items: center;
+						flex-direction: column;
+					}
+					.discovery-course-summary {
+						margin-left: 0.9rem;
+						margin-right: 0.9rem;
+						max-width: 680px;
+					}
+					.discovery-course-action {
+						margin-left: 2.1rem;
+						margin-right: 2.1rem;
+						margin-top: 1rem;
+						max-width: 645px;
+						min-width: 532px;
+					}
+				}
+
+				@media only screen and (max-width: 615px) {
+					.discovery-course-summary {
+						max-width: 579px;
+						min-width: 384px;
+					}
+					.discovery-course-action {
+						margin-left: 1.8rem;
+						margin-right: 1.8rem;
+						max-width: 542px;
+						min-width: 348px;
+					}
+				}
+
+				@media only screen and (max-width: 419px) {
+					.discovery-course-summary,
+					.discovery-course-action {
+						background: var(--d2l-color-regolith);
+						border: none;
+						box-shadow: none;
+						margin-left: 0;
+						margin-right: 0;
+						min-width: 320px;
+					}
 				}
 			</style>
 
@@ -64,20 +111,22 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 					<course-summary
 						course-category=[[courseCategory]]
 						course-title=[[courseTitle]]
-						course-key-outcomes=[[courseKeyOutcomes]]
-						course-description=[[courseDescription]]>
+						course-description=[[courseDescription]]
+						course-duration=[[courseDuration]]
+						course-last-updated=[[courseLastUpdated]]
+						format=[[format]]
+						is-in-my-learning=[[isInMyLearning]]
+						is-on-my-list=[[isOnMyList]]>
 					</course-summary>
 				</div>
 
 				<div class="discovery-course-action">
 					<course-action
-						course-title=[[courseTitle]]
-						course-thumbnail-link=[[courseThumbnailLink]]
-						course-duration=[[courseDuration]]
-						course-last-updated=[[courseLastUpdated]]
+						course-code=[[courseCode]]
 						course-tags=[[courseTags]]
-						is-in-my-learning=[[isInMyLearning]]
-						is-on-my-list=[[isOnMyList]]>
+						end-date=[[endDate]]
+						first-published=[[firstPublished]]
+						start-date=[[startDate]]>
 					</course-action>
 				</div>
 			</div>
@@ -97,15 +146,17 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 			searchQuery: String,
 
 			courseCategory: String,
-			courseTitle: String,
-			courseKeyOutcomes: Array,
+			courseCode: String,
 			courseDescription: String,
 			courseDuration: Number,
 			courseLastUpdated: String,
 			courseTags: Array,
-			courseThumbnailLink: String,
+			courseTitle: String,
+			endDate: String,
+			firstPublished: String,
 			isInMyLearning: Boolean,
 			isOnMyList: Boolean,
+			startDate: String,
 		};
 	}
 	ready() {
@@ -129,43 +180,28 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 		}
 
 		// data for the course summary
-		this.courseCategory = 'Finance Skills';
-		this.courseTitle = 'Excel and Other Tips to Improve Efficiency';
-		this.courseKeyOutcomes = [
-			"You'll be an advanced level user after taking this Microsoft Excel Course",
-			'Use advanced graphs in minutes instead of wasting hours trying to figure them out',
-			'Increase interactivity by automating your spreadsheets with macros and VBA',
-			'Solve complex problems with superpower functions',
-			"Turn raw data into 'must make' decisions using PivotTables and PowerPivots",
-		];
-		this.courseDescription =
-'Excel is hype! (Helping Young People Excel) \n\n\
-Common macros and shortcuts in Excel can save tons of time. Here you will learn almost 200 excel shortcuts, with their usage properly demonstrated, to help you become an absolute Excel speedster. You can navigate much faster through worksheets, select and edit cell contents, work on multiple worksheets, work on pivot tables more efficiently, and do most tasks on excel without touching the mouse, and thus saving a whole lot of time. Learning and using these keyboard excel shortcuts will multiply your confidence and add a whole new weapon in your armory, which you can use to impress your bosses and colleagues.\n\n\
-Excel shortcuts can be learned by anybody, but a proper and systematic guidance is necessary to make sure you achieve the best possible speed while working on Excel.';
-
-		// data for course action
-		this.courseThumbnailLink = 'https://www.d2l.com/wp-content/uploads/2017/02/img_D2L_knockout.jpg';
+		this.courseCategory = 'Financial Planning';
+		this.courseTitle = 'Financial Planning and you';
+		this.courseDescription = 'An overview of the ideas, methods, and institutions that permit human society to manage risks and foster enterprise.  Emphasis on financially-savvy leadership skills. Description of practices today and analysis of prospects for the future. Introduction to risk management and behavioral finance principles to understand the real-world functioning of securities, insurance, and banking industries.  The ultimate goal of this course is using such industries effectively and towards a better society.';
 		this.courseDuration = 45;
-		this.courseLastUpdated = 'April 1st, 2018';
-		this.courseTags = [
-			'Accounting',
-			'Business Skills',
-			'Finance',
-			'Software',
-			'Microsoft',
-			'Accounting',
-			'Business Skills',
-			'Finance',
-			'Software',
-			'Microsoft',
-			'Accounting',
-			'Business Skills',
-			'Finance',
-			'Software',
-			'Microsoft',
-		];
+		this.courseLastUpdated = 'April 27th, 2018';
+		this.format = 'Online';
 		this.isInMyLearning = false;
 		this.isOnMyList = false;
+
+		// data for course action
+		this.courseCode = 'FIN101';
+		this.courseTags = [
+			'Boots',
+			'Bears',
+			'Beets',
+			'Battlestar Gallactica',
+			'Business Intelligence',
+			'Learning about Stuff',
+		];
+		this.endDate = 'Dec 1st, 2019';
+		this.firstPublished = 'Jan 1st, 2018';
+		this.startDate = 'Jan 1st, 2019';
 	}
 
 	_navigateToHome() {

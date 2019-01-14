@@ -47,6 +47,7 @@ window.D2L.Discovery.LangEn = {
 	'cancel': 'Cancel',
 
 	// Search
+	'search': 'Search',
 	'searchLabel': 'What do you want to learn?',
 	'searchPlaceholder': 'Search...',
 	'refineResults': 'Refine Results',
@@ -68,12 +69,17 @@ window.D2L.Discovery.LangEn = {
 
 	// Course
 	'backToSearchResults': 'Back to Search Result',
-	'minutes': 'minutes',
-	'duration': 'Duration',
-	'lastUpdated': 'Last Updated',
-	'taggedWith': 'Tagged with',
+	'durationMinutes': '{minutes} minutes',
+	'lastUpdatedDate': 'Last Updated {date}',
+	'courseInfo': 'Course Info',
+	'startDate': 'Start Date',
+	'endDate': 'End Date',
+	'courseCode': 'Course Code',
+	'firstPublished': 'First Published',
+	'searchKeywords': 'Search Keywords',
 	'addToMyLearning': 'Add to My Learning',
 	'addToMyList': 'Add to my List',
+	'enrollInCourse': 'Enroll in Course',
 	'accessMaterials': 'Access Materials',
 	'onMyList': 'On My List',
 	'addedToYourList': 'Added to your list',

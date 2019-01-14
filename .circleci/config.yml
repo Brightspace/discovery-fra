@@ -10,24 +10,26 @@ jobs:
       - run: curl -sSf -u$ARTIFACTORY_USER:$ARTIFACTORY_PASS "https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/npm-local/auth/d2l" -o .npmrc
       - run: npm install
       - run: npm install polymer-cli
+      - run: npm run lint
+      - run: npm run test:polymer:sauce
       - run: npm run build
       - persist_to_workspace:
           root: ~/project
           paths: .
-  
-  publish: 
+
+  publish:
     docker:
       - image: dmoscrop/circleci-node8.10-tfenv
-    
+
     steps:
       - attach_workspace:
           at: ~/project
       - run: npm run frau:publish
-    
+
   release:
     docker:
       - image: dmoscrop/circleci-node8.10-tfenv
-    
+
     steps:
       - attach_workspace:
           at: ~/project
