@@ -80,49 +80,29 @@ class DiscoverySearch extends RouteLocationsMixin(PolymerElement) {
 			},
 			results: [
 				{
-					title: prefix + 'jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces | jobTitleCourseALotsOfCharacters And Spaces',
 					id: 1000,
-					description: prefix + "job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined. | job title course a description. has lots of words and hopefully it's multi-lined.",
-					thumbnail: thumbnailLink,
-					duration: Math.random(),
-					tags: ['Stocks', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Microsoft'],
-					online: true
+					tags: ['Duration 100h30m', 'Stocks', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Finance', 'Marketing', 'Microsoft'],
+					category: "Financial Planning"
 				},
 				{
-					title: prefix + 'Course B',
 					id: 1001,
-					description: prefix + 'Some description for Course B',
-					thumbnail: thumbnailLink,
-					duration: Math.random(),
-					tags: ['Stocks', 'Finance', 'Marketing'],
-					online: false
+					tags: ['Duration 2h45m', 'Stocks', 'Finance', 'Marketing'],
+					category: "Mathematics"
 				},
 				{
-					title: prefix + 'Course C',
 					id: 1002,
-					description: prefix + 'Some description for Course C',
-					thumbnail: thumbnailLink,
-					duration: Math.random(),
 					tags: [],
-					online: true
+					category: "Science"
 				},
 				{
-					title: prefix + 'Course D',
 					id: 1003,
-					description: 'a',
-					thumbnail: thumbnailLink,
-					duration: Math.random(),
-					tags: ['new'],
-					online: true
+					tags: ['Duration 1h30m'],
+					category: "Economics"
 				},
 				{
-					title: prefix + 'Course E',
 					id: 1004,
-					description: 'abc',
-					thumbnail: thumbnailLink,
-					duration: Math.random(),
-					tags: ['new'],
-					online: true
+					tags: ['Duration 30m'],
+					category: "English"
 				}
 			]
 		};

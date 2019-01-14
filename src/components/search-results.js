@@ -59,8 +59,8 @@ class SearchResults extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 					margin-left: 0.25rem;
 				}
 
-				.discovery-search-results-search-result {
-					margin-bottom: 2rem;
+				d2l-activity-list-item {
+					border-bottom: 1px solid var(--d2l-color-mica);
 				}
 			</style>
 
@@ -91,17 +91,14 @@ class SearchResults extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 
 					<div class="discovery-search-results-container">
 						<template is="dom-repeat" items="[[searchResults.results]]">
-							<div class="discovery-search-results-search-result">
-								<d2l-activity-list-item
-									href="javascript:void(0)"
-									_title="[[item.title]]"
-									_image-url="[[item.thumbnail]]"
-									_description="[[item.description]]"
-									_tags="[[item.tags]]"
-									id="[[item.id]]"
-									on-click="_navigateToCourse">
-								</d2l-activity-list-item>
-							</div>
+							<d2l-activity-list-item
+								href="src/placeholder-data/activity.json"
+								_tags="[[item.tags]]"
+								_link="javascript:void(0)"
+								_category="[[item.category]]"
+								on-click="_navigateToCourse"
+								id="[[item.id]]">
+							</d2l-activity-list-item>
 						</template>
 					</div>
 				</template>
