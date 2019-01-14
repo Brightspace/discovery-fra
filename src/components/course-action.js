@@ -12,14 +12,13 @@ class CourseAction extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 		return html `
 			<style include="d2l-typography">
 				:host {
-					display: flex;
-					width: 100%;
+					display: inline;
 				}
 
 				.discovery-course-action-container {
 					display: flex;
 					flex-direction: column;
-					margin: 1.5rem;
+					margin: 1.5rem 1.5rem 2.4rem;
 				}
 
 				.discovery-course-action-d2l-heading-3 {
@@ -33,14 +32,26 @@ class CourseAction extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 				}
 
 				.discovery-course-action-info-property .d2l-body-compact {
-					display: flex;
 					margin-right: 0.5rem;
 					width: 100%;
 				}
+
 				.discovery-course-action-tags-container {
 					display: flex;
 					flex-direction: column;
-					margin: 1.5rem;
+					margin-top: 1.5rem;
+				}
+
+				@media only screen and (max-width: 929px) {
+					.discovery-course-action-info-property .d2l-body-compact {
+						width: 6rem;
+					}
+				}
+
+				@media only screen and (max-width: 615px) {
+					.discovery-course-action-container {
+						margin: 1.2rem 0.9rem 1.8rem;
+					}
 				}
 			</style>
 
@@ -66,20 +77,20 @@ class CourseAction extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 						<div class="d2l-body-compact">[[localize('firstPublished')]]</div>
 						<div class="d2l-body-compact">[[firstPublished]]</div>
 					</div>
-				</div>
 
-				<template is="dom-if" if="[[tagsExist]]">
-					<div class="discovery-course-action-tags-container">
-						<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('searchKeywords')]]</h3>
-						<div>
-							<template is="dom-repeat" items="[[courseTags]]">
-								<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
-									<span value="[[item]]">[[item]][[_getTagSuffix(index)]]</span>
-								</d2l-link>
-							</template>
+					<template is="dom-if" if="[[tagsExist]]">
+						<div class="discovery-course-action-tags-container">
+							<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('searchKeywords')]]</h3>
+							<div>
+								<template is="dom-repeat" items="[[courseTags]]">
+									<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
+										<span value="[[item]]">[[item]][[_getTagSuffix(index)]]</span>
+									</d2l-link>
+								</template>
+							</div>
 						</div>
-					</div>
-				</template>
+					</template>
+				</div>
 			</div>
 		`;
 	}

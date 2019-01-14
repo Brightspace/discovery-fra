@@ -30,7 +30,7 @@ class CourseSummary extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 					border: 1px solid var(--d2l-color-mica);
 					border-bottom: transparent;
 					border-radius: 6px 6px 0 0;
-					padding: 1.5rem;
+					padding: 1.5rem 1.5rem 1.2rem;
 				}
 
 				.discovery-course-summary-breadcrumbs {
@@ -56,7 +56,7 @@ class CourseSummary extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 					display: flex;
 					align-items: center;
 					margin-right: 0.9rem;
-					margin-top: 0.25rem;
+					margin-top: 0.5rem;
 				}
 
 				.discovery-course-summary-info-container span {
@@ -65,10 +65,11 @@ class CourseSummary extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 
 				.discovery-course-summary-actions {
 					background: var(--d2l-color-regolith);
-					padding: 0.9rem 1.2rem;
-					border: 1px solid var(--d2l-color-mica);
 					border-radius: 0 0 6px 6px;
+					border: 1px solid var(--d2l-color-mica);
 					box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+					display: flex;
+					padding: 0.9rem 1.2rem;
 				}
 
 				.discovery-course-summary-actions d2l-button {
@@ -88,7 +89,6 @@ class CourseSummary extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 
 				.discovery-course-summary-alert {
 					height: auto;
-					width: 415px;
 				}
 
 				.discovery-course-summary-alert-container {
@@ -141,6 +141,40 @@ class CourseSummary extends LocalizeMixin(RouteLocationsMixin(PolymerElement)) {
 
 				.discovery-course-summary-text-stuff {
 					white-space: pre-wrap;
+				}
+
+				@media only screen and (max-width: 615px) {
+					.discovery-course-summary-card,
+					.discovery-course-summary-actions {
+						padding: 0.9rem;
+					}
+
+					.discovery-course-summary-description {
+						padding: 1.5rem 0.9rem 0.9rem;
+					}
+				}
+
+				@media only screen and (max-width: 419px) {
+					.discovery-course-summary-card {
+						border-radius: 0;
+						border: none;
+					}
+
+					.discovery-course-summary-actions {
+						border-left: none;
+						border-radius: 0;
+						border-right: none;
+						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+						flex-direction: column;
+					}
+					.discovery-course-summary-actions d2l-button {
+						--d2l-button: {
+							width: 100%;
+						}
+
+						margin-bottom: 0.6rem;
+						margin-right: 0;
+					}
 				}
 			</style>
 
