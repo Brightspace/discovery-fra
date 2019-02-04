@@ -94,14 +94,15 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				type: String,
 				notify: true,
 				observer: '_queryChanged',
-			}
+			},
+			searchInput: Object
 		};
 	}
 	ready() {
 		super.ready();
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput.addEventListener('d2l-input-search-searched', (e) => {
+		this.searchInput = this.shadowRoot.querySelector('#search-input');
+		if (this.searchInput) {
+			this.searchInput.addEventListener('d2l-input-search-searched', (e) => {
 				if (e && e.detail && e.detail.value) {
 					this.query = e.detail.value;
 				}
@@ -110,22 +111,10 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	}
 	clear() {
 		this.query = '';
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput.value = '';
-		}
-	}
-	showClear(query) {
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput._setLastSearchValue(query);
-		}
+		this.searchInput.value = '';
 	}
 	focusOnInput() {
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput.focus();
-		}
+		this.searchInput.focus();
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {
