@@ -1,6 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './components/search-header.js';
+import './components/home-header.js';
 import './styles/discovery-styles.js';
 
 class DiscoveryHome extends PolymerElement {
@@ -8,7 +8,7 @@ class DiscoveryHome extends PolymerElement {
 		return html`
 			<style include="discovery-styles"></style>
 			<div class="d2l-typography">
-				  <search-header query=""></search-header>
+				<home-header id="discovery-home-home-header" query=""></home-header>
 			</div>
 			This is the Discovery home page.
 		`;
@@ -22,10 +22,10 @@ class DiscoveryHome extends PolymerElement {
 		};
 	}
 	_visible() {
-		const searchHeader = this.shadowRoot.querySelector('search-header');
-		if (searchHeader) {
-			searchHeader.clear();
-			searchHeader.focusOnInput();
+		const homeHeader = this.shadowRoot.querySelector('#discovery-home-home-header');
+		if (homeHeader) {
+			homeHeader.clear();
+			homeHeader.focusOnInput();
 		}
 	}
 }

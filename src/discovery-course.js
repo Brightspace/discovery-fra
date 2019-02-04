@@ -7,7 +7,6 @@ import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import 'd2l-colors/d2l-colors.js';
 import './components/course-action.js';
 import './components/course-summary.js';
-import './components/search-header.js';
 import './styles/discovery-styles.js';
 
 class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(PolymerElement))) {
@@ -19,6 +18,7 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 				}
 
 				.discovery-course-container {
+					position: relative;
 					align-items: flex-start;
 					display: flex;
 					flex-direction: row;
@@ -106,10 +106,6 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 				data="[[routeData]]">
 			</app-route>
 
-			<div>
-				<search-header query=[[searchQuery]]></search-header>
-			</div>
-
 			<div class="d2l-typography discovery-course-container">
 				<course-summary
 					class="discovery-course-summary"
@@ -178,11 +174,6 @@ class DiscoveryCourse extends RouteLocationsMixin(LocalizeMixin(IfrauMixin(Polym
 		this.routeData = routeData;
 	}
 	_visible() {
-		const searchHeader = this.shadowRoot.querySelector('search-header');
-		if (searchHeader) {
-			searchHeader.clear();
-		}
-
 		// data for the course summary
 		this.courseImage = 'https://s.brightspace.com/course-images/images/b53fc2ae-0de4-41da-85ff-875372daeacc/banner-narrow-high-density-min-size.jpg';
 		this.courseCategory = 'Financial Planning';
