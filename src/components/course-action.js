@@ -164,13 +164,16 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 
 		// If the word wrap has occurred, we switch to the resizing (10-30px) gutter class
 		if (this.descriptionListElements.some(e => e.clientHeight > this.descriptionListElementsInitialHeight)) {
-			this.descriptionListGutters.forEach(g =>
-				g.classList.replace('discovery-course-action-description-list-gutter',
-					'discovery-course-action-description-list-gutter-multiline'));
+			this.descriptionListGutters.forEach(g => {
+				// IE11 doesn't like replace
+				g.classList.remove('discovery-course-action-description-list-gutter');
+				g.classList.add('discovery-course-action-description-list-gutter-multiline');
+			});
 		} else {
-			this.descriptionListGutters.forEach(g =>
-				g.classList.replace('discovery-course-action-description-list-gutter-multiline',
-					'discovery-course-action-description-list-gutter'));
+			this.descriptionListGutters.forEach(g => {
+				g.classList.remove('discovery-course-action-description-list-gutter-multiline');
+				g.classList.add('discovery-course-action-description-list-gutter');
+			});
 		}
 	}
 

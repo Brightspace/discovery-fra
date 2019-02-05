@@ -84,6 +84,15 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(PolymerElement)) {
 		this._getActionUrl(this._searchAction, parameters)
 			.then(url => {
 				this._searchActionHref = url;
+			})
+			.catch(() => {
+				this.dispatchEvent(new CustomEvent('navigate', {
+					detail: {
+						path: this.routeLocations().notFound()
+					},
+					bubbles: true,
+					composed: true
+				}));
 			});
 		return searchQuery;
 	}

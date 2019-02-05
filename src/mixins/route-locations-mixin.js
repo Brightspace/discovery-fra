@@ -29,6 +29,7 @@ const internalRouteLocationsMixin = (superClass) =>
 				myList: () => this.search('', {
 					'onMyList': true
 				}),
+				notFound: () => `${discoveryBasePath}/404`
 			};
 		}
 	};
