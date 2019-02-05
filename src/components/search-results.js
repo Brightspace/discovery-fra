@@ -32,7 +32,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					flex-direction: row;
 					flex-wrap: wrap;
 					justify-content: space-between;
-					padding-bottom: 0.5rem;
+					margin-bottom: 0.5rem;
 				}
 
 				.discovery-search-results-sort-by {
@@ -43,8 +43,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 				.discovery-search-results-search-message {
 					flex-shrink: 0;
-					padding-right: 1rem;
-					padding-bottom: 1rem;
 					width: 60%;
 				}
 
@@ -64,7 +62,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					border-bottom: 1px solid var(--d2l-color-mica);
 				}
 			</style>
-
 			<div>
 				<template is="dom-if" if="[[!_searchResultsExists]]">
 					<h4 class="d2l-heading-4">[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]</h4>
@@ -73,21 +70,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				<template is="dom-if" if="[[_searchResultsExists]]">
 					<div class="discovery-search-results-header">
 						<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
-						<div class="discovery-search-results-sort-by">
-							<span class="d2l-label-text">[[localize('sortBy')]]:</span>
-							<d2l-dropdown>
-								<span class="d2l-dropdown-opener d2l-label-text discovery-search-results-dropdown">
-									<span class="discovery-search-results-dropdown-text">[[localize('relevance')]]</span>
-									<d2l-icon class="discovery-search-results-dropdown-icon" icon="d2l-tier1:chevron-down"></d2l-icon>
-								</span>
-								<d2l-dropdown-menu>
-									<d2l-menu label="[[localize('sortBy')]]">
-										<d2l-menu-item-link text="[[localize('relevance')]]" href="javascript:void(0)"></d2l-menu-item-link>
-										<d2l-menu-item-link text="[[localize('new')]]" href="javascript:void(0)"></d2l-menu-item-link>
-									</d2l-menu>
-								</d2l-dropdown-menu>
-							</d2l-dropdown>
-						</div>
 					</div>
 					<div class="discovery-search-results-container">
 						<template is="dom-repeat" items="[[_searchResult]]">

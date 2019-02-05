@@ -1,22 +1,66 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-route.js';
-
 import './components/search-header.js';
 import './components/search-results.js';
+import './components/search-sidebar.js';
 import './styles/discovery-styles.js';
+
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
+import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 
-class DiscoverySearch extends FetchMixin(RouteLocationsMixin(PolymerElement)) {
+class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(PolymerElement))) {
 	static get template() {
 		return html`
 			<style include="discovery-styles">
+				.discovery-search-container {
+					display: flex;
+					flex-direction: row;
+				}
+
+				.discovery-search-sidebar {
+					background-color: white;
+					border-right: 1px solid #d3d9e3;
+					flex-shrink: 0;
+					padding: 1rem;
+					overflow-y: auto;
+					width: 35%;
+				}
+
 				.discovery-search-main {
 					background-color: white;
-					padding: 1rem;
-					max-width: 850px;
-					margin: auto;
+					box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+					-webkit-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+        			-moz-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+					width: 100%;
+				}
+
+				.discovery-search-nav-container {
+					padding: 0.5rem 1rem 0;
+					width: calc(100% - 2rem);
+				}
+
+				.discovery-search-results {
+					padding: 0 1rem;
+					width: calc(100% - 2rem);
+				}
+
+				@media only screen and (max-width: 929px) {
+					.discovery-search-sidebar {
+						display: none;
+					}
+
+					.discovery-search-main {
+						box-shadow: none;
+						-webkit-box-shadow: none;
+        				-moz-box-shadow: none;
+					}
+
+					.discovery-search-nav-container {
+						padding: 0;
+						width: 100%;
+					}
 				}
 			</style>
 			<app-route
@@ -24,14 +68,22 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(PolymerElement)) {
 				pattern="/d2l/le/discovery/view/search/:searchQuery"
 				data="[[routeData]]">
 			</app-route>
-			<div>
-	  			<search-header query="[[_searchQuery]]"></search-header>
-			</div>
-			<div class="d2l-typography discovery-search-main" hidden$="[[!_searchQuery]]">
-				<search-results
-					href="[[_searchActionHref]]"
-					search-query="[[_searchQuery]]">
-				</search-results>
+
+			<div class="discovery-search-container">
+				<div class="discovery-search-sidebar">
+					<search-sidebar></search-sidebar>
+				</div>
+				<div class="d2l-typography discovery-search-main" hidden$="[[!_searchQuery]]">
+					<div class="discovery-search-nav-container">
+						<search-header id="discovery-search-search-header" query="[[_searchQuery]]"></search-header>
+					</div>
+					<div class="discovery-search-results">
+						<search-results
+							href="[[_searchActionHref]]"
+							search-query="[[_searchQuery]]">
+						</search-results>
+					</div>
+				</div>
 			</div>
 		`;
 	}
@@ -51,7 +103,11 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(PolymerElement)) {
 				value: '',
 				computed: '_getDecodedQuery(routeData.searchQuery)'
 			},
-			_searchActionHref: String
+			_searchActionHref: String,
+			visible: {
+				type: Boolean,
+				observer: '_visible'
+			}
 		};
 	}
 	static get _searchAction() {
@@ -63,6 +119,13 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(PolymerElement)) {
 		route.addEventListener('route-changed', this._routeChanged.bind(this));
 		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
 	}
+	_visible() {
+		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
+		if (searchHeader) {
+			searchHeader.showClear(this._searchQuery);
+			searchHeader.focusOnInput();
+		}
+	}
 	_routeChanged(route) {
 		route = route.detail.value || {};
 		this.route = route;
@@ -71,7 +134,6 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(PolymerElement)) {
 		routeData = routeData.detail.value || {};
 		this.routeData = routeData;
 	}
-
 	_getDecodedQuery(searchQuery) {
 		if (!searchQuery) {
 			this._searchActionHref = undefined;

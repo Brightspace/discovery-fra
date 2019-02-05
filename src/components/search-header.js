@@ -1,8 +1,7 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import 'd2l-icons/d2l-icons.js';
-import 'd2l-icons/tier2-icons.js';
-import 'd2l-inputs/d2l-input-search.js';
+import 'd2l-breadcrumbs/d2l-breadcrumb';
+import 'd2l-breadcrumbs/d2l-breadcrumbs';
 import 'd2l-typography/d2l-typography.js';
 
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
@@ -17,60 +16,64 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				}
 
 				.discovery-search-header-container {
+					display: flex;
+					flex-direction: column;
+				}
+
+				.discovery-search-header-nav-container {
 					align-items: center;
 					background-color: white;
-					border-bottom: 1px solid #f2f3f5;
+					border-bottom: 1px solid var(--d2l-color-mica);
 					display: flex;
 					flex-direction: row;
-					flex-wrap: nowrap;
-					overflow: auto;
-				}
-
-				.discovery-search-header-content {
-					flex-shrink: 0;
-					padding-left: 1rem;
-				}
-
-				.discovery-search-header-box {
-					-webkit-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
-					-moz-box-shadow: 0 1px 4px rgba(86,86,86,0.2);
-					box-shadow: 0 1px 4px rgba(86,86,86,0.2);
-				}
-
-				.discovery-search-header-clickable {
-					cursor: pointer;
-				}
-
-				.discovery-search-header-search-bar-container {
-					padding-left: 1rem;
+					height: 48px;
 					width: 100%;
 				}
-				.discovery-search-header-search-bar{
-					min-width: 150px;
-					width: 80%;
+
+				.discovery-search-header-breadcrumb {
+					margin-left: 1rem;
+					width: 100%;
+				}
+
+				.discovery-search-header-search-container {
+					margin: 1rem;
+				}
+
+				@media only screen and (min-width: 930px) {
+					.discovery-search-header-nav-container {
+						display: none;
+					}
+
+					.discovery-search-header-search-container {
+						margin: 1rem 0;
+						width: 100%;
+					}
+				}
+
+				@media only screen and (max-width: 929px) {
+					.discovery-search-header-search-container {
+						width: 50%;
+					}
+				}
+
+				@media only screen and (max-width: 767px) {
+					.discovery-search-header-search-container {
+						width: calc(100% - 2rem);
+					}
 				}
 			</style>
 
-			<div class="d2l-typography discovery-search-header-box">
+			<div class="d2l-typography">
 				<div class="discovery-search-header-container">
-					<div class="discovery-search-header-content">
-						<h2 class="d2l-heading-2 discovery-search-header-clickable" on-click="_navigateToHome">
-							[[localize('discover')]]
-						</h2>
+					<div class="discovery-search-header-nav-container">
+						<d2l-breadcrumbs class="discovery-search-header-breadcrumb" compact on-click="_navigateToHome">
+							<d2l-breadcrumb href="javascript:void(0)" text="[[localize('backToDiscovery')]]"></d2l-breadcrumb>
+						</d2l-breadcrumbs>
 					</div>
 
-					<div class="discovery-search-header-content">
-						<d2l-icon icon="d2l-tier2:divider"></d2l-icon>
-					</div>
-
-					<div class="discovery-search-header-content">
-						<span class="d2l-body-standard">[[localize('searchLabel')]]</span>
-					</div>
-
-					<div class="discovery-search-header-search-bar-container">
+					<div class="discovery-search-header-search-container">
 						<d2l-input-search
 							id="search-input"
-							class="discovery-search-header-search-bar"
 							label="[[localize('search')]]"
 							value="[[query]]"
 							placeholder="[[localize('searchPlaceholder')]]">
@@ -89,15 +92,16 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 			query: {
 				type: String,
 				notify: true,
-				observer: '_queryChanged',
-			}
+				observer: '_queryChanged'
+			},
+			searchInput: Object
 		};
 	}
 	ready() {
 		super.ready();
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput.addEventListener('d2l-input-search-searched', (e) => {
+		this.searchInput = this.shadowRoot.querySelector('#search-input');
+		if (this.searchInput) {
+			this.searchInput.addEventListener('d2l-input-search-searched', (e) => {
 				if (e && e.detail && e.detail.value) {
 					this.query = e.detail.value;
 				}
@@ -106,22 +110,13 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	}
 	clear() {
 		this.query = '';
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput.value = '';
-		}
+		this.searchInput.value = '';
 	}
 	showClear(query) {
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput._setLastSearchValue(query);
-		}
+		this.searchInput._setLastSearchValue(query);
 	}
 	focusOnInput() {
-		const searchInput = this.shadowRoot.querySelector('#search-input');
-		if (searchInput) {
-			searchInput.focus();
-		}
+		this.searchInput.focus();
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {

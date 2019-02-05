@@ -68,6 +68,7 @@ window.D2L.Discovery.LangEn = {
 	'locationHeader': 'Because your Location is',
 
 	// Course
+	'backToDiscovery': 'Back to Discovery',
 	'backToSearchResults': 'Back to Search Result',
 	'durationMinutes': '{minutes} minutes',
 	'lastUpdatedDate': 'Last Updated {date}',
