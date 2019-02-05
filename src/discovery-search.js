@@ -21,10 +21,10 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 
 				.discovery-search-sidebar {
 					background-color: white;
-					border-right: 1px solid #d3d9e3;
+					border-right: 1px solid var(--d2l-color-mica);
 					flex-shrink: 0;
-					padding: 1rem;
 					overflow-y: auto;
+					padding: 1rem;
 					width: 35%;
 				}
 
@@ -32,7 +32,7 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 					background-color: white;
 					box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
 					-webkit-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
-        			-moz-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+					-moz-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
 					width: 100%;
 				}
 
@@ -54,7 +54,7 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 					.discovery-search-main {
 						box-shadow: none;
 						-webkit-box-shadow: none;
-        				-moz-box-shadow: none;
+						-moz-box-shadow: none;
 					}
 
 					.discovery-search-nav-container {

@@ -10,7 +10,7 @@ import { LocalizeMixin } from '../mixins/localize-mixin.js';
 class SearchSidebar extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	static get template() {
 		return html`
-			<style include="d2l-typography">
+			<style include="d2l-typography-shared-styles">
 				:host {
 					display: inline;
 				}
@@ -19,7 +19,7 @@ class SearchSidebar extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					width: 100%;
 				}
 			</style>
-			<div class="d2l-typography">
+			<div>
 				<div class="discovery-search-sidebar-container">
 					<div class="discovery-search-sidebar-nav-container">
 						<d2l-breadcrumbs compact on-click="_navigateToHome">
@@ -29,10 +29,6 @@ class SearchSidebar extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				</div>
 			</div>
 		`;
-	}
-	constructor() {
-		super();
-		this.query = '';
 	}
 	static get properties() {
 		return {};
