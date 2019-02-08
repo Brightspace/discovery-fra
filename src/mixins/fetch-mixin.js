@@ -9,6 +9,8 @@ d2lfetch.use({
 		enableTokenCache: true
 	}
 });
+import { fetchDedupe } from 'd2l-fetch-dedupe';
+d2lfetch.use({name: 'dedupe', fn: fetchDedupe});
 window.d2lfetch = d2lfetch;
 
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';

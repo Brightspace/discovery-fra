@@ -33,6 +33,7 @@
     "d2l-dropdown": "BrightspaceUI/dropdown#semver:^7",
     "d2l-fetch": "Brightspace/d2l-fetch#semver:^2",
     "d2l-fetch-auth": "github:Brightspace/d2l-fetch-auth",
+    "d2l-fetch-dedupe": "^1.1.0",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "d2l-inputs": "BrightspaceUI/inputs#semver:^2",
     "d2l-link": "BrightspaceUI/link#semver:^5",
