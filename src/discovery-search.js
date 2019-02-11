@@ -19,49 +19,53 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 				.discovery-search-container {
 					display: flex;
 					flex-direction: row;
+					margin: 0 30px;
 				}
 
 				.discovery-search-sidebar {
 					background-color: white;
 					border-right: 1px solid var(--d2l-color-mica);
+					box-shadow: 3px 0 5px -2px var(--d2l-color-mica);
 					flex-shrink: 0;
+					flex-grow: 0;
+					padding: 1rem 0 0 1rem;
 					overflow-y: auto;
-					padding: 1rem;
-					width: 35%;
+					width: calc(268px - 1rem);
 				}
 
 				.discovery-search-main {
-					background-color: white;
-					box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
-					-webkit-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
-					-moz-box-shadow: inset 3px 0 20px -6px rgba(86,86,86,0.4);
+					margin-left: 1rem;
+					margin-top: 1rem;
 					width: 100%;
 				}
 
 				.discovery-search-nav-container {
-					padding: 0.5rem 1rem 0;
-					width: calc(100% - 2rem);
+					margin-bottom: 1rem;
+					width: 100%;
 				}
 
 				.discovery-search-results {
-					padding: 0 1rem;
-					width: calc(100% - 2rem);
+					width: 100%;
 				}
 
 				@media only screen and (max-width: 929px) {
+					.discovery-search-container {
+						margin: 0 24px;
+					}
+
 					.discovery-search-sidebar {
 						display: none;
 					}
 
 					.discovery-search-main {
-						box-shadow: none;
-						-webkit-box-shadow: none;
-						-moz-box-shadow: none;
+						margin-left: 0;
+						margin-top: 0;
 					}
+				}
 
-					.discovery-search-nav-container {
-						padding: 0;
-						width: 100%;
+				@media only screen and (max-width: 767px) {
+					.discovery-search-container {
+						margin: 0 18px;
 					}
 				}
 			</style>

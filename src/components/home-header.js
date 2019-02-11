@@ -21,13 +21,9 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					flex-wrap: nowrap;
 				}
 
-				.discovery-home-header-home {
-					padding-left: 1rem;
-				}
-
 				.discovery-home-header-d2l-heading-1 {
-					margin-bottom: 1rem !important;
-					margin-top: 1rem !important;
+					margin-bottom: 10px !important;
+					margin-top: 10px !important;
 				}
 
 				.discovery-home-header-clickable {
@@ -37,13 +33,19 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				.discovery-home-header-my-list {
 					flex-shrink: 0;
 					height: 35px;
-					margin-right: 1rem;
 					width: 77px;
 				}
 
 				.discovery-home-header-search-container {
 					flex-grow: 1;
 					padding: 0 6%;
+					margin-top: 3px;
+				}
+
+				@media only screen and (max-width: 615px) {
+					.discovery-home-header-search-container {
+						margin-top: 6px;
+					}
 				}
 
 				@media only screen and (max-width: 545px) {
@@ -53,8 +55,8 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					}
 
 					.discovery-home-header-search-container {
-						padding: 0 1rem 1rem;
-						width: calc(100% - 2rem);
+						padding: 0;
+						width: 100%;
 					}
 
 					.discovery-home-header-container {
@@ -66,7 +68,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 
 			<div class="d2l-typography">
 				<div class="discovery-home-header-container">
-					<div class="discovery-home-header-home">
+					<div>
 						<h1 class="d2l-heading-1 discovery-home-header-d2l-heading-1" on-click="_navigateToHome">
 							<span class="discovery-home-header-clickable">[[localize('discover')]]</span>
 						</h1>
@@ -112,6 +114,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	clear() {
 		this.query = '';
 		this.searchInput.value = '';
+		this.searchInput._setLastSearchValue('');
 	}
 	focusOnInput() {
 		this.searchInput.focus();

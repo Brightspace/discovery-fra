@@ -18,6 +18,10 @@ class SearchSidebar extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				.discovery-search-sidebar-nav-container {
 					width: 100%;
 				}
+
+				d2l-breadcrumb {
+					font-size: 14px;
+				}
 			</style>
 			<div>
 				<div class="discovery-search-sidebar-container">
