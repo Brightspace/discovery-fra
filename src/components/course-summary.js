@@ -78,6 +78,10 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 
 				.discovery-course-summary-buttons d2l-button {
 					margin-right: 0.6rem;
+					--d2l-button: {
+						height: 100%;
+						white-space: normal;
+					}
 				}
 
 				.discovery-course-summary-description {
