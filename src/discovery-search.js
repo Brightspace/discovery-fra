@@ -2,6 +2,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-route.js';
 import './components/app-location-ifrau.js';
+import './components/discovery-footer.js';
 import './components/search-header.js';
 import './components/search-results.js';
 import './components/search-sidebar.js';
@@ -90,6 +91,7 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 							search-query="[[_searchQuery]]">
 						</search-results>
 					</div>
+					<discovery-footer></discovery-footer>
 				</div>
 			</div>
 		`;

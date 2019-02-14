@@ -12,6 +12,7 @@ import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 import './components/course-action.js';
 import './components/course-summary.js';
+import './components/discovery-footer.js';
 import './styles/discovery-styles.js';
 
 class DiscoveryCourse extends mixinBehaviors(
@@ -137,6 +138,7 @@ class DiscoveryCourse extends mixinBehaviors(
 					start-date=[[_startDate]]>
 				</course-action>
 			</div>
+			<discovery-footer></discovery-footer>
 		`;
 	}
 

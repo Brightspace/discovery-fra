@@ -1,5 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import './components/discovery-footer.js';
 import './components/home-header.js';
 import './styles/discovery-styles.js';
 
@@ -32,6 +33,7 @@ class DiscoveryHome extends PolymerElement {
 					<div class="discovery-home-home-header"><home-header id="discovery-home-home-header" query=""></home-header></div>
 					<span>This is the Discovery home page.</span>
 				</div>
+				<discovery-footer></discovery-footer>
 			</div>
 		`;
 	}
