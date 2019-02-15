@@ -76,7 +76,7 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 				<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('courseInfo')]]</h3>
 
 				<dl class="discovery-course-action-description-list">
-					<template is="dom-repeat" items="[[courseDescriptionItems]]" on-dom-change='_resizeDescriptionList'>
+					<template is="dom-repeat" items="[[courseDescriptionItems]]" on-dom-change='_setInitialDescriptionListSizes'>
 						<div class="discovery-course-action-description-list-row">
 						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[item.term]]</dt>
 						<div class="discovery-course-action-description-list-gutter"></div>
@@ -103,6 +103,8 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 
 	constructor() {
 		super();
+		this.descriptionListElements = [];
+		this.descriptionListGutters = [];
 		this.descriptionListElementsInitialHeight = 0;
 		this.descriptionListElementsMaxWidth = 0;
 		this.addEventListener('iron-resize', this._onIronResize.bind(this));
@@ -120,17 +122,17 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 		};
 	}
 
-	_resizeDescriptionList()  {
+	_setInitialDescriptionListSizes()  {
 		this.descriptionListElements = this.shadowRoot.querySelectorAll('dt')
 			.concat(this.shadowRoot.querySelectorAll('dd'));
 		this.descriptionListGutters = this.shadowRoot
 			.querySelectorAll('.discovery-course-action-description-list-gutter');
 
-		// The initial height of the element is used to determine whether a word wrap has occurred
-		if (!this.descriptionListElements || !this.descriptionListElements.length) {
+		if (!this.descriptionListElements.length) {
 			return;
 		}
 
+		// The initial height of the element is used to determine whether a word wrap has occurred
 		this.descriptionListElementsInitialHeight =
 			this._getInitialElementWidthAndHeight(this.descriptionListElements[0]).initialHeight;
 
@@ -160,9 +162,7 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 	}
 
 	_onIronResize() {
-		if (!this.descriptionListElements ||
-			!this.descriptionListElements.length ||
-			!this.descriptionListGutters ||
+		if (!this.descriptionListElements.length ||
 			!this.descriptionListGutters.length) {
 			return;
 		}

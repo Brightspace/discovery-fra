@@ -166,7 +166,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		const route = this.shadowRoot.querySelector('app-route');
 		route.addEventListener('route-changed', this._routeChanged.bind(this));
 		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
-		this.courseDescriptionItemsArray = [];
 	}
 	_routeChanged(route) {
 		this.route = route.detail.value || {};
@@ -179,16 +178,9 @@ class DiscoveryCourse extends mixinBehaviors(
 			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
 				.then(this._handleCourseEntity.bind(this))
-				.then(() => this._processCourseDescriptionItems())
-				.catch(() => {
-					this.dispatchEvent(new CustomEvent('navigate', {
-						detail: {
-							path: this.routeLocations().notFound()
-						},
-						bubbles: true,
-						composed: true
-					}));
-				});
+				.catch(() => this._navigateToNotFound());
+		} else {
+			this._navigateToNotFound();
 		}
 	}
 	_handleCourseEntity(courseEntity) {
@@ -234,6 +226,8 @@ class DiscoveryCourse extends mixinBehaviors(
 			this._endDate = moment.utc(endDate).format(dateFormat);
 		}
 
+		this._processCourseDescriptionItems();
+
 		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
 			// TODO: Do we need to do something similar to this?
@@ -249,31 +243,32 @@ class DiscoveryCourse extends mixinBehaviors(
 		return Promise.resolve();
 	}
 	_processCourseDescriptionItems() {
+		const courseDescriptionItemsArray = [];
 		if (this._startDate) {
-			this.courseDescriptionItemsArray.push({
+			courseDescriptionItemsArray.push({
 				term: this.localize('startDate'),
 				description: this._startDate
 			});
 		}
 		if (this._endDate) {
-			this.courseDescriptionItemsArray.push({
+			courseDescriptionItemsArray.push({
 				term: this.localize('endDate'),
 				description: this._endDate
 			});
 		}
 		if (this._courseCode) {
-			this.courseDescriptionItemsArray.push({
+			courseDescriptionItemsArray.push({
 				term: this.localize('courseCode'),
 				description: this._courseCode
 			});
 		}
 		if (this._firstPublished) {
-			this.courseDescriptionItemsArray.push({
+			courseDescriptionItemsArray.push({
 				term: this.localize('firstPublished'),
 				description: this._firstPublished
 			});
 		}
-		this._courseDescriptionItems = this.courseDescriptionItemsArray;
+		this._courseDescriptionItems = courseDescriptionItemsArray;
 	}
 	_reset() {
 		this._courseCategory = '';
@@ -291,7 +286,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._isOnMyList =  false;
 		this._startDate =  '';
 		this._courseDescriptionItems = [];
-		this.courseDescriptionItemsArray = [];
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {
@@ -300,6 +294,15 @@ class DiscoveryCourse extends mixinBehaviors(
 			},
 			bubbles: true,
 			composed: true,
+		}));
+	}
+	_navigateToNotFound() {
+		this.dispatchEvent(new CustomEvent('navigate', {
+			detail: {
+				path: this.routeLocations().notFound()
+			},
+			bubbles: true,
+			composed: true
 		}));
 	}
 }
