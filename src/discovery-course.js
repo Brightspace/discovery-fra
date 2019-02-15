@@ -131,11 +131,8 @@ class DiscoveryCourse extends mixinBehaviors(
 
 				<course-action
 					class="discovery-course-action"
-					course-code=[[_courseCode]]
 					course-tags=[[_courseTags]]
-					end-date=[[_endDate]]
-					first-published=[[_firstPublished]]
-					start-date=[[_startDate]]>
+					course-description-items=[[_courseDescriptionItems]]>
 				</course-action>
 			</div>
 			<discovery-footer></discovery-footer>
@@ -161,6 +158,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			_isInMyLearning: Boolean,
 			_isOnMyList: Boolean,
 			_startDate: String,
+			_courseDescriptionItems: Array
 		};
 	}
 	ready() {
@@ -168,17 +166,29 @@ class DiscoveryCourse extends mixinBehaviors(
 		const route = this.shadowRoot.querySelector('app-route');
 		route.addEventListener('route-changed', this._routeChanged.bind(this));
 		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
+		this.courseDescriptionItemsArray = [];
 	}
 	_routeChanged(route) {
 		this.route = route.detail.value || {};
 	}
 	_routeDataChanged(routeData) {
+		this._reset();
 		this.routeData = routeData.detail.value || {};
 		if (this.routeData.courseId) {
 			const parameters = { id: this.routeData.courseId };
-			this._getActionUrl('course', parameters)
+			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
-				.then(this._handleCourseEntity.bind(this));
+				.then(this._handleCourseEntity.bind(this))
+				.then(() => this._processCourseDescriptionItems())
+				.catch(() => {
+					this.dispatchEvent(new CustomEvent('navigate', {
+						detail: {
+							path: this.routeLocations().notFound()
+						},
+						bubbles: true,
+						composed: true
+					}));
+				});
 		}
 	}
 	_handleCourseEntity(courseEntity) {
@@ -202,28 +212,34 @@ class DiscoveryCourse extends mixinBehaviors(
 		const organizationUrl = courseEntity.hasLink(Rels.organization)
 			&& courseEntity.getLinkByRel(Rels.organization).href;
 		if (organizationUrl) {
-			this._fetchEntity(organizationUrl)
+			return this._fetchEntity(organizationUrl)
 				.then(this._handleOrganizationEntity.bind(this));
 		}
+
+		return Promise.resolve();
 	}
 	_handleOrganizationEntity(organizationEntity) {
 		if (!organizationEntity.properties) { return; }
 
 		const { code, endDate, name, startDate } = organizationEntity.properties;
-		const dateFormat = 'MMM Do, YYYY';
-		moment.locale(this.language);
-
 		this._courseCode = code;
 		this._courseTitle = name; // TODO: this can also be fetched from BFF's course entity
-		this._endDate = moment.utc(endDate).format(dateFormat); // TODO: Date can be empty, we'll need a fallback langterm?
-		this._startDate = moment.utc(startDate).format(dateFormat);
+
+		const dateFormat = 'MMM Do, YYYY';
+		moment.locale(this.language);
+		if (startDate) {
+			this._startDate = moment.utc(startDate).format(dateFormat);
+		}
+		if (endDate) {
+			this._endDate = moment.utc(endDate).format(dateFormat);
+		}
 
 		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
 			// TODO: Do we need to do something similar to this?
 			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
 			if (imageEntity.href) {
-				this._fetchEntity(imageEntity.href)
+				return this._fetchEntity(imageEntity.href)
 					.then(function(hydratedImageEntity) {
 						this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
 					}.bind(this));
@@ -232,7 +248,51 @@ class DiscoveryCourse extends mixinBehaviors(
 
 		return Promise.resolve();
 	}
-
+	_processCourseDescriptionItems() {
+		if (this._startDate) {
+			this.courseDescriptionItemsArray.push({
+				term: this.localize('startDate'),
+				description: this._startDate
+			});
+		}
+		if (this._endDate) {
+			this.courseDescriptionItemsArray.push({
+				term: this.localize('endDate'),
+				description: this._endDate
+			});
+		}
+		if (this._courseCode) {
+			this.courseDescriptionItemsArray.push({
+				term: this.localize('courseCode'),
+				description: this._courseCode
+			});
+		}
+		if (this._firstPublished) {
+			this.courseDescriptionItemsArray.push({
+				term: this.localize('firstPublished'),
+				description: this._firstPublished
+			});
+		}
+		this._courseDescriptionItems = this.courseDescriptionItemsArray;
+	}
+	_reset() {
+		this._courseCategory = '';
+		this._courseCode = '';
+		this._courseDescription = '';
+		this._courseDuration =  null;
+		this._courseImage = '';
+		this._courseLastUpdated =  '';
+		this._courseTags =  [];
+		this._courseTitle =  '';
+		this._endDate =  '';
+		this._firstPublished =  '';
+		this._format =  '';
+		this._isInMyLearning =  false;
+		this._isOnMyList =  false;
+		this._startDate =  '';
+		this._courseDescriptionItems = [];
+		this.courseDescriptionItemsArray = [];
+	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {

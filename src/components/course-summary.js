@@ -215,10 +215,12 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 					<div class="discovery-course-summary-breadcrumbs">
 						<d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discovery')]]</d2l-link>
 						<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
-						<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
-							<div value="[[courseCategory]]">[[courseCategory]]</div>
-						</d2l-link>
-						<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
+						<template is="dom-if" if="[[courseCategory]]">
+							<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
+								<div value="[[courseCategory]]">[[courseCategory]]</div>
+							</d2l-link>
+							<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
+						</template>
 					</div>
 
 					<div class="discovery-course-summary-title">
@@ -226,18 +228,24 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 					</div>
 
 					<div class="discovery-course-summary-info-container">
-						<div class="discovery-course-summary-info-property">
-							<d2l-icon icon="d2l-tier1:time"></d2l-icon>
-							<div class="d2l-body-standard">[[localize('durationMinutes', 'minutes', courseDuration)]]</div>
-						</div>
-						<div class="discovery-course-summary-info-property">
-							<d2l-icon icon="d2l-tier1:my-computer"></d2l-icon>
-							<div class="d2l-body-standard">[[format]]</div>
-						</div>
-						<div class="discovery-course-summary-info-property">
-							<d2l-icon icon="d2l-tier1:calendar"></d2l-icon>
-							<div class="d2l-body-standard">[[localize('lastUpdatedDate', 'date', courseLastUpdated)]]</div>
-						</div>
+						<template is="dom-if" if="[[courseDuration]]">
+							<div class="discovery-course-summary-info-property">
+								<d2l-icon icon="d2l-tier1:time"></d2l-icon>
+								<div class="d2l-body-standard">[[localize('durationMinutes', 'minutes', courseDuration)]]</div>
+							</div>
+						</template>
+						<template is="dom-if" if="[[format]]">
+							<div class="discovery-course-summary-info-property">
+								<d2l-icon icon="d2l-tier1:my-computer"></d2l-icon>
+								<div class="d2l-body-standard">[[format]]</div>
+							</div>
+						</template>
+						<template is="dom-if" if="[[courseLastUpdated]]">
+							<div class="discovery-course-summary-info-property">
+								<d2l-icon icon="d2l-tier1:calendar"></d2l-icon>
+								<div class="d2l-body-standard">[[localize('lastUpdatedDate', 'date', courseLastUpdated)]]</div>
+							</div>
+						</template>
 					</div>
 				</div>
 

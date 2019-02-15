@@ -1,4 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import 'd2l-icons/d2l-icon.js';
@@ -45,7 +46,7 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 				}
 
 				.discovery-course-action-description-list-gutter-multiline {
-					width: 0.6rem;
+					flex: 0 0 0.6rem;
 				}
 
 				.discovery-course-action-description-list-term {
@@ -75,29 +76,13 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 				<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('courseInfo')]]</h3>
 
 				<dl class="discovery-course-action-description-list">
-					<div class="discovery-course-action-description-list-row">
-						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[localize('startDate')]]</dt>
+					<template is="dom-repeat" items="[[courseDescriptionItems]]" on-dom-change='_resizeDescriptionList'>
+						<div class="discovery-course-action-description-list-row">
+						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[item.term]]</dt>
 						<div class="discovery-course-action-description-list-gutter"></div>
-						<dd class="d2l-body-compact discovery-course-action-description-list-data">[[startDate]]</dd>
-					</div>
-
-					<div class="discovery-course-action-description-list-row">
-						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[localize('endDate')]]</dt>
-						<div class="discovery-course-action-description-list-gutter"></div>
-						<dd class="d2l-body-compact discovery-course-action-description-list-data">[[endDate]]</dd>
-					</div>
-
-					<div class="discovery-course-action-description-list-row">
-						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[localize('courseCode')]]</dt>
-						<div class="discovery-course-action-description-list-gutter"></div>
-						<dd class="d2l-body-compact discovery-course-action-description-list-data">[[courseCode]]</dd>
-					</div>
-
-					<div class="discovery-course-action-description-list-row">
-						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[localize('firstPublished')]]</dt>
-						<div class="discovery-course-action-description-list-gutter"></div>
-						<dd class="d2l-body-compact discovery-course-action-description-list-data">[[firstPublished]]</dd>
-					</div>
+						<dd class="d2l-body-compact discovery-course-action-description-list-data">[[item.description]]</dd>
+						</div>
+					</template>
 				</dl>
 
 				<template is="dom-if" if="[[tagsExist]]">
@@ -124,50 +109,62 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 
 	}
 
-	ready() {
-		super.ready();
-		this.descriptionListElements = this.shadowRoot.querySelectorAll('dt')
-			.concat(this.shadowRoot.querySelectorAll('dd'));
-		this.descriptionListGutters = this.shadowRoot
-			.querySelectorAll('.discovery-course-action-description-list-gutter');
-	}
-
 	static get properties() {
 		return {
-			courseCode: String,
 			courseTags: Array,
-			endDate: String,
-			firstPublished: String,
-			startDate: String,
 			tagsExist: {
 				type: Boolean,
 				computed: '_tagsExist(courseTags)',
 			},
+			courseDescriptionItems: Array
 		};
 	}
 
-	_onIronResize() {
+	_resizeDescriptionList()  {
+		this.descriptionListElements = this.shadowRoot.querySelectorAll('dt')
+			.concat(this.shadowRoot.querySelectorAll('dd'));
+		this.descriptionListGutters = this.shadowRoot
+			.querySelectorAll('.discovery-course-action-description-list-gutter');
+
 		// The initial height of the element is used to determine whether a word wrap has occurred
-		if (!this.descriptionListElementsInitialHeight) {
-			this.descriptionListElementsInitialHeight =
-				this._getInitialElementWidthAndHeight(this.descriptionListElements[0]).initialHeight;
+		if (!this.descriptionListElements || !this.descriptionListElements.length) {
+			return;
 		}
+
+		this.descriptionListElementsInitialHeight =
+			this._getInitialElementWidthAndHeight(this.descriptionListElements[0]).initialHeight;
 
 		// The flex-basis is set to the max width of all elements, so that it only takes up the space
 		// required to fit on one line
-		if (!this.descriptionListElementsMaxWidth) {
-			this.descriptionListElementsMaxWidth = this.descriptionListElements
-				.map(e => this._getInitialElementWidthAndHeight(e).initialWidth)
-				.reduce((acc, currentWidth) => Math.max(acc, currentWidth));
+		this.descriptionListElementsMaxWidth = this.descriptionListElements
+			.map(e => this._getInitialElementWidthAndHeight(e).initialWidth)
+			.reduce((acc, currentWidth) => Math.max(acc, currentWidth));
 
-			// IE11 doesn't seem to have width for any elements on initial load
-			if (this.descriptionListElementsMaxWidth > 0) {
-				this.descriptionListElements.forEach(e => {
-					fastdom.mutate(() => {
-						e.style.flex = `0 1 ${this.descriptionListElementsMaxWidth}px`;
-					});
+		// Setting the flex basis of the max width element to its max width still wraps it: add 1 pixel to accomodate this
+		if (this.descriptionListElementsMaxWidth) {
+			this.descriptionListElementsMaxWidth = this.descriptionListElementsMaxWidth + 1;
+		}
+
+		// IE11 doesn't seem to have width for any elements on initial load
+		if (this.descriptionListElementsMaxWidth > 0) {
+			this.descriptionListElements.forEach(e => {
+				fastdom.mutate(() => {
+					e.style.flex = `0 1 ${this.descriptionListElementsMaxWidth}px`;
 				});
-			}
+			});
+		}
+
+		beforeNextRender(this, () => {
+			this._onIronResize();
+		});
+	}
+
+	_onIronResize() {
+		if (!this.descriptionListElements ||
+			!this.descriptionListElements.length ||
+			!this.descriptionListGutters ||
+			!this.descriptionListGutters.length) {
+			return;
 		}
 
 		// If the word wrap has occurred, we switch to the resizing (10-30px) gutter class
