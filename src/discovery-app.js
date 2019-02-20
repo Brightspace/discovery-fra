@@ -7,6 +7,8 @@ import './discovery-404.js';
 import './discovery-course.js';
 import './discovery-home.js';
 import './discovery-search.js';
+
+import { IfrauMixin } from './mixins/ifrau-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 
 // Gesture events like tap and track generated from touch will not be
@@ -18,7 +20,7 @@ setPassiveTouchGestures(true);
 window.DiscoveryApp = window.DiscoveryApp || {};
 setRootPath(window.DiscoveryApp.rootPath);
 
-class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
+class DiscoveryApp extends RouteLocationsMixin(IfrauMixin(PolymerElement)) {
 	static get template() {
 		return html`
 			<style>
@@ -74,6 +76,7 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 	ready() {
 		super.ready();
 		this.addEventListener('navigate', this._navigate);
+		this.addEventListener('navigate-parent', this._navigateParent);
 
 		const location = this.shadowRoot.querySelector('app-location-ifrau');
 		location.addEventListener('route-changed', this._routeChanged.bind(this));
@@ -87,6 +90,11 @@ class DiscoveryApp extends RouteLocationsMixin(PolymerElement) {
 	_navigate(e) {
 		if (e && e.detail && e.detail.path) {
 			this.set('route.path', e.detail.path);
+		}
+	}
+	_navigateParent(e) {
+		if (e && e.detail && e.detail.href) {
+			this._ifrauNavigationGo(e.detail.href);
 		}
 	}
 	_routeChanged(route) {

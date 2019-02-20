@@ -23,11 +23,12 @@ const internalFetchMixin = (superClass) => class extends superClass {
 	constructor() {
 		super();
 	}
-	_fetchEntity(url) {
+	_fetchEntity(url, method = 'GET') {
 		if (!url) {
 			return;
 		}
 		const request = new Request(url, {
+			method,
 			headers: { Accept: 'application/vnd.siren+json' },
 		});
 		return window.d2lfetch

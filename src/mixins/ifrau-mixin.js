@@ -42,6 +42,15 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 				return setup;
 			});
 	}
+	_ifrauNavigationGo(href) {
+		window.D2L = window.D2L || {};
+		window.D2L.frau = window.D2L.frau || {};
+		const navigationService = window.D2L.frau.navigation;
+
+		if (navigationService && href) {
+			navigationService.go(href);
+		}
+	}
 };
 
 export const IfrauMixin = dedupingMixin(internalIfrauMixin);
