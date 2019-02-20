@@ -4,6 +4,8 @@ import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-res
 import '@polymer/paper-dialog/paper-dialog.js';
 import 'd2l-alert/d2l-alert-toast.js';
 import 'd2l-colors/d2l-colors.js';
+import 'd2l-breadcrumbs/d2l-breadcrumb';
+import 'd2l-breadcrumbs/d2l-breadcrumbs';
 import 'd2l-button/d2l-button.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
@@ -34,16 +36,6 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 					border-bottom: transparent;
 					border-radius: 6px 6px 0 0;
 					padding: 1.5rem 1.5rem 1.2rem;
-				}
-
-				.discovery-course-summary-breadcrumbs {
-					align-items: center;
-					display: flex;
-					flex-direction: row;
-				}
-
-				.discovery-course-summary-breadcrumbs>* {
-					margin: 0.1rem;
 				}
 
 				.discovery-course-summary-title {
@@ -161,10 +153,19 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 					z-index: -10;
 				}
 
+				.discovery-course-summary-breadcrumbs {
+					font-size: 14px;
+					margin: -12px 0 -6px;
+				}
+
 				@media only screen and (max-width: 615px) {
 					.discovery-course-summary-card,
 					.discovery-course-summary-buttons {
 						padding: 0.9rem;
+					}
+
+					.discovery-course-summary-breadcrumbs {
+						margin: -6px 0 -12px;
 					}
 
 					.discovery-course-summary-description {
@@ -213,14 +214,9 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 				<div id="discovery-header-image-container" class="discovery-header-image-container"></div>
 				<div id="discovery-course-summary-card" class="discovery-course-summary-card">
 					<div class="discovery-course-summary-breadcrumbs">
-						<d2l-link href="javascript:void(0)" on-click="_navigateToHome">[[localize('discovery')]]</d2l-link>
-						<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
-						<template is="dom-if" if="[[courseCategory]]">
-							<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
-								<div value="[[courseCategory]]">[[courseCategory]]</div>
-							</d2l-link>
-							<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>
-						</template>
+						<d2l-breadcrumbs class="discovery-search-header-breadcrumb">
+							<d2l-breadcrumb on-click="_navigateToHome" href="javascript:void(0)" text="[[localize('discovery')]]"></d2l-breadcrumb>
+						</d2l-breadcrumbs>
 					</div>
 
 					<div class="discovery-course-summary-title">
@@ -404,18 +400,6 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], LocalizeMixi
 
 		var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
 		myLearningDialog.opened = false;
-	}
-
-	_navigateToSearch(e) {
-		if (e && e.target && e.target.value) {
-			this.dispatchEvent(new CustomEvent('navigate', {
-				detail: {
-					path: this.routeLocations().search(e.target.value),
-				},
-				bubbles: true,
-				composed: true,
-			}));
-		}
 	}
 }
 
