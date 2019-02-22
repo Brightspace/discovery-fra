@@ -225,7 +225,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 
 				<div id="discovery-course-summary-buttons" class="discovery-course-summary-buttons">
 					<template is="dom-if" if="[[!actionEnroll]]">
-						<d2l-button on-click="_navigateToActivityHomepage" primary>[[localize('openCourse')]]</d2l-button>
+						<d2l-button on-click="_navigateToOrganizationHomepage" primary>[[localize('openCourse')]]</d2l-button>
 					</template>
 					<template is="dom-if" if="[[actionEnroll]]">
 						<d2l-button on-click="_enroll" primary>[[localize('enrollInCourse')]]</d2l-button>
@@ -261,7 +261,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			courseImage: String,
 			format: String,
 			actionEnroll: String,
-			activityHomepage: String,
+			organizationHomepage: String,
 			organizationHref: String,
 			_enrollmentDialogMessage: String
 		};
@@ -331,14 +331,14 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		}
 	}
 
-	_navigateToActivityHomepage() {
-		if (!this.activityHomepage) {
+	_navigateToOrganizationHomepage() {
+		if (!this.organizationHomepage) {
 			// Refetch organization entity to get the homepage href
 			return this._fetchOrganizationHomepage()
 				.then(() => {
 					this.dispatchEvent(new CustomEvent('navigate-parent', {
 						detail: {
-							href: this.activityHomepage
+							path: this.organizationHomepage
 						},
 						bubbles: true,
 						composed: true
@@ -347,7 +347,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		} else {
 			this.dispatchEvent(new CustomEvent('navigate-parent', {
 				detail: {
-					href: this.activityHomepage
+					path: this.organizationHomepage
 				},
 				bubbles: true,
 				composed: true
@@ -376,7 +376,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		if (this.organizationHref) {
 			return this._fetchEntity(this.organizationHref)
 				.then((organizationEntity) => {
-					this.activityHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
+					this.organizationHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
 						&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 				});
 		}

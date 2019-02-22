@@ -125,7 +125,7 @@ class DiscoveryCourse extends mixinBehaviors(
 					course-last-updated=[[_courseLastUpdated]]
 					format=[[_format]]
 					action-enroll=[[_actionEnroll]]
-					activity-homepage=[[_activityHomepage]]
+					organization-homepage=[[_organizationHomepage]]
 					organization-href=[[_organizationHref]]>
 				</course-summary>
 
@@ -148,7 +148,6 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: String,
 				value: ''
 			},
-			_activityHomepage: String,
 			_courseCategory: String,
 			_courseCode: String,
 			_courseDescription: String,
@@ -162,6 +161,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			_format: String,
 			_startDate: String,
 			_courseDescriptionItems: Array,
+			_organizationHomepage: String,
 			_organizationHref: String,
 		};
 	}
@@ -239,7 +239,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			this._processCourseDescriptionItems();
 		}
 
-		this._activityHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
+		this._organizationHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
 			&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 
 		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
@@ -286,7 +286,7 @@ class DiscoveryCourse extends mixinBehaviors(
 	}
 	_reset() {
 		this._actionEnroll = '';
-		this._activityHomepage = '';
+		this._organizationHomepage = '';
 		this._courseCategory = '';
 		this._courseCode = '';
 		this._courseDescription = '';

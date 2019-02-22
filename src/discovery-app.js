@@ -93,8 +93,8 @@ class DiscoveryApp extends RouteLocationsMixin(IfrauMixin(PolymerElement)) {
 		}
 	}
 	_navigateParent(e) {
-		if (e && e.detail && e.detail.href) {
-			this._ifrauNavigationGo(e.detail.href);
+		if (e && e.detail && e.detail.path) {
+			this._ifrauNavigationGo(e.detail.path);
 		}
 	}
 	_routeChanged(route) {
