@@ -94,7 +94,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					<div class="discovery-search-results-page-number-container">
 						<d2l-button-icon
 							icon="d2l-tier1:chevron-left"
-							aria-label="[[localize('pagePrevious')]]"
+							aria-label$="[[localize('pagePrevious')]]"
 							disabled$="[[_previousPageDisabled(_pageCurrent)]]"
 							on-click="_toPreviousPage"
 							on-keydown="_toPreviousPage">
@@ -102,8 +102,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 						<d2l-input-text
 							class="discovery-search-results-page-count"
 							type="number"
-							aria-label="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
-							aria-invalid="[[localize('pageSelectionInvalid', 'pageTotal', _pageTotal)]]"
+							aria-label$="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
 							name="myInput"
 							value="[[_pageCurrent]]"
 							min="1"
@@ -117,7 +116,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 						</div>
 						<d2l-button-icon
 							icon="d2l-tier1:chevron-right"
-							aria-label="[[localize('pageNext')]]"
+							aria-label$="[[localize('pageNext')]]"
 							disabled$="[[_nextPageDisabled(_pageCurrent, _pageTotal)]]"
 							on-click="_toNextPage"
 							on-keydown="_toNextPage">
