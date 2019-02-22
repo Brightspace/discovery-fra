@@ -244,7 +244,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 						<d2l-icon class="discovery-course-summary-dialog-close" on-click="_closeDialog" icon="d2l-tier1:close-small"></d2l-icon>
 					</div>
 					<div class="discovery-course-summary-dialog-content-container">
-						<div class="d2l-body-standard">[[localize('enrollmentMessage.success')]]</div>
+						<div class="d2l-body-standard">[[_enrollmentDialogMessage]]</div>
 					</div>
 				</div>
 			</paper-dialog>
@@ -260,9 +260,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			courseLastUpdated: String,
 			courseImage: String,
 			format: String,
-			actionEnroll: {
-				type: String
-			},
+			actionEnroll: String,
 			activityHomepage: String,
 			organizationHref: String,
 			_enrollmentDialogMessage: String
