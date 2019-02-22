@@ -237,7 +237,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 				</div>
 			</div>
 
-			<paper-dialog class="discovery-course-summary-dialog d2l-typography" id="myLearningDialog" always-on-top with-backdrop>
+			<paper-dialog class="discovery-course-summary-dialog d2l-typography" id="discovery-course-summary-enroll-dialog" always-on-top with-backdrop>
 				<div class="discovery-course-summary-dialog-container">
 					<div class="discovery-course-summary-dialog-header-container">
 						<d2l-icon class="discovery-course-summary-dialog-close" on-click="_closeDialog" icon="d2l-tier1:close-small"></d2l-icon>
@@ -262,7 +262,8 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			actionEnroll: {
 				type: String
 			},
-			activityHomepage: String
+			activityHomepage: String,
+			_enrollmentDialogMessage: String,
 		};
 	}
 
@@ -301,8 +302,8 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 	}
 
 	_closeDialog() {
-		var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
-		myLearningDialog.opened = false;
+		var enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
+		enrollmentDialog.opened = false;
 	}
 
 	_navigateToHome() {
@@ -314,8 +315,8 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			composed: true
 		}));
 
-		var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
-		myLearningDialog.opened = false;
+		var enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
+		enrollmentDialog.opened = false;
 	}
 
 	_navigateToSearch(e) {
@@ -346,16 +347,14 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		if (this.actionEnroll) {
 			this._fetchEntity(this.actionEnroll.href, this.actionEnroll.method)
 				.then(() => {
-					// enrollment succeeded
 					this.actionEnroll = '';
-					// Show dialog
-					var myLearningDialog = this.shadowRoot.querySelector('#myLearningDialog');
-					myLearningDialog.opened = true;
-					this.actionEnroll = '';
+					this._enrollmentDialogMessage = this.localize('enrollmentMessage.success');
 				})
 				.catch(() => {
-					// enrollment failed
+					this._enrollmentDialogMessage = this.localize('enrollmentMessage.fail');
 				});
+			var enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
+			enrollmentDialog.opened = true;
 		}
 	}
 }

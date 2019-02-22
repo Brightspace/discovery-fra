@@ -192,10 +192,6 @@ class DiscoveryCourse extends mixinBehaviors(
 			this._actionEnroll = courseEntity.getAction('assign');
 		}
 
-		if (courseEntity.hasLink(Rels.Activities.activityHomepage)) {
-			this._activityHomepage = courseEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
-		}
-
 		if (courseEntity.properties) {
 			//TODO: These properties still need to be added
 			// 	// data for the course summary
@@ -239,6 +235,10 @@ class DiscoveryCourse extends mixinBehaviors(
 		}
 
 		this._processCourseDescriptionItems();
+
+		if (organizationEntity.hasLink(Rels.organizationHomepage)) {
+			this._activityHomepage = organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
+		}
 
 		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
