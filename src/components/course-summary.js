@@ -332,7 +332,19 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 	}
 
 	_navigateToActivityHomepage() {
-		if (this.activityHomepage) {
+		if (!this.activityHomepage) {
+			// Refetch organization entity to get the homepage href
+			this._fetchOrganizationHomepage()
+				.then(() => {
+					this.dispatchEvent(new CustomEvent('navigate-parent', {
+						detail: {
+							href: this.activityHomepage
+						},
+						bubbles: true,
+						composed: true
+					}));
+				});
+		} else {
 			this.dispatchEvent(new CustomEvent('navigate-parent', {
 				detail: {
 					href: this.activityHomepage
@@ -349,8 +361,6 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 				.then(() => {
 					this.actionEnroll = '';
 					this._enrollmentDialogMessage = this.localize('enrollmentMessage.success');
-					// Refetch organization entity to get the homepage href
-					return this._fetchOrganizationHomepage();
 				})
 				.catch(() => {
 					this._enrollmentDialogMessage = this.localize('enrollmentMessage.fail');
