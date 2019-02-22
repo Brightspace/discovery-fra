@@ -52,11 +52,15 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 				.discovery-course-action-description-list-term {
 					color: var(--d2l-color-tungsten);
 					margin: 0;
+					overflow: hidden;
+					word-wrap: break-word;
 				}
 
 				.discovery-course-action-description-list-data {
 					color: var(--d2l-color-ferrite);
 					margin: 0;
+					overflow: hidden;
+					word-wrap: break-word;
 				}
 
 				.discovery-course-action-tags-container {
