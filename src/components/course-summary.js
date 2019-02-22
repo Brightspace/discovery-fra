@@ -1,6 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import { Rels } from 'd2l-hypermedia-constants';
 import '@polymer/paper-dialog/paper-dialog.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-breadcrumbs/d2l-breadcrumb';
@@ -263,7 +264,8 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 				type: String
 			},
 			activityHomepage: String,
-			_enrollmentDialogMessage: String,
+			organizationHref: String,
+			_enrollmentDialogMessage: String
 		};
 	}
 
@@ -349,12 +351,26 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 				.then(() => {
 					this.actionEnroll = '';
 					this._enrollmentDialogMessage = this.localize('enrollmentMessage.success');
+					// Refetch organization entity to get the homepage href
+					return this._fetchOrganizationHomepage();
 				})
 				.catch(() => {
 					this._enrollmentDialogMessage = this.localize('enrollmentMessage.fail');
+				})
+				.then(() => {
+					var enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
+					enrollmentDialog.opened = true;
 				});
-			var enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
-			enrollmentDialog.opened = true;
+		}
+	}
+
+	_fetchOrganizationHomepage() {
+		if (this.organizationHref) {
+			return this._fetchEntity(this.organizationHref)
+				.then((organizationEntity) => {
+					this.activityHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
+						&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
+				});
 		}
 	}
 }

@@ -125,7 +125,8 @@ class DiscoveryCourse extends mixinBehaviors(
 					course-last-updated=[[_courseLastUpdated]]
 					format=[[_format]]
 					action-enroll=[[_actionEnroll]]
-					activity-homepage=[[_activityHomepage]]>
+					activity-homepage=[[_activityHomepage]]
+					organization-href=[[_organizationHref]]>
 				</course-summary>
 
 				<course-action
@@ -160,7 +161,8 @@ class DiscoveryCourse extends mixinBehaviors(
 			_firstPublished: String,
 			_format: String,
 			_startDate: String,
-			_courseDescriptionItems: Array
+			_courseDescriptionItems: Array,
+			_organizationHref: String,
 		};
 	}
 	ready() {
@@ -211,6 +213,7 @@ class DiscoveryCourse extends mixinBehaviors(
 
 		const organizationUrl = courseEntity.hasLink(Rels.organization)
 			&& courseEntity.getLinkByRel(Rels.organization).href;
+		this._organizationHref = organizationUrl;
 		if (organizationUrl) {
 			return this._fetchEntity(organizationUrl)
 				.then(this._handleOrganizationEntity.bind(this));
@@ -219,26 +222,25 @@ class DiscoveryCourse extends mixinBehaviors(
 		return Promise.resolve();
 	}
 	_handleOrganizationEntity(organizationEntity) {
-		if (!organizationEntity.properties) { return; }
+		if (organizationEntity.properties) {
+			const { code, endDate, name, startDate } = organizationEntity.properties;
+			this._courseCode = code;
+			this._courseTitle = name; // TODO: this can also be fetched from BFF's course entity
 
-		const { code, endDate, name, startDate } = organizationEntity.properties;
-		this._courseCode = code;
-		this._courseTitle = name; // TODO: this can also be fetched from BFF's course entity
+			const dateFormat = 'MMM Do, YYYY';
+			moment.locale(this.language);
+			if (startDate) {
+				this._startDate = moment.utc(startDate).format(dateFormat);
+			}
+			if (endDate) {
+				this._endDate = moment.utc(endDate).format(dateFormat);
+			}
 
-		const dateFormat = 'MMM Do, YYYY';
-		moment.locale(this.language);
-		if (startDate) {
-			this._startDate = moment.utc(startDate).format(dateFormat);
+			this._processCourseDescriptionItems();
 		}
-		if (endDate) {
-			this._endDate = moment.utc(endDate).format(dateFormat);
-		}
 
-		this._processCourseDescriptionItems();
-
-		if (organizationEntity.hasLink(Rels.organizationHomepage)) {
-			this._activityHomepage = organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
-		}
+		this._activityHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
+			&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 
 		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
 			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
