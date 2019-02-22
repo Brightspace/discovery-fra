@@ -334,7 +334,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 	_navigateToActivityHomepage() {
 		if (!this.activityHomepage) {
 			// Refetch organization entity to get the homepage href
-			this._fetchOrganizationHomepage()
+			return this._fetchOrganizationHomepage()
 				.then(() => {
 					this.dispatchEvent(new CustomEvent('navigate-parent', {
 						detail: {
@@ -357,7 +357,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 
 	_enroll() {
 		if (this.actionEnroll) {
-			this._fetchEntity(this.actionEnroll.href, this.actionEnroll.method)
+			return this._fetchEntity(this.actionEnroll.href, this.actionEnroll.method)
 				.then(() => {
 					this.actionEnroll = '';
 					this._enrollmentDialogMessage = this.localize('enrollmentMessage.success');
