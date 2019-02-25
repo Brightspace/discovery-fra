@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Course Summary Test</title>
+	<script src="../../node_modules/@babel/polyfill/browser.js"></script>
+    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script src="../../node_modules/web-component-tester/browser.js"></script>
+
+	<script type="module" src="../../src/components/course-summary.js"></script>
+</head>
+  <body>
+
+    <test-fixture id="course-summary-basic-fixture">
+    	<template>
+			<course-summary></course-summary>
+    	</template>
+	</test-fixture>
+
+    <script type="module" src="course-summary-test.js"></script>
+  </body>
+</html>

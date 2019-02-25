@@ -225,10 +225,20 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 
 				<div id="discovery-course-summary-buttons" class="discovery-course-summary-buttons">
 					<template is="dom-if" if="[[!actionEnroll]]">
-						<d2l-button on-click="_navigateToOrganizationHomepage" primary>[[localize('openCourse')]]</d2l-button>
+						<d2l-button
+							id="discovery-course-summary-open-course"
+							on-click="_navigateToOrganizationHomepage"
+							primary>
+							[[localize('openCourse')]]
+						</d2l-button>
 					</template>
 					<template is="dom-if" if="[[actionEnroll]]">
-						<d2l-button on-click="_enroll" primary>[[localize('enrollInCourse')]]</d2l-button>
+						<d2l-button
+							id="discovery-course-summary-enroll"
+							on-click="_enroll"
+							primary>
+							[[localize('enrollInCourse')]]
+						</d2l-button>
 					</template>
 				</div>
 
@@ -260,7 +270,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			courseLastUpdated: String,
 			courseImage: String,
 			format: String,
-			actionEnroll: String,
+			actionEnroll: Object,
 			organizationHomepage: String,
 			organizationHref: String,
 			_enrollmentDialogMessage: String
@@ -359,7 +369,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		if (this.actionEnroll) {
 			return this._fetchEntity(this.actionEnroll.href, this.actionEnroll.method)
 				.then(() => {
-					this.actionEnroll = '';
+					this.actionEnroll = null;
 					this._enrollmentDialogMessage = this.localize('enrollmentMessage.success');
 				})
 				.catch(() => {
