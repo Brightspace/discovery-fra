@@ -196,7 +196,16 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			return;
 		}
 		this._fetchEntity(href)
-			.then(this._handleSearchResponse.bind(this));
+			.then(this._handleSearchResponse.bind(this))
+			.catch(() => {
+				this.dispatchEvent(new CustomEvent('navigate', {
+					detail: {
+						path: this.routeLocations().notFound()
+					},
+					bubbles: true,
+					composed: true
+				}));
+			});
 	}
 
 	_handleSearchResponse(sirenEntity) {
