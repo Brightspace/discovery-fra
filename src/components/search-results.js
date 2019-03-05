@@ -296,7 +296,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 	_searchResultsTotalReadyObserver(searchResultsTotalReady) {
 		if (searchResultsTotalReady) {
-			console.log('>> loading false');
 			this.dispatchEvent(new CustomEvent('search-loading', {
 				detail: {
 					loading: false
@@ -307,7 +306,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		}
 	}
 	_processBeforeLoading() {
-		console.log('>> loading true');
 		this.dispatchEvent(new CustomEvent('search-loading', {
 			detail: {
 				loading: true
