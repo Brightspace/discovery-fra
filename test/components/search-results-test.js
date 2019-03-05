@@ -112,8 +112,7 @@ describe('search-results', () => {
 
 		it('should show total number of results', done => {
 			afterNextRender(component, () => {
-				expect(component._searchResultsTotal).to.equal(2);
-				const searchResultText = component.$$('.discovery-search-results-search-message').innerHTML;
+				const searchResultText = component.$$('#d2l-search-results-results-message').innerHTML;
 				expect(searchResultText).to.include('of 2 for');
 				done();
 			});
@@ -121,8 +120,7 @@ describe('search-results', () => {
 
 		it('should show range of currently displayed', done => {
 			afterNextRender(component, () => {
-				expect(component._searchResultsRangeToString).to.equal('1-2');
-				const searchResultText = component.$$('.discovery-search-results-search-message').innerHTML;
+				const searchResultText = component.$$('#d2l-search-results-results-message').innerHTML;
 				expect(searchResultText).to.include('1-2');
 				done();
 			});
@@ -131,7 +129,7 @@ describe('search-results', () => {
 		it('should show the current search query', done => {
 			afterNextRender(component, () => {
 				expect(component.searchQuery).to.equal('results');
-				const searchResultText = component.$$('.discovery-search-results-search-message').innerHTML;
+				const searchResultText = component.$$('#d2l-search-results-results-message').innerHTML;
 				expect(searchResultText).to.include('"results"');
 				done();
 			});
@@ -186,7 +184,8 @@ describe('search-results', () => {
 			component.searchQuery =  'results';
 			afterNextRender(component, () => {
 				expect(component.href).to.equal('/search/results');
-				expect(component._searchResultsTotal).to.equal(2);
+				const searchResultText = component.$$('#d2l-search-results-results-message').innerHTML;
+				expect(searchResultText).to.include('of 2 for');
 				expect(component.searchQuery).to.equal('results');
 				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
 				expect(searchResults.length).is.greaterThan(0);

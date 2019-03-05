@@ -86,12 +86,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				<div class="discovery-search-results-header">
 					<template is="dom-if" if="[[_searchResultsTotalReady]]">
 						<template is="dom-if" if="[[!_searchResultsExists]]">
-							<h4 class="d2l-heading-4 discovery-search-results-d2l-heading-4 discovery-search-results-search-message">
-								[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]
-							</h4>
+							<h4 class="d2l-heading-4 discovery-search-results-d2l-heading-4 discovery-search-results-search-message">[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]</h4>
 						</template>
 						<template is="dom-if" if="[[_searchResultsExists]]">
-							<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
+							<span id="d2l-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
 						</template>
 					</template>
 				</div>
@@ -298,6 +296,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 	_searchResultsTotalReadyObserver(searchResultsTotalReady) {
 		if (searchResultsTotalReady) {
+			console.log('>> loading false');
 			this.dispatchEvent(new CustomEvent('search-loading', {
 				detail: {
 					loading: false
@@ -308,6 +307,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		}
 	}
 	_processBeforeLoading() {
+		console.log('>> loading true');
 		this.dispatchEvent(new CustomEvent('search-loading', {
 			detail: {
 				loading: true
