@@ -1,5 +1,8 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { afterNextRender, beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '@polymer/app-route/app-route.js';
 import './components/app-location-ifrau.js';
 import './components/discovery-footer.js';
@@ -11,12 +14,20 @@ import './styles/discovery-styles.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
+import { IfrauMixin } from './mixins/ifrau-mixin.js';
 import 'url-polyfill/url-polyfill.min.js';
+import 'fastdom/fastdom.js';
 
-class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(PolymerElement))) {
+class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin(FetchMixin(RouteLocationsMixin(LocalizeMixin(PolymerElement))))) {
 	static get template() {
 		return html`
 			<style include="discovery-styles">
+				.discovery-search-outer-container {
+					display: flex;
+					flex-direction: column;
+					flex-grow: 1;
+				}
+
 				.discovery-search-container {
 					display: flex;
 					flex-direction: row;
@@ -77,21 +88,24 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 				data="[[routeData]]">
 			</app-route>
 
-			<div class="discovery-search-container">
-				<div class="discovery-search-sidebar">
-					<search-sidebar></search-sidebar>
-				</div>
-				<div class="d2l-typography discovery-search-main" hidden$="[[!_searchQuery]]">
-					<div class="discovery-search-nav-container">
-						<search-header id="discovery-search-search-header" query="[[_searchQuery]]"></search-header>
+			<!-- IE11 Bug with min-height not working with flex unless there's an outer flex column with flex-grow: 1 -->
+			<div class="discovery-search-outer-container">
+				<div class="discovery-search-container">
+					<div class="discovery-search-sidebar">
+						<search-sidebar></search-sidebar>
 					</div>
-					<div class="discovery-search-results">
-						<search-results
-							href="[[_searchActionHref]]"
-							search-query="[[_searchQuery]]">
-						</search-results>
+					<div class="d2l-typography discovery-search-main" hidden$="[[!_searchQuery]]">
+						<div class="discovery-search-nav-container">
+							<search-header id="discovery-search-search-header" query="[[_searchQuery]]"></search-header>
+						</div>
+						<div class="discovery-search-results">
+							<search-results
+								href="[[_searchActionHref]]"
+								search-query="[[_searchQuery]]">
+							</search-results>
+						</div>
+						<discovery-footer></discovery-footer>
 					</div>
-					<discovery-footer></discovery-footer>
 				</div>
 			</div>
 		`;
@@ -129,7 +143,12 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 			visible: {
 				type: Boolean,
 				observer: '_visible'
-			}
+			},
+			_searchLoading: {
+				type: Boolean,
+				value: true
+			},
+			_minViewPortHeight: Number
 		};
 	}
 	static get observers() {
@@ -148,6 +167,9 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 
 		const location = this.shadowRoot.querySelector('app-location-ifrau');
 		location.addEventListener('query-params-changed', this._queryParamsChanged.bind(this));
+
+		this.addEventListener('iron-resize', this._onIronResize.bind(this));
+		this.addEventListener('search-loading', this._searchLoadingChanged);
 	}
 	_visible() {
 		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
@@ -195,6 +217,65 @@ class DiscoverySearch extends FetchMixin(RouteLocationsMixin(LocalizeMixin(Polym
 					composed: true
 				}));
 			});
+	}
+	_searchLoadingChanged(e) {
+		if (e && e.detail) {
+			this._searchLoading = e.detail.loading;
+			beforeNextRender(this, () => {
+				this._onIronResize();
+			});
+		}
+	}
+	_onIronResize() {
+		const container = this.shadowRoot.querySelector('.discovery-search-container');
+		if (!this._searchLoading) {
+			afterNextRender(this, () => {
+				fastdom.measure(() => {
+					// Set height of the iframe to be max of container and height of iframe
+					const windowInnerHeight = window.innerHeight;
+					const documentElementClientHeight  = document.documentElement.clientHeight;
+					const heightOfIframe = Math.max(documentElementClientHeight, windowInnerHeight || 0);
+					const containerHeight = container.offsetHeight;
+					const heightToUse = Math.max(heightOfIframe, containerHeight);
+					if (heightOfIframe) {
+						this.iframeApplyStyles({
+							height: heightToUse + 'px'
+						});
+					}
+					// Make sure the height of container is at least the full viewport
+					fastdom.mutate(() => {
+						if (containerHeight > this._minViewPortHeight) {
+							container.style.minHeight = '';
+						} else {
+							container.style.minHeight = this._minViewPortHeight + 'px';
+						}
+					});
+				});
+			});
+		} else {
+			afterNextRender(this, () => {
+				this.iframeApplyStyles({
+					display: 'block',
+					height: '100vh'
+				});
+				afterNextRender(this, () => {
+					fastdom.measure(() => {
+						// Set height of the iframe to be max of container and height of iframe
+						const windowInnerHeight = window.innerHeight;
+						const documentElementClientHeight  = document.documentElement.clientHeight;
+						const heightOfIframe = Math.max(documentElementClientHeight, windowInnerHeight || 0);
+						const containerHeight = container.offsetHeight;
+						const heightToUse = Math.max(heightOfIframe, containerHeight);
+						fastdom.mutate(() => {
+							if (heightToUse) {
+								container.style.minHeight = heightToUse + 'px';
+								this._minViewPortHeight = heightToUse;
+							}
+						});
+					});
+				});
+			});
+		}
 	}
 }
 

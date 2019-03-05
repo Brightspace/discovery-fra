@@ -72,7 +72,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				<div class="discovery-search-header-container">
 					<div class="discovery-search-header-nav-container">
 						<d2l-breadcrumbs class="discovery-search-header-breadcrumb" compact>
-							<d2l-breadcrumb on-click="_navigateToHome" href="javascript:void(0)" text="[[localize('backToDiscovery')]]"></d2l-breadcrumb>
+							<d2l-breadcrumb on-click="_navigateToHome" href="[[_homeHref]]" text="[[localize('backToDiscovery')]]"></d2l-breadcrumb>
 						</d2l-breadcrumbs>
 					</div>
 
@@ -99,7 +99,11 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				notify: true,
 				observer: '_queryChanged'
 			},
-			searchInput: Object
+			searchInput: Object,
+			_homeHref: {
+				type: String,
+				computed: '_getHomeHref()'
+			}
 		};
 	}
 	ready() {
@@ -129,7 +133,10 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	focusOnInput() {
 		this.searchInput.focus();
 	}
-	_navigateToHome() {
+	_navigateToHome(e = null) {
+		if (e) {
+			e.preventDefault();
+		}
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
 				path: this.routeLocations().navLink(),
@@ -149,6 +156,9 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				composed: true,
 			}));
 		}
+	}
+	_getHomeHref() {
+		return this.valenceHomeHref();
 	}
 }
 

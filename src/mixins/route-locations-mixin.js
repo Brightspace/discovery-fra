@@ -32,6 +32,13 @@ const internalRouteLocationsMixin = (superClass) =>
 				notFound: () => `${discoveryBasePath}/404`
 			};
 		}
+
+		valenceHomeHref() {
+			window.D2L = window.D2L || {};
+			window.D2L.frau = window.D2L.frau || {};
+			const valenceHost = window.D2L.frau.valenceHost;
+			return valenceHost + this.routeLocations().navLink();
+		}
 	};
 
 export const RouteLocationsMixin = dedupingMixin(internalRouteLocationsMixin);

@@ -26,6 +26,7 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 					client.request('options'),
 					client.getService('navigation', '0.1'),
 					client.request('valenceHost'),
+					client.getService('frame', '0.1')
 				]);
 			})
 			.then((all) => {
@@ -34,11 +35,13 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 					options: all[0],
 					navigation: all[1],
 					valenceHost: all[2],
+					frame: all[3]
 				};
 				Object.assign(window.D2L.frau.options, setup.options);
 				window.D2L.frau.client = setup.client;
 				window.D2L.frau.navigation = setup.navigation;
 				window.D2L.frau.valenceHost = (setup.valenceHost || '').replace(/\/$/, '');
+				window.D2L.frau.frame = setup.frame;
 				return setup;
 			});
 	}
@@ -50,6 +53,12 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 		if (navigationService && href) {
 			navigationService.go(href);
 		}
+	}
+	iframeApplyStyles(styles) {
+		window.D2L = window.D2L || {};
+		window.D2L.frau = window.D2L.frau || {};
+		const frameService = window.D2L.frau.frame;
+		return frameService.applyStyle(styles);
 	}
 };
 

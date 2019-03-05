@@ -193,7 +193,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 				<div id="discovery-course-summary-card" class="discovery-course-summary-card">
 					<div class="discovery-course-summary-breadcrumbs">
 						<d2l-breadcrumbs class="discovery-search-header-breadcrumb">
-							<d2l-breadcrumb on-click="_navigateToHome" href="javascript:void(0)" text="[[localize('discovery')]]"></d2l-breadcrumb>
+							<d2l-breadcrumb on-click="_navigateToHome" href="[[_homeHref]]" text="[[localize('discovery')]]"></d2l-breadcrumb>
 						</d2l-breadcrumbs>
 					</div>
 
@@ -273,7 +273,11 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			actionEnroll: Object,
 			organizationHomepage: String,
 			organizationHref: String,
-			_enrollmentDialogMessage: String
+			_enrollmentDialogMessage: String,
+			_homeHref: {
+				type: String,
+				computed: '_getHomeHref()'
+			}
 		};
 	}
 
@@ -316,7 +320,8 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		enrollmentDialog.opened = false;
 	}
 
-	_navigateToHome() {
+	_navigateToHome(e) {
+		e.preventDefault();
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
 				path: this.routeLocations().home()
@@ -390,6 +395,10 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 						&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 				});
 		}
+	}
+
+	_getHomeHref() {
+		return this.valenceHomeHref();
 	}
 }
 
