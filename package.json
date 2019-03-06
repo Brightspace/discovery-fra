@@ -42,6 +42,7 @@
     "d2l-menu": "BrightspaceUI/menu#semver:^2",
     "d2l-organization-hm-behavior": "Brightspace/organization-hm-behavior#semver:^3",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
+    "dompurify": "^1.0.10",
     "fastdom": "^1.0.8",
     "promise-polyfill": "8.1.0",
     "siren-parser": "^8.0.0",

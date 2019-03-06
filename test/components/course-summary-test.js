@@ -78,12 +78,9 @@ describe('course-summary', () => {
 			afterNextRender(component, done);
 		});
 
-		it('should show all properties', () => {
+		it('should show all properties', done => {
 			const title = component.$$('.discovery-course-summary-title').innerHTML;
 			expect(title).to.include(testTitle);
-
-			const description = component.$$('.discovery-course-summary-description').innerHTML;
-			expect(description).to.include(testDescription);
 
 			const infoContainer = component.$$('.discovery-course-summary-info-container').innerHTML;
 			expect(infoContainer).to.include(testDuration);
@@ -92,6 +89,12 @@ describe('course-summary', () => {
 
 			const image = component.$$('#discovery-header-image');
 			expect(image.src).to.equal(testCourseImageLink);
+
+			afterNextRender(component, () => {
+				const description = component.$$('.discovery-course-summary-description').innerHTML;
+				expect(description).to.include(testDescription);
+				done();
+			});
 		});
 	});
 
@@ -167,7 +170,7 @@ describe('course-summary', () => {
 				const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 				expect(dialog.opened).to.equal(true);
 				const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-				expect(dialogMessage).to.include('You can find the course in the My Courses widget.');
+				expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
 
 				// Open Course button does exist and is displayed
 				const openCourseButton = component.$$('#discovery-course-summary-open-course');
