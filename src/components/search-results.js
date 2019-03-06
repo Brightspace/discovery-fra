@@ -81,9 +81,19 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					margin-top: 0 !important;
 					margin-bottom: 0 !important;
 				}
+				.discovery-search-results-header-placeholder {
+					background-color: var(--d2l-color-sylvite);
+					border-radius: 4px;
+					height: 1.4rem;
+					width: 45%;
+				}
 			</style>
 			<div>
 				<div class="discovery-search-results-header">
+					<template is="dom-if" if="[[!_searchResultsTotalReady]]">
+						<div class="discovery-search-results-header-placeholder"></div>
+					</template>
+
 					<template is="dom-if" if="[[_searchResultsTotalReady]]">
 						<template is="dom-if" if="[[!_searchResultsExists]]">
 							<h4 class="d2l-heading-4 discovery-search-results-d2l-heading-4 discovery-search-results-search-message">[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]</h4>
@@ -94,56 +104,54 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					</template>
 				</div>
 
-				<template is="dom-if" if="[[_searchResultsTotalReady]]">
-					<template is="dom-if" if="[[!_searchResultsExists]]">
-						<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
-							<d2l-activity-list-item image-shimmer text-placeholder></d2l-activity-list-item>
-						</template>
+				<template is="dom-if" if="[[!_searchResultsTotalReady]]">
+					<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
+						<d2l-activity-list-item image-shimmer text-placeholder></d2l-activity-list-item>
 					</template>
+				</template>
 
-					<template is="dom-if" if="[[_searchResultsExists]]">
-						<div class="discovery-search-results-container">
-							<template is="dom-repeat" items="[[_searchResult]]">
-								<d2l-activity-list-item
-									image-shimmer
-									text-placeholder
-									entity=[[item]]
-									send-on-trigger-event>
-								</d2l-activity-list-item>
-							</template>
+				<template is="dom-if" if="[[_searchResultsExists]]">
+					<div class="discovery-search-results-container">
+						<template is="dom-repeat" items="[[_searchResult]]">
+							<d2l-activity-list-item
+								image-shimmer
+								text-placeholder
+								entity=[[item]]
+								send-on-trigger-event>
+							</d2l-activity-list-item>
+						</template>
+					</div>
+					<div class="discovery-search-results-page-number-container">
+						<d2l-button-icon
+							icon="d2l-tier1:chevron-left"
+							aria-label$="[[localize('pagePrevious')]]"
+							disabled$="[[_previousPageDisabled(_pageCurrent)]]"
+							on-click="_toPreviousPage"
+							on-keydown="_toPreviousPage">
+						</d2l-button-icon>
+						<d2l-input-text
+							class="discovery-search-results-page-count"
+							type="number"
+							aria-label$="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
+							name="myInput"
+							value="[[_pageCurrent]]"
+							min="1"
+							max="[[_pageTotal]]"
+							size=[[_countDigits(_pageTotal)]]
+							on-keydown="_toPage"
+							on-blur="_inputPageCounterOnBlur">
+						</d2l-input-text>
+						<div>
+						/ [[_pageTotal]]
 						</div>
-						<div class="discovery-search-results-page-number-container">
-							<d2l-button-icon
-								icon="d2l-tier1:chevron-left"
-								aria-label$="[[localize('pagePrevious')]]"
-								disabled$="[[_previousPageDisabled(_pageCurrent)]]"
-								on-click="_toPreviousPage"
-								on-keydown="_toPreviousPage">
-							</d2l-button-icon>
-							<d2l-input-text
-								class="discovery-search-results-page-count"
-								type="number"
-								aria-label$="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
-								name="myInput"
-								value="[[_pageCurrent]]"
-								min="1"
-								max="[[_pageTotal]]"
-								size=[[_countDigits(_pageTotal)]]
-								on-keydown="_toPage"
-								on-blur="_inputPageCounterOnBlur">
-							</d2l-input-text>
-							<div>
-							/ [[_pageTotal]]
-							</div>
-							<d2l-button-icon
-								icon="d2l-tier1:chevron-right"
-								aria-label$="[[localize('pageNext')]]"
-								disabled$="[[_nextPageDisabled(_pageCurrent, _pageTotal)]]"
-								on-click="_toNextPage"
-								on-keydown="_toNextPage">
-							</d2l-button-icon>
-						</div>
-					</template>
+						<d2l-button-icon
+							icon="d2l-tier1:chevron-right"
+							aria-label$="[[localize('pageNext')]]"
+							disabled$="[[_nextPageDisabled(_pageCurrent, _pageTotal)]]"
+							on-click="_toNextPage"
+							on-keydown="_toNextPage">
+						</d2l-button-icon>
+					</div>
 				</template>
 			</div>
 		`;
@@ -183,7 +191,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	ready() {
 		super.ready();
-		this._noResultSkeletonItems = Array(10);
+		this._noResultSkeletonItems = Array(5);
 		this.addEventListener('d2l-activity-trigger', this._navigateToCourse.bind(this));
 		this.addEventListener('d2l-activity-text-loaded', this._removeTextPlaceholders);
 		this.addEventListener('d2l-activity-image-loaded', this._removeImageShimmers);

@@ -245,7 +245,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 					const heightOfIframe = Math.max(documentElementClientHeight, windowInnerHeight || 0);
 					const containerHeight = container.offsetHeight;
 					const heightToUse = Math.max(heightOfIframe, containerHeight);
-					if (heightOfIframe) {
+					if (heightToUse) {
 						this.iframeApplyStyles({
 							height: heightToUse + 'px'
 						});
