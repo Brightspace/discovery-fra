@@ -231,6 +231,11 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			});
 		}
 	}
+	_getIframeHeight() {
+		const windowInnerHeight = window.innerHeight;
+		const documentElementClientHeight  = document.documentElement.clientHeight;
+		return Math.max(documentElementClientHeight, windowInnerHeight || 0);
+	}
 	_onIronResize() {
 		if (!this.visible) {
 			return;
@@ -240,9 +245,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			afterNextRender(this, () => {
 				fastdom.measure(() => {
 					// Set height of the iframe to be max of container and height of iframe
-					const windowInnerHeight = window.innerHeight;
-					const documentElementClientHeight  = document.documentElement.clientHeight;
-					const heightOfIframe = Math.max(documentElementClientHeight, windowInnerHeight || 0);
+					const heightOfIframe = this._getIframeHeight();
 					const containerHeight = container.offsetHeight;
 					const heightToUse = Math.max(heightOfIframe, containerHeight);
 					if (heightToUse) {
@@ -269,9 +272,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				afterNextRender(this, () => {
 					fastdom.measure(() => {
 						// Set min-height of the container to be the iframe's height at 100vh
-						const windowInnerHeight = window.innerHeight;
-						const documentElementClientHeight  = document.documentElement.clientHeight;
-						const heightOfIframe = Math.max(documentElementClientHeight, windowInnerHeight || 0);
+						const heightOfIframe = this._getIframeHeight();
 						fastdom.mutate(() => {
 							if (heightOfIframe) {
 								container.style.minHeight = heightOfIframe + 'px';

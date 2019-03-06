@@ -49,6 +49,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					flex-shrink: 0;
 					width: 60%;
 					overflow: hidden;
+					overflow-wrap: break-word;
 					word-wrap: break-word;
 				}
 
