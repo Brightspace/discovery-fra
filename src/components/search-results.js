@@ -280,6 +280,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		// keep page number within the range of the search results.
 		pageNumber = Math.min(pageNumber, this._pageTotal);
 		pageNumber = Math.max(pageNumber, 1);
+		if (pageNumber === this._pageCurrent) {
+			return;
+		}
 		this._processBeforeLoading();
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {

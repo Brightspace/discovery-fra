@@ -134,10 +134,14 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 					return {};
 				}
 			},
-			_pageCurrent: Number,
+			_pageCurrent: {
+				type: Number,
+				value: undefined
+			},
 			_searchQuery: {
 				type: String,
-				value: ''
+				value: '',
+				observer: '_searchQueryChanged'
 			},
 			_searchActionHref: String,
 			visible: {
@@ -198,6 +202,11 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		queryParams = queryParams.detail.value || {};
 		this._pageCurrent = queryParams && queryParams.has && queryParams.has('page') ? Math.max(queryParams.get('page') - 1, 0) : 0;
 		this.queryParams = queryParams;
+	}
+	_searchQueryChanged() {
+		if (this._pageCurrent !== undefined) {
+			this._pageCurrent = 0;
+		}
 	}
 	_getDecodedQuery(searchQuery, page) {
 		if (!searchQuery || page === undefined) {
