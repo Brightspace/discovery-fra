@@ -236,7 +236,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 					<template is="dom-if" if="[[!actionEnroll]]">
 						<d2l-button
 							id="discovery-course-summary-open-course"
-							on-click="_navigateToOrganizationHomepage"
+							on-click="_tryNavigateToOrganizationHomepage"
 							primary>
 							[[localize('openCourse')]]
 						</d2l-button>
@@ -367,26 +367,31 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 	}
 
 	_navigateToOrganizationHomepage() {
+		this.dispatchEvent(new CustomEvent('navigate-parent', {
+			detail: {
+				path: this.organizationHomepage
+			},
+			bubbles: true,
+			composed: true
+		}));
+	}
+
+	_tryNavigateToOrganizationHomepage() {
 		if (!this.organizationHomepage) {
 			// Refetch organization entity to get the homepage href
 			return this._fetchOrganizationHomepage()
 				.then(() => {
-					this.dispatchEvent(new CustomEvent('navigate-parent', {
-						detail: {
-							path: this.organizationHomepage
-						},
-						bubbles: true,
-						composed: true
-					}));
+					if (this.organizationHomepage) {
+						this._navigateToOrganizationHomepage();
+					} else {
+						this._enrollmentDialogHeader = this.localize('enrollmentHeaderPending');
+						this._enrollmentDialogMessage = this.localize('enrollmentMessagePending');
+						const enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
+						enrollmentDialog.opened = true;
+					}
 				});
 		} else {
-			this.dispatchEvent(new CustomEvent('navigate-parent', {
-				detail: {
-					path: this.organizationHomepage
-				},
-				bubbles: true,
-				composed: true
-			}));
+			this._navigateToOrganizationHomepage();
 		}
 	}
 

@@ -7,6 +7,8 @@ describe('course-summary', () => {
 	const testOrganizationHomepage = '/test/organization/homepage';
 	const testOrganizationHref = '/test/organization/href';
 	const testOrganizationHrefRegex = /\/test\/organization\/href$/;
+	const testOrganizationHrefWithoutHomepage = '/test/organization/href/without/homepage';
+	const testOrganizationHrefWithoutHomepageRegex = /\/test\/organization\/href\/without\/homepage$/;
 
 	var component,
 		fetchStub,
@@ -21,6 +23,16 @@ describe('course-summary', () => {
 			component.setAttribute('action-enroll', testActionEnroll);
 			component.setAttribute('organization-homepage', '');
 			component.setAttribute('organization-href', testOrganizationHref);
+		}
+	}
+
+	function setComponentHomepage({ component, homepage }) {
+		if (homepage) {
+			component.setAttribute('organization-homepage', '');
+			component.setAttribute('organization-href', testOrganizationHref);
+		} else {
+			component.setAttribute('organization-homepage', '');
+			component.setAttribute('organization-href', testOrganizationHrefWithoutHomepage);
 		}
 	}
 
@@ -43,10 +55,20 @@ describe('course-summary', () => {
 				}
 			]
 		});
+		const organizationEntityWithoutHomepage = SirenParse({
+			properties: {},
+			class: [],
+			links: []
+		});
 		fetchStub.withArgs(sinon.match.has('url', sinon.match(testOrganizationHrefRegex)))
 			.returns(Promise.resolve({
 				ok: true,
 				json: () => { return Promise.resolve(organizationEntity); }
+			}));
+		fetchStub.withArgs(sinon.match.has('url', sinon.match(testOrganizationHrefWithoutHomepageRegex)))
+			.returns(Promise.resolve({
+				ok: true,
+				json: () => { return Promise.resolve(organizationEntityWithoutHomepage); }
 			}));
 	});
 
@@ -98,7 +120,7 @@ describe('course-summary', () => {
 		});
 	});
 
-	describe('course-summary user is enrolled', () => {
+	describe('user is enrolled', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
 			setComponentForEnrollment({ component, enrolled: true });
@@ -126,7 +148,7 @@ describe('course-summary', () => {
 		});
 	});
 
-	describe('course-summary user is not enrolled', () => {
+	describe('user is not enrolled', () => {
 		beforeEach(done => {
 			component = fixture('course-summary-basic-fixture');
 			setComponentForEnrollment({ component, enrolled: false });
@@ -215,6 +237,74 @@ describe('course-summary', () => {
 				expect(enrollButton).to.exist;
 				expect(enrollButton.style.display).to.not.equal('none');
 				done();
+			});
+		});
+	});
+
+	describe('enrollment is pending', () => {
+		before(done => {
+			component = fixture('course-summary-basic-fixture');
+			setComponentForEnrollment({ component, enrolled: false, homepage: false });
+			setComponentHomepage({ component, homepage: false });
+			afterNextRender(component, done);
+		});
+		it('enrollment workflow encounters pending dialog before enrollment is successful', done => {
+			// Workflow finishes after the user is enrolled and navigates to the homepage
+			component.addEventListener('navigate-parent', (e) => {
+				expect(e.detail.path).to.equal(testOrganizationHomepage);
+				done();
+			});
+
+			// Success enrollment stub
+			fetchStub.withArgs(sinon.match.has('url', sinon.match(testActionEnrollHrefRegex)))
+				.returns(Promise.resolve({
+					ok: true,
+					json: () => {
+						return Promise.resolve({});
+					}
+				}));
+
+			const enrollButton = component.$$('#discovery-course-summary-enroll');
+			expect(enrollButton).to.exist;
+			expect(enrollButton.style.display).to.not.equal('none');
+			enrollButton.click();
+
+			afterNextRender(component, () => {
+				// Dialog is opened with success message
+				const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+				expect(dialog.opened).to.equal(true);
+				const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+				expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
+
+				// Open Course button does exist and is displayed
+				const openCourseButton = component.$$('#discovery-course-summary-open-course');
+				expect(openCourseButton).to.exist;
+				expect(openCourseButton.style.display).to.not.equal('none');
+
+				// Enroll button is hidden
+				expect(enrollButton.style.display).to.equal('none');
+
+				// Click the open course button
+				openCourseButton.click();
+
+				// Pending dialog is shown
+				afterNextRender(component, () => {
+					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+					expect(dialog.opened).to.equal(true);
+					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+					expect(dialogMessage).to.include('Your enrollment to this course is still pending.');
+
+					// Open Course button still exists and is displayed
+					const openCourseButton = component.$$('#discovery-course-summary-open-course');
+					expect(openCourseButton).to.exist;
+					expect(openCourseButton.style.display).to.not.equal('none');
+
+					// Set organization-href to something that will now return a homepage
+					component.setAttribute('organization-href', testOrganizationHref);
+					afterNextRender(component, () => {
+						openCourseButton.click();
+					});
+				});
 			});
 		});
 	});
