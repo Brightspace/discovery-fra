@@ -242,43 +242,39 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		}
 		const container = this.shadowRoot.querySelector('.discovery-search-container');
 		if (!this._searchLoading) {
-			afterNextRender(this, () => {
-				fastdom.measure(() => {
-					// Set height of the iframe to be max of container and height of iframe
-					const heightOfIframe = this._getIframeHeight();
-					const containerHeight = container.offsetHeight;
-					const heightToUse = Math.max(heightOfIframe, containerHeight);
-					if (heightToUse) {
-						this.iframeApplyStyles({
-							height: heightToUse + 'px'
-						});
-					}
-					// Make sure the height of container is at least the full viewport
-					fastdom.mutate(() => {
-						if (containerHeight > this._minViewPortHeight) {
-							container.style.minHeight = '';
-						} else {
-							container.style.minHeight = this._minViewPortHeight + 'px';
-						}
+			fastdom.measure(() => {
+				// Set height of the iframe to be max of container and height of iframe
+				const heightOfIframe = this._getIframeHeight();
+				const containerHeight = container.offsetHeight;
+				const heightToUse = Math.max(heightOfIframe, containerHeight);
+				if (heightToUse) {
+					this.iframeApplyStyles({
+						height: heightToUse + 'px'
 					});
+				}
+				// Make sure the height of container is at least the full viewport
+				fastdom.mutate(() => {
+					if (containerHeight > this._minViewPortHeight) {
+						container.style.minHeight = '';
+					} else {
+						container.style.minHeight = this._minViewPortHeight + 'px';
+					}
 				});
 			});
 		} else {
+			this.iframeApplyStyles({
+				display: 'block',
+				height: '100vh'
+			});
 			afterNextRender(this, () => {
-				this.iframeApplyStyles({
-					display: 'block',
-					height: '100vh'
-				});
-				afterNextRender(this, () => {
-					fastdom.measure(() => {
-						// Set min-height of the container to be the iframe's height at 100vh
-						const heightOfIframe = this._getIframeHeight();
-						fastdom.mutate(() => {
-							if (heightOfIframe) {
-								container.style.minHeight = heightOfIframe + 'px';
-								this._minViewPortHeight = heightOfIframe;
-							}
-						});
+				fastdom.measure(() => {
+					// Set min-height of the container to be the iframe's height at 100vh
+					const heightOfIframe = this._getIframeHeight();
+					fastdom.mutate(() => {
+						if (heightOfIframe) {
+							container.style.minHeight = heightOfIframe + 'px';
+							this._minViewPortHeight = heightOfIframe;
+						}
 					});
 				});
 			});
