@@ -270,12 +270,12 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				fastdom.measure(() => {
 					// Set min-height of the container to be the iframe's height at 100vh
 					const heightOfIframe = this._getIframeHeight();
-					fastdom.mutate(() => {
-						if (heightOfIframe) {
+					if (heightOfIframe) {
+						fastdom.mutate(() => {
 							container.style.minHeight = heightOfIframe + 'px';
 							this._minViewPortHeight = heightOfIframe;
-						}
-					});
+						});
+					}
 				});
 			});
 		}
