@@ -1,6 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { afterNextRender, beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import 'd2l-activities/components/d2l-activity-list-item/d2l-activity-list-item.js';
 import 'd2l-dropdown/d2l-dropdown.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
@@ -13,9 +13,9 @@ import 'd2l-menu/d2l-menu-item-link.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
 import { FetchMixin } from '../mixins/fetch-mixin.js';
-
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
+import './loading-overlay.js';
 
 class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -23,6 +23,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			<style include="d2l-typography-shared-styles">
 				:host {
 					display: inline;
+				}
+
+				.discovery-search-results-outer-container {
+					position: relative;
 				}
 
 				.discovery-search-results-container {
@@ -89,70 +93,76 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					width: 45%;
 				}
 			</style>
-			<div>
+			<div class="discovery-search-results-outer-container">
+				<loading-overlay loading=[[_showLoadingOverlay]]></loading-overlay>
+
 				<div class="discovery-search-results-header">
-					<template is="dom-if" if="[[!_searchResultsTotalReady]]">
+					<template is="dom-if" if="[[_searchQueryLoading]]">
 						<div class="discovery-search-results-header-placeholder"></div>
 					</template>
 
-					<template is="dom-if" if="[[_searchResultsTotalReady]]">
-						<template is="dom-if" if="[[!_searchResultsExists]]">
-							<h4 class="d2l-heading-4 discovery-search-results-d2l-heading-4 discovery-search-results-search-message">[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]</h4>
-						</template>
-						<template is="dom-if" if="[[_searchResultsExists]]">
-							<span id="discovery-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
+					<template is="dom-if" if="[[!_searchQueryLoading]]">
+						<template is="dom-if" if="[[_searchResultsTotalReady]]">
+							<template is="dom-if" if="[[!_searchResultsExists]]">
+								<h4 class="d2l-heading-4 discovery-search-results-d2l-heading-4 discovery-search-results-search-message">[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]</h4>
+							</template>
+							<template is="dom-if" if="[[_searchResultsExists]]">
+								<span id="discovery-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
+							</template>
 						</template>
 					</template>
 				</div>
 
-				<template is="dom-if" if="[[!_searchResultsTotalReady]]">
+				<template is="dom-if" if="[[_searchQueryLoading]]">
 					<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
 						<d2l-activity-list-item class="d2l-search-results-skeleton-item" image-shimmer text-placeholder></d2l-activity-list-item>
 					</template>
 				</template>
 
-				<template is="dom-if" if="[[_searchResultsExists]]">
-					<div class="discovery-search-results-container">
-						<template is="dom-repeat" items="[[_searchResult]]">
-							<d2l-activity-list-item
-								image-shimmer
-								text-placeholder
-								entity=[[item]]
-								send-on-trigger-event>
-							</d2l-activity-list-item>
-						</template>
-					</div>
-					<div class="discovery-search-results-page-number-container">
-						<d2l-button-icon
-							icon="d2l-tier1:chevron-left"
-							aria-label$="[[localize('pagePrevious')]]"
-							disabled$="[[_previousPageDisabled(_pageCurrent)]]"
-							on-click="_toPreviousPage"
-							on-keydown="_toPreviousPage">
-						</d2l-button-icon>
-						<d2l-input-text
-							class="discovery-search-results-page-count"
-							type="number"
-							aria-label$="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
-							name="myInput"
-							value="[[_pageCurrent]]"
-							min="1"
-							max="[[_pageTotal]]"
-							size=[[_countDigits(_pageTotal)]]
-							on-keydown="_toPage"
-							on-blur="_inputPageCounterOnBlur">
-						</d2l-input-text>
-						<div>
-						/ [[_pageTotal]]
+				<template is="dom-if" if="[[!_searchQueryLoading]]">
+					<template is="dom-if" if="[[_searchResultsExists]]">
+						<div class="discovery-search-results-container">
+							<template is="dom-repeat" items="[[_searchResult]]">
+								<d2l-activity-list-item
+									image-shimmer
+									text-placeholder
+									entity=[[item]]
+									send-on-trigger-event>
+								</d2l-activity-list-item>
+							</template>
 						</div>
-						<d2l-button-icon
-							icon="d2l-tier1:chevron-right"
-							aria-label$="[[localize('pageNext')]]"
-							disabled$="[[_nextPageDisabled(_pageCurrent, _pageTotal)]]"
-							on-click="_toNextPage"
-							on-keydown="_toNextPage">
-						</d2l-button-icon>
-					</div>
+						<div class="discovery-search-results-page-number-container">
+							<d2l-button-icon
+								icon="d2l-tier1:chevron-left"
+								aria-label$="[[localize('pagePrevious')]]"
+								disabled$="[[_previousPageDisabled(_pageCurrent)]]"
+								on-click="_toPreviousPage"
+								on-keydown="_toPreviousPage">
+							</d2l-button-icon>
+							<d2l-input-text
+								class="discovery-search-results-page-count"
+								type="number"
+								aria-label$="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
+								name="myInput"
+								value="[[_pageCurrent]]"
+								min="1"
+								max="[[_pageTotal]]"
+								size=[[_countDigits(_pageTotal)]]
+								on-keydown="_toPage"
+								on-blur="_inputPageCounterOnBlur">
+							</d2l-input-text>
+							<div>
+							/ [[_pageTotal]]
+							</div>
+							<d2l-button-icon
+								icon="d2l-tier1:chevron-right"
+								aria-label$="[[localize('pageNext')]]"
+								disabled$="[[_nextPageDisabled(_pageCurrent, _pageTotal)]]"
+								on-click="_toNextPage"
+								on-keydown="_toNextPage">
+							</d2l-button-icon>
+						</div>
+					</template>
 				</template>
 			</div>
 		`;
@@ -185,9 +195,33 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				type: Boolean,
 				observer: '_searchResultsTotalReadyObserver'
 			},
-			_numberOfTextLoadedEvents: Number,
-			_numberOfImageLoadedEvents: Number
+			_numberOfTextLoadedEvents: {
+				type: Number,
+				value: 0
+			},
+			_numberOfImageLoadedEvents: {
+				type: Number,
+				value: 0
+			},
+			_showLoadingOverlay: {
+				type: Boolean,
+				value: false
+			},
+			_searchQueryLoading: {
+				type: Boolean,
+				value: false
+			},
+			_allTextLoaded: Boolean,
+			_allImageLoaded: Boolean,
+			_allTextAndImagesLoaded: Boolean
 		};
+	}
+
+	static get observers() {
+		return [
+			'_allTextAndImagesLoadedObserver(_allTextLoaded, _allImageLoaded)',
+			'_totalReadyAndResultExists(_searchResultsTotalReady, _searchResultsExists)'
+		];
 	}
 
 	ready() {
@@ -283,7 +317,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		if (pageNumber === this._pageCurrent) {
 			return;
 		}
-		this._processBeforeLoading();
+		this._resetNonSearchResultProperties();
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
 				path: this.routeLocations().search(this.searchQuery, { page: pageNumber })
@@ -291,20 +325,28 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			bubbles: true,
 			composed: true
 		}));
+		this._showLoadingOverlay = true;
 	}
 
 	_countDigits(number) {
 		return number.toString().length;
 	}
 
+	_resetNonSearchResultProperties() {
+		this._numberOfTextLoadedEvents = 0;
+		this._numberOfImageLoadedEvents = 0;
+		this._showLoadingOverlay = false;
+		this._allTextLoaded = false;
+		this._allImageLoaded = false;
+		this._allTextAndImagesLoaded = false;
+	}
 	_reset() {
 		this._searchResult = [];
 		this._searchResultsExists = false;
 		this._searchResultsRangeToString = '';
 		this._searchResultsTotal = 0;
 		this._searchResultsTotalReady = false;
-		this._numberOfTextLoadedEvents = 0;
-		this._numberOfImageLoadedEvents = 0;
+		this._resetNonSearchResultProperties();
 	}
 	_searchResultsTotalReadyObserver(searchResultsTotalReady) {
 		if (searchResultsTotalReady) {
@@ -315,6 +357,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				bubbles: true,
 				composed: true
 			}));
+			this._searchQueryLoading = false;
 		} else {
 			const skeletonItems = this.shadowRoot.querySelectorAll('.d2l-search-results-skeleton-item');
 			skeletonItems.forEach((skeletonItem) => {
@@ -332,12 +375,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			bubbles: true,
 			composed: true
 		}));
-
-		beforeNextRender(this, () => {
-			this._reset();
-		});
+		this._reset();
 	}
 	_onSearchQueryChange() {
+		this._searchQueryLoading = true;
 		this._processBeforeLoading();
 	}
 	_removeImageShimmers() {
@@ -348,6 +389,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				resultElements.forEach((resultElement) => {
 					resultElement.removeAttribute('image-shimmer');
 				});
+				this._allImageLoaded = true;
 			});
 		}
 	}
@@ -359,7 +401,19 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				resultElements.forEach((resultElement) => {
 					resultElement.removeAttribute('text-placeholder');
 				});
+				this._allTextLoaded = true;
 			});
+		}
+	}
+	_allTextAndImagesLoadedObserver(_allTextLoaded, _allImageLoaded) {
+		if (_allTextLoaded && _allImageLoaded) {
+			this._showLoadingOverlay  = false;
+		}
+	}
+	// Rare case where changing pages will get no results (so we can't wait for text/images to load if there are none)
+	_totalReadyAndResultExists(_searchResultsTotalReady, _searchResultsExists) {
+		if (_searchResultsTotalReady && !_searchResultsExists) {
+			this._showLoadingOverlay  = false;
 		}
 	}
 }

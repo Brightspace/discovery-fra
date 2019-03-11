@@ -50,15 +50,17 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 		window.D2L.frau = window.D2L.frau || {};
 		const navigationService = window.D2L.frau.navigation;
 
-		if (navigationService && href) {
-			navigationService.go(href);
+		if (navigationService && navigationService.go && href) {
+			return navigationService.go(href);
 		}
 	}
 	iframeApplyStyles(styles) {
 		window.D2L = window.D2L || {};
 		window.D2L.frau = window.D2L.frau || {};
 		const frameService = window.D2L.frau.frame;
-		return frameService.applyStyle(styles);
+		if (frameService && frameService.applyStyle && styles) {
+			return frameService.applyStyle(styles);
+		}
 	}
 };
 
