@@ -119,7 +119,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					</template>
 				</template>
 
-				<template is="dom-if" if="[[!_searchQueryLoading]]">
+				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
 					<template is="dom-if" if="[[_searchResultsExists]]">
 						<div class="discovery-search-results-container">
 							<template is="dom-repeat" items="[[_searchResult]]">
@@ -195,14 +195,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				type: Boolean,
 				observer: '_searchResultsTotalReadyObserver'
 			},
-			_numberOfTextLoadedEvents: {
-				type: Number,
-				value: 0
-			},
-			_numberOfImageLoadedEvents: {
-				type: Number,
-				value: 0
-			},
 			_showLoadingOverlay: {
 				type: Boolean,
 				value: false
@@ -212,8 +204,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				value: false
 			},
 			_allTextLoaded: Boolean,
-			_allImageLoaded: Boolean,
-			_allTextAndImagesLoaded: Boolean
+			_allImageLoaded: Boolean
 		};
 	}
 
@@ -222,6 +213,12 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			'_allTextAndImagesLoadedObserver(_allTextLoaded, _allImageLoaded)',
 			'_totalReadyAndResultExists(_searchResultsTotalReady, _searchResultsExists)'
 		];
+	}
+
+	constructor() {
+		super();
+		this._numberOfTextLoadedEvents = 0;
+		this._numberOfImageLoadedEvents = 0;
 	}
 
 	ready() {
@@ -338,7 +335,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._showLoadingOverlay = false;
 		this._allTextLoaded = false;
 		this._allImageLoaded = false;
-		this._allTextAndImagesLoaded = false;
 	}
 	_reset() {
 		this._searchResult = [];
