@@ -204,12 +204,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		queryParams.stopPropagation();
 		queryParams = queryParams.detail.value || {};
 		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
-		if (!hasPageQueryParam && this._pageCurrent && this._pageCurrent !== 0) {
-			this._pageCurrent = undefined;
-		} else if (hasPageQueryParam) {
-			this._pageCurrent = Math.max(queryParams.get('page') - 1, 0);
+		if (!hasPageQueryParam) {
+			this._pageCurrent = this._pageCurrent && this._pageCurrent !== 0 ? undefined : 0;
 		} else {
-			this._pageCurrent = 0;
+			this._pageCurrent = Math.max(queryParams.get('page') - 1, 0);
 		}
 		this.queryParams = queryParams;
 	}
