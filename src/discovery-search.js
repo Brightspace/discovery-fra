@@ -185,6 +185,9 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			beforeNextRender(this, () => {
 				this._onIronResize();
 			});
+		} else {
+			this._searchQuery = null;
+			this._pageCurrent = 0;
 		}
 	}
 	_routeChanged(route) {
@@ -200,7 +203,12 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 	_queryParamsChanged(queryParams) {
 		queryParams.stopPropagation();
 		queryParams = queryParams.detail.value || {};
-		this._pageCurrent = queryParams && queryParams.has && queryParams.has('page') ? Math.max(queryParams.get('page') - 1, 0) : 0;
+		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
+		if (!hasPageQueryParam) {
+			this._pageCurrent = this._pageCurrent ? undefined : 0;
+		} else {
+			this._pageCurrent = Math.max(queryParams.get('page') - 1, 0);
+		}
 		this.queryParams = queryParams;
 	}
 	_searchQueryChanged() {
@@ -209,7 +217,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		}
 	}
 	_getDecodedQuery(searchQuery, page) {
-		if (!searchQuery || page === undefined) {
+		if (!searchQuery || page === undefined || !this.visible) {
 			this._searchActionHref = undefined;
 			return;
 		}
