@@ -21,9 +21,9 @@ class LoadingOverlay extends PolymerElement {
 					position: absolute;
 				}
 				.discovery-loading-overlay-spinner {
-					--d2l-loading-spinner-size: 100px;
 					left: -50%;
 					position: relative;
+					--d2l-loading-spinner-size: 100px;
 				}
 			</style>
 
