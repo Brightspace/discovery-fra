@@ -17,7 +17,8 @@
     "frau:build-config": "frau-appconfig-builder --hostname $(node scripts/getHostname.js)",
     "frau:resolve": "frau-local-appresolver --hostname $(node scripts/getHostname.js)",
     "frau:publish": "frau-publisher",
-    "frau:release": "npm run frau:publish"
+    "frau:release": "npm run frau:publish",
+    "install-attest": "npm install attest --registry=https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/attest/ && node scripts/remove_attest_from_project.js"
   },
   "dependencies": {
     "@polymer/app-route": "^3.0.0-pre.15",

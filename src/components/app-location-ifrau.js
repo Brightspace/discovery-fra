@@ -38,8 +38,12 @@ class AppLocationIfrau extends
 		const handleLocationChanged = this._handleLocationChanged.bind(this);
 		window.D2L = window.D2L || {};
 		window.D2L.frau = window.D2L.frau || {};
-		window.D2L.frau.navigation.get().then(handleLocationChanged);
-		window.D2L.frau.client.onEvent('navigation.statechange', handleLocationChanged);
+		if (window.D2L.frau.navigation) {
+			window.D2L.frau.navigation.get().then(handleLocationChanged);
+		}
+		if (window.D2L.frau.client) {
+			window.D2L.frau.client.onEvent('navigation.statechange', handleLocationChanged);
+		}
 	}
 	_handleLocationChanged(newLocation) {
 		this._frauIsSynchronizing = true;
