@@ -1,36 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>Mixin test</title>
-	<script src="../../node_modules/@babel/polyfill/browser.js"></script>
-    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-	<script src="../../node_modules/web-component-tester/browser.js"></script>
+		<title>Mixin test</title>
+		<script src="../../node_modules/@babel/polyfill/browser.js"></script>
+		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../../node_modules/web-component-tester/browser.js"></script>
 
-	<script type="module" src="../../src/components/search-results.js"></script>
-</head>
-  <body>
+		<script type="module" src="../../src/components/search-results.js"></script>
+	</head>
+	<body>
 
-    <test-fixture id="search-result-basic-fixture">
-      <template>
-		  <search-results></search-results>
-      </template>
-	</test-fixture>
+		<test-fixture id="search-result-basic-fixture">
+			<template>
+				<search-results></search-results>
+			</template>
+		</test-fixture>
 
-	<test-fixture id="search-result-with-results-fixture">
-		<template>
-			<search-results href="/search/results" search-query="results"></search-results>
-		</template>
-	</test-fixture>
+		<test-fixture id="search-result-with-results-fixture">
+			<template>
+				<search-results href="/search/results" search-query="results"></search-results>
+			</template>
+		</test-fixture>
 
-	<test-fixture id="search-result-no-results-fixture">
-		<template>
-			<search-results href="/search/no-results" search-query="no results"></search-results>
-		</template>
-	</test-fixture>
+		<test-fixture id="search-result-no-results-fixture">
+			<template>
+				<search-results href="/search/no-results" search-query="no results"></search-results>
+			</template>
+		</test-fixture>
 
-    <script type="module" src="search-results-test.js"></script>
-  </body>
+		<script type="module" src="search-results-test.js"></script>
+	</body>
 </html>
