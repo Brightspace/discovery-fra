@@ -4,7 +4,8 @@
     "es6": true
   },
   "globals": {
-    "fastdom": false
+    "fastdom": false,
+    "moment": false
   },
   "parser": "babel-eslint",
   "parserOptions": {

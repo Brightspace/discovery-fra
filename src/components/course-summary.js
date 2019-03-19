@@ -5,6 +5,7 @@ import { Rels } from 'd2l-hypermedia-constants';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
 import '@polymer/paper-dialog/paper-dialog.js';
+import 'd2l-alert/d2l-alert.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-breadcrumbs/d2l-breadcrumb';
 import 'd2l-breadcrumbs/d2l-breadcrumbs';
@@ -63,16 +64,18 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 					margin-right: 0.5rem;
 				}
 
-				.discovery-course-summary-buttons {
+
+				.discovery-course-summary-bottom-container {
 					background: var(--d2l-color-regolith);
 					border-radius: 0 0 6px 6px;
 					border: 1px solid var(--d2l-color-mica);
 					box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 					display: flex;
+					flex-direction: column;
 					padding: 0.9rem 1.2rem;
 				}
 
-				.discovery-course-summary-buttons d2l-button {
+				.discovery-course-summary-bottom-container d2l-button {
 					margin-right: 0.6rem;
 					overflow: hidden;
 					--d2l-button: {
@@ -82,6 +85,20 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 						word-wrap: break-word; /* Fallback for IE/Edge */
 						overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
 					}
+				}
+
+				.discovery-course-summary-buttons {
+					display: flex;
+					flex-direction: row;
+				}
+
+				.discovery-course-summary-alert-container {
+					display: flex;
+					flex-direction: column;
+				}
+
+				.discovery-course-summary-alert {
+					margin-bottom: 0.9rem;
 				}
 
 				.discovery-course-summary-description {
@@ -148,7 +165,7 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 
 				@media only screen and (max-width: 615px) {
 					.discovery-course-summary-card,
-					.discovery-course-summary-buttons {
+					.discovery-course-summary-bottom-container {
 						padding: 0.9rem;
 					}
 
@@ -176,14 +193,14 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 						border: none;
 					}
 
-					.discovery-course-summary-buttons {
+					.discovery-course-summary-bottom-container {
 						border-left: none;
 						border-radius: 0;
 						border-right: none;
 						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 						flex-direction: column;
 					}
-					.discovery-course-summary-buttons d2l-button {
+					.discovery-course-summary-bottom-container d2l-button {
 						margin-bottom: 0.6rem;
 						margin-right: 0;
 						width: 100%;
@@ -233,23 +250,40 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 					</div>
 				</div>
 
-				<div id="discovery-course-summary-buttons" class="discovery-course-summary-buttons">
-					<template is="dom-if" if="[[!actionEnroll]]">
-						<d2l-button
-							id="discovery-course-summary-open-course"
-							on-click="_tryNavigateToOrganizationHomepage"
-							primary>
-							[[localize('openCourse')]]
-						</d2l-button>
-					</template>
-					<template is="dom-if" if="[[actionEnroll]]">
-						<d2l-button
-							id="discovery-course-summary-enroll"
-							on-click="_enroll"
-							primary>
-							[[localize('enrollInCourse')]]
-						</d2l-button>
-					</template>
+				<div id="discovery-course-summary-bottom-container" class="discovery-course-summary-bottom-container">
+					<div class="discovery-course-summary-alert-container">
+						<d2l-alert
+							hidden$="[[!_showStartDateAlert]]"
+							class="discovery-course-summary-alert">
+							[[localize('startDateIsInTheFuture', 'date', startDate)]]
+						</d2l-alert>
+						<d2l-alert
+							hidden$="[[!_showEndDateAlert]]"
+							class="discovery-course-summary-alert"
+							type="critical">
+							[[localize('endDateIsInThePast', 'date', endDate)]]
+						</d2l-alert>
+					</div>
+
+					<div class="discovery-course-summary-buttons" hidden$="[[!dataIsReady]]">
+						<template is="dom-if" if="[[!actionEnroll]]">
+							<d2l-button
+								id="discovery-course-summary-open-course"
+								on-click="_tryNavigateToOrganizationHomepage"
+								primary>
+								[[localize('openCourse')]]
+							</d2l-button>
+						</template>
+						<template is="dom-if" if="[[actionEnroll]]">
+							<d2l-button
+								id="discovery-course-summary-enroll"
+								on-click="_enroll"
+								primary
+								disabled$="[[_showEndDateAlert]]">
+								[[localize('enrollInCourse')]]
+							</d2l-button>
+						</template>
+					</div>
 				</div>
 
 				<div class="discovery-course-summary-description">
@@ -298,6 +332,24 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 			_homeHref: {
 				type: String,
 				computed: '_getHomeHref()'
+			},
+			startDate: String,
+			startDateIsoFormat: String,
+			_showStartDateAlert: {
+				type: Boolean,
+				value: false,
+				computed: '_showStartDateAlertComputed(startDateIsoFormat)'
+			},
+			endDate: String,
+			endDateIsoFormat: String,
+			_showEndDateAlert: {
+				type: Boolean,
+				value: false,
+				computed: '_showEndDateAlertComputed(endDateIsoFormat)'
+			},
+			dataIsReady: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -310,13 +362,13 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 	_onIronResize() {
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-header-image-container');
 		const courseSummaryCard = this.shadowRoot.querySelector('#discovery-course-summary-card');
-		const courseSummaryButtons = this.shadowRoot.querySelector('#discovery-course-summary-buttons');
+		const courseSummaryBottomContainer = this.shadowRoot.querySelector('#discovery-course-summary-bottom-container');
 
 		if (headerImageContainer && courseSummaryCard && courseSummaryCard) {
 			if (window.innerWidth < 420) {
 				headerImageContainer.style.height = '150px';
 			} else {
-				const resHeight = courseSummaryCard.offsetHeight + courseSummaryButtons.offsetHeight * (4 / 6) + 90;
+				const resHeight = courseSummaryCard.offsetHeight + courseSummaryBottomContainer.offsetHeight * (4 / 6) + 90;
 				headerImageContainer.style.height = `${resHeight}px`;
 			}
 		}
@@ -435,6 +487,14 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 
 	_getHomeHref() {
 		return this.valenceHomeHref();
+	}
+
+	_showStartDateAlertComputed(startDateIsoFormat) {
+		return startDateIsoFormat ? moment().isBefore(moment(startDateIsoFormat)) : false;
+	}
+
+	_showEndDateAlertComputed(endDateIsoFormat) {
+		return endDateIsoFormat ? moment().isAfter(moment(endDateIsoFormat)) : false;
 	}
 }
 

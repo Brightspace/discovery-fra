@@ -19,7 +19,6 @@ class DiscoveryCourse extends mixinBehaviors(
 	[D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior],
 	FetchMixin(RouteLocationsMixin(LocalizeMixin(PolymerElement)))) {
 	static get template() {
-		/* global moment*/
 		return html `
 			<style include="discovery-styles">
 				:host {
@@ -127,7 +126,12 @@ class DiscoveryCourse extends mixinBehaviors(
 					format=[[_format]]
 					action-enroll=[[_actionEnroll]]
 					organization-homepage=[[_organizationHomepage]]
-					organization-href=[[_organizationHref]]>
+					organization-href=[[_organizationHref]]
+					start-date=[[_startDate]]
+					start-date-iso-format=[[_startDateIsoFormat]]
+					end-date=[[_endDate]]
+					end-date-iso-format=[[_endDateIsoFormat]]
+					data-is-ready=[[_dataIsReady]]>
 				</course-summary>
 
 				<course-action
@@ -164,6 +168,12 @@ class DiscoveryCourse extends mixinBehaviors(
 			_courseDescriptionItems: Array,
 			_organizationHomepage: String,
 			_organizationHref: String,
+			_startDateIsoFormat: String,
+			_endDateIsoFormat: String,
+			_dataIsReady: {
+				type: Boolean,
+				value: false
+			}
 		};
 	}
 	ready() {
@@ -183,6 +193,9 @@ class DiscoveryCourse extends mixinBehaviors(
 			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
 				.then(this._handleCourseEntity.bind(this))
+				.then(() => {
+					this._dataIsReady = true;
+				})
 				.catch(() => this._navigateToNotFound());
 		} else {
 			this._navigateToNotFound();
@@ -231,9 +244,11 @@ class DiscoveryCourse extends mixinBehaviors(
 			const dateFormat = 'MMM Do, YYYY';
 			moment.locale(this.language);
 			if (startDate) {
+				this._startDateIsoFormat = startDate;
 				this._startDate = moment.utc(startDate).format(dateFormat);
 			}
 			if (endDate) {
+				this._endDateIsoFormat = endDate;
 				this._endDate = moment.utc(endDate).format(dateFormat);
 			}
 
@@ -301,6 +316,9 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._format =  '';
 		this._startDate =  '';
 		this._courseDescriptionItems = [];
+		this._startDateIsoFormat = '';
+		this._endDateIsoFormat = '';
+		this._dataIsReady = false;
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {

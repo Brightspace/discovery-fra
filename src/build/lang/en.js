@@ -48,5 +48,7 @@ window.D2L.Discovery.LangEn = {
 	"unenroll": "Unenroll",
 	"openCourse": "Open Course",
 	"navigateHome": "Head back to home.",
-	"404message": " Oops you hit a 404."
+	"404message": " Oops you hit a 404.",
+	"startDateIsInTheFuture": "This course will become available on {date}.",
+	"endDateIsInThePast": "This course closed on {date}. Contact your administrator to re-offer or re-open the course."
 };
