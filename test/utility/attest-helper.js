@@ -15,7 +15,8 @@ var runAttest = function() { //eslint-disable-line no-unused-vars
 			'html-has-lang':{enabled:false},
 			'landmark-one-main':{enabled:false},
 			'page-has-heading-one':{enabled:false},
-			'duplicate-id':{enabled:false},
+			'region':{enabled:false},
+			'duplicate-id':{enabled:false}
 		}
 	};
 

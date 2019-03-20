@@ -118,6 +118,12 @@ describe('course-summary', () => {
 				done();
 			});
 		});
+
+		it('should pass attest run', () => {
+			if (isAttestInstalled()) {
+				return runAttest();
+			}
+		});
 	});
 
 	describe('user is enrolled', () => {
@@ -244,7 +250,7 @@ describe('course-summary', () => {
 	describe('enrollment is pending', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
-			setComponentForEnrollment({ component, enrolled: false, homepage: false });
+			setComponentForEnrollment({ component, enrolled: false });
 			setComponentHomepage({ component, homepage: false });
 			afterNextRender(component, done);
 		});
@@ -305,6 +311,83 @@ describe('course-summary', () => {
 						openCourseButton.click();
 					});
 				});
+			});
+		});
+	});
+
+	describe('start date and end date alerts', () => {
+		const futureIsoDateTime = moment().add(1, 'minutes').toISOString();
+		const pastIsoDateTime = moment().subtract(1, 'minutes').toISOString();
+
+		before(done => {
+			component = fixture('course-summary-basic-fixture');
+			setComponentForEnrollment({ component, enrolled: false }); // make sure the user is not enrolled
+			afterNextRender(component, done);
+		});
+
+		describe('start date is in the past and end date is in the future', () => {
+			before(done => {
+				component.setAttribute('start-date', 'testStartDate');
+				component.setAttribute('start-date-iso-format', pastIsoDateTime);
+				component.setAttribute('end-date', 'testEndDate');
+				component.setAttribute('end-date-iso-format', futureIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			it('should not have alert ', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+			});
+
+			it('enrollment button is enabled if not enrolled', () => {
+				const enrollButton = component.$$('#discovery-course-summary-enroll');
+				expect(enrollButton.getAttribute('disabled')).to.equal(null);
+			});
+		});
+
+		describe('start date is in the future', () => {
+			before(done => {
+				component.setAttribute('start-date', 'testStartDate');
+				component.setAttribute('start-date-iso-format', futureIsoDateTime);
+				component.setAttribute('end-date', 'testEndDate');
+				component.setAttribute('end-date-iso-format', futureIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			it('should have alert', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+			});
+
+			it('enrollment button is enabled if not enrolled', () => {
+				const enrollButton = component.$$('#discovery-course-summary-enroll');
+				expect(enrollButton.getAttribute('disabled')).to.equal(null);
+			});
+		});
+
+		describe('end date is in the past', () => {
+			before(done => {
+				component.setAttribute('start-date', 'testStartDate');
+				component.setAttribute('start-date-iso-format', pastIsoDateTime);
+				component.setAttribute('end-date', 'testEndDate');
+				component.setAttribute('end-date-iso-format', pastIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			it('should have alert', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.equal(null);
+			});
+
+			it('enrollment button is disabled if not enrolled', () => {
+				const enrollButton = component.$$('#discovery-course-summary-enroll');
+				expect(enrollButton.getAttribute('disabled')).to.not.equal(null);
 			});
 		});
 	});

@@ -253,11 +253,13 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 				<div id="discovery-course-summary-bottom-container" class="discovery-course-summary-bottom-container">
 					<div class="discovery-course-summary-alert-container">
 						<d2l-alert
+							id="discovery-course-summary-start-date-alert"
 							hidden$="[[!_showStartDateAlert]]"
 							class="discovery-course-summary-alert">
 							[[localize('startDateIsInTheFuture', 'date', startDate)]]
 						</d2l-alert>
 						<d2l-alert
+							id="discovery-course-summary-end-date-alert"
 							hidden$="[[!_showEndDateAlert]]"
 							class="discovery-course-summary-alert"
 							type="critical">
