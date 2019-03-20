@@ -116,6 +116,7 @@ class DiscoveryCourse extends mixinBehaviors(
 
 			<div class="d2l-typography discovery-course-container">
 				<course-summary
+					id="discovery-course-summary"
 					class="discovery-course-summary"
 					course-image="[[_courseImage]]"
 					course-category=[[_courseCategory]]
@@ -319,6 +320,11 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._startDateIsoFormat = '';
 		this._endDateIsoFormat = '';
 		this._dataIsReady = false;
+
+		const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
+		if (courseSummary) {
+			courseSummary._clearHeaderImage();
+		}
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {

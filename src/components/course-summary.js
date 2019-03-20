@@ -374,6 +374,13 @@ class CourseSummary extends mixinBehaviors([IronResizableBehavior], FetchMixin(L
 		}
 	}
 
+	_clearHeaderImage() {
+		const headerImageContainer = this.shadowRoot.querySelector('#discovery-header-image-container');
+		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined) {
+			headerImageContainer.style['background-image'] = '';
+		}
+	}
+
 	_headerImageLoaded() {
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-header-image-container');
 		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined && this.courseImage) {
