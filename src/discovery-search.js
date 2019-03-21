@@ -78,21 +78,15 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 						margin: 0 24px;
 					}
 
-					.discovery-search-left-filler {
-						display: none;
-					}
-
-					.discovery-search-sidebar {
+					.discovery-search-left-filler,
+					.discovery-search-sidebar,
+					.discovery-search-right-filler {
 						display: none;
 					}
 
 					.discovery-search-main {
 						margin: 0;
 						width: 100%;
-					}
-
-					.discovery-search-right-filler {
-						display: none;
 					}
 				}
 
