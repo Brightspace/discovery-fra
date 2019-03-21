@@ -22,7 +22,9 @@ class DiscoveryCourse extends mixinBehaviors(
 		return html `
 			<style include="discovery-styles">
 				:host {
-					display: inline;
+					display: block;
+					margin: 0 auto;
+					max-width: 1230px;
 				}
 
 				.discovery-course-container {

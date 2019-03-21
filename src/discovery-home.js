@@ -11,6 +11,11 @@ class DiscoveryHome extends LocalizeMixin(PolymerElement) {
 
 		return html`
 			<style include="discovery-styles">
+				:host {
+					display: block;
+					margin: 0 auto;
+					max-width: 1230px;
+				}
 				.discovery-home-home-header {
 					margin-bottom: 1rem;
 				}

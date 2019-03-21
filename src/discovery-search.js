@@ -22,6 +22,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 	static get template() {
 		return html`
 			<style include="discovery-styles">
+				:host {
+					display: block
+				}
+
 				.discovery-search-outer-container {
 					display: flex;
 					flex-direction: column;
@@ -31,24 +35,33 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				.discovery-search-container {
 					display: flex;
 					flex-direction: row;
-					margin: 0 30px;
+				}
+
+				.discovery-search-left-filler {
+					background-color: white;
+					flex-grow: 1;
 				}
 
 				.discovery-search-sidebar {
 					background-color: white;
 					border-right: 1px solid var(--d2l-color-mica);
-					box-shadow: 3px 0 5px -2px var(--d2l-color-mica);
-					flex-shrink: 0;
+					box-shadow: 3px 0 3px -2px var(--d2l-color-mica);
 					flex-grow: 0;
-					padding: 1rem 0 0 1rem;
+					flex-shrink: 0;
+					padding: 1rem 0 0 calc(1rem + 30px);
 					overflow-y: auto;
-					width: calc(268px - 1rem);
+					width: calc(268px - 1rem - 30px);
 				}
 
 				.discovery-search-main {
-					margin-left: 1rem;
-					margin-top: 1rem;
-					width: 100%;
+					flex-grow: 0;
+					margin: 1rem 30px 0 1rem;
+					width: calc(1230px - 268px - 1rem - 30px);
+				}
+
+				.discovery-search-right-filler {
+					background-color: transparent;
+					flex-grow: 1;
 				}
 
 				.discovery-search-nav-container {
@@ -65,13 +78,21 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 						margin: 0 24px;
 					}
 
+					.discovery-search-left-filler {
+						display: none;
+					}
+
 					.discovery-search-sidebar {
 						display: none;
 					}
 
 					.discovery-search-main {
-						margin-left: 0;
-						margin-top: 0;
+						margin: 0;
+						width: 100%;
+					}
+
+					.discovery-search-right-filler {
+						display: none;
 					}
 				}
 
@@ -91,6 +112,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			<!-- IE11 Bug with min-height not working with flex unless there's an outer flex column with flex-grow: 1 -->
 			<div class="discovery-search-outer-container">
 				<div class="discovery-search-container">
+					<div class="discovery-search-left-filler"></div>
 					<div class="discovery-search-sidebar">
 						<search-sidebar></search-sidebar>
 					</div>
@@ -106,6 +128,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 						</div>
 						<discovery-footer></discovery-footer>
 					</div>
+					<div class="discovery-search-right-filler"></div>
 				</div>
 			</div>
 		`;

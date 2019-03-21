@@ -8,6 +8,8 @@ class Discovery404 extends LocalizeMixin(PolymerElement) {
 	  		<style>
 				:host {
 					display: block;
+					margin: 0 auto;
+					max-width: 1230px;
 					padding: 10px;
 				}
 	  		</style>
