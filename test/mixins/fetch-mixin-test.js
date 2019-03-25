@@ -60,6 +60,7 @@ describe('Fetch Mixin Tests', () => {
 
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
+		sandbox.stub(window.d2lfetch, 'removeTemp').withArgs('dedupe').returns(window.d2lfetch);
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
 		SetupFetchStub(/\/bffRootEndpoint\/1$/, bffRootResponse);
 	});
