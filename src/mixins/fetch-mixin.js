@@ -35,6 +35,19 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			.fetch(request)
 			.then(this.__responseToSirenEntity.bind(this));
 	}
+	_fetchEntityWithoutDedupe(url, method = 'GET') {
+		if (!url) {
+			return;
+		}
+		const request = new Request(url, {
+			method,
+			headers: { Accept: 'application/vnd.siren+json' },
+		});
+		return window.d2lfetch
+			.removeTemp('dedupe')
+			.fetch(request)
+			.then(this.__responseToSirenEntity.bind(this));
+	}
 	_getActionUrl(action, userParams) {
 		return Promise.resolve()
 			.then(() => {
@@ -43,7 +56,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 				if (!bffEndpoint) {
 					throw new Error('BFF endpoint does not exist');
 				}
-				return this._fetchEntity(bffEndpoint);
+				return this._fetchEntityWithoutDedupe(bffEndpoint);
 			})
 			.then((response) => {
 				const searchAction = response.getAction(action);
