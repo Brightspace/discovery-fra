@@ -95,7 +95,11 @@ describe('course-summary', () => {
 			component.setAttribute('course-duration', testDuration);
 			component.setAttribute('course-last-updated', testLastUpdated);
 			component.setAttribute('format', testFormat);
-			afterNextRender(component, done);
+			component.setAttribute('data-is-ready', true);
+			afterNextRender(component, () => {
+				component.setAttribute('data-is-ready', true);
+				afterNextRender(component, done);
+			});
 		});
 
 		it('should show all properties', done => {
@@ -110,6 +114,23 @@ describe('course-summary', () => {
 			afterNextRender(component, () => {
 				const description = component.$$('.discovery-course-summary-description').innerHTML;
 				expect(description).to.include(testDescription);
+
+				const emptyDescriptionBox = component.$$('.discovery-course-summary-empty-description');
+				expect(emptyDescriptionBox.getAttribute('hidden')).to.not.equal(null);
+				done();
+			});
+		});
+
+		it('no description should show a message about no description', done => {
+			component.setAttribute('course-description', '');
+
+			afterNextRender(component, () => {
+				const emptyDescriptionElement = component.$$('.discovery-course-summary-empty-description');
+				expect(emptyDescriptionElement.getAttribute('hidden')).to.equal(null);
+				expect(emptyDescriptionElement.innerHTML).to.include('No course description');
+
+				const descriptionElement = component.$$('.discovery-course-summary-description');
+				expect(descriptionElement.getAttribute('hidden')).to.not.equal(null);
 				done();
 			});
 		});

@@ -151,6 +151,20 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					margin: -12px 0 -6px;
 				}
 
+				.discovery-course-summary-empty-description {
+					padding: 1.5rem 0;
+				}
+
+				.discovery-course-summary-empty-description-box {
+					background: var(--d2l-color-regolith);
+					border: 1px solid var(--d2l-color-gypsum);
+					border-radius: 6px;
+				}
+
+				.discovery-course-summary-empty-description-text {
+					padding: 1.2rem 1.5rem;
+				}
+
 				@media only screen and (max-width: 615px) {
 					.discovery-course-summary-card,
 					.discovery-course-summary-bottom-container {
@@ -168,6 +182,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					.discovery-course-summary-info-property {
 						margin-bottom: 0.3rem;
 						margin-top: 0.3rem;
+					}
+
+					.discovery-course-summary-empty-description {
+						padding: 1.5rem 0 0.9rem 0;
 					}
 				}
 
@@ -192,6 +210,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 						margin-bottom: 0.6rem;
 						margin-right: 0;
 						width: 100%;
+					}
+
+					.discovery-course-summary-empty-description-box {
+						margin: 0 0.9rem;
 					}
 				}
 			</style>
@@ -268,9 +290,16 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					</div>
 				</div>
 
-				<div class="discovery-course-summary-description">
-					<h2 class="d2l-heading-2 discovery-course-summary-d2l-heading-2">[[localize('courseDescription')]]</h2>
-					<div id="discovery-course-summary-description-text" class="d2l-body-compact"></div>
+				<div hidden$="[[!dataIsReady]]">
+					<div class="discovery-course-summary-description" hidden$="[[_isCourseDescriptionEmpty]]">
+						<h2 class="d2l-heading-2 discovery-course-summary-d2l-heading-2">[[localize('courseDescription')]]</h2>
+						<div id="discovery-course-summary-description-text" class="d2l-body-compact"></div>
+					</div>
+					<div class="discovery-course-summary-empty-description" hidden$="[[!_isCourseDescriptionEmpty]]">
+						<div class="discovery-course-summary-empty-description-box">
+							<div class="discovery-course-summary-empty-description-text d2l-body-standard">[[localize('noCourseDescription')]]</div>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -331,6 +360,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			dataIsReady: {
 				type: Boolean,
 				value: false
+			},
+			_isCourseDescriptionEmpty: {
+				type: Boolean,
+				computed: '_isCourseDescriptionEmptyComputed(courseDescription)'
 			}
 		};
 	}
@@ -453,6 +486,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		const courseSummaryBottomContainer = this.shadowRoot.querySelector('#discovery-course-summary-bottom-container');
 		return courseSummaryCard && courseSummaryBottomContainer ?
 			courseSummaryCard.offsetHeight + courseSummaryBottomContainer.offsetHeight * (4 / 6) : 0;
+	}
+
+	_isCourseDescriptionEmptyComputed(courseDescription) {
+		return !courseDescription;
 	}
 }
 

@@ -51,5 +51,6 @@ window.D2L.Discovery.LangEn = {
 	"404message": " Oops you hit a 404.",
 	"startDateIsInTheFuture": "This course will become available on {date}.",
 	"endDateIsInThePast": "This course closed on {date}. Contact your administrator to re-offer or re-open the course.",
-	"emailFeedback": "Email your feedback to {email}"
+	"emailFeedback": "Email your feedback to {email}",
+	"noCourseDescription": "No course description"
 };
