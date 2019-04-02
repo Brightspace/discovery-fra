@@ -95,7 +95,6 @@ describe('course-summary', () => {
 			component.setAttribute('course-duration', testDuration);
 			component.setAttribute('course-last-updated', testLastUpdated);
 			component.setAttribute('format', testFormat);
-			component.setAttribute('data-is-ready', true);
 			afterNextRender(component, () => {
 				component.setAttribute('data-is-ready', true);
 				afterNextRender(component, done);
