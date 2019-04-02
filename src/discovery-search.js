@@ -204,7 +204,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			});
 		} else {
 			this._searchQuery = null;
-			this._pageCurrent = 0;
+			this._pageCurrent = undefined;
 		}
 	}
 	_routeChanged(route) {
@@ -221,8 +221,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		queryParams.stopPropagation();
 		queryParams = queryParams.detail.value || {};
 		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
-		if (!hasPageQueryParam) {
-			this._pageCurrent = this._pageCurrent ? undefined : 0;
+		if (!this.visible) {
+			this._pageCurrent = undefined;
+		} else if (!hasPageQueryParam) {
+			this._pageCurrent = 0;
 		} else {
 			this._pageCurrent = Math.max(queryParams.get('page') - 1, 0);
 		}

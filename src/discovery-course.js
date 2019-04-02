@@ -66,13 +66,20 @@ class DiscoveryCourse extends mixinBehaviors(
 					width: 100%;
 				}
 
-				.discovery-course-header-image-container {
-					background-position: center center;
-					background-size: cover;
+				.discovery-course-header-container {
+					height: 100%;
 					left: 0;
 					position: absolute;
 					width: 100%;
 					z-index: -10;
+				}
+				.discovery-course-header-image-container {
+					background-position: center center;
+					background-size: cover;
+				}
+
+				.discovery-course-header-gradient-container {
+					background: linear-gradient(to bottom,  rgba(249,250,251,1) 0%,rgba(249,250,251,0) 100%);
 				}
 
 				@media only screen and (max-width: 929px) {
@@ -90,7 +97,7 @@ class DiscoveryCourse extends mixinBehaviors(
 						margin-left: 2.1rem;
 						margin-right: 2.1rem;
 						margin-top: 0;
-						max-width: 645px;
+						max-width: 680px;
 						min-width: 532px;
 						width: 90%;
 					}
@@ -106,8 +113,8 @@ class DiscoveryCourse extends mixinBehaviors(
 						margin-left: 1.8rem;
 						margin-right: 1.8rem;
 						margin-top: 1rem;
-						max-width: 542px;
-						min-width: 348px;
+						max-width: 579px;
+						min-width: 384px;
 						width: 95%;
 					}
 				}
@@ -115,7 +122,7 @@ class DiscoveryCourse extends mixinBehaviors(
 				@media only screen and (max-width: 419px) {
 					.discovery-course-summary,
 					.discovery-course-action {
-						background: var(--d2l-color-regolith);
+						background: transparent;
 						border: none;
 						box-shadow: none;
 						margin: 0;
@@ -123,10 +130,20 @@ class DiscoveryCourse extends mixinBehaviors(
 						width: 100%;
 					}
 
-					.discovery-course-header-image-container {
+					.discovery-course-header-container {
 						margin: 0;
 						position: static;
 						z-index: auto;
+					}
+
+					.discovery-course-header-image-container {
+						position: relative;
+					}
+
+					.discovery-course-header-gradient-container {
+						position: absolute;
+						width: 100%;
+						z-index: -10;
 					}
 				}
 			</style>
@@ -138,7 +155,11 @@ class DiscoveryCourse extends mixinBehaviors(
 			</app-route>
 
 			<img id="discovery-course-header-image" on-load="_headerImageLoaded" src="[[_courseImage]]" hidden/>
-			<div id="discovery-course-header-image-container" class="discovery-course-header-image-container"></div>
+			<div class="discovery-course-header-container">
+				<div id="discovery-course-header-image-container" class="discovery-course-header-image-container"></div>
+				<div id="discovery-course-header-gradient-container" class="discovery-course-header-gradient-container"></div>
+			</div>
+
 			<div class="d2l-typography discovery-course-outer-container">
 				<div class="discovery-course-container">
 					<course-summary
@@ -374,20 +395,32 @@ class DiscoveryCourse extends mixinBehaviors(
 			return;
 		}
 
-		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
 		const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
+		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
+		const headerGradientContainer = this.shadowRoot.querySelector('#discovery-course-header-gradient-container');
 
-		if (courseSummary) {
-			const heightOfCard = courseSummary._getImageAnchorHeight();
-			if (heightOfCard && headerImageContainer) {
-				if (window.innerWidth < 420) {
-					headerImageContainer.style.height = '150px';
-				} else {
-					const resHeight = heightOfCard + 90;
-					headerImageContainer.style.height = `${resHeight}px`;
-				}
-			}
+		if (!courseSummary || !headerImageContainer || !headerGradientContainer) {
+			return;
 		}
+
+		fastdom.measure(() => {
+			const heightOfCard = courseSummary._getImageAnchorHeight();
+			if (heightOfCard && window.innerHeight) {
+				var heightForHeaderImageContainer = 0;
+				var heightForHeaderGradientContainer = 0;
+				if (window.innerWidth < 420) {
+					heightForHeaderImageContainer = '150';
+				} else {
+					heightForHeaderImageContainer  = heightOfCard + 90;
+				}
+				heightForHeaderGradientContainer = window.innerHeight - heightForHeaderImageContainer;
+
+				fastdom.mutate(() => {
+					headerImageContainer.style.height = `${heightForHeaderImageContainer}px`;
+					headerGradientContainer.style.height = `${heightForHeaderGradientContainer}px`;
+				});
+			}
+		});
 	}
 	_headerImageLoaded() {
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
