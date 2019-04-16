@@ -8,7 +8,6 @@ import 'd2l-colors/d2l-colors.js';
 import 'd2l-breadcrumbs/d2l-breadcrumb';
 import 'd2l-breadcrumbs/d2l-breadcrumbs';
 import 'd2l-button/d2l-button.js';
-import 'd2l-button/d2l-button-icon.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-link/d2l-link.js';
