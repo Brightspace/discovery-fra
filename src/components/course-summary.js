@@ -451,7 +451,12 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				.then(() => {
 					this.actionEnroll = null;
 					this._enrollmentDialogHeader = this.localize('enrollmentHeaderSuccess');
-					return this.retryFetchOrganizationHomepage({ maxRetries: 5, intervalInMs: 100 })
+					const intervalInMs = 100;
+					var maxRetries = 5;
+					if (!this._startDateIsFuture && !this._endDateIsPast) {
+						maxRetries = 1;
+					}
+					return this.retryFetchOrganizationHomepage({ maxRetries, intervalInMs })
 						.then((organizationHomepage) => {
 							if (organizationHomepage) {
 								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccess', 'title', this.courseTitle);
@@ -483,7 +488,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			function retryFn(retry) {
 				if (retry < maxRetries) {
 					return fn().then((res) => {
-						if (!res) {
+						if (!res && (retry + 1 < maxRetries)) {
 							setTimeout(() => {
 								retryFn(retry + 1);
 							}, intervalInMs);

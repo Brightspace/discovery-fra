@@ -298,7 +298,7 @@ describe('course-summary', () => {
 			afterNextRender(component, done);
 		});
 
-		function testEnrollmentWorkflow({ done, expectHomepage, dialogMessageIncludes }) {
+		function testEnrollmentWorkflow({ done, expectHomepage, expectRetries, dialogMessageIncludes }) {
 			// Workflow finishes after the user is enrolled and navigates to the homepage
 			component.addEventListener('navigate-parent', (e) => {
 				expect(e.detail.path).to.equal(testOrganizationHomepage);
@@ -343,12 +343,12 @@ describe('course-summary', () => {
 			}
 
 			afterNextRender(component, () => {
-				if (expectHomepage) {
-					expectationChecks();
-				} else {
+				if (expectRetries) {
 					setTimeout(() => {
 						expectationChecks();
 					}, timeToExhaustRetriesInMs);
+				} else {
+					expectationChecks();
 				}
 			});
 		}
@@ -387,6 +387,7 @@ describe('course-summary', () => {
 					testEnrollmentWorkflow({
 						done,
 						expectHomepage: true,
+						expectRetries: false,
 						dialogMessageIncludes: 'will soon be available in the My Courses widget.'
 					});
 				});
@@ -399,6 +400,7 @@ describe('course-summary', () => {
 					testEnrollmentWorkflow({
 						done,
 						expectHomepage: false,
+						expectRetries: false,
 						dialogMessageIncludes: 'will soon be available in the My Courses widget.'
 					});
 				});
@@ -434,6 +436,7 @@ describe('course-summary', () => {
 					testEnrollmentWorkflow({
 						done,
 						expectHomepage: false,
+						expectRetries: true,
 						dialogMessageIncludes: `will become available in the My Courses widget on ${testFutureDateString}`
 					});
 				});
@@ -446,6 +449,7 @@ describe('course-summary', () => {
 					testEnrollmentWorkflow({
 						done,
 						expectHomepage: true,
+						expectRetries: false,
 						dialogMessageIncludes: 'will soon be available in the My Courses widget.'
 					});
 				});
