@@ -129,7 +129,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					align-items: center;
 					display: flex;
 					justify-content: space-between;
-					margin-bottom: 0.5rem;
+					margin: 0.5rem 0;
 					width: 100%;
 				}
 				.discovery-course-summary-dialog-heading-text {
@@ -307,7 +307,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				<div class="discovery-course-summary-dialog-container">
 					<div class="discovery-course-summary-dialog-header-container">
 						<h3 class="discovery-course-summary-dialog-heading-text">[[_enrollmentDialogHeader]]</h3>
-						<d2l-button-icon on-click="_closeDialog" icon="d2l-tier1:close-small" text$="[[localize('close')]]"></d2l-button-icon>
 					</div>
 					<div class="discovery-course-summary-dialog-content-container">
 						<div class="d2l-body-standard">[[_enrollmentDialogMessage]]</div>
