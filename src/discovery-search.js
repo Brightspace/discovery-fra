@@ -192,10 +192,6 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this.addEventListener('search-loading', this._searchLoadingChanged);
 	}
 	_visible(visible) {
-		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
-		if (searchHeader) {
-			searchHeader.showClear(this._searchQuery);
-		}
 		if (visible) {
 			beforeNextRender(this, () => {
 				this._onIronResize();
@@ -237,6 +233,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		}
 
 		if (queryChanged) {
+			const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
+			if (searchHeader) {
+				searchHeader.showClear(this._searchQuery);
+			}
 			this.setInitialFocusAfterRender();
 		}
 	}

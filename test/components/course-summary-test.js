@@ -9,6 +9,11 @@ describe('course-summary', () => {
 	const testOrganizationHrefRegex = /\/test\/organization\/href$/;
 	const testOrganizationHrefWithoutHomepage = '/test/organization/href/without/homepage';
 	const testOrganizationHrefWithoutHomepageRegex = /\/test\/organization\/href\/without\/homepage$/;
+	const testFutureDateString = 'testFutureDateString';
+	const testPastDateString = 'testPastDateString';
+	const futureIsoDateTime = moment().add(60, 'minutes').toISOString();
+	const pastIsoDateTime = moment().subtract(60, 'minutes').toISOString();
+	const timeToExhaustRetriesInMs = 1000;
 
 	var component,
 		fetchStub,
@@ -28,7 +33,7 @@ describe('course-summary', () => {
 
 	function setComponentHomepage({ component, homepage }) {
 		if (homepage) {
-			component.setAttribute('organization-homepage', '');
+			component.setAttribute('organization-homepage', testOrganizationHomepage);
 			component.setAttribute('organization-href', testOrganizationHref);
 		} else {
 			component.setAttribute('organization-homepage', '');
@@ -148,25 +153,142 @@ describe('course-summary', () => {
 			afterNextRender(component, done);
 		});
 
-		it('open course button exists and is displayed', () => {
-			const openCourseButton = component.$$('#discovery-course-summary-open-course');
-			expect(openCourseButton).to.exist;
-			expect(openCourseButton.style.display).to.not.equal('none');
-		});
-
 		it('enroll button does not exist', () => {
 			const enrollButton = component.$$('#discovery-course-summary-enroll');
 			expect(enrollButton).to.not.exist;
 		});
 
-		it('should navigate to organization homepage on click', done => {
-			const openCourseButton = component.$$('#discovery-course-summary-open-course');
-			component.addEventListener('navigate-parent', (e) => {
-				expect(e.detail.path).to.equal(testOrganizationHomepage);
-				done();
+		describe('course has started and has not ended', () => {
+			beforeEach((done) => {
+				component.setAttribute('start-date', testPastDateString);
+				component.setAttribute('start-date-iso-format', pastIsoDateTime);
+				component.setAttribute('end-date', testFutureDateString);
+				component.setAttribute('end-date-iso-format', futureIsoDateTime);
+				afterNextRender(component, done);
 			});
-			openCourseButton.click();
+
+			it('open course button exists and is displayed', () => {
+				const openCourseButton = component.$$('#discovery-course-summary-open-course');
+				expect(openCourseButton).to.exist;
+				expect(openCourseButton.style.display).to.not.equal('none');
+			});
+
+			it('should navigate to organization homepage on click', done => {
+				const openCourseButton = component.$$('#discovery-course-summary-open-course');
+				component.addEventListener('navigate-parent', (e) => {
+					expect(e.detail.path).to.equal(testOrganizationHomepage);
+					done();
+				});
+				openCourseButton.click();
+			});
+
+			it('should not have alert about either start or end date', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+			});
 		});
+
+		describe('course starts in the future', () => {
+			beforeEach((done) => {
+				component.setAttribute('start-date', testFutureDateString);
+				component.setAttribute('start-date-iso-format', futureIsoDateTime);
+				component.setAttribute('end-date', testFutureDateString);
+				component.setAttribute('end-date-iso-format', futureIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			describe('no access to future courses', () => {
+				beforeEach((done) => {
+					setComponentHomepage({ component, homepage: false });
+					afterNextRender(component, done);
+				});
+
+				it('open course button disabled and not hidden', () => {
+					const openButton = component.$$('#discovery-course-summary-open-course');
+					expect(openButton.getAttribute('disabled')).to.not.equal(null);
+					expect(openButton.getAttribute('hidden')).to.equal(null);
+				});
+
+				it('should have alert about the future start date', () => {
+					const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+					const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+					expect(startDateAlertElement.getAttribute('hidden')).to.equal(null);
+					expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				});
+			});
+
+			describe('have access to future courses', () => {
+				beforeEach((done) => {
+					setComponentHomepage({ component, homepage: true });
+					afterNextRender(component, done);
+				});
+
+				it('open course button exists and is displayed', () => {
+					const openCourseButton = component.$$('#discovery-course-summary-open-course');
+					expect(openCourseButton).to.exist;
+					expect(openCourseButton.style.display).to.not.equal('none');
+				});
+
+				it('should not have alert about either start or end date', () => {
+					const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+					const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+					expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+					expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				});
+			});
+		});
+
+		describe('course ended', () => {
+			beforeEach((done) => {
+				component.setAttribute('start-date', testPastDateString);
+				component.setAttribute('start-date-iso-format', pastIsoDateTime);
+				component.setAttribute('end-date', testPastDateString);
+				component.setAttribute('end-date-iso-format', pastIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			describe('no access to past courses', () => {
+				beforeEach((done) => {
+					setComponentHomepage({ component, homepage: false });
+					afterNextRender(component, done);
+				});
+
+				it('open course button hidden', () => {
+					const openButton = component.$$('#discovery-course-summary-open-course');
+					expect(openButton.getAttribute('hidden')).to.not.equal(null);
+				});
+
+				it('should have alert about the past end date', () => {
+					const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+					const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+					expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+					expect(endDateAlertElement.getAttribute('hidden')).to.equal(null);
+				});
+			});
+
+			describe('have access to past courses', () => {
+				beforeEach((done) => {
+					setComponentHomepage({ component, homepage: true });
+					afterNextRender(component, done);
+				});
+
+				it('open course button exists and is displayed', () => {
+					const openCourseButton = component.$$('#discovery-course-summary-open-course');
+					expect(openCourseButton).to.exist;
+					expect(openCourseButton.style.display).to.not.equal('none');
+				});
+
+				it('should not have alert about either start or end date', () => {
+					const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+					const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+					expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+					expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				});
+			});
+		});
+
 	});
 
 	describe('user is not enrolled', () => {
@@ -176,18 +298,7 @@ describe('course-summary', () => {
 			afterNextRender(component, done);
 		});
 
-		it('open course button does not exist', () => {
-			const openCourseButton = component.$$('#discovery-course-summary-open-course');
-			expect(openCourseButton).to.not.exist;
-		});
-
-		it('enroll button does exist and is displayed', () => {
-			const enrollButton = component.$$('#discovery-course-summary-enroll');
-			expect(enrollButton).to.exist;
-			expect(enrollButton.style.display).to.not.equal('none');
-		});
-
-		it('enrolling workflow succeeding', done => {
+		function testEnrollmentWorkflow({ done, expectHomepage, dialogMessageIncludes }) {
 			// Workflow finishes after the user is enrolled and navigates to the homepage
 			component.addEventListener('navigate-parent', (e) => {
 				expect(e.detail.path).to.equal(testOrganizationHomepage);
@@ -208,12 +319,12 @@ describe('course-summary', () => {
 			expect(enrollButton.style.display).to.not.equal('none');
 			enrollButton.click();
 
-			afterNextRender(component, () => {
+			function expectationChecks() {
 				// Dialog is opened with success message
 				const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 				expect(dialog.opened).to.equal(true);
 				const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-				expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
+				expect(dialogMessage).to.include(dialogMessageIncludes);
 
 				// Open Course button does exist and is displayed
 				const openCourseButton = component.$$('#discovery-course-summary-open-course');
@@ -224,7 +335,143 @@ describe('course-summary', () => {
 				expect(enrollButton.style.display).to.equal('none');
 
 				// Click the open course button
-				openCourseButton.click();
+				if (expectHomepage) {
+					openCourseButton.click();
+				} else {
+					done();
+				}
+			}
+
+			afterNextRender(component, () => {
+				if (expectHomepage) {
+					expectationChecks();
+				} else {
+					setTimeout(() => {
+						expectationChecks();
+					}, timeToExhaustRetriesInMs);
+				}
+			});
+		}
+
+		it('open course button does not exist', () => {
+			const openCourseButton = component.$$('#discovery-course-summary-open-course');
+			expect(openCourseButton).to.not.exist;
+		});
+
+		describe('course has started and has not ended', () => {
+			beforeEach((done) => {
+				component.setAttribute('start-date', testPastDateString);
+				component.setAttribute('start-date-iso-format', pastIsoDateTime);
+				component.setAttribute('end-date', testFutureDateString);
+				component.setAttribute('end-date-iso-format', futureIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			it('enroll button exists and is enabled', () => {
+				const enrollButton = component.$$('#discovery-course-summary-enroll');
+				expect(enrollButton).to.exist;
+				expect(enrollButton.getAttribute('disabled')).to.equal(null);
+			});
+
+			it('should not have alert about either start or end date', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+			});
+
+			it('enrolling workflow succeeding with homepage returned', done => {
+				setComponentHomepage({ component, homepage: true });
+
+				afterNextRender(component, () => {
+					testEnrollmentWorkflow({
+						done,
+						expectHomepage: true,
+						dialogMessageIncludes: 'will soon be available in the My Courses widget.'
+					});
+				});
+			});
+
+			it('enrolling workflow succeeding without homepage returned', done => {
+				setComponentHomepage({ component, homepage: false });
+
+				afterNextRender(component, () => {
+					testEnrollmentWorkflow({
+						done,
+						expectHomepage: false,
+						dialogMessageIncludes: 'will soon be available in the My Courses widget.'
+					});
+				});
+			});
+		});
+
+		describe('course starts in the future', () => {
+			beforeEach((done) => {
+				component.setAttribute('start-date', testFutureDateString);
+				component.setAttribute('start-date-iso-format', futureIsoDateTime);
+				component.setAttribute('end-date', testFutureDateString);
+				component.setAttribute('end-date-iso-format', futureIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			it('enroll button exists and is enabled', () => {
+				const enrollButton = component.$$('#discovery-course-summary-enroll');
+				expect(enrollButton).to.exist;
+				expect(enrollButton.getAttribute('disabled')).to.equal(null);
+			});
+
+			it('should have alert about the future start date', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+			});
+
+			it('enrolling workflow succeeding without access', done => {
+				setComponentHomepage({ component, homepage: false });
+
+				afterNextRender(component, () => {
+					testEnrollmentWorkflow({
+						done,
+						expectHomepage: false,
+						dialogMessageIncludes: `will become available in the My Courses widget on ${testFutureDateString}`
+					});
+				});
+			});
+
+			it('enrolling workflow succeeding with access', done => {
+				setComponentHomepage({ component, homepage: true });
+
+				afterNextRender(component, () => {
+					testEnrollmentWorkflow({
+						done,
+						expectHomepage: true,
+						dialogMessageIncludes: 'will soon be available in the My Courses widget.'
+					});
+				});
+			});
+		});
+
+		describe('course ended', () => {
+			beforeEach((done) => {
+				component.setAttribute('start-date', testPastDateString);
+				component.setAttribute('start-date-iso-format', pastIsoDateTime);
+				component.setAttribute('end-date', testPastDateString);
+				component.setAttribute('end-date-iso-format', pastIsoDateTime);
+				afterNextRender(component, done);
+			});
+
+			it('enroll button exists and is disabled', () => {
+				const enrollButton = component.$$('#discovery-course-summary-enroll');
+				expect(enrollButton).to.exist;
+				expect(enrollButton.getAttribute('disabled')).to.not.equal(null);
+			});
+
+			it('should have alert about the past end date', () => {
+				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
+				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
+				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
+				expect(endDateAlertElement.getAttribute('hidden')).to.equal(null);
 			});
 		});
 
@@ -269,6 +516,7 @@ describe('course-summary', () => {
 			setComponentHomepage({ component, homepage: false });
 			afterNextRender(component, done);
 		});
+
 		it('enrollment workflow encounters pending dialog before enrollment is successful', done => {
 			// Workflow finishes after the user is enrolled and navigates to the homepage
 			component.addEventListener('navigate-parent', (e) => {
@@ -291,118 +539,43 @@ describe('course-summary', () => {
 			enrollButton.click();
 
 			afterNextRender(component, () => {
-				// Dialog is opened with success message
-				const dialog = component.$$('#discovery-course-summary-enroll-dialog');
-				expect(dialog.opened).to.equal(true);
-				const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-				expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
-
-				// Open Course button does exist and is displayed
-				const openCourseButton = component.$$('#discovery-course-summary-open-course');
-				expect(openCourseButton).to.exist;
-				expect(openCourseButton.style.display).to.not.equal('none');
-
-				// Enroll button is hidden
-				expect(enrollButton.style.display).to.equal('none');
-
-				// Click the open course button
-				openCourseButton.click();
-
-				// Pending dialog is shown
-				afterNextRender(component, () => {
+				setTimeout(() => {
+					// Dialog is opened with success message
 					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 					expect(dialog.opened).to.equal(true);
 					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-					expect(dialogMessage).to.include('Your enrollment to this course is still pending.');
+					expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
 
-					// Open Course button still exists and is displayed
+					// Open Course button does exist and is displayed
 					const openCourseButton = component.$$('#discovery-course-summary-open-course');
 					expect(openCourseButton).to.exist;
 					expect(openCourseButton.style.display).to.not.equal('none');
 
-					// Set organization-href to something that will now return a homepage
-					component.setAttribute('organization-href', testOrganizationHref);
+					// Enroll button is hidden
+					expect(enrollButton.style.display).to.equal('none');
+
+					// Click the open course button
+					openCourseButton.click();
+
+					// Pending dialog is shown
 					afterNextRender(component, () => {
-						openCourseButton.click();
+						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+						expect(dialog.opened).to.equal(true);
+						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						expect(dialogMessage).to.include('Your enrollment to this course is still pending.');
+
+						// Open Course button still exists and is displayed
+						const openCourseButton = component.$$('#discovery-course-summary-open-course');
+						expect(openCourseButton).to.exist;
+						expect(openCourseButton.style.display).to.not.equal('none');
+
+						// Set organization-href to something that will now return a homepage
+						component.setAttribute('organization-href', testOrganizationHref);
+						afterNextRender(component, () => {
+							openCourseButton.click();
+						});
 					});
-				});
-			});
-		});
-	});
-
-	describe('start date and end date alerts', () => {
-		const futureIsoDateTime = moment().add(1, 'minutes').toISOString();
-		const pastIsoDateTime = moment().subtract(1, 'minutes').toISOString();
-
-		before(done => {
-			component = fixture('course-summary-basic-fixture');
-			setComponentForEnrollment({ component, enrolled: false }); // make sure the user is not enrolled
-			afterNextRender(component, done);
-		});
-
-		describe('start date is in the past and end date is in the future', () => {
-			before(done => {
-				component.setAttribute('start-date', 'testStartDate');
-				component.setAttribute('start-date-iso-format', pastIsoDateTime);
-				component.setAttribute('end-date', 'testEndDate');
-				component.setAttribute('end-date-iso-format', futureIsoDateTime);
-				afterNextRender(component, done);
-			});
-
-			it('should not have alert ', () => {
-				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
-				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
-				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
-				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
-			});
-
-			it('enrollment button is enabled if not enrolled', () => {
-				const enrollButton = component.$$('#discovery-course-summary-enroll');
-				expect(enrollButton.getAttribute('disabled')).to.equal(null);
-			});
-		});
-
-		describe('start date is in the future', () => {
-			before(done => {
-				component.setAttribute('start-date', 'testStartDate');
-				component.setAttribute('start-date-iso-format', futureIsoDateTime);
-				component.setAttribute('end-date', 'testEndDate');
-				component.setAttribute('end-date-iso-format', futureIsoDateTime);
-				afterNextRender(component, done);
-			});
-
-			it('should have alert', () => {
-				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
-				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
-				expect(startDateAlertElement.getAttribute('hidden')).to.equal(null);
-				expect(endDateAlertElement.getAttribute('hidden')).to.not.equal(null);
-			});
-
-			it('enrollment button is enabled if not enrolled', () => {
-				const enrollButton = component.$$('#discovery-course-summary-enroll');
-				expect(enrollButton.getAttribute('disabled')).to.equal(null);
-			});
-		});
-
-		describe('end date is in the past', () => {
-			before(done => {
-				component.setAttribute('start-date', 'testStartDate');
-				component.setAttribute('start-date-iso-format', pastIsoDateTime);
-				component.setAttribute('end-date', 'testEndDate');
-				component.setAttribute('end-date-iso-format', pastIsoDateTime);
-				afterNextRender(component, done);
-			});
-
-			it('should have alert', () => {
-				const startDateAlertElement = component.$$('#discovery-course-summary-start-date-alert');
-				const endDateAlertElement = component.$$('#discovery-course-summary-end-date-alert');
-				expect(startDateAlertElement.getAttribute('hidden')).to.not.equal(null);
-				expect(endDateAlertElement.getAttribute('hidden')).to.equal(null);
-			});
-
-			it('enrollment button is disabled if not enrolled', () => {
-				const enrollButton = component.$$('#discovery-course-summary-enroll');
-				expect(enrollButton.getAttribute('disabled')).to.not.equal(null);
+				}, timeToExhaustRetriesInMs);
 			});
 		});
 	});
