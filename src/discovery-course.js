@@ -245,6 +245,10 @@ class DiscoveryCourse extends mixinBehaviors(
 				.then(this._handleCourseEntity.bind(this))
 				.then(() => {
 					this._dataIsReady = true;
+					const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
+					if (courseSummary) {
+						courseSummary.setFocus();
+					}
 				})
 				.catch(() => this._navigateToNotFound());
 		} else {
