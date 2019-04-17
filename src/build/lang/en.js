@@ -55,5 +55,6 @@ window.D2L.Discovery.LangEn = {
 	"endDateIsInThePast": "This course closed on {date}. Contact your administrator to re-offer or re-open the course.",
 	"emailFeedback": "Email your feedback to {email}",
 	"noCourseDescription": "No course description",
-	"searchResultsOffscreen": "Search Results for \"{searchQuery}\""
+	"searchResultsOffscreen": "Search Results for \"{searchQuery}\"",
+	"searchResultsReadyMessage": "Page {pageCurrent} of {pageTotal} for \"{searchQuery}\" is now ready."
 };
