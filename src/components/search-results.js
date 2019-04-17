@@ -103,7 +103,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					@apply --d2l-offscreen-rtl
 				}
 			</style>
-			<h1 class="discovery-search-results-offscreen-text" aria-live="polite">[[loadingMessage]]</h1>
+			<span class="discovery-search-results-offscreen-text" aria-live="polite">[[loadingMessage]]</span>
 
 			<div class="discovery-search-results-outer-container">
 				<loading-overlay loading=[[_showLoadingOverlay]]></loading-overlay>
