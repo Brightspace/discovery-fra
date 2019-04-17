@@ -255,13 +255,13 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					<div class="discovery-course-summary-alert-container">
 						<d2l-alert
 							id="discovery-course-summary-start-date-alert"
-							hidden$="[[!_showStartDateAlert]]"
+							hidden$="[[!_isFutureAndCannotAccess]]"
 							class="discovery-course-summary-alert">
 							[[localize('startDateIsInTheFuture', 'date', startDate)]]
 						</d2l-alert>
 						<d2l-alert
 							id="discovery-course-summary-end-date-alert"
-							hidden$="[[!_showEndDateAlert]]"
+							hidden$="[[!_isPastAndCannotAccess]]"
 							class="discovery-course-summary-alert"
 							type="critical">
 							[[localize('endDateIsInThePast', 'date', endDate)]]
@@ -273,6 +273,8 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 							<d2l-button
 								id="discovery-course-summary-open-course"
 								on-click="_tryNavigateToOrganizationHomepage"
+								disabled$="[[_isFutureAndCannotAccess]]"
+								hidden$="[[_isPastAndCannotAccess]]"
 								primary>
 								[[localize('openCourse')]]
 							</d2l-button>
@@ -282,7 +284,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 								id="discovery-course-summary-enroll"
 								on-click="_enroll"
 								primary
-								disabled$="[[_showEndDateAlert]]">
+								disabled$="[[_endDateIsPast]]">
 								[[localize('enrollInCourse')]]
 							</d2l-button>
 						</template>
@@ -343,17 +345,17 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			},
 			startDate: String,
 			startDateIsoFormat: String,
-			_showStartDateAlert: {
+			_startDateIsFuture: {
 				type: Boolean,
 				value: false,
-				computed: '_showStartDateAlertComputed(startDateIsoFormat)'
+				computed: '_startDateIsFutureComputed(startDateIsoFormat)'
 			},
 			endDate: String,
 			endDateIsoFormat: String,
-			_showEndDateAlert: {
+			_endDateIsPast: {
 				type: Boolean,
 				value: false,
-				computed: '_showEndDateAlertComputed(endDateIsoFormat)'
+				computed: '_endDateIsPastComputed(endDateIsoFormat)'
 			},
 			dataIsReady: {
 				type: Boolean,
@@ -362,12 +364,23 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			_isCourseDescriptionEmpty: {
 				type: Boolean,
 				computed: '_isCourseDescriptionEmptyComputed(courseDescription)'
+			},
+			_isFutureAndCannotAccess: {
+				type: Boolean,
+				value: false
+			},
+			_isPastAndCannotAccess: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
+	static get observers() {
+		return [
+			'_isFutureAndCannotAccessObserver(_startDateIsFuture, organizationHomepage)',
+			'_isPastAndCannotAccessObserver(_endDateIsPast, organizationHomepage)'
+		];
 	}
 
 	_closeDialog() {
@@ -401,10 +414,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		}
 	}
 
-	_navigateToOrganizationHomepage() {
+	_navigateToOrganizationHomepage(organizationHomepage) {
 		this.dispatchEvent(new CustomEvent('navigate-parent', {
 			detail: {
-				path: this.organizationHomepage
+				path: organizationHomepage
 			},
 			bubbles: true,
 			composed: true
@@ -415,9 +428,9 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		if (!this.organizationHomepage) {
 			// Refetch organization entity to get the homepage href
 			return this._fetchOrganizationHomepage()
-				.then(() => {
-					if (this.organizationHomepage) {
-						this._navigateToOrganizationHomepage();
+				.then((organizationHomepage) => {
+					if (organizationHomepage) {
+						this._navigateToOrganizationHomepage(organizationHomepage);
 					} else {
 						this._enrollmentDialogHeader = this.localize('enrollmentHeaderPending');
 						this._enrollmentDialogMessage = this.localize('enrollmentMessagePending');
@@ -426,7 +439,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					}
 				});
 		} else {
-			this._navigateToOrganizationHomepage();
+			this._navigateToOrganizationHomepage(this.organizationHomepage);
 		}
 	}
 
@@ -436,7 +449,24 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				.then(() => {
 					this.actionEnroll = null;
 					this._enrollmentDialogHeader = this.localize('enrollmentHeaderSuccess');
-					this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccess', 'title', this.courseTitle);
+					const intervalInMs = 100;
+					var maxRetries = 5;
+					if (!this._startDateIsFuture && !this._endDateIsPast) {
+						maxRetries = 1;
+					}
+					return this.retryFetchOrganizationHomepage({ maxRetries, intervalInMs })
+						.then((organizationHomepage) => {
+							if (organizationHomepage) {
+								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccess', 'title', this.courseTitle);
+							} else if (this._startDateIsFuture) {
+								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccessFuture', 'title', this.courseTitle, 'date', this.startDate);
+							} else if (this._endDateIsPast) {
+								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccessPast', 'title', this.courseTitle, 'date', this.endDate);
+							} else { // enrollment is taking a long time to process
+								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccess', 'title', this.courseTitle);
+							}
+							this.organizationHomepage = organizationHomepage;
+						});
 				})
 				.catch(() => {
 					this._enrollmentDialogHeader = this.localize('enrollmentHeaderFail');
@@ -449,14 +479,38 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		}
 	}
 
+	retryFetchOrganizationHomepage({ maxRetries, intervalInMs }) {
+		var retry = 0;
+		const fn = this._fetchOrganizationHomepage.bind(this);
+		return new Promise((resolve) => {
+			function retryFn(retry) {
+				if (retry < maxRetries) {
+					return fn().then((res) => {
+						if (!res && (retry + 1 < maxRetries)) {
+							setTimeout(() => {
+								retryFn(retry + 1);
+							}, intervalInMs);
+						} else {
+							resolve(res);
+						}
+					});
+				} else {
+					resolve(null);
+				}
+			}
+			return retryFn(retry);
+		});
+	}
+
 	_fetchOrganizationHomepage() {
 		if (this.organizationHref) {
 			return this._fetchEntity(this.organizationHref)
 				.then((organizationEntity) => {
-					this.organizationHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
+					return organizationEntity.hasLink(Rels.organizationHomepage)
 						&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 				});
 		}
+		return Promise.resolve();
 	}
 
 	_onDescriptionChange(description) {
@@ -471,11 +525,11 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		return this.valenceHomeHref();
 	}
 
-	_showStartDateAlertComputed(startDateIsoFormat) {
+	_startDateIsFutureComputed(startDateIsoFormat) {
 		return startDateIsoFormat ? moment().isBefore(moment(startDateIsoFormat)) : false;
 	}
 
-	_showEndDateAlertComputed(endDateIsoFormat) {
+	_endDateIsPastComputed(endDateIsoFormat) {
 		return endDateIsoFormat ? moment().isAfter(moment(endDateIsoFormat)) : false;
 	}
 
@@ -488,6 +542,14 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_isCourseDescriptionEmptyComputed(courseDescription) {
 		return !courseDescription;
+	}
+
+	_isFutureAndCannotAccessObserver(startDateIsFuture, organizationHomepage) {
+		this._isFutureAndCannotAccess = startDateIsFuture && !organizationHomepage;
+	}
+
+	_isPastAndCannotAccessObserver(endDateIsPast, organizationHomepage) {
+		this._isPastAndCannotAccess = endDateIsPast && !organizationHomepage;
 	}
 }
 
