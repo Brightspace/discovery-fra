@@ -11,7 +11,6 @@ import 'd2l-button/d2l-button.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-link/d2l-link.js';
-import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
 
@@ -22,7 +21,6 @@ import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
 		return html `
-			<style include="d2l-offscreen-shared-styles"></style>
 			<style include="d2l-typography">
 				:host {
 					display: inline;
@@ -141,6 +139,9 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					margin-bottom: 0.7rem !important;
 					margin-top: 0.9rem !important;
 				}
+				.discovery-course-summary-d2l-heading-1:focus {
+					outline: none;
+				}
 
 				.discovery-course-summary-d2l-heading-2 {
 					margin-bottom: 1rem !important;
@@ -164,14 +165,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 				.discovery-course-summary-empty-description-text {
 					padding: 1.2rem 1.5rem;
-				}
-
-				.discovery-course-offscreen-text {
-					display: inline-block;
-					@apply --d2l-offscreen;
-				}
-				:host(:dir(rtl)) .discovery-course-offscreen-text {
-					@apply --d2l-offscreen-rtl
 				}
 
 				@media only screen and (max-width: 615px) {
@@ -227,8 +220,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				}
 			</style>
 
-			<h1 class="discovery-course-offscreen-text" tabindex="0">[[courseTitle]]</h1>
-
 			<div class="d2l-typography discovery-course-summary-container">
 				<div id="discovery-course-summary-card" class="discovery-course-summary-card">
 					<div class="discovery-course-summary-breadcrumbs">
@@ -238,7 +229,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					</div>
 
 					<div class="discovery-course-summary-title">
-						<h1 class="d2l-heading-1 discovery-course-summary-d2l-heading-1">[[courseTitle]]</h1>
+						<h1 class="d2l-heading-1 discovery-course-summary-d2l-heading-1" tabindex="-1">[[courseTitle]]</h1>
 					</div>
 
 					<div class="discovery-course-summary-info-container">
@@ -565,7 +556,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	setFocus() {
-		const itemToFocus = this.shadowRoot.querySelector('.discovery-course-offscreen-text');
+		const itemToFocus = this.shadowRoot.querySelector('.discovery-course-summary-d2l-heading-1');
 		if (itemToFocus) {
 			itemToFocus.focus();
 		}
