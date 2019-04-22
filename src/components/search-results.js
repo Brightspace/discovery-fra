@@ -10,6 +10,7 @@ import 'd2l-button/d2l-button-icon.js';
 import 'd2l-inputs/d2l-input-text.js';
 import 'd2l-menu/d2l-menu.js';
 import 'd2l-menu/d2l-menu-item-link.js';
+import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
 import { FetchMixin } from '../mixins/fetch-mixin.js';
@@ -20,6 +21,7 @@ import './loading-overlay.js';
 class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
 		return html`
+			<style include="d2l-offscreen-shared-styles"></style>
 			<style include="d2l-typography-shared-styles">
 				:host {
 					display: inline;
@@ -92,7 +94,17 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					height: 0.65rem;
 					width: 45%;
 				}
+
+				.discovery-search-results-offscreen-text {
+					display: inline-block;
+					@apply --d2l-offscreen;
+				}
+				:host(:dir(rtl)) .discovery-search-results-offscreen-text {
+					@apply --d2l-offscreen-rtl
+				}
 			</style>
+			<span class="discovery-search-results-offscreen-text" aria-live="polite">[[loadingMessage]]</span>
+
 			<div class="discovery-search-results-outer-container">
 				<loading-overlay loading=[[_showLoadingOverlay]]></loading-overlay>
 
@@ -204,7 +216,11 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				value: false
 			},
 			_allTextLoaded: Boolean,
-			_allImageLoaded: Boolean
+			_allImageLoaded: Boolean,
+			loadingMessage: {
+				type: String,
+				value: ''
+			}
 		};
 	}
 
@@ -335,6 +351,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._showLoadingOverlay = false;
 		this._allTextLoaded = false;
 		this._allImageLoaded = false;
+		this.loadingMessage = '';
 	}
 	_reset() {
 		this._searchResult = [];
@@ -354,6 +371,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				composed: true
 			}));
 			this._searchQueryLoading = false;
+			if (this._searchResultsTotal === 0) {
+				this.loadingMessage = this.localize('resultsFor', 'amount', 0, 'searchQuery', this.searchQuery);
+			}
 		} else {
 			const skeletonItems = this.shadowRoot.querySelectorAll('.d2l-search-results-skeleton-item');
 			skeletonItems.forEach((skeletonItem) => {
@@ -398,6 +418,11 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					resultElement.removeAttribute('text-placeholder');
 				});
 				this._allTextLoaded = true;
+				this.loadingMessage = this.localize(
+					'searchResultsReadyMessage',
+					'pageCurrent', this._pageCurrent,
+					'pageTotal', this._pageTotal,
+					'searchQuery', this.searchQuery);
 			});
 		}
 	}
