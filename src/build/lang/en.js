@@ -56,5 +56,7 @@ window.D2L.Discovery.LangEn = {
 	"emailFeedback": "Email your feedback to {email}",
 	"noCourseDescription": "No course description",
 	"searchResultsOffscreen": "Search Results for \"{searchQuery}\"",
-	"searchResultsReadyMessage": "Page {pageCurrent} of {pageTotal} for \"{searchQuery}\" is now ready."
+	"searchResultsReadyMessage": "Page {pageCurrent} of {pageTotal} for \"{searchQuery}\" is now ready.",
+	"noResultsHeading": "No results for \"{searchQuery}\"",
+	"noResultsMessage": "Try using a different search term or {link-start}Browse All{link-end} to view all available materials"
 };

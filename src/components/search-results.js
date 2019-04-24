@@ -8,6 +8,7 @@ import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-inputs/d2l-input-text.js';
+import 'd2l-link/d2l-link.js';
 import 'd2l-menu/d2l-menu.js';
 import 'd2l-menu/d2l-menu-item-link.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
@@ -43,6 +44,14 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					flex-wrap: wrap;
 					justify-content: space-between;
 					margin-bottom: 0.5rem;
+				}
+
+				.discovery-search-results-no-results-container {
+					display: flex;
+					flex-direction: column;
+					overflow: hidden;
+					overflow-wrap: break-word;
+					word-wrap: break-word;
 				}
 
 				.discovery-search-results-sort-by {
@@ -84,9 +93,13 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					width: auto;
 					max-width: 4rem;
 				}
-				.discovery-search-results-d2l-heading-4 {
+				.discovery-search-results-no-results-heading {
 					margin-top: 0 !important;
-					margin-bottom: 0 !important;
+					margin-bottom: 0.5rem !important;
+					@apply --d2l-heading-2;
+				}
+				.discovery-search-results-no-results-message {
+					@apply --d2l-body-compact-text;
 				}
 				.discovery-search-results-header-placeholder {
 					background-color: var(--d2l-color-sylvite);
@@ -115,8 +128,11 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 					<template is="dom-if" if="[[!_searchQueryLoading]]">
 						<template is="dom-if" if="[[_searchResultsTotalReady]]">
-							<template is="dom-if" if="[[!_searchResultsExists]]">
-								<h4 class="d2l-heading-4 discovery-search-results-d2l-heading-4 discovery-search-results-search-message">[[localize('resultsFor', 'amount', 0, 'searchQuery', searchQuery)]]</h4>
+							<template is="dom-if" if="[[!_searchResultsExists]]" on-dom-change="setUpNoResultsMessage">
+								<div class="discovery-search-results-no-results-container">
+									<h2 class="discovery-search-results-no-results-heading" id="discovery-search-results-no-results-heading"></h2>
+									<div class="discovery-search-results-no-results-message" id="discovery-search-results-no-results-message"></div>
+								</div>
 							</template>
 							<template is="dom-if" if="[[_searchResultsExists]]">
 								<span id="discovery-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
@@ -372,7 +388,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			}));
 			this._searchQueryLoading = false;
 			if (this._searchResultsTotal === 0) {
-				this.loadingMessage = this.localize('resultsFor', 'amount', 0, 'searchQuery', this.searchQuery);
+				this.loadingMessage = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
 			}
 		} else {
 			const skeletonItems = this.shadowRoot.querySelectorAll('.d2l-search-results-skeleton-item');
@@ -396,6 +412,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	_onSearchQueryChange() {
 		this._searchQueryLoading = true;
 		this._processBeforeLoading();
+		this.setUpNoResultsMessage();
 	}
 	_removeImageShimmers() {
 		this._numberOfImageLoadedEvents++;
@@ -436,6 +453,39 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		if (_searchResultsTotalReady && !_searchResultsExists) {
 			this._showLoadingOverlay  = false;
 		}
+	}
+	setUpNoResultsMessage() {
+		const noResultsHeaderElement = this.shadowRoot.querySelector('#discovery-search-results-no-results-heading');
+		const noResultsMessageElement = this.shadowRoot.querySelector('#discovery-search-results-no-results-message');
+
+		if (noResultsHeaderElement) {
+			fastdom.mutate(() => {
+				const noResultsHeader = this.localize('noResultsHeading', 'searchQuery', `<b>${this.searchQuery}</b>`);
+				noResultsHeaderElement.innerHTML = noResultsHeader;
+			});
+		}
+
+		if (noResultsMessageElement && !noResultsMessageElement.innerHTML) {
+			const noResultsMessage = this.localize(
+				'noResultsMessage',
+				'link-start',
+				'<d2l-link href=javascript:void(0) id="discovery-search-results-browse-all">',
+				'link-end',
+				'</d2l-link>');
+			fastdom.mutate(() => {
+				noResultsMessageElement.innerHTML = noResultsMessage;
+
+				afterNextRender(this, () => {
+					const browseAllLinkElement = this.shadowRoot.querySelector('#discovery-search-results-browse-all');
+					if (browseAllLinkElement) {
+						browseAllLinkElement.addEventListener('click', this._navigateToBrowseAll);
+					}
+				});
+			});
+		}
+	}
+	_navigateToBrowseAll() {
+		// navigate to browse all
 	}
 }
 
