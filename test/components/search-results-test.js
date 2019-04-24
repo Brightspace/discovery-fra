@@ -151,8 +151,9 @@ describe('search-results', () => {
 				expect(component.href).to.equal('/search/no-results');
 				expect(component.searchQuery).to.equal('no results string');
 				expect(component._searchResultsTotal).to.equal(0);
-				afterNextRender(component, () => {
-					const searchResultText = component.$$('h2').innerHTML;
+				const searchResultElement = component.$$('h2');
+				afterNextRender(searchResultElement, () => {
+					const searchResultText = searchResultElement.innerHTML;
 					expect(searchResultText).to.include('No results for');
 					expect(searchResultText).to.include('no results string');
 					done();
@@ -176,12 +177,10 @@ describe('search-results', () => {
 		it('should show no results', done => {
 			afterNextRender(component, () => {
 				expect(component._searchResultsTotal).to.equal(0);
-				afterNextRender(component, () => {
-					const searchResultText = component.$$('h2').innerHTML;
-					expect(searchResultText).to.include('No results for');
-					expect(searchResultText).to.include('no results string');
-					done();
-				});
+				const searchResultText = component.$$('h2').innerHTML;
+				expect(searchResultText).to.include('No results for');
+				expect(searchResultText).to.include('no results string');
+				done();
 			});
 		});
 
