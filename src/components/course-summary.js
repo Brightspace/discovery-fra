@@ -176,8 +176,8 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 				.discovery-course-summary-title-placeholder {
 					height: 1.7rem;
-					padding-bottom: 0.7rem;
-					padding-top: 0.9rem;
+					margin-bottom: 0.65rem;
+					margin-top: 0.8rem;
 					width: 60%;
 				}
 
@@ -225,7 +225,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					}
 
 					.discovery-course-summary-title-placeholder {
-						height: 1.07rem;
+						height: 1.1rem;
 					}
 				}
 
