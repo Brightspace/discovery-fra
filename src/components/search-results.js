@@ -1,8 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-import createDOMPurify from 'dompurify/dist/purify.es.js';
-const DOMPurify = createDOMPurify(window);
 import 'd2l-activities/components/d2l-activity-list-item/d2l-activity-list-item.js';
 import 'd2l-dropdown/d2l-dropdown.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
@@ -463,7 +461,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		if (noResultsHeaderElement) {
 			fastdom.mutate(() => {
 				const noResultsHeader = this.localize('noResultsHeading', 'searchQuery', `<b>${this.searchQuery}</b>`);
-				noResultsHeaderElement.innerHTML = DOMPurify.sanitize(noResultsHeader);
+				noResultsHeaderElement.innerHTML = noResultsHeader;
 			});
 		}
 

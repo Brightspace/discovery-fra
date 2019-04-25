@@ -3,6 +3,8 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender, beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import createDOMPurify from 'dompurify/dist/purify.es.js';
+const DOMPurify = createDOMPurify(window);
 import '@polymer/app-route/app-route.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import './components/app-location-ifrau.js';
@@ -114,7 +116,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				data="[[routeData]]">
 			</app-route>
 
-			<h1 class="discovery-search-offscreen-text" tabindex="0">[[localize('searchResultsOffscreen', 'searchQuery', _searchQuery)]]</h1>
+			<h1 class="discovery-search-offscreen-text" tabindex="0">[[localize('searchResultsOffscreen', 'searchQuery', searchQuerySanitized)]]</h1>
 
 			<!-- IE11 Bug with min-height not working with flex unless there's an outer flex column with flex-grow: 1 -->
 			<div class="discovery-search-outer-container">
@@ -123,14 +125,14 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 					<div class="discovery-search-sidebar">
 						<search-sidebar></search-sidebar>
 					</div>
-					<div class="d2l-typography discovery-search-main" hidden$="[[!_searchQuery]]">
+					<div class="d2l-typography discovery-search-main" hidden$="[[!searchQuerySanitized]]">
 						<div class="discovery-search-nav-container">
-							<search-header id="discovery-search-search-header" query="[[_searchQuery]]"></search-header>
+							<search-header id="discovery-search-search-header" query="[[searchQuerySanitized]]"></search-header>
 						</div>
 						<div class="discovery-search-results">
 							<search-results
 								href="[[_searchActionHref]]"
-								search-query="[[_searchQuery]]">
+								search-query="[[searchQuerySanitized]]">
 							</search-results>
 						</div>
 						<discovery-footer></discovery-footer>
@@ -164,6 +166,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			_searchQuery: {
 				type: String,
 				value: '',
+			},
+			searchQuerySanitized: {
+				type: String,
+				computed: '_searchQuerySanitizedComputed(_searchQuery)'
 			},
 			_searchActionHref: String,
 			visible: {
@@ -209,9 +215,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		queryParams = queryParams.detail.value || {};
 
 		const hasSearchQueryParam = queryParams && queryParams.has && queryParams.has('query');
-		const prevSearchQuery = this._searchQuery;
+		const prevSearchQuery = this.searchQuerySanitized;
 		if (hasSearchQueryParam) {
 			this._searchQuery = queryParams.get('query');
+			this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
 		}
 
 		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
@@ -227,15 +234,15 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this.queryParams = queryParams;
 
 		const pageChanged = prevCurrentPage !== this._pageCurrent;
-		const queryChanged = prevSearchQuery !== this._searchQuery;
+		const queryChanged = prevSearchQuery !== this.searchQuerySanitized;
 		if (pageChanged || queryChanged) {
-			this._getDecodedQuery(this._searchQuery, this._pageCurrent);
+			this._getDecodedQuery(this.searchQuerySanitized, this._pageCurrent);
 		}
 
 		if (queryChanged) {
 			const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
 			if (searchHeader) {
-				searchHeader.showClear(this._searchQuery);
+				searchHeader.showClear(this.searchQuerySanitized);
 			}
 			this.setInitialFocusAfterRender();
 		}
@@ -330,8 +337,12 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 	}
 	_reset() {
 		this._searchQuery = null;
+		this.searchQuerySanitized = null;
 		this._pageCurrent = undefined;
 		this._searchActionHref = undefined;
+	}
+	_searchQuerySanitizedComputed(_searchQuery) {
+		return DOMPurify.sanitize(_searchQuery, {ALLOWED_TAGS: []});
 	}
 }
 
