@@ -17,6 +17,7 @@ import 'fastdom/fastdom.js';
 import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
+import './loading-skeleton.js';
 
 class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -167,6 +168,39 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					padding: 1.2rem 1.5rem;
 				}
 
+				.discovery-course-summary-breadcrumbs-placeholder {
+					height: 0.5rem;
+					margin-right: 1rem;
+					width: 15%;
+				}
+
+				.discovery-course-summary-title-placeholder {
+					height: 1.7rem;
+					padding-bottom: 0.7rem;
+					padding-top: 0.9rem;
+					width: 60%;
+				}
+
+				.discovery-course-summary-button-placeholder-container {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+				}
+				.discovery-course-summary-button-placeholder {
+					height: 2.1rem;
+					width: 30%;
+				}
+
+				.discovery-course-summary-description-placeholder {
+					height: 0.55rem;
+					width: 100%;
+				}
+
+				.discovery-course-summary-description-placeholder-shorter {
+					height: 0.55rem;
+					width: 90%;
+				}
+
 				@media only screen and (max-width: 615px) {
 					.discovery-course-summary-card,
 					.discovery-course-summary-bottom-container {
@@ -188,6 +222,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 					.discovery-course-summary-empty-description {
 						padding: 1.5rem 0 0.9rem 0;
+					}
+
+					.discovery-course-summary-title-placeholder {
+						height: 1.07rem;
 					}
 				}
 
@@ -217,91 +255,126 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					.discovery-course-summary-empty-description-box {
 						margin: 0 0.9rem;
 					}
+
+					.discovery-course-summary-button-placeholder {
+						width: 100%;
+					}
 				}
 			</style>
 
 			<div class="d2l-typography discovery-course-summary-container">
-				<div id="discovery-course-summary-card" class="discovery-course-summary-card">
-					<div class="discovery-course-summary-breadcrumbs">
-						<d2l-breadcrumbs class="discovery-search-header-breadcrumb">
-							<d2l-breadcrumb on-click="_navigateToHome" href="[[_homeHref]]" text="[[localize('discover')]]"></d2l-breadcrumb>
-						</d2l-breadcrumbs>
+
+				<!-- Loading Skeleton -->
+				<div hidden$="[[dataIsReady]]">
+					<div id="discovery-course-summary-card-placeholder" class="discovery-course-summary-card">
+						<div class="discovery-course-summary-breadcrumbs">
+							<loading-skeleton class="discovery-course-summary-breadcrumbs-placeholder"></loading-skeleton>
+						</div>
+
+						<div class="discovery-course-summary-title">
+							<loading-skeleton class="discovery-course-summary-title-placeholder"></loading-skeleton>
+						</div>
 					</div>
 
-					<div class="discovery-course-summary-title">
-						<h1 class="d2l-heading-1 discovery-course-summary-d2l-heading-1" tabindex="-1">[[courseTitle]]</h1>
+					<div id="discovery-course-summary-bottom-container-placeholder" class="discovery-course-summary-bottom-container">
+						<div class="discovery-course-summary-buttons">
+							<loading-skeleton class="discovery-course-summary-button-placeholder"></loading-skeleton>
+						</div>
 					</div>
 
-					<div class="discovery-course-summary-info-container">
-						<template is="dom-if" if="[[courseDuration]]">
-							<div class="discovery-course-summary-info-property">
-								<d2l-icon icon="d2l-tier1:time"></d2l-icon>
-								<div class="d2l-body-standard">[[localize('durationMinutes', 'minutes', courseDuration)]]</div>
-							</div>
-						</template>
-						<template is="dom-if" if="[[format]]">
-							<div class="discovery-course-summary-info-property">
-								<d2l-icon icon="d2l-tier1:my-computer"></d2l-icon>
-								<div class="d2l-body-standard">[[format]]</div>
-							</div>
-						</template>
-						<template is="dom-if" if="[[courseLastUpdated]]">
-							<div class="discovery-course-summary-info-property">
-								<d2l-icon icon="d2l-tier1:calendar"></d2l-icon>
-								<div class="d2l-body-standard">[[localize('lastUpdatedDate', 'date', courseLastUpdated)]]</div>
-							</div>
-						</template>
-					</div>
-				</div>
-
-				<div id="discovery-course-summary-bottom-container" class="discovery-course-summary-bottom-container">
-					<div class="discovery-course-summary-alert-container">
-						<d2l-alert
-							id="discovery-course-summary-start-date-alert"
-							hidden$="[[!_isFutureAndCannotAccess]]"
-							class="discovery-course-summary-alert">
-							[[localize('startDateIsInTheFuture', 'date', startDate)]]
-						</d2l-alert>
-						<d2l-alert
-							id="discovery-course-summary-end-date-alert"
-							hidden$="[[!_isPastAndCannotAccess]]"
-							class="discovery-course-summary-alert"
-							type="critical">
-							[[localize('endDateIsInThePast', 'date', endDate)]]
-						</d2l-alert>
-					</div>
-
-					<div class="discovery-course-summary-buttons" hidden$="[[!dataIsReady]]">
-						<template is="dom-if" if="[[!actionEnroll]]">
-							<d2l-button
-								id="discovery-course-summary-open-course"
-								on-click="_tryNavigateToOrganizationHomepage"
-								disabled$="[[_isFutureAndCannotAccess]]"
-								hidden$="[[_isPastAndCannotAccess]]"
-								primary>
-								[[localize('openCourse')]]
-							</d2l-button>
-						</template>
-						<template is="dom-if" if="[[actionEnroll]]">
-							<d2l-button
-								id="discovery-course-summary-enroll"
-								on-click="_enroll"
-								primary
-								disabled$="[[_endDateIsPast]]">
-								[[localize('enrollInCourse')]]
-							</d2l-button>
-						</template>
-					</div>
-				</div>
-
-				<div hidden$="[[!dataIsReady]]">
-					<div class="discovery-course-summary-description" hidden$="[[_isCourseDescriptionEmpty]]">
+					<div class="discovery-course-summary-description">
 						<h2 class="d2l-heading-2 discovery-course-summary-d2l-heading-2">[[localize('courseDescription')]]</h2>
-						<div id="discovery-course-summary-description-text" class="d2l-body-compact"></div>
+						<loading-skeleton class="discovery-course-summary-description-placeholder"></loading-skeleton>
+						<loading-skeleton class="discovery-course-summary-description-placeholder"></loading-skeleton>
+						<loading-skeleton class="discovery-course-summary-description-placeholder"></loading-skeleton>
+						<loading-skeleton class="discovery-course-summary-description-placeholder-shorter"></loading-skeleton>
 					</div>
-					<div class="discovery-course-summary-empty-description" hidden$="[[!_isCourseDescriptionEmpty]]">
-						<div class="discovery-course-summary-empty-description-box">
-							<div class="discovery-course-summary-empty-description-text d2l-body-standard">[[localize('noCourseDescription')]]</div>
+				</div>
+
+				<!-- Real Components -->
+				<div hidden$="[[!dataIsReady]]">
+					<div id="discovery-course-summary-card" class="discovery-course-summary-card">
+						<div class="discovery-course-summary-breadcrumbs">
+							<d2l-breadcrumbs>
+								<d2l-breadcrumb on-click="_navigateToHome" href="[[_homeHref]]" text="[[localize('discover')]]"></d2l-breadcrumb>
+							</d2l-breadcrumbs>
+						</div>
+
+						<div id="discovery-course-summary-title" class="discovery-course-summary-title">
+							<h1 class="d2l-heading-1 discovery-course-summary-d2l-heading-1" tabindex="-1">[[courseTitle]]</h1>
+						</div>
+
+						<div id="discovery-course-summary-info-container" class="discovery-course-summary-info-container">
+							<template is="dom-if" if="[[courseDuration]]">
+								<div class="discovery-course-summary-info-property">
+									<d2l-icon icon="d2l-tier1:time"></d2l-icon>
+									<div class="d2l-body-standard">[[localize('durationMinutes', 'minutes', courseDuration)]]</div>
+								</div>
+							</template>
+							<template is="dom-if" if="[[format]]">
+								<div class="discovery-course-summary-info-property">
+									<d2l-icon icon="d2l-tier1:my-computer"></d2l-icon>
+									<div class="d2l-body-standard">[[format]]</div>
+								</div>
+							</template>
+							<template is="dom-if" if="[[courseLastUpdated]]">
+								<div class="discovery-course-summary-info-property">
+									<d2l-icon icon="d2l-tier1:calendar"></d2l-icon>
+									<div class="d2l-body-standard">[[localize('lastUpdatedDate', 'date', courseLastUpdated)]]</div>
+								</div>
+							</template>
+						</div>
+					</div>
+
+					<div id="discovery-course-summary-bottom-container" class="discovery-course-summary-bottom-container">
+						<div class="discovery-course-summary-alert-container">
+							<d2l-alert
+								id="discovery-course-summary-start-date-alert"
+								hidden$="[[!_isFutureAndCannotAccess]]"
+								class="discovery-course-summary-alert">
+								[[localize('startDateIsInTheFuture', 'date', startDate)]]
+							</d2l-alert>
+							<d2l-alert
+								id="discovery-course-summary-end-date-alert"
+								hidden$="[[!_isPastAndCannotAccess]]"
+								class="discovery-course-summary-alert"
+								type="critical">
+								[[localize('endDateIsInThePast', 'date', endDate)]]
+							</d2l-alert>
+						</div>
+
+						<div class="discovery-course-summary-buttons">
+							<template is="dom-if" if="[[!actionEnroll]]">
+								<d2l-button
+									id="discovery-course-summary-open-course"
+									on-click="_tryNavigateToOrganizationHomepage"
+									disabled$="[[_isFutureAndCannotAccess]]"
+									hidden$="[[_isPastAndCannotAccess]]"
+									primary>
+									[[localize('openCourse')]]
+								</d2l-button>
+							</template>
+							<template is="dom-if" if="[[actionEnroll]]">
+								<d2l-button
+									id="discovery-course-summary-enroll"
+									on-click="_enroll"
+									primary
+									disabled$="[[_endDateIsPast]]">
+									[[localize('enrollInCourse')]]
+								</d2l-button>
+							</template>
+						</div>
+					</div>
+
+					<div>
+						<div id="discovery-course-summary-description" class="discovery-course-summary-description" hidden$="[[_isCourseDescriptionEmpty]]">
+							<h2 class="d2l-heading-2 discovery-course-summary-d2l-heading-2">[[localize('courseDescription')]]</h2>
+							<div id="discovery-course-summary-description-text" class="d2l-body-compact"></div>
+						</div>
+						<div class="discovery-course-summary-empty-description" hidden$="[[!_isCourseDescriptionEmpty]]">
+							<div class="discovery-course-summary-empty-description-box">
+								<div class="discovery-course-summary-empty-description-text d2l-body-standard">[[localize('noCourseDescription')]]</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -537,8 +610,15 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_getImageAnchorHeight() {
-		const courseSummaryCard = this.shadowRoot.querySelector('#discovery-course-summary-card');
-		const courseSummaryBottomContainer = this.shadowRoot.querySelector('#discovery-course-summary-bottom-container');
+		var courseSummaryCard;
+		var courseSummaryBottomContainer;
+		if (this.dataIsReady) {
+			courseSummaryCard = this.shadowRoot.querySelector('#discovery-course-summary-card');
+			courseSummaryBottomContainer = this.shadowRoot.querySelector('#discovery-course-summary-bottom-container');
+		} else {
+			courseSummaryCard = this.shadowRoot.querySelector('#discovery-course-summary-card-placeholder');
+			courseSummaryBottomContainer = this.shadowRoot.querySelector('#discovery-course-summary-bottom-container-placeholder');
+		}
 		return courseSummaryCard && courseSummaryBottomContainer ?
 			courseSummaryCard.offsetHeight + courseSummaryBottomContainer.offsetHeight * (4 / 6) : 0;
 	}

@@ -107,16 +107,16 @@ describe('course-summary', () => {
 		});
 
 		it('should show all properties', done => {
-			const title = component.$$('.discovery-course-summary-title').innerHTML;
+			const title = component.$$('#discovery-course-summary-title').innerHTML;
 			expect(title).to.include(testTitle);
 
-			const infoContainer = component.$$('.discovery-course-summary-info-container').innerHTML;
+			const infoContainer = component.$$('#discovery-course-summary-info-container').innerHTML;
 			expect(infoContainer).to.include(testDuration);
 			expect(infoContainer).to.include(testLastUpdated);
 			expect(infoContainer).to.include(testFormat);
 
 			afterNextRender(component, () => {
-				const description = component.$$('.discovery-course-summary-description').innerHTML;
+				const description = component.$$('#discovery-course-summary-description').innerHTML;
 				expect(description).to.include(testDescription);
 
 				const emptyDescriptionBox = component.$$('.discovery-course-summary-empty-description');
@@ -133,7 +133,7 @@ describe('course-summary', () => {
 				expect(emptyDescriptionElement.getAttribute('hidden')).to.equal(null);
 				expect(emptyDescriptionElement.innerHTML).to.include('No course description');
 
-				const descriptionElement = component.$$('.discovery-course-summary-description');
+				const descriptionElement = component.$$('#discovery-course-summary-description');
 				expect(descriptionElement.getAttribute('hidden')).to.not.equal(null);
 				done();
 			});

@@ -10,6 +10,7 @@ import 'fastdom/fastdom.js';
 
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
+import './loading-skeleton.js';
 
 class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -53,6 +54,7 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 					color: var(--d2l-color-tungsten);
 					margin: 0;
 					overflow: hidden;
+					width: 100%;
 					word-wrap: break-word;
 				}
 
@@ -60,6 +62,7 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 					color: var(--d2l-color-ferrite);
 					margin: 0;
 					overflow: hidden;
+					width: 100%;
 					word-wrap: break-word;
 				}
 
@@ -67,6 +70,11 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 					display: flex;
 					flex-direction: column;
 					margin-top: 1.5rem;
+				}
+
+				.discovery-course-action-dl-item-placeholder {
+					height: 0.55rem;
+					width: 75%;
 				}
 
 				@media only screen and (max-width: 615px) {
@@ -77,30 +85,68 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 			</style>
 
 			<div class="d2l-typography discovery-course-action-container">
-				<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('courseInfo')]]</h3>
 
-				<dl class="discovery-course-action-description-list">
-					<template is="dom-repeat" items="[[courseDescriptionItems]]" on-dom-change='_setInitialDescriptionListSizes'>
+				<!-- Loading Skeleton -->
+				<div hidden$="[[dataIsReady]]">
+					<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('courseInfo')]]</h3>
+					<dl class="discovery-course-action-description-list">
 						<div class="discovery-course-action-description-list-row">
-						<dt class="d2l-body-compact discovery-course-action-description-list-term">[[item.term]]</dt>
-						<div class="discovery-course-action-description-list-gutter"></div>
-						<dd class="d2l-body-compact discovery-course-action-description-list-data">[[item.description]]</dd>
+							<dt class="discovery-course-action-description-list-term">
+								<loading-skeleton class="discovery-course-action-dl-item-placeholder"></loading-skeleton>
+							</dt>
+							<div class="discovery-course-action-description-list-gutter"></div>
+							<dd class="discovery-course-action-description-list-data">
+								<loading-skeleton class="discovery-course-action-dl-item-placeholder"></loading-skeleton>
+							</dd>
+						</div>
+						<div class="discovery-course-action-description-list-row">
+							<dt class="discovery-course-action-description-list-term">
+								<loading-skeleton class="discovery-course-action-dl-item-placeholder"></loading-skeleton>
+							</dt>
+							<div class="discovery-course-action-description-list-gutter"></div>
+							<dd class="discovery-course-action-description-list-data">
+								<loading-skeleton class="discovery-course-action-dl-item-placeholder"></loading-skeleton>
+							</dd>
+						</div>
+						<div class="discovery-course-action-description-list-row">
+							<dt class="discovery-course-action-description-list-term">
+								<loading-skeleton class="discovery-course-action-dl-item-placeholder"></loading-skeleton>
+							</dt>
+							<div class="discovery-course-action-description-list-gutter"></div>
+							<dd class="discovery-course-action-description-list-data">
+								<loading-skeleton class="discovery-course-action-dl-item-placeholder"></loading-skeleton>
+							</dd>
+						</div>
+					</dl>
+				</div>
+
+				<!-- Real Components -->
+				<div hidden$="[[!dataIsReady]]">
+					<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('courseInfo')]]</h3>
+
+					<dl class="discovery-course-action-description-list">
+						<template is="dom-repeat" items="[[courseDescriptionItems]]" on-dom-change='_setInitialDescriptionListSizes'>
+							<div class="discovery-course-action-description-list-row">
+							<dt class="d2l-body-compact discovery-course-action-description-list-term">[[item.term]]</dt>
+							<div class="discovery-course-action-description-list-gutter"></div>
+							<dd class="d2l-body-compact discovery-course-action-description-list-data">[[item.description]]</dd>
+							</div>
+						</template>
+					</dl>
+
+					<template is="dom-if" if="[[tagsExist]]">
+						<div class="discovery-course-action-tags-container">
+							<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('searchKeywords')]]</h3>
+							<div>
+								<template is="dom-repeat" items="[[courseTags]]">
+									<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
+										<span value="[[item]]">[[item]][[_getTagSuffix(index)]]</span>
+									</d2l-link>
+								</template>
+							</div>
 						</div>
 					</template>
-				</dl>
-
-				<template is="dom-if" if="[[tagsExist]]">
-					<div class="discovery-course-action-tags-container">
-						<h3 class="d2l-heading-3 discovery-course-action-d2l-heading-3">[[localize('searchKeywords')]]</h3>
-						<div>
-							<template is="dom-repeat" items="[[courseTags]]">
-								<d2l-link href="javascript:void(0)" on-click="_navigateToSearch">
-									<span value="[[item]]">[[item]][[_getTagSuffix(index)]]</span>
-								</d2l-link>
-							</template>
-						</div>
-					</div>
-				</template>
+				</div>
 			</div>
 		`;
 	}
@@ -122,7 +168,11 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 				type: Boolean,
 				computed: '_tagsExist(courseTags)',
 			},
-			courseDescriptionItems: Array
+			courseDescriptionItems: Array,
+			dataIsReady: {
+				type: Boolean,
+				value: false
+			}
 		};
 	}
 
