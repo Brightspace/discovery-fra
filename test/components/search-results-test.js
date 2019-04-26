@@ -153,10 +153,12 @@ describe('search-results', () => {
 				expect(component._searchResultsTotal).to.equal(0);
 				const searchResultElement = component.$$('h2');
 				afterNextRender(searchResultElement, () => {
-					const searchResultText = searchResultElement.innerHTML;
-					expect(searchResultText).to.include('No results for');
-					expect(searchResultText).to.include('no results string');
-					done();
+					afterNextRender(searchResultElement, () => {
+						const searchResultText = searchResultElement.innerHTML;
+						expect(searchResultText).to.include('No results for');
+						expect(searchResultText).to.include('no results string');
+						done();
+					});
 				});
 			});
 		});

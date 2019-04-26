@@ -15,11 +15,7 @@ class LoadingSkeleton extends PolymerElement {
 					50% { background-color: var(--d2l-color-regolith); }
 					100% { background-color: var(--d2l-color-sylvite); }
 				}
-				@keyframes pulsingAnimation0 {
-					0% { background-color: red; }
-					50% { background-color: green; }
-					100% { background-color: red; }
-				}
+
 				.discovery-loading-skeleton-container {
 					animation: pulsingAnimation 1.8s linear infinite;
 					border-radius: 4px;
