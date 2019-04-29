@@ -139,7 +139,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 									<span id="discovery-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
 								</div>
 								<div hidden$="[[!emptySearchQuery]]">
-									<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllEntries', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
+									<span id="discovery-search-results-all-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllEntries', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
 								</div>
 							</template>
 						</template>
