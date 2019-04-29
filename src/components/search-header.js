@@ -78,7 +78,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 
 					<div class="discovery-search-header-search-container">
 						<d2l-input-search
-							id="search-input"
+							id="discovery-search-header-search-input"
 							label="[[localize('search')]]"
 							value="[[query]]"
 							placeholder="[[localize('search.placeholder')]]">
@@ -99,26 +99,31 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 			_homeHref: {
 				type: String,
 				computed: '_getHomeHref()'
-			}
+			},
+			page: Number
 		};
+	}
+	static get observers() {
+		return [
+			'queryObserver(query)'
+		];
 	}
 	ready() {
 		super.ready();
-		this.searchInput = this.shadowRoot.querySelector('#search-input');
+		this.searchInput = this.shadowRoot.querySelector('#discovery-search-header-search-input');
 		if (this.searchInput) {
 			this.searchInput.addEventListener('d2l-input-search-searched', (e) => {
 				if (e && e.detail) {
-					if (e.detail.value) {
-						const query = e.detail.value;
+					const query = e.detail.value;
+					if (query !== this.query || this.page !== 0) {
 						this.dispatchEvent(new CustomEvent('navigate', {
 							detail: {
-								path: this.routeLocations().search(query.trim())
+								path: this.routeLocations().search(query ? query.trim() : ''),
+								resetPages: ['search']
 							},
 							bubbles: true,
 							composed: true,
 						}));
-					} else {
-						this._navigateToHome();
 					}
 				}
 			});
@@ -151,6 +156,9 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	}
 	_getHomeHref() {
 		return this.valenceHomeHref();
+	}
+	queryObserver(query) {
+		this.query = query || '';
 	}
 }
 

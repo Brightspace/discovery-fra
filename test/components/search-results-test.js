@@ -6,7 +6,8 @@ describe('search-results', () => {
 		fetchStub,
 		sandbox,
 		searchResultEntityNoResults,
-		searchResultEntityWithResults;
+		searchResultEntityWithResults,
+		searchResultEntityWithAllResults;
 
 	function SetupFetchStub(url, entity) {
 		fetchStub.withArgs(sinon.match.has('url', sinon.match(url)))
@@ -84,9 +85,73 @@ describe('search-results', () => {
 				href: 'https://us-east-1.discovery.bff.dev.brightspace.com/search?q=results&page=0&pageSize=20'
 			}]
 		});
+		searchResultEntityWithAllResults = SirenParse({
+			class: [
+				'activities',
+				'collection'
+			],
+			properties: {
+				pagingInfo: {
+					total: 3,
+					page: 0,
+					pageSize: 20
+				}
+			},
+			entities: [{
+				class: [
+					'activity',
+					'course'
+				],
+				rel: ['https://discovery.brightspace.com'],
+				properties: {
+					title: null,
+					description: 'This is the course with ID of: 123063'
+				},
+				actions: [],
+				links: [{
+					rel:['https://api.brightspace.com/rels/organization'],
+					href:'organization/1'
+				}]
+			}, {
+				class: [
+					'activity',
+					'course'
+				],
+				rel: ['https://discovery.brightspace.com'],
+				properties: {
+					title: null,
+					description: 'This is the course with ID of: 123064'
+				},
+				actions: [],
+				links: [{
+					rel:['https://api.brightspace.com/rels/organization'],
+					href:'organization/1'
+				}]
+			}, {
+				class: [
+					'activity',
+					'course'
+				],
+				rel: ['https://discovery.brightspace.com'],
+				properties: {
+					title: null,
+					description: 'This is the course with ID of: 123065'
+				},
+				actions: [],
+				links: [{
+					rel:['https://api.brightspace.com/rels/organization'],
+					href:'organization/1'
+				}]
+			}],
+			links: [{
+				rel: ['self'],
+				href: 'https://us-east-1.discovery.bff.dev.brightspace.com/search?q=&page=0&pageSize=20'
+			}]
+		});
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
 		SetupFetchStub(/\/search\/no-results$/, searchResultEntityNoResults);
 		SetupFetchStub(/\/search\/results$/, searchResultEntityWithResults);
+		SetupFetchStub(/\/search\/all-results$/, searchResultEntityWithAllResults);
 		SetupFetchStub(/\/organization\/1$/, {});
 	});
 
@@ -202,4 +267,68 @@ describe('search-results', () => {
 
 	});
 
+	describe('With All Results', () => {
+		beforeEach(done => {
+			component = fixture('search-result-all-results-fixture');
+			afterNextRender(component, done);
+		});
+
+		it('should have href equal to /search/all-results', () => {
+			expect(component.href).to.equal('/search/all-results');
+		});
+
+		it('should show total number of results', done => {
+			afterNextRender(component, () => {
+				const searchResultText = component.$$('#discovery-search-results-results-message').innerHTML;
+				expect(searchResultText).to.include('of 3 for');
+				done();
+			});
+		});
+
+		it('should show range of currently displayed', done => {
+			afterNextRender(component, () => {
+				const searchResultText = component.$$('#discovery-search-results-results-message').innerHTML;
+				expect(searchResultText).to.include('1-3');
+				done();
+			});
+		});
+
+		it('should show the correct message for displaying all entries', done => {
+			afterNextRender(component, () => {
+				expect(component.searchQuery).to.equal('');
+				const searchResultTextElement = component.$$('#discovery-search-results-all-results-message');
+				expect(searchResultTextElement.getAttribute('hidden')).to.equal(null);
+				expect(searchResultTextElement.innerHTML).to.include('all entries');
+				done();
+			});
+		});
+
+		it('should show a list of d2l-activity-list-items', done => {
+			afterNextRender(component, () => {
+				expect(component.searchQuery).to.equal('');
+				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
+				expect(searchResults.length).is.greaterThan(0);
+				done();
+			});
+		});
+
+		it('Switch from results to no results.', done => {
+			component.href = '/search/no-results';
+			component.searchQuery =  'no results string';
+			afterNextRender(component, () => {
+				expect(component.href).to.equal('/search/no-results');
+				expect(component.searchQuery).to.equal('no results string');
+				expect(component._searchResultsTotal).to.equal(0);
+				const searchResultElement = component.$$('h2');
+				afterNextRender(searchResultElement, () => {
+					afterNextRender(searchResultElement, () => {
+						const searchResultText = searchResultElement.innerHTML;
+						expect(searchResultText).to.include('No results for');
+						expect(searchResultText).to.include('no results string');
+						done();
+					});
+				});
+			});
+		});
+	});
 });

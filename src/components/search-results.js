@@ -135,7 +135,12 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 								</div>
 							</template>
 							<template is="dom-if" if="[[_searchResultsExists]]">
-								<span id="discovery-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
+								<div hidden$="[[emptySearchQuery]]">
+									<span id="discovery-search-results-results-message" class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCount', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal, 'searchQuery', searchQuery)]]</span>
+								</div>
+								<div hidden$="[[!emptySearchQuery]]">
+									<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllEntries', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
+								</div>
 							</template>
 						</template>
 					</template>
@@ -236,6 +241,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			loadingMessage: {
 				type: String,
 				value: ''
+			},
+			emptySearchQuery: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -413,6 +422,8 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._searchQueryLoading = true;
 		this._processBeforeLoading();
 		this.setUpNoResultsMessage();
+
+		this.emptySearchQuery = !this.searchQuery;
 	}
 	_removeImageShimmers() {
 		this._numberOfImageLoadedEvents++;
@@ -439,7 +450,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					'searchResultsReadyMessage',
 					'pageCurrent', this._pageCurrent,
 					'pageTotal', this._pageTotal,
-					'searchQuery', this.searchQuery);
+					'searchQuery', this.searchQuery ? this.searchQuery : this.localize('allEntries'));
 			});
 		}
 	}
@@ -478,14 +489,20 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				afterNextRender(this, () => {
 					const browseAllLinkElement = this.shadowRoot.querySelector('#discovery-search-results-browse-all');
 					if (browseAllLinkElement) {
-						browseAllLinkElement.addEventListener('click', this._navigateToBrowseAll);
+						browseAllLinkElement.addEventListener('click', this._navigateToBrowseAll.bind(this));
 					}
 				});
 			});
 		}
 	}
 	_navigateToBrowseAll() {
-		// navigate to browse all
+		this.dispatchEvent(new CustomEvent('navigate', {
+			detail: {
+				path: this.routeLocations().search('')
+			},
+			bubbles: true,
+			composed: true
+		}));
 	}
 }
 

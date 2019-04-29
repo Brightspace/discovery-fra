@@ -125,9 +125,9 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 					<div class="discovery-search-sidebar">
 						<search-sidebar></search-sidebar>
 					</div>
-					<div class="d2l-typography discovery-search-main" hidden$="[[!searchQuerySanitized]]">
+					<div class="d2l-typography discovery-search-main">
 						<div class="discovery-search-nav-container">
-							<search-header id="discovery-search-search-header" query="[[searchQuerySanitized]]"></search-header>
+							<search-header id="discovery-search-search-header" query="[[searchQuerySanitized]]" page="[[_pageCurrent]]"></search-header>
 						</div>
 						<div class="discovery-search-results">
 							<search-results
@@ -216,7 +216,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 
 		const hasSearchQueryParam = queryParams && queryParams.has && queryParams.has('query');
 		const prevSearchQuery = this.searchQuerySanitized;
-		if (hasSearchQueryParam) {
+
+		if (!hasSearchQueryParam) {
+			return;
+		} else {
 			this._searchQuery = queryParams.get('query');
 			this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
 		}
@@ -248,14 +251,20 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		}
 	}
 	_getDecodedQuery(searchQuery, page) {
-		if (!searchQuery || page === undefined || !this.visible) {
+		if (page === undefined || !this.visible) {
 			this._searchActionHref = undefined;
 			return;
 		}
+
 		const parameters = {
 			q: searchQuery,
 			page: page
 		};
+
+		if (!searchQuery) {
+			delete parameters.q;
+		}
+
 		this._getActionUrl(this._searchAction, parameters)
 			.then(url => {
 				this._searchActionHref = url;
@@ -342,6 +351,9 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this._searchActionHref = undefined;
 	}
 	_searchQuerySanitizedComputed(_searchQuery) {
+		if (_searchQuery === null || _searchQuery === undefined) {
+			return _searchQuery;
+		}
 		return DOMPurify.sanitize(_searchQuery, {ALLOWED_TAGS: []});
 	}
 }

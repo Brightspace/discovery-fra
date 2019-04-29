@@ -1,6 +1,7 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import 'd2l-inputs/d2l-input-search.js';
+import 'd2l-link/d2l-link.js';
 import 'd2l-typography/d2l-typography.js';
 
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
@@ -37,9 +38,42 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				}
 
 				.discovery-home-header-search-container {
+					align-items: center;
+					display: flex;
+					flex-direction: row;
 					flex-grow: 1;
-					padding: 0 6%;
 					margin-top: 3px;
+					padding: 0 6%;
+				}
+
+				.discovery-home-header-search-input {
+					flex-grow: 1;
+				}
+
+				.discovery-home-header-search-browse-all-container {
+					flex-shrink: 0;
+					padding-left: 0.5rem;
+				}
+
+				.discovery-home-header-browse-all-link {
+					padding-left: 0.2rem;
+				}
+
+				@media only screen and (max-width: 767px) {
+					.discovery-home-header-container {
+						align-items: flex-start;
+						flex-direction: column;
+					}
+
+					.discovery-home-header-search-container {
+						padding: 0 12% 0 0;
+						width: 88%;
+					}
+
+					.discovery-home-header-my-list {
+						height: 0;
+						width: 0;
+					}
 				}
 
 				@media only screen and (max-width: 615px) {
@@ -49,19 +83,24 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				}
 
 				@media only screen and (max-width: 545px) {
-					.discovery-home-header-my-list {
-						height: 0;
-						width: 0;
-					}
-
 					.discovery-home-header-search-container {
+						align-items: flex-start;
+						flex-direction: column;
 						padding: 0;
 						width: 100%;
 					}
 
-					.discovery-home-header-container {
-						align-items: flex-start;
-						flex-direction: column;
+					.discovery-home-header-or {
+						display: none;
+					}
+
+					.discovery-home-header-search-browse-all-container {
+						margin-top: 6px;
+						padding: 0;
+					}
+
+					.discovery-home-header-browse-all-link {
+						padding: 0;
 					}
 				}
 			</style>
@@ -75,11 +114,21 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					</div>
 					<div class="discovery-home-header-search-container">
 						<d2l-input-search
-							id="search-input"
+							id="discovery-home-header-search-input"
+							class="discovery-home-header-search-input"
 							label="[[localize('search')]]"
 							value="[[query]]"
 							placeholder="[[localize('search.placeholder')]]">
 						</d2l-input-search>
+						<div class="discovery-home-header-search-browse-all-container">
+							<span class="discovery-home-header-or">[[localize('or')]]</span>
+							<d2l-link
+								class="discovery-home-header-browse-all-link"
+								href="javascript:void(0)"
+								on-click="_navigateToBrowseAll">
+								[[localize('browseAllContent')]]
+							</d2l-link>
+						</div>
 					</div>
 					<div class="discovery-home-header-my-list"></div>
 				</div>
@@ -92,21 +141,24 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	}
 	static get properties() {
 		return {
-			query: {
-				type: String,
-				notify: true,
-				observer: '_queryChanged',
-			},
+			query: String,
 			searchInput: Object
 		};
 	}
 	ready() {
 		super.ready();
-		this.searchInput = this.shadowRoot.querySelector('#search-input');
+		this.searchInput = this.shadowRoot.querySelector('#discovery-home-header-search-input');
 		if (this.searchInput) {
 			this.searchInput.addEventListener('d2l-input-search-searched', (e) => {
-				if (e && e.detail && e.detail.value) {
-					this.query = e.detail.value;
+				if (e && e.detail) {
+					const query = e.detail.value;
+					this.dispatchEvent(new CustomEvent('navigate', {
+						detail: {
+							path: this.routeLocations().search(query ? query.trim() : '')
+						},
+						bubbles: true,
+						composed: true,
+					}));
 				}
 			});
 		}
@@ -128,16 +180,14 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 			composed: true,
 		}));
 	}
-	_queryChanged(query) {
-		if (query) {
-			this.dispatchEvent(new CustomEvent('navigate', {
-				detail: {
-					path: this.routeLocations().search(query.trim())
-				},
-				bubbles: true,
-				composed: true,
-			}));
-		}
+	_navigateToBrowseAll() {
+		this.dispatchEvent(new CustomEvent('navigate', {
+			detail: {
+				path: this.routeLocations().search('')
+			},
+			bubbles: true,
+			composed: true
+		}));
 	}
 }
 
