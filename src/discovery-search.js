@@ -219,10 +219,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 
 		if (!hasSearchQueryParam) {
 			return;
-		} else {
-			this._searchQuery = queryParams.get('query');
-			this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
 		}
+
+		this._searchQuery = queryParams.get('query');
+		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
 
 		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
 		const prevCurrentPage = this._pageCurrent;
