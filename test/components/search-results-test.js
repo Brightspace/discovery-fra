@@ -279,8 +279,9 @@ describe('search-results', () => {
 
 		it('should show total number of results', done => {
 			afterNextRender(component, () => {
-				const searchResultText = component.$$('#discovery-search-results-results-message').innerHTML;
-				expect(searchResultText).to.include('of 3 for');
+				const searchResultTextElement = component.$$('#discovery-search-results-results-message');
+				expect(searchResultTextElement.getAttribute('hidden')).to.not.equal(null);
+				expect(searchResultTextElement.innerHTML).to.include('of 3 for');
 				done();
 			});
 		});
@@ -298,7 +299,7 @@ describe('search-results', () => {
 				expect(component.searchQuery).to.equal('');
 				const searchResultTextElement = component.$$('#discovery-search-results-all-results-message');
 				expect(searchResultTextElement.getAttribute('hidden')).to.equal(null);
-				expect(searchResultTextElement.innerHTML).to.include('all entries');
+				expect(searchResultTextElement.innerHTML).to.include('1-3 of 3 results');
 				done();
 			});
 		});
