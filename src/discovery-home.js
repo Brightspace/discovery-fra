@@ -205,7 +205,6 @@ class DiscoveryHome extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polymer
 			.then((res) => {
 				if (res) {
 					if (res.entities) {
-						// const concatenatedResult = this._recentlyUpdatedItems.concat(res.entities);
 						const concatenatedResult = prevRecentlyUpdatedItems.concat(res.entities);
 						this._recentlyUpdatedItems = concatenatedResult;
 					}
