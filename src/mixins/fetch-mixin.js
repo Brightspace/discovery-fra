@@ -93,6 +93,14 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		}
 		return Promise.reject(response.status + ' ' + response.statusText);
 	}
+	_getToken(scope = '*:*:*') {
+		const client = window.D2L && window.D2L.frau && window.D2L.frau.client;
+		if (client) {
+			return client.request('frau-jwt-new-jwt', scope);
+		} else {
+			return Promise.resolve(null);
+		}
+	}
 };
 
 export const FetchMixin = dedupingMixin(internalFetchMixin);

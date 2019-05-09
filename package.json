@@ -26,7 +26,7 @@
     "@polymer/iron-resizable-behavior": "^3.0.0",
     "@polymer/paper-dialog": "^3.0.1",
     "@polymer/polymer": "3.1.0",
-    "d2l-activities": "BrightspaceHypermediaComponents/activities#semver:^2",
+    "d2l-activities": "BrightspaceHypermediaComponents/activities#semver:^3",
     "d2l-alert": "BrightspaceUI/alert#semver:^4",
     "d2l-breadcrumbs": "BrightspaceUI/breadcrumbs#semver:^2",
     "d2l-button": "BrightspaceUI/button#semver:^5",

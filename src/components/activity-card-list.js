@@ -34,7 +34,9 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 							class="discovery-activity-card-list-item"
 							entity=[[item]]
 							send-event-on-click
-							presentation-href="src/presentation/presentation-href.json">
+							token="[[token]]"
+							show-organization-code
+							show-semester-name>
 						</d2l-activity-card>
 					</template>
 				</div>
@@ -48,7 +50,8 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 			columnGap: {
 				type: String,
 				value: '0.75rem'
-			}
+			},
+			token: String
 		};
 	}
 	ready() {
@@ -59,7 +62,6 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 		if (activityCardListContainer) {
 			activityCardListContainer.style['grid-column-gap'] = this.columnGap;
 		}
-
 	}
 	_generateIE11GridColumnsCss(numColumns, columnSize, columnGap) {
 		var gridTemplateColumns = columnSize;

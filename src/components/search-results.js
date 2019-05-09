@@ -158,8 +158,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 								<d2l-activity-list-item
 									image-placeholder
 									text-placeholder
-									entity=[[item]]
-									send-on-trigger-event>
+									entity="[[item]]"
+									send-on-trigger-event
+									token="[[token]]">
 								</d2l-activity-list-item>
 							</template>
 						</div>
@@ -244,14 +245,16 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			emptySearchQuery: {
 				type: Boolean,
 				value: false
-			}
+			},
+			token: String
 		};
 	}
 
 	static get observers() {
 		return [
 			'_allTextAndImagesLoadedObserver(_allTextLoaded, _allImageLoaded)',
-			'_totalReadyAndResultExists(_searchResultsTotalReady, _searchResultsExists)'
+			'_totalReadyAndResultExists(_searchResultsTotalReady, _searchResultsExists)',
+			'_searchResultObserver(_searchResult)'
 		];
 	}
 
@@ -510,6 +513,17 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			bubbles: true,
 			composed: true
 		}));
+	}
+	_updateToken() {
+		return this._getToken()
+			.then((token) => {
+				this.token = token;
+			});
+	}
+	_searchResultObserver(searchResult) {
+		if (searchResult && searchResult.length) {
+			this._updateToken();
+		}
 	}
 }
 

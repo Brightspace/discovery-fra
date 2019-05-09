@@ -56,7 +56,8 @@ class DiscoveryHome extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polymer
 					<div class="discovery-home-recently-updated-container">
 						<activity-card-list
 							header="[[localize('recentlyUpdated')]]"
-							activities="[[_recentlyUpdatedItems]]">
+							activities="[[_recentlyUpdatedItems]]"
+							token="[[token]]">
 						</activity-card-list>
 						<d2l-button
 							class="discovery-home-load-more-button"
@@ -96,7 +97,8 @@ class DiscoveryHome extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polymer
 			_recentlyUpdatedItemsHasMore: {
 				type: Boolean,
 				value: false
-			}
+			},
+			token: String
 		};
 	}
 	static get observers() {
@@ -201,6 +203,7 @@ class DiscoveryHome extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polymer
 		this._recentlyUpdatedItems = concatenatedResult;
 
 		// Get new items
+		this._updateToken();
 		this._getRecentlyUpdatedCourses()
 			.then((res) => {
 				if (res) {
@@ -217,6 +220,12 @@ class DiscoveryHome extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polymer
 	_recentlyUpdatedItemsPageTotalObserver(recentlyUpdatedItemsPage, recentlyUpdatedItemsTotal) {
 		this._recentlyUpdatedItemsHasMore =
 			((recentlyUpdatedItemsPage + 1) * this._pageSize) < recentlyUpdatedItemsTotal;
+	}
+	_updateToken() {
+		return this._getToken()
+			.then((token) => {
+				this.token = token;
+			});
 	}
 }
 
