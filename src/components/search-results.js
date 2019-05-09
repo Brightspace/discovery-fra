@@ -18,6 +18,7 @@ import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
 import './loading-overlay.js';
+import './loading-skeleton.js';
 
 class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -102,8 +103,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					@apply --d2l-body-compact-text;
 				}
 				.discovery-search-results-header-placeholder {
-					background-color: var(--d2l-color-sylvite);
-					border-radius: 4px;
 					height: 0.65rem;
 					width: 45%;
 				}
@@ -123,7 +122,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 				<div class="discovery-search-results-header">
 					<template is="dom-if" if="[[_searchQueryLoading]]">
-						<div class="discovery-search-results-header-placeholder"></div>
+						<loading-skeleton class="discovery-search-results-header-placeholder"></loading-skeleton>
 					</template>
 
 					<template is="dom-if" if="[[!_searchQueryLoading]]">
@@ -148,7 +147,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 				<template is="dom-if" if="[[_searchQueryLoading]]">
 					<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
-						<d2l-activity-list-item class="d2l-search-results-skeleton-item" image-shimmer text-placeholder></d2l-activity-list-item>
+						<d2l-activity-list-item class="d2l-search-results-skeleton-item" image-placeholder text-placeholder></d2l-activity-list-item>
 					</template>
 				</template>
 
@@ -157,7 +156,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 						<div class="discovery-search-results-container">
 							<template is="dom-repeat" items="[[_searchResult]]">
 								<d2l-activity-list-item
-									image-shimmer
+									image-placeholder
 									text-placeholder
 									entity=[[item]]
 									send-on-trigger-event>
@@ -267,14 +266,14 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._noResultSkeletonItems = Array(5);
 		this.addEventListener('d2l-activity-trigger', this._navigateToCourse.bind(this));
 		this.addEventListener('d2l-activity-text-loaded', this._removeTextPlaceholders);
-		this.addEventListener('d2l-activity-image-loaded', this._removeImageShimmers);
+		this.addEventListener('d2l-activity-image-loaded', this._removeImagePlaceholders);
 	}
 
 	_onHrefChange(href) {
 		if (!href) {
 			return;
 		}
-		this._fetchEntity(href)
+		return this._fetchEntity(href)
 			.then(this._handleSearchResponse.bind(this))
 			.catch(() => {
 				this.dispatchEvent(new CustomEvent('navigate', {
@@ -425,13 +424,13 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 		this.emptySearchQuery = !this.searchQuery;
 	}
-	_removeImageShimmers() {
+	_removeImagePlaceholders() {
 		this._numberOfImageLoadedEvents++;
 		if (this._numberOfImageLoadedEvents >= this._searchResult.length) {
 			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-activity-list-item');
 			fastdom.mutate(() => {
 				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('image-shimmer');
+					resultElement.removeAttribute('image-placeholder');
 				});
 				this._allImageLoaded = true;
 			});
