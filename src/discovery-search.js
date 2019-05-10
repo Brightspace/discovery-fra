@@ -223,10 +223,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		const hasSearchQueryParam = queryParams && queryParams.has && queryParams.has('query');
 		const prevSearchQuery = this.searchQuerySanitized;
 
-		if (!hasSearchQueryParam) {
-			this._searchQuery = '';
-		} else {
+		if (hasSearchQueryParam) {
 			this._searchQuery = queryParams.get('query');
+		} else {
+			this._searchQuery = '';
 		}
 		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
 
