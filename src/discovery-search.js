@@ -213,6 +213,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this.route = route.detail.value || {};
 	}
 	_queryParamsChanged(queryParams) {
+		if (!this.visible) {
+			return;
+		}
+
 		queryParams.stopPropagation();
 		queryParams = queryParams.detail.value || {};
 
@@ -220,10 +224,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		const prevSearchQuery = this.searchQuerySanitized;
 
 		if (!hasSearchQueryParam) {
-			return;
+			this._searchQuery = '';
+		} else {
+			this._searchQuery = queryParams.get('query');
 		}
-
-		this._searchQuery = queryParams.get('query');
 		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
 
 		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
