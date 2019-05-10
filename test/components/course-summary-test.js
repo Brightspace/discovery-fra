@@ -158,6 +158,13 @@ describe('course-summary', () => {
 			expect(enrollButton).to.not.exist;
 		});
 
+		it('already enrolled message exists and is shown', () => {
+			const alreadyEnrolledMessage = component.$$('.discovery-course-summary-already-enrolled');
+			expect(alreadyEnrolledMessage).to.exist;
+			expect(alreadyEnrolledMessage.textContent).to.equal('Already enrolled');
+			expect(alreadyEnrolledMessage.style.display).to.not.equal('none');
+		});
+
 		describe('course has started and has not ended', () => {
 			beforeEach((done) => {
 				component.setAttribute('start-date', testPastDateString);
@@ -356,6 +363,11 @@ describe('course-summary', () => {
 		it('open course button does not exist', () => {
 			const openCourseButton = component.$$('#discovery-course-summary-open-course');
 			expect(openCourseButton).to.not.exist;
+		});
+
+		it('already enrolled message does not exist', () => {
+			const alreadyEnrolledMessage = component.$$('.discovery-course-summary-already-enrolled');
+			expect(alreadyEnrolledMessage).to.not.exist;
 		});
 
 		describe('course has started and has not ended', () => {

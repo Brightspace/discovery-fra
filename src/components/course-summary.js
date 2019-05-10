@@ -75,7 +75,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				}
 
 				.discovery-course-summary-bottom-container d2l-button {
-					margin-right: 0.6rem;
 					overflow: hidden;
 					--d2l-button: {
 						height: 100%;
@@ -200,6 +199,23 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					width: 90%;
 				}
 
+				.discovery-course-summary-enrolled-container {
+					align-items: baseline;
+					display: flex;
+					flex-direction: row;
+					width: 100%;
+				}
+
+				.discovery-course-summary-already-enrolled {
+					color: var(--d2l-color-tungsten);
+					margin-left: 1.5rem;
+				}
+
+				:host(:dir(rtl)) .discovery-course-summary-already-enrolled {
+					margin-left: 0;
+					margin-right: 1.5rem;
+				}
+
 				@media only screen and (max-width: 615px) {
 					.discovery-course-summary-card,
 					.discovery-course-summary-bottom-container {
@@ -264,6 +280,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 					.discovery-course-summary-title {
 						margin-top: 0.1rem;
+					}
+
+					.discovery-course-summary-already-enrolled {
+						display: none;
 					}
 				}
 			</style>
@@ -351,14 +371,17 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 						<div class="discovery-course-summary-buttons">
 							<template is="dom-if" if="[[!actionEnroll]]">
-								<d2l-button
-									id="discovery-course-summary-open-course"
-									on-click="_tryNavigateToOrganizationHomepage"
-									disabled$="[[_isFutureAndCannotAccess]]"
-									hidden$="[[_isPastAndCannotAccess]]"
-									primary>
-									[[localize('openCourse')]]
-								</d2l-button>
+								<div class="discovery-course-summary-enrolled-container">
+									<d2l-button
+										id="discovery-course-summary-open-course"
+										on-click="_tryNavigateToOrganizationHomepage"
+										disabled$="[[_isFutureAndCannotAccess]]"
+										hidden$="[[_isPastAndCannotAccess]]"
+										primary>
+										[[localize('openCourse')]]
+									</d2l-button>
+									<span class="discovery-course-summary-already-enrolled d2l-body-compact">[[localize('alreadyEnrolled')]]</span>
+								</div>
 							</template>
 							<template is="dom-if" if="[[actionEnroll]]">
 								<d2l-button
