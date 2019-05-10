@@ -52,7 +52,7 @@ window.D2L.Discovery.LangEn = {
 	"navigateHome": "Head back to home.",
 	"404message": " Oops you hit a 404.",
 	"startDateIsInTheFuture": "This course will become available on {date}.",
-	"endDateIsInThePast": "This course closed on {date}. Contact your administrator to re-offer or re-open the course.",
+	"endDateIsInThePast": "This course closed on {date}.",
 	"emailFeedback": "Email your feedback to {email}",
 	"noCourseDescription": "No course description",
 	"searchResultsOffscreen": "Search Results for \"{searchQuery}\"",
