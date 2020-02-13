@@ -2,7 +2,7 @@
   "name": "discovery",
   "appId": "urn:d2l:fra:class:discovery",
   "description": "Discovery",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "license": "BSD-3-Clause",
   "repository": "git@github.com:Brightspace/discovery-fra.git",
   "scripts": {
