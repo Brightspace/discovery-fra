@@ -11,6 +11,7 @@ import 'd2l-course-image/d2l-course-image.js';
 import {Classes, Rels} from 'd2l-hypermedia-constants';
 import 'd2l-fetch/d2l-fetch.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
+import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import 'd2l-typography/d2l-typography.js';
 import 'd2l-polymer-behaviors/d2l-focusable-behavior.js';
 import 'd2l-button/d2l-button.js';
@@ -18,6 +19,8 @@ import SirenParse from 'siren-parser';
 import {DiscoverListItemResponsiveConstants} from './DiscoverListItemResponsiveConstants.js';
 import {DiscoverListItemLocalize} from './DiscoverListItemLocalize.js';
 import 'd2l-colors/d2l-colors.js';
+import '@brightspace-ui/core/components/list/list.js';
+import '@brightspace-ui/core/components/list/list-item.js';
 
 /**
  * @customElement
@@ -213,7 +216,31 @@ class D2lDiscoverListItem extends mixinBehaviors([
 				.d2l-discover-list-item-header-no-margin {
 					margin: 0;
 				}
+
+				.d2l-enrollment-collection-view-organization-image {
+					grid-column: 1;
+					grid-row: 1;
+				}
 			</style>
+				<d2l-list-item href=[[_activityHomepage]]>
+					<d2l-organization-image class="d2l-enrollment-collection-view-organization-image" slot="illustration" href="[[_organizationUrl]]" token="[[token]]">[[_organizationUrl]]</d2l-organization-image>
+					<d2l-list-item-content>
+						<div class="d2l-discover-list-item-category" hidden$="[[!_category]]">[[_category]]</div>
+						<d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name>
+						<div class="d2l-discover-list-item-description"><p>[[_description]]</p></div>
+
+						<div class="d2l-discover-list-item-footer" hidden$="[[!_tags]]">
+							<template is="dom-repeat" items="[[_tags]]">
+								<span>
+									<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
+									[[item]]
+								</span>
+							</template>
+						</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+
+
 			<div class="d2l-discover-list-item-container" style="visibility:hidden;">
 				<hr class="d2l-discover-list-item-top-line" />
 				<h2 class="d2l-discover-list-item-header-no-margin">
@@ -287,7 +314,7 @@ class D2lDiscoverListItem extends mixinBehaviors([
 						</div>
 					</div>
 				</div>
-				<hr class="d2l-discover-list-item-bottom-line" />
+				<hr class="d2l-discover-list-item-bottom-line"/>
 			</div>
 		`;
 	}
