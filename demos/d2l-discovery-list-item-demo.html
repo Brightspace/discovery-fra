@@ -13,7 +13,7 @@
 			import '@polymer/iron-demo-helpers/demo-snippet';
 			import 'd2l-typography/d2l-typography.js';
 			import '../src/components/d2l-discover-list-item/d2l-discover-list-item.js';
-			import '../src/components/d2l-discover-list-item/d2l-discover-list-item-old.js';
+			import '@brightspace-ui/core/components/list/list.js';
 			const $_documentContainer = document.createElement('template');
 			$_documentContainer.innerHTML = `
 				<custom-style>
@@ -50,12 +50,12 @@
 			<h3>Basic d2l-discover-list-item demo</h3>
 			<demo-snippet>
 				<template>
-					<d2l-discover-list-item image-placeholder text-placeholder></d2l-discover-list-item>
-					<d2l-discover-list-item href="../data/base/activity.json" id="loading-placeholder-test" image-placeholder text-placeholder token="a1"></d2l-discover-list-item>
-					<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
-					<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
-					<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
-					<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
+						<d2l-discover-list-item image-placeholder text-placeholder></d2l-discover-list-item>
+						<d2l-discover-list-item href="../data/base/activity.json" id="loading-placeholder-test" image-placeholder text-placeholder token="a1"></d2l-discover-list-item>
+						<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
+						<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
+						<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
+						<d2l-discover-list-item href="../data/base/activity.json" token="a1"></d2l-discover-list-item>
 					<script>
 						const items = document.querySelectorAll('d2l-discover-list-item');
 
@@ -69,33 +69,6 @@
 							if (loadingPlaceholderTest) {
 								loadingPlaceholderTest.removeAttribute('image-placeholder');
 								loadingPlaceholderTest.removeAttribute('text-placeholder');
-							}
-						}, 2000);
-					</script>
-				</template>
-			</demo-snippet>
-
-			<demo-snippet>
-				<template>
-					<d2l-discover-list-item-old image-placeholder text-placeholder></d2l-discover-list-item-old>
-					<d2l-discover-list-item-old href="../data/base/activity.json" id="loading-placeholder-test2" image-placeholder text-placeholder token="a1"></d2l-discover-list-item-old>
-					<d2l-discover-list-item-old href="../data/base/activity.json" token="a1"></d2l-discover-list-item-old>
-					<d2l-discover-list-item-old href="../data/base/activity.json" token="a1"></d2l-discover-list-item-old>
-					<d2l-discover-list-item-old href="../data/base/activity.json" token="a1"></d2l-discover-list-item-old>
-					<d2l-discover-list-item-old href="../data/base/activity.json" token="a1"></d2l-discover-list-item-old>
-					<script>
-						const items2 = document.querySelectorAll('d2l-discover-list-item-old');
-
-						items2.forEach(function(item) {
-							item._tags = ['Duration 1h30m', 'Metadata', 'Metadata'];
-							item._category = 'Financial Planning';
-						});
-
-						setTimeout(function() {
-							const loadingPlaceholderTest2 = document.querySelector('#loading-placeholder-test2');
-							if (loadingPlaceholderTest2) {
-								loadingPlaceholderTest2.removeAttribute('image-placeholder');
-								loadingPlaceholderTest2.removeAttribute('text-placeholder');
 							}
 						}, 2000);
 					</script>

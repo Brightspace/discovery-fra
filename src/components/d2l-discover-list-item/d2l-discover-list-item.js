@@ -36,23 +36,12 @@ class D2lDiscoverListItem extends mixinBehaviors([
 				:host {
 					display: block;
 				}
-				:host([active]) a.d2l-focusable {
-					border-color: rgba(0, 111, 191, 0.4);
-					box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
-					border-radius: 6px;
-				}
 				.d2l-discover-list-item-top-line,
 				.d2l-discover-list-item-bottom-line {
 					display: none;
 					border: 0;
 					border-top: 1px solid var(--d2l-color-mica);
 					margin: 0;
-				}
-				.d2l-discover-list-item-top-line {
-					margin-top: -1px;
-				}
-				.d2l-discover-list-item-bottom-line {
-					margin-bottom: -1px;
 				}
 				.d2l-discover-list-item-container:hover .d2l-discover-list-item-top-line,
 				.d2l-discover-list-item-container:hover .d2l-discover-list-item-bottom-line {
@@ -78,14 +67,7 @@ class D2lDiscoverListItem extends mixinBehaviors([
 					display: inline-block;
 					@apply --d2l-offscreen;
 				}
-				a.d2l-focusable {
-					display: block;
-					position: absolute;
-					height: 100%;
-					outline: none;
-					width: 100%;
-					z-index: 1;
-				}
+
 				/* P2-shadow */
 				:host-context([dir="rtl"]) .d2l-discover-list-item-link-text {
 					@apply --d2l-offscreen-rtl
@@ -222,26 +204,28 @@ class D2lDiscoverListItem extends mixinBehaviors([
 					grid-row: 1;
 				}
 			</style>
-
 			<d2l-list>
-				<d2l-list-item class="d2l-discover-list-item-container" style="visibility:hidden;" href="[[_activityHomepage]]" aria-label$="[[_accessibilityDataToString(_accessibilityData)]]">
-
-				<div slot="illustration" class="d2l-discover-list-item-image">
-				<div class="d2l-discover-list-item-pulse-placeholder" hidden$="[[!imagePlaceholder]]"></div>
-					<d2l-organization-image class="d2l-enrollment-collection-view-organization-image" href="[[_organizationUrl]]" token="[[token]]" hidden$="[[imagePlaceholder]]">[[_organizationUrl]]</d2l-organization-image>
-				</div>
-
-					<d2l-list-item-content class="d2l-discover-list-item-content">
-						<div>
-							<div hidden$="[[!_textPlaceholder]]">
-								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
-							</div>
-							<div hidden$="[[_textPlaceholder]]">
-								<div class="d2l-discover-list-item-category" hidden$="[[!_category]]">[[_category]]</div>
-							</div>
-						</div>
-
+				<d2l-list-item class="d2l-discover-list-item-container style="visibility:hidden;" href="[[_activityHomepage]]">
+					<div slot="illustration" class="d2l-discover-list-item-image">
+					<div class="d2l-discover-list-item-pulse-placeholder" hidden$="[[!imagePlaceholder]]"></div>
+					<d2l-course-image
+						hidden$="[[imagePlaceholder]]"
+						image="[[_image]]"
+						sizes="[[_tileSizes]]"
+						type="narrow">
+					</d2l-course-image>
+					</div>
+					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label$="[[_accessibilityDataToString(_accessibilityData)]]">
+						<span class="d2l-discover-list-item-link-text">[[_accessibilityDataToString(_accessibilityData)]]</span>
 						<div aria-hidden="true">
+							<div>
+								<div hidden$="[[!_textPlaceholder]]">
+									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
+								</div>
+								<div hidden$="[[_textPlaceholder]]">
+									<div class="d2l-discover-list-item-category" hidden$="[[!_category]]">[[_category]]</div>
+								</div>
+							</div>
 							<div hidden$="[[!_textPlaceholder]]">
 								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-title-placeholder"></div>
 							</div>
@@ -250,42 +234,42 @@ class D2lDiscoverListItem extends mixinBehaviors([
 									<d2l-organization-name href="[[_organizationUrl]]" token="[[token]]"></d2l-organization-name>
 								</h2>
 							</div>
-						</div>
 
-						<div id="d2l-discover-list-item-description" hidden$="[[!_showDescription]]">
+
+							<div id="d2l-discover-list-item-description" hidden$="[[!_showDescription]]">
+								<div hidden$="[[!_textPlaceholder]]">
+									<template is="dom-repeat" items="[[_descriptionPlaceholderLines]]">
+										<div class="d2l-discover-list-item-description-placeholder-container">
+											<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-description-placeholder"></div>
+										</div>
+									</template>
+								</div>
+								<div hidden$="[[_textPlaceholder]]">
+									<div class="d2l-discover-list-item-description"><p>[[_description]]</p></div>
+								</div>
+							</div>
+
 							<div hidden$="[[!_textPlaceholder]]">
-								<template is="dom-repeat" items="[[_descriptionPlaceholderLines]]">
-									<div class="d2l-discover-list-item-description-placeholder-container">
-										<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-description-placeholder"></div>
-									</div>
-								</template>
+								<div class="d2l-discover-list-item-footer-placeholder-container">
+									<template is="dom-repeat" items="[[_footerPlaceholderItems]]">
+										<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
+									</template>
+								</div>
 							</div>
 							<div hidden$="[[_textPlaceholder]]">
-								<div class="d2l-discover-list-item-description"><p>[[_description]]</p></div>
+								<div class="d2l-discover-list-item-footer" hidden$="[[!_tags]]">
+									<template is="dom-repeat" items="[[_tags]]">
+										<span>
+											<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
+											[[item]]
+										</span>
+									</template>
+								</div>
 							</div>
-						</div>
-
-						<div hidden$="[[!_textPlaceholder]]">
-							<div class="d2l-discover-list-item-footer-placeholder-container">
-								<template is="dom-repeat" items="[[_footerPlaceholderItems]]">
-									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
-								</template>
-							</div>
-						</div>
-						<div hidden$="[[_textPlaceholder]]">
-							<div class="d2l-discover-list-item-footer" hidden$="[[!_tags]]">
-								<template is="dom-repeat" items="[[_tags]]">
-									<span>
-										<d2l-icon icon="d2l-tier1:bullet"></d2l-icon>
-										[[item]]
-									</span>
-								</template>
-							</div>
-						</div>
+						<div>
 					</d2l-list-item-content>
 				</d2l-list-item>
 			</d2l-list>
-
 		`;
 	}
 
@@ -403,7 +387,7 @@ class D2lDiscoverListItem extends mixinBehaviors([
 			this.addEventListener('iron-resize', this._onIronSize.bind(this));
 			this._setResponsiveSizes(this.offsetWidth);
 
-			const image = this.shadowRoot.querySelector('d2l-organization-image');
+			const image = this.shadowRoot.querySelector('d2l-course-image');
 			image.addEventListener('course-image-loaded', this._activityImageLoaded.bind(this));
 		});
 	}
@@ -441,7 +425,7 @@ class D2lDiscoverListItem extends mixinBehaviors([
 		link.removeEventListener('focus', this._onLinkFocus);
 		this.removeEventListener('iron-resize', this._onIronSize);
 
-		const image = this.shadowRoot.querySelector('d2l-organization-image');
+		const image = this.shadowRoot.querySelector('d2l-course-image');
 		image.removeEventListener('course-image-loaded', this._activityImageLoaded);
 	}
 
