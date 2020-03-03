@@ -14,6 +14,7 @@ import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
 import './loading-overlay.js';
 import './loading-skeleton.js';
+import './d2l-discover-list-item/d2l-discover-list.js';
 
 class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -64,9 +65,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					word-wrap: break-word;
 				}
 
-				d2l-activity-list-item {
-					border-bottom: 1px solid var(--d2l-color-mica);
-				}
 				.discovery-search-results-page-number-container {
 					margin: 15px;
 					display: flex;
@@ -130,22 +128,19 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 				<template is="dom-if" if="[[_searchQueryLoading]]">
 					<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
-						<d2l-activity-list-item class="d2l-search-results-skeleton-item" image-placeholder text-placeholder></d2l-activity-list-item>
+						<d2l-discover-list-item class="d2l-search-results-skeleton-item" image-placeholder text-placeholder></d2l-discover-list-item>
 					</template>
 				</template>
 
 				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
 					<template is="dom-if" if="[[_searchResultsExists]]">
 						<div class="discovery-search-results-container">
-							<template is="dom-repeat" items="[[_searchResult]]">
-								<d2l-activity-list-item
+								<d2l-discover-list
 									image-placeholder
 									text-placeholder
-									entity="[[item]]"
-									send-on-trigger-event
+									entities="[[_searchResult]]"
 									token="[[token]]">
-								</d2l-activity-list-item>
-							</template>
+								</d2l-discover-list>
 						</div>
 						<div class="discovery-search-results-page-number-container">
 							<d2l-button-icon
@@ -250,9 +245,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	ready() {
 		super.ready();
 		this._noResultSkeletonItems = Array(5);
-		this.addEventListener('d2l-activity-trigger', this._navigateToCourse.bind(this));
-		this.addEventListener('d2l-activity-text-loaded', this._removeTextPlaceholders);
-		this.addEventListener('d2l-activity-image-loaded', this._removeImagePlaceholders);
+		//this.addEventListener('d2l-discover-trigger', this._navigateToCourse.bind(this));
+		//this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
+		//this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
 	}
 
 	_onHrefChange(href) {
@@ -413,7 +408,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	_removeImagePlaceholders() {
 		this._numberOfImageLoadedEvents++;
 		if (this._numberOfImageLoadedEvents >= this._searchResult.length) {
-			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-activity-list-item');
+			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-discover-list-item');
 			fastdom.mutate(() => {
 				resultElements.forEach((resultElement) => {
 					resultElement.removeAttribute('image-placeholder');
@@ -425,7 +420,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	_removeTextPlaceholders() {
 		this._numberOfTextLoadedEvents++;
 		if (this._numberOfTextLoadedEvents >= this._searchResult.length) {
-			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-activity-list-item');
+			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-discover-list-item');
 			fastdom.mutate(() => {
 				resultElements.forEach((resultElement) => {
 					resultElement.removeAttribute('text-placeholder');
