@@ -636,7 +636,7 @@ describe('course-summary', () => {
 		});
 	});
 
-	describe('enrollment is pending', () => {
+	describe('no current access', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
 			setComponentForEnrollment({ component, enrolled: false });
@@ -689,7 +689,7 @@ describe('course-summary', () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
 						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-						expect(dialogMessage).to.include('Your enrollment to this course is still pending.');
+						expect(dialogMessage).to.include('You don’t have access to this course, either your enrollment is still pending or you have been un-enrolled by an Administrator. Check back soon to see if your enrollment has been processed or contact your Administrator in order to enroll again.');
 
 						// Open Course button still exists and is displayed
 						const openCourseButton = component.$$('#discovery-course-summary-open-course');
