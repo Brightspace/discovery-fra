@@ -464,7 +464,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 						<h3 class="discovery-course-summary-dialog-heading-text" id="discovery-course-summary-dialog-label">[[_enrollmentDialogHeader]]</h3>
 					</div>
 					<div class="discovery-course-summary-dialog-content-container">
-						<div class="d2l-body-standard" id="discovery-course-summary-dialog-describe">[[_enrollmentDialogMessage]]</div>
+						<div class="d2l-body-standard" id="discovery-course-summary-dialog-describe">[[_enrollmentDialogMessage]]<br>[[_enrollmentDialogSecondaryMessage]]</div>
 					</div>
 					<d2l-button
 						on-click="_closeDialog"
@@ -519,6 +519,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			organizationHref: String,
 			_enrollmentDialogHeader: String,
 			_enrollmentDialogMessage: String,
+			_enrollmentDialogSecondaryMessage: {
+				type: String,
+				value: ''
+			},
 			_homeHref: {
 				type: String,
 				computed: '_getHomeHref()'
@@ -617,6 +621,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					} else {
 						this._enrollmentDialogHeader = this.localize('enrollmentHeaderPending');
 						this._enrollmentDialogMessage = this.localize('enrollmentMessagePending');
+						this._enrollmentDialogSecondaryMessage = this.localize('enrollmentMessagePendingSecondary');
 						const enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
 						enrollmentDialog.opened = true;
 					}
@@ -651,12 +656,14 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 							} else { // enrollment is taking a long time to process
 								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccess', 'title', this.courseTitle);
 							}
+							this._enrollmentDialogSecondaryMessage = '';
 							this.organizationHomepage = organizationHomepage;
 						});
 				})
 				.catch(() => {
 					this._enrollmentDialogHeader = this.localize('enrollmentHeaderFail');
 					this._enrollmentDialogMessage = this.localize('enrollmentMessageFail');
+					this._enrollmentDialogSecondaryMessage = '';
 				})
 				.finally(() => {
 					const enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');

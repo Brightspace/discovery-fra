@@ -689,7 +689,8 @@ describe('course-summary', () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
 						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-						expect(dialogMessage).to.include('You don’t have access to this course, either your enrollment is still pending or you have been un-enrolled by an Administrator. Check back soon to see if your enrollment has been processed or contact your Administrator in order to enroll again.');
+						expect(dialogMessage).to.include('You don’t have access to this course, either your enrollment is still pending or you have been un-enrolled by an Administrator.');
+						expect(dialogMessage).to.include('Check back soon to see if your enrollment has been processed or contact your Administrator in order to enroll again.');
 
 						// Open Course button still exists and is displayed
 						const openCourseButton = component.$$('#discovery-course-summary-open-course');
