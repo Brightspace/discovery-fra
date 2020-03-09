@@ -14,7 +14,7 @@ import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
 import './loading-overlay.js';
 import './loading-skeleton.js';
-import './d2l-discover-list-item/d2l-discover-list.js';
+import './d2l-discover-list/d2l-discover-list.js';
 
 class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -127,17 +127,13 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				</div>
 
 				<template is="dom-if" if="[[_searchQueryLoading]]">
-					<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
-						<d2l-discover-list-item class="d2l-search-results-skeleton-item" image-placeholder text-placeholder></d2l-discover-list-item>
-					</template>
+						<d2l-discover-list class="d2l-search-results-skeleton-item" imagePlaceholder textPlaceholder entities$=[[_noResultSkeletonItems]]></d2l-discover-list>
 				</template>
 
 				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
 					<template is="dom-if" if="[[_searchResultsExists]]">
 						<div class="discovery-search-results-container">
 								<d2l-discover-list
-									image-placeholder
-									text-placeholder
 									entities="[[_searchResult]]"
 									token="[[token]]">
 								</d2l-discover-list>
@@ -201,7 +197,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			_pageCurrent: Number,
 			_pageTotal: Number,
 			_searchResultsTotal: Number,
-			_noResultSkeletonItems: Array,
+			_noResultSkeletonItems: String,
 			_searchResultsTotalReady: {
 				type: Boolean,
 				observer: '_searchResultsTotalReadyObserver'
@@ -244,10 +240,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	ready() {
 		super.ready();
-		this._noResultSkeletonItems = Array(5);
-		//this.addEventListener('d2l-discover-trigger', this._navigateToCourse.bind(this));
-		//this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
-		//this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
+		this._noResultSkeletonItems = `[null,null,null,null,null]`;
 	}
 
 	_onHrefChange(href) {
@@ -411,7 +404,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-discover-list-item');
 			fastdom.mutate(() => {
 				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('image-placeholder');
+					resultElement.removeAttribute('imagePlaceholder');
 				});
 				this._allImageLoaded = true;
 			});
@@ -423,7 +416,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-discover-list-item');
 			fastdom.mutate(() => {
 				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('text-placeholder');
+					resultElement.removeAttribute('textPlaceholder');
 				});
 				this._allTextLoaded = true;
 

@@ -14,9 +14,9 @@ import 'd2l-organizations/components/d2l-organization-image/d2l-organization-ima
 import SirenParse from 'siren-parser';
 import {Classes, Rels} from 'd2l-hypermedia-constants';
 import { heading1Styles, heading2Styles, heading4Styles, bodyCompactStyles, bodyStandardStyles, labelStyles} from '@brightspace-ui/core/components/typography/styles.js';
-import {DiscoverListItemResponsiveConstants} from './DiscoverListItemResponsiveConstants.js.js';
+import {DiscoverListItemResponsiveConstants} from './DiscoverListItemResponsiveConstants.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
-import { getLocalizeResources } from './localization.js.js';
+import { getLocalizeResources } from './localization.js';
 
 const baseUrl = import.meta.url;
 class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(LitElement)) {
@@ -25,7 +25,26 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		this._descriptionPlaceholderLines = [{}, {}];
 		this._footerPlaceholderItems = [{}, {}];
 		this._items = [];
-		this.addEventListener('d2l-organization-accessible', this._onD2lOrganizationAccessible);
+		this._loadedTextCount = 0;
+		this._loadedImageCount = 0;
+		this._loadedText = false;
+		this._loadedImages = false;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('resize', this._resizeHandler.bind(this));
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('resize', this._resizeHandler.bind(this));
+	}
+
+
+	_resizeHandler(e) {
+		//Redraw to update the description length to fit the new amount of space.
+		this.requestUpdate();
 	}
 
 	static async getLocalizeResources(langs) {
@@ -46,35 +65,51 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		});
 	}
 
+	updated(changedProperties) {
+		super.update();
+		changedProperties.forEach((oldValue, propName) => {
+			if(propName == 'hrefs')
+			{
+				this._onHrefsChange(this.hrefs)
+			}
+			if(propName == 'entities')
+			{
+				this._onEntitiesChange(this.entities)
+			}
+		});
+	}
+
 	_onHrefsChange(hrefs) {
 		this._items = [];
 		hrefs.forEach(href => {
 			const item = {};
 			item.href = href;
 			item.organizationUrl = "";
-			item.image = {};
-			item.accessibilityData = {};
+			this._items.push(item);
 			this._fetchEntity(href).then((sirenEntity) => {
 				item.entity = sirenEntity;
 				this._onSirenEntityChange(sirenEntity, item);
 			});
-
-			this._items.push(item);
 		});
 	}
 
 	_onEntitiesChange(entities) {
 		this._items = [];
 		entities.forEach(entity => {
+			if(!entity) {
+				entity = {};
+			}
 			const item = {};
 			item.href = entity.self;
 			item.organizationUrl = "";
-			item.image = {};
-
 			item.entity = entity;
-			this._onSirenEntityChange(entity, item);
 			this._items.push(item);
+			this._onSirenEntityChange(entity, item);
 		});
+
+
+		const state = this;
+		//setTimeout(function(){ state.requestUpdate(); }, 1);
 	}
 
 	_onSirenEntityChange(sirenEntity, item) {
@@ -89,11 +124,10 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		}
 		item.activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		item.organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
-
 		if (item.organizationUrl) {
 			this._fetchEntity(item.organizationUrl).then((organization) => {
 				this._handleOrganizationResponse(organization,item).then(() => {
-					this.requestUpdate()
+					this.requestUpdate();
 				});
 			});
 		}
@@ -110,7 +144,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			const tempDiv = document.createElement('div');
 			tempDiv.innerHTML = description;
 			description = tempDiv.textContent || tempDiv.innerText;
-			item.showDescription = true;
 		}
 		item.description = description;
 		return Promise.resolve();
@@ -119,7 +152,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	_createDescriptionElement(description) {
 		if (!description) return html ``;
 		const div = document.createElement('div');
-		div.classList.add('d2l-discover-list-item-description');
 		div.classList.add('d2l-body-compact');
 
 		const p = document.createElement('p');
@@ -165,16 +197,44 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		return div;
 	}
 
+	_onResize(){
+		alert("asd");
+		this.requestUpdate();
+	}
+
 	_onD2lOrganizationAccessible(e, item) {
 		if(!item) {
 			return;
 		}
-
+		item.accessibilityData = {};
 		item.accessibilityData.organizationName = e.detail.organization && e.detail.organization.name;
 		item.accessibilityData.semesterName = e.detail.semesterName && e.detail.semesterName;
 		item.accessibilityData.ariaContext = this.localize('clickToViewActivity');
 		item.accessibilityData.description = item.description;
-		this.requestUpdate()
+		this.requestUpdate();
+
+		this._loadedTextCount++;
+		if(this._loadedTextCount == this._items.length)
+		{
+			this._loadedText = true;
+			this.dispatchEvent(new CustomEvent('d2l-discover-text-loaded', {
+				bubbles: true,
+				composed: true
+			}));
+		}
+	}
+
+	_onOrgImageLoaded(e, item) {
+		this._loadedImageCount++;
+
+		if(this._loadedImageCount == this._items.length)
+		{
+			this._loadedImages = true;
+			this.dispatchEvent(new CustomEvent('d2l-discover-image-loaded', {
+				bubbles: true,
+				composed: true
+			}));
+		}
 	}
 
 	_accessibilityDataToString(accessibility) {
@@ -216,6 +276,22 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		return Promise.reject(response.status + ' ' + response.statusText);
 	}
 
+	_shouldRenderTextSkeletons() {
+		if(!this._loadedText || this.textPlaceholder) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+		_shouldRenderImageSkeletons() {
+		if(!this._loadedImages || this.imagePlaceholder) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	static get properties() {
 		return {
 			token: String,
@@ -226,7 +302,8 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				type: Array
 			},
 			entities: {
-				type: Array
+				type: Array,
+				observer: "_onEntitiesChange"
 			},
 			imagePlaceholder: {
 				type: Boolean,
@@ -235,7 +312,22 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			textPlaceholder: {
 				type: Boolean,
 				value: false,
-				observer: '_onTextPlaceholderChange'
+			},
+			_loadedTextCount: {
+				type: Number,
+				value: 0
+			},
+			_loadedImageCount: {
+				type: Number,
+				value: 0
+			},
+			_loadedText: {
+				type: Boolean,
+				value: false
+			},
+			_loadedImages: {
+				type: Boolean,
+				value: false
 			},
 			_tileSizes: {
 				type: Object,
@@ -370,9 +462,14 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				display: block;
 				height: 0.5rem;
 				margin: 0.2rem 0;
+				width: 30%;
 			}
 			.d2l-discover-list-item-title-placeholder {
 				display: block;
+				height: 1.2rem;
+				margin-top: 0.2rem;
+				margin-bottom: 0.6rem;
+				width: 50%;
 			}
 			.d2l-discover-list-item-description-placeholder-container {
 				padding: 0.325rem 0;
@@ -381,10 +478,12 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				display: block;
 				height: 0.55rem;
 				width: 95%;
+
 			}
 			.d2l-discover-list-item-footer-placeholder-container {
 				display: flex;
 				flex-direction: row;
+				width: 30%;
 			}
 			.d2l-discover-list-item-footer-placeholder {
 				display: block;
@@ -405,59 +504,66 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				grid-column: 1;
 				grid-row: 1;
 			}
+
+			@media (max-width: 385px) {
+				.d2l-discover-list-item-description {
+					display: none;
+				}
+			}
 			`
 		];
 	}
 
 	render() {
+
 		const listItems = this._items.map(item =>
 			html`
-				<d2l-list-item class="d2l-discover-list-item-container style="visibility:hidden;" href="${item.activityHomepage}">
+			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}">
 					<div slot="illustration" class="d2l-discover-list-item-image">
-						<d2l-organization-image
-							href=${item.organizationUrl}
-						</d2l-organization-image>
+						<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
+						<d2l-organization-image href="${item.organizationUrl}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e,item)}}"></d2l-organization-image>
 					</div>
 					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
-							<div>
-								<div ?hidden="${!this.textPlaceholder}">
-									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
-								</div>
-								<div ?hidden="${this.textPlaceholder}">
-									<div class="d2l-body-small d2l-discover-list-item-category" ?hidden="${!item.category}">${item.category}</div>
-								</div>
+						<div>
+							<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
 							</div>
-							<div ?hidden="${!this.textPlaceholder}">
-								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-title-placeholder"></div>
+							<div ?hidden="${this._shouldRenderTextSkeletons()}">
+								<div class="d2l-body-small d2l-discover-list-item-category" ?hidden="${!item.category}">${item.category}</div>
 							</div>
-							<div ?hidden="${this.textPlaceholder}">
-								<h2 class="d2l-heading-2 d2l-discover-list-item-title">
-									<d2l-organization-name href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => {this._onD2lOrganizationAccessible(e,item)}}"></d2l-organization-name>
-								</h2>
+						</div>
+						<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+							<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-title-placeholder"></div>
+						</div>
+						<div ?hidden="${this._shouldRenderTextSkeletons()}">
+							<h2 class="d2l-heading-2 d2l-discover-list-item-title">
+								<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e,item)}}"></d2l-organization-name>
+							</h2>
+						</div>
+
+						<div class="d2l-discover-list-item-description">
+							<div ?hidden="${this._shouldRenderTextSkeletons()}">
+								${this._createDescriptionElement(item.description)}
 							</div>
 
-							<div id="d2l-discover-list-item-description" ?hidden="${!item.showDescription}">
-								<div ?hidden="${!this.textPlaceholder}">
-									${this._descriptionPlaceholderLines.map(placeholder => html`
-										<div class="d2l-discover-list-item-description-placeholder-container">
-											<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-description-placeholder"></div>
-										</div>
-									`)}
-								</div>
-								<div ?hidden="${this.textPlaceholder}">
-									${this._createDescriptionElement(item.description)}
-								</div>
+							<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+								${this._descriptionPlaceholderLines.map(placeholder => html`
+									<div class="d2l-discover-list-item-description-placeholder-container">
+										<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-description-placeholder"></div>
+									</div>
+								`)}
 							</div>
+						</div>
 
-							<div ?hidden="${!this.textPlaceholder}">
-								<div class="d2l-discover-list-item-footer-placeholder-container">
-									${this._footerPlaceholderItems.map(placeholder => html`
-										<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
-									`)}
-								</div>
+						<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+							<div class="d2l-discover-list-item-footer-placeholder-container">
+								${this._footerPlaceholderItems.map(placeholder => html`
+									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
+								`)}
+							</div>
 						<div>
 					</d2l-list-item-content>
-				</d2l-list-item>
+			</d2l-list-item>
 			`
 		);
 
