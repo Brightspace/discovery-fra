@@ -568,7 +568,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			`
 		);
 
-		alert(this.displayAdditionalPlaceholders + " why " + this.textPlaceholder);
 		return html`
 			<d2l-list>
 				${listItems}
