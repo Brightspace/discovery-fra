@@ -198,7 +198,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	}
 
 	_onResize(){
-		alert("asd");
 		this.requestUpdate();
 	}
 
@@ -302,8 +301,11 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				type: Array
 			},
 			entities: {
-				type: Array,
-				observer: "_onEntitiesChange"
+				type: Array
+			},
+			displayAdditionalPlaceholders: {
+				type: Boolean,
+				value: false
 			},
 			imagePlaceholder: {
 				type: Boolean,
@@ -311,7 +313,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			},
 			textPlaceholder: {
 				type: Boolean,
-				value: false,
+				value: false
 			},
 			_loadedTextCount: {
 				type: Number,
@@ -515,7 +517,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	}
 
 	render() {
-
 		const listItems = this._items.map(item =>
 			html`
 			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}">
@@ -525,7 +526,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 					</div>
 					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
 						<div>
-							<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+							<div ?hidden="${!this._shouldRenderTextSkeletons() || !this.displayAdditionalPlaceholders}">
 								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
 							</div>
 							<div ?hidden="${this._shouldRenderTextSkeletons()}">
@@ -555,7 +556,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 							</div>
 						</div>
 
-						<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+						<div ?hidden="${!this._shouldRenderTextSkeletons() || !this.displayAdditionalPlaceholders}">
 							<div class="d2l-discover-list-item-footer-placeholder-container">
 								${this._footerPlaceholderItems.map(placeholder => html`
 									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
@@ -567,6 +568,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			`
 		);
 
+		alert(this.displayAdditionalPlaceholders + " why " + this.textPlaceholder);
 		return html`
 			<d2l-list>
 				${listItems}
