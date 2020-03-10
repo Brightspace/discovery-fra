@@ -1,3 +1,3 @@
 export default {
-   "clickToViewActivity" : "单击查看活动"
+	'clickToViewActivity' : '单击查看活动'
 };

@@ -1,3 +1,3 @@
 export default {
-   "clickToViewActivity": "Click to view activity"
+	'clickToViewActivity': 'Click to view activity'
 };

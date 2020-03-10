@@ -1,3 +1,3 @@
 export default {
-   "clickToViewActivity" : "按一下以檢視活動"
+	'clickToViewActivity' : '按一下以檢視活動'
 };

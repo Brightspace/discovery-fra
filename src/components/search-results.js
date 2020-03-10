@@ -240,7 +240,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	ready() {
 		super.ready();
-		this._noResultSkeletonItems = `[null,null,null,null,null]`;
+		this._noResultSkeletonItems = '[null,null,null,null,null]';
 	}
 
 	_onHrefChange(href) {

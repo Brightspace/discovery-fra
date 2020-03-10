@@ -1,3 +1,3 @@
 export default {
-   "clickToViewActivity" : "Clique para exibir a atividade"
+	'clickToViewActivity' : 'Clique para exibir a atividade'
 };
