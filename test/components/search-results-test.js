@@ -200,11 +200,13 @@ describe('search-results', () => {
 			});
 		});
 
-		it('should show a list of d2l-activity-list-items', done => {
+		it('should show a list of d2l-list-items', done => {
 			afterNextRender(component, () => {
 				expect(component.searchQuery).to.equal('results');
-				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
-				expect(searchResults.length).is.greaterThan(0);
+				const listSearchResults = component.shadowRoot.querySelector('d2l-discover-list');
+				expect(listSearchResults).is.not.undefined;
+				const listItemSearchResults = listSearchResults.shadowRoot.querySelectorAll('d2l-list-item');
+				expect(listItemSearchResults.length).is.greaterThan(0);
 				done();
 			});
 		});
@@ -259,7 +261,7 @@ describe('search-results', () => {
 				const searchResultText = component.$$('#discovery-search-results-results-message').innerHTML;
 				expect(searchResultText).to.include('of 2 for');
 				expect(component.searchQuery).to.equal('results');
-				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
+				const searchResults = component.shadowRoot.querySelectorAll('d2l-discover-list');
 				expect(searchResults.length).is.greaterThan(0);
 				done();
 			});
@@ -304,11 +306,13 @@ describe('search-results', () => {
 			});
 		});
 
-		it('should show a list of d2l-activity-list-items', done => {
+		it('should show a list of d2l-list-items', done => {
 			afterNextRender(component, () => {
 				expect(component.searchQuery).to.equal('');
-				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
-				expect(searchResults.length).is.greaterThan(0);
+				const listSearchResults = component.shadowRoot.querySelector('d2l-discover-list');
+				expect(listSearchResults).is.not.undefined;
+				const listItemSearchResults = listSearchResults.shadowRoot.querySelectorAll('d2l-list-item');
+				expect(listItemSearchResults.length).is.greaterThan(0);
 				done();
 			});
 		});

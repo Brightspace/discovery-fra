@@ -127,7 +127,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				</div>
 
 				<template is="dom-if" if="[[_searchQueryLoading]]">
-						<d2l-discover-list class="d2l-search-results-skeleton-item" imagePlaceholder textPlaceholder entities$=[[_noResultSkeletonItems]]></d2l-discover-list>
+						<d2l-discover-list imagePlaceholder textPlaceholder entities$=[[_noResultSkeletonItems]]></d2l-discover-list>
 				</template>
 
 				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
@@ -372,13 +372,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			if (this._searchResultsTotal === 0) {
 				this.loadingMessage = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
 			}
-		} else {
-			const skeletonItems = this.shadowRoot.querySelectorAll('.d2l-search-results-skeleton-item');
-			skeletonItems.forEach((skeletonItem) => {
-				afterNextRender(skeletonItem, () => {
-					skeletonItem.notifyResize();
-				});
-			});
 		}
 	}
 	_processBeforeLoading() {
