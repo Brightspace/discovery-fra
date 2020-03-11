@@ -52,10 +52,11 @@ describe('d2l-discover-list-entity', () => {
 
 	});
 
-	it('should ensure image loaded count increased', () => {
+	it('should ensure image loaded count increased', function(done) {
 		setTimeout(() => {
 			expect(element._loadedImageCount).to.equal(1);
-		}, 200);
+			done();
+		}, 1000);
 	});
 
 	it('should set the activity homepage', () => {
@@ -65,10 +66,17 @@ describe('d2l-discover-list-entity', () => {
 
 describe('Accessibility', () => {
 	let element;
-	element = fixture('d2l-discover-list-item-href-fixture');
 
-	it('should set accessibility data', () => {
-		expect(element._items[0].accessibilityData.organizationName).to.equal('Actuators & Power');
+	beforeEach(async() => {
+		element = fixture('d2l-discover-list-item-href-fixture');
+		await element.updateComplete;
+	});
+
+	it('should set accessibility data', function(done) {
+		setTimeout(() => {
+			expect(element._items[0].accessibilityData.organizationName).to.equal('Actuators & Power');
+			done();
+		}, 1000);
 	});
 });
 
@@ -77,19 +85,6 @@ describe('Handle Events', () => {
 	let activityEntity;
 	let textHandler;
 	let imageHandler;
-
-	beforeEach(async() => {
-		element = fixture('d2l-discover-list-item-empty-fixture');
-
-		const activityUrl = './data/base/activity.json';
-		await fetch(activityUrl)
-			.then(res => res.json())
-				.then((out) => {
-					activityEntity = window.D2L.Hypermedia.Siren.Parse(out);
-					element.entities = [activityEntity];
-		})
-	});
-
 	afterEach(() => {
 		window.document.removeEventListener('d2l-discover-text-loaded', textHandler);
 		window.document.removeEventListener('d2l-discover-image-loaded', imageHandler);
@@ -100,6 +95,15 @@ describe('Handle Events', () => {
 			done();
 		};
 		window.document.addEventListener('d2l-discover-text-loaded', textHandler);
+		element = fixture('d2l-discover-list-item-empty-fixture');
+
+		const activityUrl = './data/base/activity.json';
+		fetch(activityUrl)
+			.then(res => res.json())
+				.then((out) => {
+					activityEntity = window.D2L.Hypermedia.Siren.Parse(out);
+					element.entities = [activityEntity];
+		})
 	});
 
 	it('should send image loaded event', function(done) {
@@ -107,6 +111,15 @@ describe('Handle Events', () => {
 			done();
 		};
 		window.document.addEventListener('d2l-discover-image-loaded', imageHandler);
+		element = fixture('d2l-discover-list-item-empty-fixture');
+
+		const activityUrl = './data/base/activity.json';
+		fetch(activityUrl)
+			.then(res => res.json())
+				.then((out) => {
+					activityEntity = window.D2L.Hypermedia.Siren.Parse(out);
+					element.entities = [activityEntity];
+		})
 	});
 });
 
@@ -126,6 +139,6 @@ describe('Responsive Behaviour', () => {
 			const shortString = elementShort.shadowRoot.querySelector('.d2l-discover-list-item-description').getElementsByTagName("p")[0].innerHTML;
 			assert(wideString.length > shortString.length);
 			done();
-		}, 500);
+		}, 1000);
 	});
 });

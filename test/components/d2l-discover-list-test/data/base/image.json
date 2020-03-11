@@ -19,7 +19,7 @@
            "alternate"
         ],
         "type":"image/jpeg",
-        "href": "https://s.brightspace.com/course-images/images/b53fc2ae-0de4-41da-85ff-875372daeacc/tile-low-density-max-size.jpg"
+        "href": "data/base/images/tile-low-density-max-size.jpg"
      },
      {
         "class":[
@@ -31,7 +31,7 @@
           "alternate"
         ],
         "type":"image/jpeg",
-        "href": "https://s.brightspace.com/course-images/images/b53fc2ae-0de4-41da-85ff-875372daeacc/tile-low-density-max-size.jpg"
+        "href": "data/base/images/tile-low-density-max-size.jpg"
     }
   ]
 }
