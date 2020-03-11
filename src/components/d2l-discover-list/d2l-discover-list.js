@@ -517,7 +517,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}">
 					<div slot="illustration" class="d2l-discover-list-item-image">
 						<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
-						<d2l-organization-image href="${item.organizationUrl}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>
+						<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>
 					</div>
 					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
 						<div>
