@@ -139,6 +139,6 @@ describe('Responsive Behaviour', () => {
 			const shortString = elementShort.shadowRoot.querySelector('.d2l-discover-list-item-description').getElementsByTagName("p")[0].innerHTML;
 			assert(wideString.length > shortString.length);
 			done();
-		}, 1000);
+		}, 1500);
 	});
 });
