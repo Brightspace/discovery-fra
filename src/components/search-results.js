@@ -127,16 +127,16 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				</div>
 
 				<template is="dom-if" if="[[_searchQueryLoading]]">
-						<d2l-discover-list imagePlaceholder textPlaceholder entities$=[[_noResultSkeletonItems]]></d2l-discover-list>
+					<d2l-discover-list imagePlaceholder textPlaceholder entities$=[[_noResultSkeletonItems]]></d2l-discover-list>
 				</template>
 
 				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
 					<template is="dom-if" if="[[_searchResultsExists]]">
 						<div class="discovery-search-results-container">
-								<d2l-discover-list
-									entities="[[_searchResult]]"
-									token="[[token]]">
-								</d2l-discover-list>
+							<d2l-discover-list
+								entities="[[_searchResult]]"
+								token="[[token]]">
+							</d2l-discover-list>
 						</div>
 						<div class="discovery-search-results-page-number-container">
 							<d2l-button-icon

@@ -49,7 +49,6 @@ describe('d2l-discover-list-entity', () => {
 
 	it('should fetch the organization', () => {
 		expect(element._items[0].organizationUrl).to.equal('data/base/organization.json');
-
 	});
 
 	it('should ensure image loaded count increased', function(done) {

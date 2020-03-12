@@ -38,12 +38,6 @@
            "self"
         ],
         "href":"../data/base/organization.json"
-     },
-     {
-      "rel":[
-         "https://api.brightspace.com/rels/parent-semester"
-      ],
-      "href":"../data/base/semester.json"
      }
   ],
   "actions": [
