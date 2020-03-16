@@ -499,8 +499,8 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 						<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
 
 						${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
-							<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>` : null
-						}
+							<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>
+						` : null }
 					</div>
 					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
 						<div>
@@ -517,8 +517,8 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 						<div ?hidden="${this._shouldRenderTextSkeletons()}">
 							<h2 class="d2l-heading-2 d2l-discover-list-item-title">
 							${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
-								<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e, item)}}"></d2l-organization-name>` : null
-							}
+								<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e, item)}}"></d2l-organization-name>
+							` : null}
 							</h2>
 						</div>
 

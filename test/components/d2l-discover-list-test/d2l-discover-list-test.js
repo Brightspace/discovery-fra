@@ -38,6 +38,7 @@ describe('d2l-discover-list-entity', () => {
 				.then((out) => {
 					activityEntity = window.D2L.Hypermedia.Siren.Parse(out);
 					element.entities = [activityEntity];
+					element.token = 'token';
 		})
 
 		await element.updateComplete;
@@ -102,6 +103,7 @@ describe('Handle Events', () => {
 				.then((out) => {
 					activityEntity = window.D2L.Hypermedia.Siren.Parse(out);
 					element.entities = [activityEntity];
+					element.token = 'token';
 		})
 	});
 
@@ -118,6 +120,7 @@ describe('Handle Events', () => {
 				.then((out) => {
 					activityEntity = window.D2L.Hypermedia.Siren.Parse(out);
 					element.entities = [activityEntity];
+					element.token = 'token';
 		})
 	});
 });
