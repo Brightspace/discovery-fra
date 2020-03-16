@@ -12,9 +12,9 @@ import 'd2l-fetch/d2l-fetch.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
 import SirenParse from 'siren-parser';
-import {Rels} from 'd2l-hypermedia-constants';
+import { Rels } from 'd2l-hypermedia-constants';
 import { heading1Styles, heading2Styles, heading4Styles, bodyCompactStyles, bodyStandardStyles, labelStyles} from '@brightspace-ui/core/components/typography/styles.js';
-import {DiscoverListItemResponsiveConstants} from './DiscoverListItemResponsiveConstants.js';
+import { DiscoverListItemResponsiveConstants } from './DiscoverListItemResponsiveConstants.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { getLocalizeResources } from './localization.js';
 
@@ -50,29 +50,13 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		return getLocalizeResources(langs, baseUrl);
 	}
 
-	update(changedProperties) {
-		super.update();
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'hrefs')
-			{
-				this._onHrefsChange(this.hrefs);
-			}
-			if (propName === 'entities')
-			{
-				this._onEntitiesChange(this.entities);
-			}
-		});
-	}
-
 	updated(changedProperties) {
 		super.update();
 		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'hrefs')
-			{
+			if (propName === 'hrefs') {
 				this._onHrefsChange(this.hrefs);
 			}
-			if (propName === 'entities')
-			{
+			if (propName === 'entities') {
 				this._onEntitiesChange(this.entities);
 			}
 		});
@@ -83,7 +67,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		hrefs.forEach(href => {
 			const item = {};
 			item.href = href;
-			item.organizationUrl = '';
 			this._items.push(item);
 			this._fetchEntity(href).then((sirenEntity) => {
 				item.entity = sirenEntity;
@@ -99,8 +82,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				entity = {};
 			}
 			const item = {};
-			item.href = entity.self;
-			item.organizationUrl = '';
+			item.activityHomepage = '';
 			item.entity = entity;
 			this._items.push(item);
 			this._onSirenEntityChange(entity, item);
@@ -142,6 +124,11 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		}
 		item.description = description;
 		return Promise.resolve();
+	}
+
+	Reset() {
+		this._loadedTextCount = 0;
+		this._loadedImageCount = 0;
 	}
 
 	_createDescriptionElement(description) {
@@ -208,8 +195,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		this.requestUpdate();
 
 		this._loadedTextCount++;
-		if (this._loadedTextCount === this._items.length)
-		{
+		if (this._loadedTextCount === this._items.length) {
 			this._loadedText = true;
 			this.dispatchEvent(new CustomEvent('d2l-discover-text-loaded', {
 				bubbles: true,
@@ -220,9 +206,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 
 	_onOrgImageLoaded() {
 		this._loadedImageCount++;
-
-		if (this._loadedImageCount === this._items.length)
-		{
+		if (this._loadedImageCount === this._items.length) {
 			this._loadedImages = true;
 			this.dispatchEvent(new CustomEvent('d2l-discover-image-loaded', {
 				bubbles: true,
@@ -517,7 +501,10 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}">
 					<div slot="illustration" class="d2l-discover-list-item-image">
 						<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
-						<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>
+
+						${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
+							<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>` : null
+						}
 					</div>
 					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
 						<div>
@@ -533,7 +520,9 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 						</div>
 						<div ?hidden="${this._shouldRenderTextSkeletons()}">
 							<h2 class="d2l-heading-2 d2l-discover-list-item-title">
-								<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e, item)}}"></d2l-organization-name>
+							${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
+								<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e, item)}}"></d2l-organization-name>` : null
+							}
 							</h2>
 						</div>
 

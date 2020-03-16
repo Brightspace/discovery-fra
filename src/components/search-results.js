@@ -133,7 +133,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
 					<template is="dom-if" if="[[_searchResultsExists]]">
 						<div class="discovery-search-results-container">
-							<d2l-discover-list
+							<d2l-discover-list id="discover-search-results-list"
 								entities="[[_searchResult]]"
 								token="[[token]]">
 							</d2l-discover-list>
@@ -241,6 +241,8 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	ready() {
 		super.ready();
 		this._noResultSkeletonItems = '[null,null,null,null,null]';
+		this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
+		this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
 	}
 
 	_onHrefChange(href) {
@@ -276,19 +278,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._searchResultsRangeToString = `${startIndex}-${endIndex}`;
 
 		this._searchResult = sirenEntity.getSubEntitiesByRel('https://discovery.brightspace.com');
-	}
-
-	_navigateToCourse(e) {
-		e.stopPropagation();
-		if (e && e.detail && e.detail.orgUnitId) {
-			this.dispatchEvent(new CustomEvent('navigate', {
-				detail: {
-					path: this.routeLocations().course(e.detail.orgUnitId)
-				},
-				bubbles: true,
-				composed: true
-			}));
-		}
 	}
 
 	_toPreviousPage(event) {
@@ -337,6 +326,8 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			composed: true
 		}));
 		this._showLoadingOverlay = true;
+		const discoverList = this.shadowRoot.querySelector('#discover-search-results-list');
+		discoverList.Reset();
 	}
 
 	_countDigits(number) {
@@ -392,42 +383,24 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this.emptySearchQuery = !this.searchQuery;
 	}
 	_removeImagePlaceholders() {
-		this._numberOfImageLoadedEvents++;
-		if (this._numberOfImageLoadedEvents >= this._searchResult.length) {
-			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-discover-list-item');
-			fastdom.mutate(() => {
-				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('imagePlaceholder');
-				});
-				this._allImageLoaded = true;
-			});
-		}
+		this._allImageLoaded = true;
 	}
 	_removeTextPlaceholders() {
-		this._numberOfTextLoadedEvents++;
-		if (this._numberOfTextLoadedEvents >= this._searchResult.length) {
-			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-discover-list-item');
-			fastdom.mutate(() => {
-				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('textPlaceholder');
-				});
-				this._allTextLoaded = true;
-
-				if (this.emptySearchQuery) {
-					this.loadingMessage = this.localize(
-						'searchResultsReadyMessageForAllResults',
-						'pageCurrent', this._pageCurrent,
-						'pageTotal', this._pageTotal);
-				} else {
-					this.loadingMessage = this.localize(
-						'searchResultsReadyMessage',
-						'pageCurrent', this._pageCurrent,
-						'pageTotal', this._pageTotal,
-						'searchQuery', this.searchQuery);
-				}
-			});
+		this._allTextLoaded = true;
+		if (this.emptySearchQuery) {
+			this.loadingMessage = this.localize(
+				'searchResultsReadyMessageForAllResults',
+				'pageCurrent', this._pageCurrent,
+				'pageTotal', this._pageTotal);
+		} else {
+			this.loadingMessage = this.localize(
+				'searchResultsReadyMessage',
+				'pageCurrent', this._pageCurrent,
+				'pageTotal', this._pageTotal,
+				'searchQuery', this.searchQuery);
 		}
 	}
+
 	_allTextAndImagesLoadedObserver(_allTextLoaded, _allImageLoaded) {
 		if (_allTextLoaded && _allImageLoaded) {
 			this._showLoadingOverlay  = false;
