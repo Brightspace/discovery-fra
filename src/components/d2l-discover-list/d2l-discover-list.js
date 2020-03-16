@@ -66,7 +66,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		this._items = [];
 		hrefs.forEach(href => {
 			const item = {};
-			item.href = href;
+			item.activityHomepage = '';
 			this._items.push(item);
 			this._fetchEntity(href).then((sirenEntity) => {
 				item.entity = sirenEntity;
@@ -83,8 +83,8 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			}
 			const item = {};
 			item.activityHomepage = '';
-			item.entity = entity;
 			this._items.push(item);
+			item.entity = entity;
 			this._onSirenEntityChange(entity, item);
 		});
 	}
@@ -96,16 +96,13 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		) {
 			return;
 		}
-		if (sirenEntity.hasAction('assign') && !sirenEntity.hasClass('enroll')) {
-			item.actionEnroll = sirenEntity.getAction('assign');
-		}
+
 		item.activityHomepage = sirenEntity.hasLink(Rels.Activities.activityHomepage) && sirenEntity.getLinkByRel(Rels.Activities.activityHomepage).href;
 		item.organizationUrl = sirenEntity.hasLink(Rels.organization) && sirenEntity.getLinkByRel(Rels.organization).href;
 		if (item.organizationUrl) {
 			this._fetchEntity(item.organizationUrl).then((organization) => {
-				this._handleOrganizationResponse(organization, item).then(() => {
-					this.requestUpdate();
-				});
+				this._handleOrganizationResponse(organization, item);
+				this.requestUpdate();
 			});
 		}
 
@@ -123,7 +120,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			description = tempDiv.textContent || tempDiv.innerText;
 		}
 		item.description = description;
-		return Promise.resolve();
 	}
 
 	Reset() {
