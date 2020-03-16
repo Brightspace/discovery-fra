@@ -146,7 +146,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			p.textContent = description;
 			const currentLineNumber = p.offsetHeight / lineHeight;
 			if (currentLineNumber <= this._descriptionLineCount) {
-				return;
+				return html ``;
 			}
 			// The idea is to mathematically find the most probable point to clamp.
 			// Take the average per line while distrbuting the characters from the last line between all the lines.
@@ -185,7 +185,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		}
 		item.accessibilityData = {};
 		item.accessibilityData.organizationName = e.detail.organization && e.detail.organization.name;
-		item.accessibilityData.semesterName = e.detail.semesterName && e.detail.semesterName;
+		item.accessibilityData.semesterName = e.detail.semesterName;
 		item.accessibilityData.ariaContext = this.localize('clickToViewActivity');
 		item.accessibilityData.description = item.description;
 		this.requestUpdate();
@@ -251,19 +251,11 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	}
 
 	_shouldRenderTextSkeletons() {
-		if (!this._loadedText || this.textPlaceholder) {
-			return true;
-		} else {
-			return false;
-		}
+		return !this._loadedText || this.textPlaceholder;
 	}
 
 	_shouldRenderImageSkeletons() {
-		if (!this._loadedImages || this.imagePlaceholder) {
-			return true;
-		} else {
-			return false;
-		}
+		return !this._loadedImages || this.imagePlaceholder;
 	}
 
 	static get properties() {
@@ -455,7 +447,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				display: block;
 				height: 0.55rem;
 				width: 95%;
-
 			}
 			.d2l-discover-list-item-footer-placeholder-container {
 				display: flex;
