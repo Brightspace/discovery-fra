@@ -17,6 +17,7 @@ import { heading1Styles, heading2Styles, heading4Styles, bodyCompactStyles, body
 import { DiscoverListItemResponsiveConstants } from './DiscoverListItemResponsiveConstants.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { getLocalizeResources } from './localization.js';
+import { OrganizationEntity } from 'siren-sdk/src/organizations/OrganizationEntity.js';
 
 const baseUrl = import.meta.url;
 class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(LitElement)) {
@@ -110,7 +111,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	}
 
 	_handleOrganizationResponse(organization, item) {
-		let description = organization.properties && organization.properties.description;
+		let description = new OrganizationEntity(organization).description();
 
 		//Use a temporary div to strip html out of the content and display html entities.
 		if (description) {
