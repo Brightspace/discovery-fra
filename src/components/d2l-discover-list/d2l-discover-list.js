@@ -52,7 +52,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	}
 
 	updated(changedProperties) {
-		super.update();
+		super.updated();
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'hrefs') {
 				this._onHrefsChange(this.hrefs);
@@ -115,7 +115,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 
 		//Use a temporary div to strip html out of the content and display html entities.
 		if (description) {
-			description = description.replace(/<[^>]*>/g, '');
 			const tempDiv = document.createElement('div');
 			tempDiv.innerHTML = description;
 			description = tempDiv.textContent || tempDiv.innerText;
