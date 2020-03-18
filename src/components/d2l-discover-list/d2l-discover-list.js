@@ -30,6 +30,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		this._loadedImageCount = 0;
 		this._loadedText = false;
 		this._loadedImages = false;
+		this._maxLinesToShow = 2;
 	}
 
 	connectedCallback() {
@@ -129,47 +130,37 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 
 	_createDescriptionElement(description) {
 		if (!description) return html ``;
+
 		const div = document.createElement('div');
 		div.classList.add('d2l-body-compact');
-
 		const p = document.createElement('p');
 		div.appendChild(p);
 		p.textContent = description;
 
-		let height = 0;
+		let currentLineNumber = 0;
 		window.fastdom.measure(() => {
-			height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
+			const height = window.getComputedStyle(p).getPropertyValue('line-height').match(/\d+/);
+			const lineHeight = height && height[0];
+			currentLineNumber = lineHeight ? p.offsetHeight / lineHeight : 0;
 		});
 
 		window.fastdom.mutate(() => {
-			const lineHeight = height && height[0];
-			p.textContent = description;
-			const currentLineNumber = p.offsetHeight / lineHeight;
 			if (currentLineNumber <= this._descriptionLineCount) {
 				return html ``;
 			}
-			// The idea is to mathematically find the most probable point to clamp.
-			// Take the average per line while distrbuting the characters from the last line between all the lines.
-			// So the average line length is between 1 to (1 + 1/(this._descriptionLineCount+1)) the actual average.
-			// The `+1` in the previous line is because the description has to be more than the this._descriptionLineCount
-			// For example if the description max number of lines is 2 then the average count would be between 1 to 1.33 times the actual average.
-			const avgCharPerLine = description.length / ((currentLineNumber - 1));
-
-			// This is where we clamp using the ~average length of a line. We want the clamp to not be exactly at the edge
-			// so clamp 75% of the last line. Since the average line could be larger we need to make sure that this cut
-			// is still lower then the average line.
-			// So we need to prove 1 <= 3/4*(1 + 1/(this._descriptionLineCount+1))
-			// The above line simplifies to this._descriptionLineCount >= 2
-			// So as long as we clamp down to two lines this will work.
-			p.textContent = description.substring(0, avgCharPerLine * (this._descriptionLineCount - 0.75));
-
-			// Okay what about when this._descriptionLineCount = 1? We will do a loop through this step to solve that case.
-			// This loop will make sure the clamping is done on words and will make sure that if our quick cut above
-			// wasn't enough to fix that too.
-			do {
-				p.textContent = p.textContent.replace(/\W*\s(\S)*$/, '');
-			} while (p.offsetHeight > this._descriptionLineCount * lineHeight && p.textContent);
-			p.textContent += '...';
+			/**
+			 * Let l be the number of lines
+			 * Let n(l) be the number of chars as a function of l
+			 * let a be the average number of chars per line
+			 * Then: a/l < n(l) / 2(l-1) < a < n(l)/(l-1) < a + 1/l
+			 * Average of the two bounds around a is 3 * n(l) / 4(l-1) ~ a and as l -> infinity this value tends to a
+			 * n(l) grows on par with 4 (l-1) so it probably converages by inspection. If it does converge then it will to a.
+			 */
+			const avgCharPerLine = 3 * description.length / (4 * (currentLineNumber - 1));
+			description = description.substring(0, avgCharPerLine * (this._maxLinesToShow));
+			description = description.replace(/\W*\s(\S)*$/, '');
+			description += '...';
+			p.textContent = description;
 		});
 
 		return div;
@@ -323,6 +314,10 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			_footerPlaceholderItems: {
 				type: Array,
 				value: [{}, {}]
+			},
+			_maxLinesToShow: {
+				type: Number,
+				value: 2
 			}
 		};
 	}
