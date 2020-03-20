@@ -133,6 +133,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 
 		const div = document.createElement('div');
 		div.classList.add('d2l-body-compact');
+		div.classList.add('d2l-discover-list-item-description-hidden');
 		const p = document.createElement('p');
 		div.appendChild(p);
 		p.textContent = description;
@@ -161,6 +162,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			description = description.replace(/\W*\s(\S)*$/, '');
 			description += '...';
 			p.textContent = description;
+			div.classList.remove('d2l-discover-list-item-description-hidden');
 		});
 
 		return div;
@@ -370,6 +372,10 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 				margin: 0;
 				padding: 0;
 				color: var(--d2l-color-ferrite);
+			}
+			.d2l-discover-list-item-description-hidden {
+				position: absolute;
+				visibility: hidden;
 			}
 			.d2l-discover-list-item-footer,
 			.d2l-discover-list-item-footer span d2l-icon {
