@@ -213,7 +213,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		}
 
 		const orgUnitID = this._getOrgUnitId(item.organizationUrl);
-		if (orgUnitID === null) {
+		if (orgUnitID === null || orgUnitID === undefined) {
 			return;
 		}
 
@@ -523,56 +523,58 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	render() {
 		const listItems = this._items.map(item =>
 			html`
-			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}" @click="${(e) => this._onLinkTrigger(e, item)}" @keydown="${(e) => this._onLinkTrigger(e, item)}">
-					<div slot="illustration" class="d2l-discover-list-item-image">
-						<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
+			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}"
+				@click="${(e) => this._onLinkTrigger(e, item)}" @keydown="${(e) => this._onLinkTrigger(e, item)}">
 
-						${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
-							<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>
-						` : null }
-					</div>
-					<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
-						<div>
-							<div ?hidden="${!this._shouldRenderTextSkeletons() || !this.displayAdditionalPlaceholders}">
-								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
-							</div>
-							<div ?hidden="${this._shouldRenderTextSkeletons()}">
-								<div class="d2l-body-small d2l-discover-list-item-category" ?hidden="${!item.category}">${item.category}</div>
-							</div>
-						</div>
-						<div ?hidden="${!this._shouldRenderTextSkeletons()}">
-							<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-title-placeholder"></div>
+				<div slot="illustration" class="d2l-discover-list-item-image">
+					<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
+
+					${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
+						<d2l-organization-image href="${item.organizationUrl}" token="${this.token}" ?hidden="${this._shouldRenderImageSkeletons()}" @d2l-organization-image-loaded="${(e) => {this._onOrgImageLoaded(e, item);}}"></d2l-organization-image>
+					` : null }
+				</div>
+				<d2l-list-item-content class="d2l-discover-list-item-content" aria-label="${this._accessibilityDataToString(item.accessibilityData)}">
+					<div>
+						<div ?hidden="${!this._shouldRenderTextSkeletons() || !this.displayAdditionalPlaceholders}">
+							<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
 						</div>
 						<div ?hidden="${this._shouldRenderTextSkeletons()}">
-							<h2 class="d2l-heading-2 d2l-discover-list-item-title">
-							${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
-								<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e, item)}}"></d2l-organization-name>
-							` : null}
-							</h2>
+							<div class="d2l-body-small d2l-discover-list-item-category" ?hidden="${!item.category}">${item.category}</div>
+						</div>
+					</div>
+					<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+						<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-title-placeholder"></div>
+					</div>
+					<div ?hidden="${this._shouldRenderTextSkeletons()}">
+						<h2 class="d2l-heading-2 d2l-discover-list-item-title">
+						${item.organizationUrl && item.organizationUrl.length > 0 && this.token ? html`
+							<d2l-organization-name id="d2l-discover-list-item-organization-name" href="${item.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._onD2lOrganizationAccessible(e, item)}}"></d2l-organization-name>
+						` : null}
+						</h2>
+					</div>
+
+					<div class="d2l-discover-list-item-description">
+						<div ?hidden="${this._shouldRenderTextSkeletons()}">
+							${this._createDescriptionElement(item.description)}
 						</div>
 
-						<div class="d2l-discover-list-item-description">
-							<div ?hidden="${this._shouldRenderTextSkeletons()}">
-								${this._createDescriptionElement(item.description)}
-							</div>
-
-							<div ?hidden="${!this._shouldRenderTextSkeletons()}">
-								${this._descriptionPlaceholderLines.map(() => html`
-									<div class="d2l-discover-list-item-description-placeholder-container">
-										<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-description-placeholder"></div>
-									</div>
-								`)}
-							</div>
+						<div ?hidden="${!this._shouldRenderTextSkeletons()}">
+							${this._descriptionPlaceholderLines.map(() => html`
+								<div class="d2l-discover-list-item-description-placeholder-container">
+									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-description-placeholder"></div>
+								</div>
+							`)}
 						</div>
+					</div>
 
-						<div ?hidden="${!this._shouldRenderTextSkeletons() || !this.displayAdditionalPlaceholders}">
-							<div class="d2l-discover-list-item-footer-placeholder-container">
-								${this._footerPlaceholderItems.map(() => html`
-									<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
-								`)}
-							</div>
-						<div>
-					</d2l-list-item-content>
+					<div ?hidden="${!this._shouldRenderTextSkeletons() || !this.displayAdditionalPlaceholders}">
+						<div class="d2l-discover-list-item-footer-placeholder-container">
+							${this._footerPlaceholderItems.map(() => html`
+								<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-footer-placeholder"></div>
+							`)}
+						</div>
+					<div>
+				</d2l-list-item-content>
 			</d2l-list-item>
 			`
 		);
