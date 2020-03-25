@@ -241,6 +241,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	ready() {
 		super.ready();
 		this._noResultSkeletonItems = '[null,null,null,null,null]';
+		this.addEventListener('d2l-discover-activity-triggered', this._navigateToCourse.bind(this));
 		this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
 		this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
 	}
@@ -278,6 +279,19 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._searchResultsRangeToString = `${startIndex}-${endIndex}`;
 
 		this._searchResult = sirenEntity.getSubEntitiesByRel('https://discovery.brightspace.com');
+	}
+
+	_navigateToCourse(e) {
+		e.stopPropagation();
+		if (e && e.detail && e.detail.orgUnitId) {
+			this.dispatchEvent(new CustomEvent('navigate', {
+				detail: {
+					path: this.routeLocations().course(e.detail.orgUnitId)
+				},
+				bubbles: true,
+				composed: true
+			}));
+		}
 	}
 
 	_toPreviousPage(event) {

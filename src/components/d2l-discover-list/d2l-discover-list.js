@@ -204,6 +204,43 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 		}
 	}
 
+	_onLinkTrigger(event, item) {
+		if (!item.activityHomepage ||
+			event.ctrlKey ||
+			event.metaKey ||
+			(event.type === 'keydown' && event.keyCode !== 13 && event.keyCode !== 32)) {
+			return;
+		}
+
+		const orgUnitID = this._getOrgUnitId(item.organizationUrl);
+		if (orgUnitID === null) {
+			return;
+		}
+
+		this.dispatchEvent(new CustomEvent('d2l-discover-activity-triggered', {
+			detail: {
+				path: item.activityHomepage,
+				orgUnitId: orgUnitID
+			},
+			bubbles: true,
+			composed: true
+		}));
+
+		event.preventDefault();
+	}
+
+	_getOrgUnitId(organizationUrl) {
+		if (!organizationUrl) {
+			return;
+		}
+
+		const match = /[0-9]+$/.exec(organizationUrl);
+		if (!match) {
+			return;
+		}
+		return match[0];
+	}
+
 	_accessibilityDataToString(accessibility) {
 		if (!accessibility) {
 			return;
@@ -486,7 +523,7 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 	render() {
 		const listItems = this._items.map(item =>
 			html`
-			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}">
+			<d2l-list-item class="d2l-discover-list-item-container" href="${item.activityHomepage}" @click="${(e) => this._onLinkTrigger(e, item)}" @keydown="${(e) => this._onLinkTrigger(e, item)}">
 					<div slot="illustration" class="d2l-discover-list-item-image">
 						<div class="d2l-discover-list-item-pulse-placeholder" ?hidden="${!this._shouldRenderImageSkeletons()}"></div>
 
