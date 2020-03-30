@@ -361,7 +361,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			// TODO: Do we need to do something similar to this?
 			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
 			if (imageEntity.href) {
-				return this._fetchEntity(imageEntity.href)
+				return this._fetchEntity(imageEntity)
 					.then(function(hydratedImageEntity) {
 						this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
 					}.bind(this));
