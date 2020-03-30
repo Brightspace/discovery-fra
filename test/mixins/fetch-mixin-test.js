@@ -60,7 +60,9 @@ describe('Fetch Mixin Tests', () => {
 
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
-		sandbox.stub(window.d2lfetch, 'removeTemp').withArgs('dedupe').returns(window.d2lfetch);
+		sandbox.stub(window.d2lfetch, 'removeTemp')
+			.withArgs('dedupe').returns(window.d2lfetch)
+			.withArgs('auth').returns(window.d2lfetch);
 		fetchStub = sandbox.stub(window.d2lfetch, 'fetch');
 		SetupFetchStub(/\/bffRootEndpoint\/1$/, bffRootResponse);
 	});
@@ -95,5 +97,66 @@ describe('Fetch Mixin Tests', () => {
 			.catch((e) => {
 				assert.equal(e, false);
 			});
+	});
+
+	describe('_fetchEntity', () => {
+		it('should skip auth for nofollow links', async() => {
+			await component._fetchEntity({
+				rel: ['nofollow'],
+				href: '/bffRootEndpoint/1',
+			});
+
+			sinon.assert.calledWith(window.d2lfetch.removeTemp, 'auth');
+		});
+	});
+
+	describe('_fetchEntityWithoutDedupe', () => {
+		it('should skip auth and dedupe for nofollow links', async() => {
+			await component._fetchEntityWithoutDedupe({
+				rel: ['nofollow'],
+				href: '/bffRootEndpoint/1',
+			});
+
+			sinon.assert.calledWith(window.d2lfetch.removeTemp, 'auth');
+			sinon.assert.calledWith(window.d2lfetch.removeTemp, 'dedupe');
+		});
+	});
+
+	describe('_shouldSkipAuth', () => {
+		it('should return false for string urls', () => {
+			assert.equal(
+				component._shouldSkipAuth('https://example.com'),
+				false
+			);
+		});
+
+		it('should return false for siren links without nofollow rel', () => {
+			assert.equal(
+				component._shouldSkipAuth({
+					rel: ['https://api.brightspace.com/rels/organization-image'],
+					href: 'https://example.com',
+				}),
+				false
+			);
+		});
+
+		it('should return false for siren links without rel', () => {
+			assert.equal(
+				component._shouldSkipAuth({
+					href: 'https://example.com',
+				}),
+				false
+			);
+		});
+
+		it('should return true for siren links with nofollow rel', () => {
+			assert.equal(
+				component._shouldSkipAuth({
+					rel: ['https://api.brightspace.com/rels/organization-image', 'nofollow'],
+					href: 'https://example.com',
+				}),
+				true
+			);
+		});
 	});
 });
