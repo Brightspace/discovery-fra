@@ -2,7 +2,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import 'd2l-activities/components/d2l-activity-card/d2l-activity-card.js';
+import '../components/d2l-discover-card/d2l-discover-card.js'
 import 'd2l-typography/d2l-typography.js';
 
 class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerElement) {
@@ -30,14 +30,15 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 				<h2 class="d2l-heading-2">[[header]]</h2>
 				<div id="discovery-activity-card-list-container" class="discovery-activity-card-list-container">
 					<template is="dom-repeat" items="[[activities]]">
-						<d2l-activity-card
+						<d2l-discover-card
 							class="discovery-activity-card-list-item"
 							entity=[[item]]
 							send-event-on-click
 							token="[[token]]"
 							show-organization-code
-							show-semester-name>
-						</d2l-activity-card>
+							show-semester-name
+							show-activity-type
+						</d2l-discover-card>
 					</template>
 				</div>
 			</div>

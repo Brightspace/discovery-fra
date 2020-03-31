@@ -76,5 +76,7 @@ window.D2L.Discovery.LangEn = {
 	"pageAllLoadedMessage": "The page of courses has been loaded.",
 	"loadMore": "Load More",
 	"alreadyEnrolled": "Already enrolled",
-	"courseSummaryReadyMessage": "{courseTitle} is now ready"
+	"courseSummaryReadyMessage": "{courseTitle} is now ready",
+	"course": "Course",
+	"learning-path": "Learning Path"
 };
