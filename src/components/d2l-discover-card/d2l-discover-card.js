@@ -270,6 +270,11 @@ class D2lDiscoverCard extends LocalizeMixin(PolymerElement) {
 		this._organizationActivityType = orgEntity.hasClass(organizationClasses.learningPath) ? organizationClasses.learningPath : organizationClasses.course;
 		this._organizationActivityLoaded = true;
 
+		if (this.showActivityType) {
+			this._accessibilityData.activityType = this._organizationActivityType;
+			this._accessibilityText = this._accessibilityDataToString(this._accessibilityData);
+		}
+
 		const imageEntity = orgEntity.imageEntity();
 		if (imageEntity && imageEntity.href) {
 			this._fetchEntity(imageEntity.href)
@@ -305,7 +310,8 @@ class D2lDiscoverCard extends LocalizeMixin(PolymerElement) {
 		const textData = [
 			accessibility.organizationName,
 			accessibility.organizationCode,
-			accessibility.semesterName
+			accessibility.semesterName,
+			accessibility.activityType,
 		];
 		return textData.filter(function(text) {
 			return text && typeof text === 'string';
