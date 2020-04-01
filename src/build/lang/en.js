@@ -76,5 +76,11 @@ window.D2L.Discovery.LangEn = {
 	"pageAllLoadedMessage": "The page of courses has been loaded.",
 	"loadMore": "Load More",
 	"alreadyEnrolled": "Already enrolled",
-	"courseSummaryReadyMessage": "{courseTitle} is now ready"
+	"courseSummaryReadyMessage": "{courseTitle} is now ready",
+	"sorting.sortBy": "Sort by",
+	"sorting.mostRelevant": "Most Relevant",
+	"sorting.all": "All",
+	"sorting.updated": "Newly Updated",
+	"sorting.added": "Newly Added",
+	"sorting.enrolled": "Already enrolled"
 };
