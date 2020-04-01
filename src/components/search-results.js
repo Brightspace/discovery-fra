@@ -308,7 +308,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_onHrefChange(href) {
-		console.log(href);
 		if (!href) {
 			return;
 		}
@@ -326,7 +325,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_handleSearchResponse(sirenEntity) {
-		console.log(sirenEntity);
 		if (!sirenEntity || !sirenEntity.properties) {
 			return;
 		}
@@ -453,7 +451,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._reset();
 	}
 	_onSearchQueryChange() {
-		console.log(this.searchQuery);
 		this._searchQueryLoading = true;
 		this._processBeforeLoading();
 		this.setUpNoResultsMessage();
