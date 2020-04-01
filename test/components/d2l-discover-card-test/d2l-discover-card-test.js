@@ -1,4 +1,5 @@
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import SirenParse from 'siren-parser';
 describe('d2l-activity-card', () => {
 
 	var component,
@@ -28,7 +29,7 @@ describe('d2l-activity-card', () => {
 
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
-		activityEntity = window.D2L.Hypermedia.Siren.Parse({
+		activityEntity = SirenParse({
 			class:['activity'],
 			links: [{
 				rel: ['self'],
@@ -41,7 +42,7 @@ describe('d2l-activity-card', () => {
 				href: testActivityHomepage
 			}]
 		});
-		organizationEntity = window.D2L.Hypermedia.Siren.Parse({
+		organizationEntity = SirenParse({
 			class: ['active', 'course-offering'],
 			properties: {
 				name: testCourseName,
@@ -69,7 +70,7 @@ describe('d2l-activity-card', () => {
 			],
 			actions: []
 		});
-		imageEntity = window.D2L.Hypermedia.Siren.Parse({
+		imageEntity = SirenParse({
 			rel: ['https://api.brightspace.com/rels/organization-image'],
 			class: ['course-image'],
 			propeties: {
@@ -85,7 +86,7 @@ describe('d2l-activity-card', () => {
 				href: 'https://s.brightspace.com/course-images/images/b53fc2ae-0de4-41da-85ff-875372daeacc/tile-low-density-max-size.jpg',
 			}]
 		});
-		semesterEntity = window.D2L.Hypermedia.Siren.Parse({
+		semesterEntity = SirenParse({
 			properties: {
 				name: testSemester
 			},

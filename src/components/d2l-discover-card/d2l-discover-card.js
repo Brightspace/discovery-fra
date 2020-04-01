@@ -39,13 +39,13 @@ class D2lDiscoverCard extends LocalizeMixin(PolymerElement) {
 				.d2l-discover-card-content-container {
 					display: flex;
 					flex-direction: column;
+					text-align: center;
 					margin: -0.35rem 0 -0.1rem;
 					overflow-wrap: break-word; /* replaces 'word-wrap' in Firefox, Chrome, Safari */
 					overflow: hidden;
 					word-wrap: break-word; /* IE/Edge */
-					text-align: center;
-
 				}
+
 				.d2l-discover-card-content-organization-info {
 					display: block;
 				}
@@ -59,6 +59,7 @@ class D2lDiscoverCard extends LocalizeMixin(PolymerElement) {
 					50% { background-color: var(--d2l-color-regolith); }
 					100% { background-color: var(--d2l-color-sylvite); }
 				}
+
 				.d2l-discover-list-item-pulse-placeholder {
 					animation: pulsingAnimation 1.8s linear infinite;
 					border-radius: 4px;
@@ -88,10 +89,6 @@ class D2lDiscoverCard extends LocalizeMixin(PolymerElement) {
 							show-organization-code="[[showOrganizationCode]]"
 							show-semester-name="[[showSemesterName]]"
 						></d2l-organization-info>
-					</d2l-card-content-meta>
-				</div>
-				<div class="d2l-discover-card-content-container" slot="footer">
-					<d2l-card-content-meta>
 						<template is="dom-if" if="[[_showActivityInformation(_organizationActivityLoaded, showActivityType)]]">
 							<div class="d2l-discover-card-activity-information">
 								<d2l-icon-custom size="tier1">
@@ -110,8 +107,8 @@ class D2lDiscoverCard extends LocalizeMixin(PolymerElement) {
 									</svg>
 								</d2l-icon-custom>
 								<span>[[localize(_organizationActivityType)]]</span>
-							</template>
-						</div>
+							</div>
+						</template>
 					</d2l-card-content-meta>
 				</div>
 			</d2l-card>
