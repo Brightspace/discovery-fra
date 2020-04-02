@@ -9,8 +9,8 @@ import 'd2l-link/d2l-link.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
-import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown-option.js'
-import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown.js'
+import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown-option.js';
+import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown.js';
 import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
