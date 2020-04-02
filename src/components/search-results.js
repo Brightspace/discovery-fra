@@ -9,9 +9,8 @@ import 'd2l-link/d2l-link.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
-import 'd2l-dropdown/d2l-dropdown.js';
-import 'd2l-dropdown/d2l-dropdown-menu.js';
-import 'd2l-menu/d2l-menu-item-radio.js';
+import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown-option.js'
+import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown.js'
 import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
@@ -98,38 +97,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				:host(:dir(rtl)) .discovery-search-results-offscreen-text {
 					@apply --d2l-offscreen-rtl
 				}
-				.dropdown-opener-text {
-					font-size: 0.95rem;
-					font-family: Lato;
-					cursor: pointer;
-					padding: 0;
-					margin-left: 1rem;
-				}
-				.dropdown-button {
-					background: none;
-					border: none;
-					cursor: pointer;
-					padding: 0;
-					color: var(--d2l-color-ferrite);
-				}
-				.dropdown-button > d2l-icon {
-					margin-left: 4px;
-					margin-bottom: 7px;
-				}
-				.dropdown-content-gradient {
-					background: linear-gradient(to top, white, var(--d2l-color-regolith));
-				}
-				button[aria-pressed="true"] {
-					color: var(--d2l-color-celestine);
-				}
-				button:focus > d2l-icon,
-				button:hover > d2l-icon,
-				button:focus > span,
-				button:hover > span,
-				.focus {
-					text-decoration: underline;
-					color: var(--d2l-color-celestine);
-				}
 			</style>
 			<span class="discovery-search-results-offscreen-text" aria-live="polite">[[loadingMessage]]</span>
 
@@ -156,22 +123,14 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 								<div id="discovery-search-results-all-results-message" hidden$="[[!emptySearchQuery]]">
 									<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllResults', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
 								</div>
-								<d2l-dropdown id="sortDropdown">
-									<button class="d2l-dropdown-opener dropdown-button" aria-labelledby="sortText">
-										<span id="sortText" class="dropdown-opener-text">[[localize('sorting.mostRelevant')]]</span>
-										<d2l-icon icon="d2l-tier1:chevron-down" aria-hidden="true"></d2l-icon>
-									</button>
-									<d2l-dropdown-menu>
-										<d2l-menu id="sortDropdownMenu" label="[[localize('sorting.sortBy')]]">
-											<d2l-menu-item-radio class="dropdown-content-gradient" value="MostRelevant" text="[[localize('sorting.mostRelevant')]]"></d2l-menu-item-radio>
-											<d2l-menu-item-radio value="All" text="[[localize('sorting.all')]]"></d2l-menu-item-radio>
-											<d2l-menu-item-radio value="Updated" text="[[localize('sorting.updated')]]"></d2l-menu-item-radio>
-											<d2l-menu-item-radio value="Added" text="[[localize('sorting.added')]]"></d2l-menu-item-radio>
-											<d2l-menu-item-radio value="Enrolled" text="[[localize('sorting.enrolled')]]"></d2l-menu-item-radio>
-										</d2l-menu>
-									</d2l-dropdown-menu>
-								</d2l-dropdown>
 							</template>
+							<d2l-sort-by-dropdown label="Sort by options" align="end">
+								<d2l-sort-by-dropdown-option value="relevant" text="[[localize('sorting.mostRelevant')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option value="all" text="[[localize('sorting.all')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option value="updated" text="[[localize('sorting.updated')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option value="added" text="[[localize('sorting.added')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option value="enrolled" text="[[localize('sorting.enrolled')]]"></d2l-sort-by-dropdown-option>
+							</d2l-sort-by-dropdown>
 						</template>
 					</template>
 				</div>
@@ -260,6 +219,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				type: Boolean,
 				value: false
 			},
+			_sortParamter: {
+				type: String,
+				value: 'relevant'
+			},
 			_allTextLoaded: Boolean,
 			_allImageLoaded: Boolean,
 			loadingMessage: {
@@ -294,14 +257,21 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this.addEventListener('d2l-discover-activity-triggered', this._navigateToCourse.bind(this));
 		this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
 		this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
+		this.addEventListener('d2l-sort-by-dropdown-change', this._onSortChanged.bind(this));
+	}
+
+	_onSortChanged(sortEvent) {
+		this._sortParamter = sortEvent.detail.value;
+		this._onHrefChange(this.href);
 	}
 
 	_onHrefChange(href) {
-		console.log(href);
 		if (!href) {
 			return;
 		}
-		return this._fetchEntity(href)
+
+		const hrefWithSortParam = href + '&sort=' + this._sortParamter;
+		return this._fetchEntity(hrefWithSortParam)
 			.then(this._handleSearchResponse.bind(this))
 			.catch(() => {
 				this.dispatchEvent(new CustomEvent('navigate', {
@@ -315,7 +285,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_handleSearchResponse(sirenEntity) {
-		console.log(sirenEntity);
 		if (!sirenEntity || !sirenEntity.properties) {
 			return;
 		}
@@ -442,7 +411,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._reset();
 	}
 	_onSearchQueryChange() {
-		console.log(this.searchQuery);
 		this._searchQueryLoading = true;
 		this._processBeforeLoading();
 		this.setUpNoResultsMessage();

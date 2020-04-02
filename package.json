@@ -35,6 +35,7 @@
     "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-dropdown": "BrightspaceUI/dropdown#semver:^7",
+    "d2l-facet-filter-sort": "BrightspaceUI/facet-filter-sort#semver:^3",
     "d2l-fetch": "Brightspace/d2l-fetch#semver:^2",
     "d2l-fetch-auth": "github:Brightspace/d2l-fetch-auth",
     "d2l-fetch-dedupe": "^1.1.0",
