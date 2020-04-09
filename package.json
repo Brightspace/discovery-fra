@@ -23,7 +23,7 @@
     "install-attest": "npm install --no-save attest"
   },
   "dependencies": {
-    "@brightspace-ui/core": "^1",
+    "@brightspace-ui/core": "^1.40.3",
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
     "@polymer/iron-resizable-behavior": "^3.0.0",
