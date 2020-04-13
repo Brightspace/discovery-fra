@@ -124,7 +124,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 									<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllResults', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
 								</div>
 							</template>
-							<d2l-sort-by-dropdown id="sortDropdown" label="Sort by options" align="end">
+							<d2l-sort-by-dropdown id="sortDropdown" label="Sort by options" align="end" hidden>
 								<d2l-sort-by-dropdown-option
 									selected="[[_isSelected('relevant')]]"
 									value="relevant"

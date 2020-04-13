@@ -119,9 +119,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					if (query !== this.query || this.page !== 0) {
 						this.dispatchEvent(new CustomEvent('navigate', {
 							detail: {
-								path: this.routeLocations().search(query ? query.trim() : '', {
-									sort: this.sortParameter
-								}),
+								path: this.routeLocations().search(query ? query.trim() : ''),
 								resetPages: ['search']
 							},
 							bubbles: true,

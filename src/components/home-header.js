@@ -196,7 +196,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	_navigateToBrowseAll() {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: this.routeLocations().search('', { sort: 'relevant' })
+				path: this.routeLocations().search('')
 			},
 			bubbles: true,
 			composed: true

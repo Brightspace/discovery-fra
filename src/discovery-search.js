@@ -294,8 +294,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 
 		const parameters = {
 			q: searchQuery,
-			page: page,
-			sort: this._sortParameter
+			page: page
 		};
 
 		if (!searchQuery) {
