@@ -23,7 +23,7 @@
     "install-attest": "npm install --no-save attest"
   },
   "dependencies": {
-    "@brightspace-ui/core": "^1",
+    "@brightspace-ui/core": "^1.40.3",
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
     "@polymer/iron-resizable-behavior": "^3.0.0",
@@ -35,6 +35,7 @@
     "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-dropdown": "BrightspaceUI/dropdown#semver:^7",
+    "d2l-facet-filter-sort": "BrightspaceUI/facet-filter-sort#semver:^3",
     "d2l-fetch": "Brightspace/d2l-fetch#semver:^2",
     "d2l-fetch-auth": "github:Brightspace/d2l-fetch-auth",
     "d2l-fetch-dedupe": "^1.1.0",
