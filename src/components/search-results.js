@@ -9,11 +9,14 @@ import 'd2l-link/d2l-link.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
+import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown-option.js';
+import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown.js';
 import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
 import './loading-overlay.js';
 import './loading-skeleton.js';
+import './d2l-discover-list/d2l-discover-list.js';
 
 class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(PolymerElement))) {
 	static get template() {
@@ -64,9 +67,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					word-wrap: break-word;
 				}
 
-				d2l-activity-list-item {
-					border-bottom: 1px solid var(--d2l-color-mica);
-				}
 				.discovery-search-results-page-number-container {
 					margin: 15px;
 					display: flex;
@@ -124,28 +124,39 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 									<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllResults', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
 								</div>
 							</template>
+							<d2l-sort-by-dropdown id="sortDropdown" label="Sort by options" align="end">
+								<d2l-sort-by-dropdown-option
+									selected="[[_isSelected('relevant')]]"
+									value="relevant"
+									text="[[getSortText('relevant')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option
+									selected="[[_isSelected('updated')]]"
+									value="updated"
+									text="[[getSortText('updated')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option
+									selected="[[_isSelected('added')]]"
+									value="added"
+									text="[[getSortText('added')]]"></d2l-sort-by-dropdown-option>
+								<d2l-sort-by-dropdown-option
+									selected="[[_isSelected('enrolled')]]"
+									value="enrolled"
+									text="[[getSortText('enrolled')]]"></d2l-sort-by-dropdown-option>
+							</d2l-sort-by-dropdown>
 						</template>
 					</template>
 				</div>
 
 				<template is="dom-if" if="[[_searchQueryLoading]]">
-					<template is="dom-repeat" items="[[_noResultSkeletonItems]]">
-						<d2l-activity-list-item class="d2l-search-results-skeleton-item" image-placeholder text-placeholder></d2l-activity-list-item>
-					</template>
+					<d2l-discover-list imagePlaceholder textPlaceholder entities$=[[_noResultSkeletonItems]]></d2l-discover-list>
 				</template>
 
 				<template is="dom-if" if="[[!_searchQueryLoading]]" restamp>
 					<template is="dom-if" if="[[_searchResultsExists]]">
 						<div class="discovery-search-results-container">
-							<template is="dom-repeat" items="[[_searchResult]]">
-								<d2l-activity-list-item
-									image-placeholder
-									text-placeholder
-									entity="[[item]]"
-									send-on-trigger-event
-									token="[[token]]">
-								</d2l-activity-list-item>
-							</template>
+							<d2l-discover-list id="discover-search-results-list"
+								entities="[[_searchResult]]"
+								token="[[token]]">
+							</d2l-discover-list>
 						</div>
 						<div class="discovery-search-results-page-number-container">
 							<d2l-button-icon
@@ -194,6 +205,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				value: '',
 				observer: '_onSearchQueryChange'
 			},
+			sortParameter: String,
 			_searchResult: {
 				type: Array,
 				value: function() { return []; }
@@ -206,7 +218,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			_pageCurrent: Number,
 			_pageTotal: Number,
 			_searchResultsTotal: Number,
-			_noResultSkeletonItems: Array,
+			_noResultSkeletonItems: String,
 			_searchResultsTotalReady: {
 				type: Boolean,
 				observer: '_searchResultsTotalReadyObserver'
@@ -249,16 +261,52 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	ready() {
 		super.ready();
-		this._noResultSkeletonItems = Array(5);
-		this.addEventListener('d2l-activity-trigger', this._navigateToCourse.bind(this));
-		this.addEventListener('d2l-activity-text-loaded', this._removeTextPlaceholders);
-		this.addEventListener('d2l-activity-image-loaded', this._removeImagePlaceholders);
+		this._noResultSkeletonItems = '[null,null,null,null,null]';
+		this.addEventListener('d2l-discover-activity-triggered', this._navigateToCourse.bind(this));
+		this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
+		this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
+		this.addEventListener('d2l-sort-by-dropdown-change', this._onSortChanged.bind(this));
+	}
+
+	_isSelected(item) {
+		return item === this.sortParameter;
+	}
+	_onSortChanged(sortEvent) {
+		// If same sort is selected, nothing is changed
+		if (this.sortParameter === sortEvent.detail.value) {
+			return;
+		}
+
+		this._searchQueryLoading = true;
+		this._processBeforeLoading();
+		this.setUpNoResultsMessage();
+		this.sortParameter = sortEvent.detail.value;
+		this.dispatchEvent(new CustomEvent('navigate', {
+			detail: {
+				path: this.routeLocations().search(this.searchQuery, {
+					sort: this.sortParameter
+				})
+			},
+			bubbles: true,
+			composed: true
+		}));
+	}
+
+	getSortText(value) {
+		const sortValueTexts = {
+			relevant: this.localize('sorting.mostRelevant'),
+			updated: this.localize('sorting.updated'),
+			added: this.localize('sorting.added'),
+			enrolled: this.localize('sorting.enrolled')
+		};
+		return sortValueTexts[value];
 	}
 
 	_onHrefChange(href) {
 		if (!href) {
 			return;
 		}
+
 		return this._fetchEntity(href)
 			.then(this._handleSearchResponse.bind(this))
 			.catch(() => {
@@ -288,6 +336,22 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._searchResultsRangeToString = `${startIndex}-${endIndex}`;
 
 		this._searchResult = sirenEntity.getSubEntitiesByRel('https://discovery.brightspace.com');
+		// This is needed due to a polymer bug. When user comes to "Browse All" page, change the default sort selection, and then go
+		// back to homepage, and then come back, the value in WC is updated but UI is stuck with old value because it's not reloading
+		// hence not re-evaluating the selected option, this force to update with selected option
+		this.setSortSelection();
+	}
+
+	setSortSelection() {
+		const sortOptions = this.shadowRoot.querySelectorAll('#sortDropdown d2l-sort-by-dropdown-option');
+		for (const option of sortOptions) {
+			option.selected = option.value === this.sortParameter;
+		}
+		const sortDropdown = this.shadowRoot.querySelector('#sortDropdown');
+		if (sortDropdown) {
+			sortDropdown._text = this.getSortText(this.sortParameter);
+			sortDropdown.value = this.sortParameter;
+		}
 	}
 
 	_navigateToCourse(e) {
@@ -343,12 +407,17 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._resetNonSearchResultProperties();
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: this.routeLocations().search(this.searchQuery, { page: pageNumber })
+				path: this.routeLocations().search(this.searchQuery, {
+					sort: this.sortParameter,
+					page: pageNumber
+				})
 			},
 			bubbles: true,
 			composed: true
 		}));
 		this._showLoadingOverlay = true;
+		const discoverList = this.shadowRoot.querySelector('#discover-search-results-list');
+		discoverList.Reset();
 	}
 
 	_countDigits(number) {
@@ -384,13 +453,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			if (this._searchResultsTotal === 0) {
 				this.loadingMessage = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
 			}
-		} else {
-			const skeletonItems = this.shadowRoot.querySelectorAll('.d2l-search-results-skeleton-item');
-			skeletonItems.forEach((skeletonItem) => {
-				afterNextRender(skeletonItem, () => {
-					skeletonItem.notifyResize();
-				});
-			});
 		}
 	}
 	_processBeforeLoading() {
@@ -411,42 +473,24 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this.emptySearchQuery = !this.searchQuery;
 	}
 	_removeImagePlaceholders() {
-		this._numberOfImageLoadedEvents++;
-		if (this._numberOfImageLoadedEvents >= this._searchResult.length) {
-			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-activity-list-item');
-			fastdom.mutate(() => {
-				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('image-placeholder');
-				});
-				this._allImageLoaded = true;
-			});
-		}
+		this._allImageLoaded = true;
 	}
 	_removeTextPlaceholders() {
-		this._numberOfTextLoadedEvents++;
-		if (this._numberOfTextLoadedEvents >= this._searchResult.length) {
-			const resultElements = this.shadowRoot.querySelectorAll('.discovery-search-results-container d2l-activity-list-item');
-			fastdom.mutate(() => {
-				resultElements.forEach((resultElement) => {
-					resultElement.removeAttribute('text-placeholder');
-				});
-				this._allTextLoaded = true;
-
-				if (this.emptySearchQuery) {
-					this.loadingMessage = this.localize(
-						'searchResultsReadyMessageForAllResults',
-						'pageCurrent', this._pageCurrent,
-						'pageTotal', this._pageTotal);
-				} else {
-					this.loadingMessage = this.localize(
-						'searchResultsReadyMessage',
-						'pageCurrent', this._pageCurrent,
-						'pageTotal', this._pageTotal,
-						'searchQuery', this.searchQuery);
-				}
-			});
+		this._allTextLoaded = true;
+		if (this.emptySearchQuery) {
+			this.loadingMessage = this.localize(
+				'searchResultsReadyMessageForAllResults',
+				'pageCurrent', this._pageCurrent,
+				'pageTotal', this._pageTotal);
+		} else {
+			this.loadingMessage = this.localize(
+				'searchResultsReadyMessage',
+				'pageCurrent', this._pageCurrent,
+				'pageTotal', this._pageTotal,
+				'searchQuery', this.searchQuery);
 		}
 	}
+
 	_allTextAndImagesLoadedObserver(_allTextLoaded, _allImageLoaded) {
 		if (_allTextLoaded && _allImageLoaded) {
 			this._showLoadingOverlay  = false;
@@ -472,9 +516,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		if (noResultsMessageElement && !noResultsMessageElement.innerHTML) {
 			const noResultsMessage = this.localize(
 				'noResultsMessage',
-				'link-start',
+				'linkStart',
 				'<d2l-link href=javascript:void(0) id="discovery-search-results-browse-all">',
-				'link-end',
+				'linkEnd',
 				'</d2l-link>');
 			fastdom.mutate(() => {
 				noResultsMessageElement.innerHTML = noResultsMessage;
@@ -491,7 +535,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	_navigateToBrowseAll() {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: this.routeLocations().search('')
+				path: this.routeLocations().search('', {
+					sort: this.sortParameter
+				})
 			},
 			bubbles: true,
 			composed: true

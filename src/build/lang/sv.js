@@ -44,7 +44,7 @@ window.D2L.Discovery.LangSv = {
 	"navigateHome": "Tillbaka till startsidan.",
 	"noCourseDescription": "Ingen kursbeskrivning",
 	"noResultsHeading": "Inga resultat för \"{searchQuery}\"",
-	"noResultsMessage": "Prova med ett annat sökord eller {link-start}Bläddra bland alla{link-end} om du vill visa allt tillgängligt material",
+	"noResultsMessage": "Prova med ett annat sökord eller {linkStart}Bläddra bland alla{linkEnd} om du vill visa allt tillgängligt material",
 	"onMyList": "På min lista",
 	"openCourse": "Öppna kurs",
 	"or": "eller",

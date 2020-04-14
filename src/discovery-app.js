@@ -107,6 +107,7 @@ class DiscoveryApp extends RouteLocationsMixin(IfrauMixin(PolymerElement)) {
 			this._ifrauNavigationGo(e.detail.path);
 		}
 	}
+
 	_routeChanged(route) {
 		route = route.detail.value || {};
 		this.route = route;

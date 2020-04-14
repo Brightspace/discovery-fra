@@ -44,7 +44,7 @@ window.D2L.Discovery.LangDadk = {
 	"navigateHome": "Gå tilbage til startsiden.",
 	"noCourseDescription": "Ingen kursusbeskrivelse",
 	"noResultsHeading": "Ingen resultater for \"{searchQuery}\"",
-	"noResultsMessage": "Prøv at bruge et andet søgeord eller {link-start}Gennemse alle{link-end} for at få vist alt tilgængeligt materiale",
+	"noResultsMessage": "Prøv at bruge et andet søgeord eller {linkStart}Gennemse alle{linkEnd} for at få vist alt tilgængeligt materiale",
 	"onMyList": "På min liste",
 	"openCourse": "Åbn kursus",
 	"or": "eller",

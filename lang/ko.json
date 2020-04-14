@@ -39,7 +39,7 @@
    "navigateHome" : "홈으로 돌아갑니다.",
    "noCourseDescription" : "강의 설명 없음",
    "noResultsHeading" : "\"{searchQuery}\"에 대한 결과 없음",
-   "noResultsMessage" : "사용 가능한 모든 자료를 살펴보려면 다른 검색어 또는 {link-start}모두 찾아보기{link-end}를 사용해 보십시오.",
+   "noResultsMessage" : "사용 가능한 모든 자료를 살펴보려면 다른 검색어 또는 {linkStart}모두 찾아보기{linkEnd}를 사용해 보십시오.",
    "onMyList" : "내 목록",
    "openCourse" : "강의 열기",
    "or" : "또는",

@@ -20,7 +20,7 @@ describe('course-summary', () => {
 		fetchStub,
 		sandbox;
 
-	function setComponentForEnrollment({ component, enrolled }) {
+	function setComponentForEnrollment({ component, enrolled }, enrolledDate) {
 		if (enrolled) {
 			component.setAttribute('action-enroll', '');
 			component.setAttribute('organization-homepage', testOrganizationHomepage);
@@ -32,6 +32,7 @@ describe('course-summary', () => {
 			component.setAttribute('organization-href', testOrganizationHref);
 			component.setAttribute('action-unenroll', '');
 		}
+		component.setAttribute('self-enrolled-date', enrolledDate);
 	}
 
 	function setComponentHomepage({ component, homepage }) {
@@ -639,6 +640,148 @@ describe('course-summary', () => {
 	describe('enrollment is pending', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
+			setComponentForEnrollment({ component, enrolled: false }, new Date().toString());
+			setComponentHomepage({ component, homepage: false });
+			afterNextRender(component, done);
+		});
+
+		it('enrollment workflow encounters pending dialog before enrollment is successful', done => {
+			// Workflow finishes after the user is enrolled and navigates to the homepage
+			component.addEventListener('navigate-parent', (e) => {
+				expect(e.detail.path).to.equal(testOrganizationHomepage);
+				done();
+			});
+
+			// Success enrollment stub
+			fetchStub.withArgs(sinon.match.has('url', sinon.match(testActionEnrollHrefRegex)))
+				.returns(Promise.resolve({
+					ok: true,
+					json: () => {
+						return Promise.resolve({});
+					}
+				}));
+
+			const enrollButton = component.$$('#discovery-course-summary-enroll');
+			expect(enrollButton).to.exist;
+			expect(enrollButton.style.display).to.not.equal('none');
+			enrollButton.click();
+
+			afterNextRender(component, () => {
+				setTimeout(() => {
+					// Dialog is opened with success message
+					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+					expect(dialog.opened).to.equal(true);
+					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+					expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
+
+					// Open Course button does exist and is displayed
+					const openCourseButton = component.$$('#discovery-course-summary-open-course');
+					expect(openCourseButton).to.exist;
+					expect(openCourseButton.style.display).to.not.equal('none');
+
+					// Enroll button is hidden
+					expect(enrollButton.style.display).to.equal('none');
+
+					// Click the open course button
+					openCourseButton.click();
+
+					// Pending dialog is shown
+					afterNextRender(component, () => {
+						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+						expect(dialog.opened).to.equal(true);
+						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						expect(dialogMessage).to.include('Your enrollment to this course is pending, check back soon to access this course.');
+
+						// Open Course button still exists and is displayed
+						const openCourseButton = component.$$('#discovery-course-summary-open-course');
+						expect(openCourseButton).to.exist;
+						expect(openCourseButton.style.display).to.not.equal('none');
+
+						// Set organization-href to something that will now return a homepage
+						component.setAttribute('organization-href', testOrganizationHref);
+						afterNextRender(component, () => {
+							openCourseButton.click();
+						});
+					});
+				}, timeToExhaustRetriesInMs);
+			});
+		});
+	});
+
+	describe('enrolled by user but then removed by Admin', () => {
+		before(done => {
+			component = fixture('course-summary-basic-fixture');
+			setComponentForEnrollment({ component, enrolled: false }, new Date(Date.now() - 1000 * 60 * 11).toString());
+			setComponentHomepage({ component, homepage: false });
+			afterNextRender(component, done);
+		});
+
+		it('enrollment workflow encounters pending dialog before enrollment is successful', done => {
+			// Workflow finishes after the user is enrolled and navigates to the homepage
+			component.addEventListener('navigate-parent', (e) => {
+				expect(e.detail.path).to.equal(testOrganizationHomepage);
+				done();
+			});
+
+			// Success enrollment stub
+			fetchStub.withArgs(sinon.match.has('url', sinon.match(testActionEnrollHrefRegex)))
+				.returns(Promise.resolve({
+					ok: true,
+					json: () => {
+						return Promise.resolve({});
+					}
+				}));
+
+			const enrollButton = component.$$('#discovery-course-summary-enroll');
+			expect(enrollButton).to.exist;
+			expect(enrollButton.style.display).to.not.equal('none');
+			enrollButton.click();
+
+			afterNextRender(component, () => {
+				setTimeout(() => {
+					// Dialog is opened with success message
+					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+					expect(dialog.opened).to.equal(true);
+					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+					expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
+
+					// Open Course button does exist and is displayed
+					const openCourseButton = component.$$('#discovery-course-summary-open-course');
+					expect(openCourseButton).to.exist;
+					expect(openCourseButton.style.display).to.not.equal('none');
+
+					// Enroll button is hidden
+					expect(enrollButton.style.display).to.equal('none');
+
+					// Click the open course button
+					openCourseButton.click();
+
+					// Pending dialog is shown
+					afterNextRender(component, () => {
+						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+						expect(dialog.opened).to.equal(true);
+						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
+
+						// Open Course button still exists and is displayed
+						const openCourseButton = component.$$('#discovery-course-summary-open-course');
+						expect(openCourseButton).to.exist;
+						expect(openCourseButton.style.display).to.not.equal('none');
+
+						// Set organization-href to something that will now return a homepage
+						component.setAttribute('organization-href', testOrganizationHref);
+						afterNextRender(component, () => {
+							openCourseButton.click();
+						});
+					});
+				}, timeToExhaustRetriesInMs);
+			});
+		});
+	});
+
+	describe('enrolled by user but then removed by Admin without selfEnrolledDate', () => {
+		before(done => {
+			component = fixture('course-summary-basic-fixture');
 			setComponentForEnrollment({ component, enrolled: false });
 			setComponentHomepage({ component, homepage: false });
 			afterNextRender(component, done);
@@ -689,7 +832,7 @@ describe('course-summary', () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
 						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
-						expect(dialogMessage).to.include('Your enrollment to this course is still pending.');
+						expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
 
 						// Open Course button still exists and is displayed
 						const openCourseButton = component.$$('#discovery-course-summary-open-course');

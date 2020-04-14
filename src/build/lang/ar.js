@@ -44,7 +44,7 @@ window.D2L.Discovery.LangAr = {
 	"navigateHome": "العودة إلى الصفحة الرئيسية.",
 	"noCourseDescription": "ما من وصف للمقرر التعليمي",
 	"noResultsHeading": "ما من نتائج لـ \"{searchQuery}\"",
-	"noResultsMessage": "حاول استخدام مصطلح بحث مختلف أو {link-start}استعراض الكل{link-end} لعرض كل المواد المتوفرة",
+	"noResultsMessage": "حاول استخدام مصطلح بحث مختلف أو {linkStart}استعراض الكل{linkEnd} لعرض كل المواد المتوفرة",
 	"onMyList": "على لائحتي",
 	"openCourse": "فتح مقرر تعليمي",
 	"or": "أو",

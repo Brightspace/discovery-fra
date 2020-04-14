@@ -1,21 +1,22 @@
 {
-	"server": {
-		"port": 9090
-	},
-	"profile": {
-		"lang": "en-us"
-	},
-	"appconfig": {
-		"host": "http://localhost:3000/app/index.html"
-	},
-	"auth": {
-		"user": "30257",
-		"tenant": "d137320d-2de3-45a8-b901-7d52be430181",
+  "auth": {
+		"user": "169",
+		"tenant": "9ae77247-1335-4f42-93b3-8be8586eb2ee",
 		"remoteIssuer": "https://dev-auth.brightspace.com/core"
-	},
-	"fra": {
-		"options": {
-			"endpoint": "https://us-east-1.discovery.bff.dev.brightspace.com"
-		}
-	}
+  },
+  "fras": {
+    "/d2l/le/discovery/view/.*": {
+      "appconfig": {
+        "host": "http://localhost:3000/app/index.html"
+      },
+      "ifrau": {
+        "orgUnit": "6606",
+        "options": {
+          "endpoint": "https://us-east-1.discovery.bff.dev.brightspace.com",
+          "webServerName": "localhost:9090",
+          "userId": "169"
+        }
+      }
+    }
+  }
 }
