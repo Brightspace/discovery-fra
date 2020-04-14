@@ -39,7 +39,7 @@
    "navigateHome" : "Revenir à la page d'accueil.",
    "noCourseDescription" : "Aucune description du cours",
    "noResultsHeading" : "Aucun résultat pour « {searchQuery} »",
-   "noResultsMessage" : "Essayer un terme de recherche différent ou {linkStart} parcourez tout le {linkEnd} pour voir tout le matériel disponible",
+   "noResultsMessage" : "Essayer un terme de recherche différent ou {link-start}parcourez tout{link-end} pour voir tout le matériel disponible",
    "onMyList" : "Sur ma liste",
    "openCourse" : "Ouvrir le cours",
    "or" : "ou",
