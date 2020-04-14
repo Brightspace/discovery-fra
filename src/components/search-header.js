@@ -96,6 +96,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 		return {
 			query: String,
 			searchInput: Object,
+			sortParameter: String,
 			_homeHref: {
 				type: String,
 				computed: '_getHomeHref()'
@@ -118,7 +119,9 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 					if (query !== this.query || this.page !== 0) {
 						this.dispatchEvent(new CustomEvent('navigate', {
 							detail: {
-								path: this.routeLocations().search(query ? query.trim() : ''),
+								path: this.routeLocations().search(query ? query.trim() : '', {
+									sort: this.sortParameter
+								}),
 								resetPages: ['search']
 							},
 							bubbles: true,
