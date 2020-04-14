@@ -200,11 +200,13 @@ describe('search-results', () => {
 			});
 		});
 
-		it('should show a list of d2l-activity-list-items', done => {
+		it('should show a list of d2l-list-items', done => {
 			afterNextRender(component, () => {
 				expect(component.searchQuery).to.equal('results');
-				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
-				expect(searchResults.length).is.greaterThan(0);
+				const listSearchResults = component.shadowRoot.querySelector('d2l-discover-list');
+				expect(listSearchResults).is.not.undefined;
+				const listItemSearchResults = listSearchResults.shadowRoot.querySelectorAll('d2l-list-item');
+				expect(listItemSearchResults.length).is.greaterThan(0);
 				done();
 			});
 		});
@@ -228,6 +230,82 @@ describe('search-results', () => {
 			});
 		});
 
+	});
+
+	describe('With Results and using sort', () => {
+
+		beforeEach(done => {
+			component = fixture('search-result-with-sorted-results-fixture');
+			afterNextRender(component, done);
+		});
+
+		it('should show the current search query', done => {
+			afterNextRender(component, () => {
+				expect(component.searchQuery).to.equal('results');
+				const searchResultText = component.$$('#discovery-search-results-results-message').innerHTML;
+				expect(searchResultText).to.include('"results"');
+				done();
+			});
+		});
+
+		it('should show a list of d2l-list-items', done => {
+			afterNextRender(component, () => {
+				expect(component.searchQuery).to.equal('results');
+				const listSearchResults = component.shadowRoot.querySelector('d2l-discover-list');
+				expect(listSearchResults).is.not.undefined;
+				const listItemSearchResults = listSearchResults.shadowRoot.querySelectorAll('d2l-list-item');
+				expect(listItemSearchResults.length).is.greaterThan(0);
+				done();
+			});
+		});
+
+		it('should show 4 sort options with enrolled sort option selected', done => {
+			afterNextRender(component, () => {
+				const sortOptions = component.shadowRoot.querySelectorAll('#sortDropdown d2l-sort-by-dropdown-option');
+				expect(sortOptions.length).to.equal(4);
+				const sortDropdown = component.shadowRoot.querySelector('#sortDropdown');
+				expect(sortDropdown).is.not.undefined;
+				expect(sortDropdown._text).to.equal('Already Enrolled');
+				expect(sortDropdown.value).to.equal('enrolled');
+				done();
+			});
+		});
+
+		it('should have relevant sort option selected', done => {
+			component.sortParameter = 'relevant';
+			component.setSortSelection();
+			afterNextRender(component, () => {
+				const sortDropdown = component.shadowRoot.querySelector('#sortDropdown');
+				expect(sortDropdown).is.not.undefined;
+				expect(sortDropdown._text).to.equal('Most Relevant');
+				expect(sortDropdown.value).to.equal('relevant');
+				done();
+			});
+		});
+
+		it('should have updated sort option selected', done => {
+			component.sortParameter = 'updated';
+			component.setSortSelection();
+			afterNextRender(component, () => {
+				const sortDropdown = component.shadowRoot.querySelector('#sortDropdown');
+				expect(sortDropdown).is.not.undefined;
+				expect(sortDropdown._text).to.equal('Newly Updated');
+				expect(sortDropdown.value).to.equal('updated');
+				done();
+			});
+		});
+
+		it('should have added sort option selected', done => {
+			component.sortParameter = 'added';
+			component.setSortSelection();
+			afterNextRender(component, () => {
+				const sortDropdown = component.shadowRoot.querySelector('#sortDropdown');
+				expect(sortDropdown).is.not.undefined;
+				expect(sortDropdown._text).to.equal('Newly Added');
+				expect(sortDropdown.value).to.equal('added');
+				done();
+			});
+		});
 	});
 
 	describe('With No Results', () => {
@@ -259,7 +337,7 @@ describe('search-results', () => {
 				const searchResultText = component.$$('#discovery-search-results-results-message').innerHTML;
 				expect(searchResultText).to.include('of 2 for');
 				expect(component.searchQuery).to.equal('results');
-				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
+				const searchResults = component.shadowRoot.querySelectorAll('d2l-discover-list');
 				expect(searchResults.length).is.greaterThan(0);
 				done();
 			});
@@ -304,11 +382,13 @@ describe('search-results', () => {
 			});
 		});
 
-		it('should show a list of d2l-activity-list-items', done => {
+		it('should show a list of d2l-list-items', done => {
 			afterNextRender(component, () => {
 				expect(component.searchQuery).to.equal('');
-				const searchResults = component.shadowRoot.querySelectorAll('d2l-activity-list-item');
-				expect(searchResults.length).is.greaterThan(0);
+				const listSearchResults = component.shadowRoot.querySelector('d2l-discover-list');
+				expect(listSearchResults).is.not.undefined;
+				const listItemSearchResults = listSearchResults.shadowRoot.querySelectorAll('d2l-list-item');
+				expect(listItemSearchResults.length).is.greaterThan(0);
 				done();
 			});
 		});

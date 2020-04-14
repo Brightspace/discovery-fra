@@ -41,7 +41,9 @@ window.D2L.Discovery.LangEn = {
 	"enrollmentMessageSuccessFuture": "{title} will become available in the My Courses widget on {date}",
 	"enrollmentMessageSuccessPast": "{title} ended on {date}",
 	"enrollmentMessageFail": "Unable to enroll at this time, please try again later.",
-	"enrollmentMessagePending": "Your enrollment to this course is still pending.",
+	"enrollmentMessagePending": "Your enrollment to this course is pending, check back soon to access this course.",
+	"enrollmentHeaderUnenrolled": "No Current Access",
+	"enrollmentMessageUnenrolled": "You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.",
 	"enrollmentOptions": "Enrollment Options",
 	"unenrollConfirmHeader": "Unenrollment Complete",
 	"unenrollConfirmBody": "You've been successfully unenrolled from \"{title}\".",
@@ -74,5 +76,10 @@ window.D2L.Discovery.LangEn = {
 	"pageAllLoadedMessage": "The page of courses has been loaded.",
 	"loadMore": "Load More",
 	"alreadyEnrolled": "Already enrolled",
-	"courseSummaryReadyMessage": "{courseTitle} is now ready"
+	"courseSummaryReadyMessage": "{courseTitle} is now ready",
+	"sorting.sortBy": "Sort by",
+	"sorting.mostRelevant": "Most Relevant",
+	"sorting.updated": "Newly Updated",
+	"sorting.added": "Newly Added",
+	"sorting.enrolled": "Already Enrolled"
 };

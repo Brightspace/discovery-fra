@@ -517,6 +517,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			actionUnenroll: Object,
 			organizationHomepage: String,
 			organizationHref: String,
+			selfEnrolledDate: String,
 			_enrollmentDialogHeader: String,
 			_enrollmentDialogMessage: String,
 			_homeHref: {
@@ -615,8 +616,15 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					if (organizationHomepage) {
 						this._navigateToOrganizationHomepage(organizationHomepage);
 					} else {
-						this._enrollmentDialogHeader = this.localize('enrollmentHeaderPending');
-						this._enrollmentDialogMessage = this.localize('enrollmentMessagePending');
+						const enrolledDate = new Date(this.selfEnrolledDate);
+						const mins = 10;
+						if (!isNaN(enrolledDate) && Date.now() - enrolledDate <= 1000 * 60 * mins) {
+							this._enrollmentDialogHeader = this.localize('enrollmentHeaderPending');
+							this._enrollmentDialogMessage = this.localize('enrollmentMessagePending');
+						} else {
+							this._enrollmentDialogHeader = this.localize('enrollmentHeaderUnenrolled');
+							this._enrollmentDialogMessage = this.localize('enrollmentMessageUnenrolled');
+						}
 						const enrollmentDialog = this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog');
 						enrollmentDialog.opened = true;
 					}

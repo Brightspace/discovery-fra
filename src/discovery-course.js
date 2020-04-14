@@ -182,6 +182,7 @@ class DiscoveryCourse extends mixinBehaviors(
 							course-last-updated=[[_courseLastUpdated]]
 							format=[[_format]]
 							action-enroll=[[_actionEnroll]]
+							self-enrolled-date=[[_selfEnrolledDate]]
 							action-unenroll=[[_actionUnenroll]]
 							organization-homepage=[[_organizationHomepage]]
 							organization-href=[[_organizationHref]]
@@ -239,6 +240,7 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: Boolean,
 				value: false
 			},
+			_selfEnrolledDate: String,
 			visible: {
 				type: Boolean,
 				observer: '_visible'
@@ -267,8 +269,15 @@ class DiscoveryCourse extends mixinBehaviors(
 	_routeDataChanged(routeData) {
 		this._reset();
 		this.routeData = routeData.detail.value || {};
+		// Todo: this is likely a bug in polymer where query parameters cannot be extracted from the app-route pattern
+		// We can come back to fix it in polymer later https://github.com/PolymerElements/app-route/blob/master/app-route.js#L278
 		if (this.routeData.courseId) {
-			const parameters = { id: this.routeData.courseId };
+			let courseId = decodeURIComponent(this.routeData.courseId);
+			const parts = courseId.split('?');
+			if (parts.length >= 2) {
+				courseId = parts[0];
+			}
+			const parameters = { id: courseId };
 			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
 				.then(this._handleCourseEntity.bind(this))
@@ -289,6 +298,7 @@ class DiscoveryCourse extends mixinBehaviors(
 		}
 
 		if (courseEntity.properties) {
+			this._selfEnrolledDate = courseEntity.properties.selfAssignedDate;
 			//TODO: These properties still need to be added
 			// 	// data for the course summary
 			// 	this._courseCategory = '';
@@ -351,7 +361,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			// TODO: Do we need to do something similar to this?
 			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
 			if (imageEntity.href) {
-				return this._fetchEntity(imageEntity.href)
+				return this._fetchEntity(imageEntity)
 					.then(function(hydratedImageEntity) {
 						this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
 					}.bind(this));
