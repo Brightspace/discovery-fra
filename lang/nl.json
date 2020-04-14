@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{title} is binnenkort beschikbaar in de widget Mijn cursussen.",
    "enrollmentMessageSuccessFuture" : "{title} is beschikbaar in de widget Mijn cursussen op {date}",
    "enrollmentMessageSuccessPast" : "{title} is beëindigd op {date}",
+   "enrollmentOptions" : "Inschrijvingsopties",
    "firstPublished" : "Eerste publicatie",
    "homepageDocumentTitle" : "Ontdekken - {instanceName}",
    "lastUpdatedDate" : "Laatst bijgewerkt op {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "Deze cursus is beschikbaar vanaf {date}.",
    "startLearning" : "Begin met leren",
    "unenroll" : "Uitschrijven",
+   "unenrollConfirmBody" : "U bent uitgeschreven bij \"{title}\".",
+   "unenrollConfirmHeader" : "Uitschrijving voltooid",
    "viewMyList" : "Mijn lijst weergeven",
    "welcomeToTheCourse" : "Welkom bij de cursus!"
 }

@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{title} はまもなくマイコースウィジェットに表示されます。",
    "enrollmentMessageSuccessFuture" : "{title} は {date} にマイコースウィジェットで使用可能です",
    "enrollmentMessageSuccessPast" : "{title} は {date} に終了しました",
+   "enrollmentOptions" : "登録オプション",
    "firstPublished" : "初回公開日",
    "homepageDocumentTitle" : "検出 - {instanceName}",
    "lastUpdatedDate" : "最終更新日 {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "このコースは {date} に公開されます。",
    "startLearning" : "学習の開始",
    "unenroll" : "登録解除",
+   "unenrollConfirmBody" : "\"{title}\" から正常に登録解除されました。",
+   "unenrollConfirmHeader" : "登録解除完了",
    "viewMyList" : "マイリストの表示",
    "welcomeToTheCourse" : "コースへようこそ。"
 }

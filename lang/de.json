@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{title} wird bald im Widget „Meine Kurse“ verfügbar sein.",
    "enrollmentMessageSuccessFuture" : "{title} wird am {date} im Widget „Meine Kurse“ verfügbar sein.",
    "enrollmentMessageSuccessPast" : "{title} wurde am {date} beendet",
+   "enrollmentOptions" : "Anmeldeoptionen",
    "firstPublished" : "Erstveröffentlichung",
    "homepageDocumentTitle" : "Discover – {instanceName}",
    "lastUpdatedDate" : "Zuletzt aktualisiert am {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "Dieser Kurs wird am {date} verfügbar sein.",
    "startLearning" : "Lernen beginnen",
    "unenroll" : "Abmelden",
+   "unenrollConfirmBody" : "Sie wurden erfolgreich von „{title}“ abgemeldet.",
+   "unenrollConfirmHeader" : "Abmeldung abgeschlossen",
    "viewMyList" : "Meine Liste anzeigen",
    "welcomeToTheCourse" : "Willkommen beim Kurs!"
 }

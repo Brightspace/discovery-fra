@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{Title} yakında Derslerim pencere öğesinde görülecek.",
    "enrollmentMessageSuccessFuture" : "{title}, {date} tarihinde Derslerim pencere öğesinde sunulacak",
    "enrollmentMessageSuccessPast" : "{title}, {date} tarihinde sona erdi",
+   "enrollmentOptions" : "Kayıt Seçenekleri",
    "firstPublished" : "İlk Yayınlanma Tarihi",
    "homepageDocumentTitle" : "Keşfet - {instanceName}",
    "lastUpdatedDate" : "Son Güncelleme: {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "Bu ders {date} tarihinde kullanıma sunulacak.",
    "startLearning" : "Öğrenmeye Başla",
    "unenroll" : "Kaydı Kaldır",
+   "unenrollConfirmBody" : "\"{title}\" kaydından başarıyla çıkarıldınız.",
+   "unenrollConfirmHeader" : "Kayıt Kaldırma Tamamlandı",
    "viewMyList" : "Listemi görüntüle",
    "welcomeToTheCourse" : "Derse Hoş Geldiniz!"
 }

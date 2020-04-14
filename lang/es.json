@@ -1,5 +1,5 @@
 {
-   "404message" : "Lo sentimos. Obtuvo un 404.",
+   "404message" : "Lo sentimos, obtuvo un 404.",
    "OK" : "Aceptar",
    "accessMaterials" : "Acceder a materiales",
    "addToMyList" : "Agregar a mi lista",
@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{title} pronto estará disponible en el widget Mis cursos.",
    "enrollmentMessageSuccessFuture" : "{title} estará disponible en el componente Mis cursos el {date}",
    "enrollmentMessageSuccessPast" : "{title} finalizó el {date}",
+   "enrollmentOptions" : "Opciones de inscripción",
    "firstPublished" : "Primera publicación",
    "homepageDocumentTitle" : "Descubrir: {instanceName}",
    "lastUpdatedDate" : "Última actualización {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "Este curso estará disponible el {date}.",
    "startLearning" : "Iniciar aprendizaje",
    "unenroll" : "Anular inscripción",
+   "unenrollConfirmBody" : "Su inscripción a “{title}” se anuló correctamente.",
+   "unenrollConfirmHeader" : "Anulación de inscripción completa",
    "viewMyList" : "Ver mi lista",
    "welcomeToTheCourse" : "¡Bienvenido al curso!"
 }

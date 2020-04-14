@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "即将在“我的课程”微件中推出 {Title}。",
    "enrollmentMessageSuccessFuture" : "即将于 {date} 在“我的课程”微件中推出 {Title}",
    "enrollmentMessageSuccessPast" : "{Title} 于 {date} 结束",
+   "enrollmentOptions" : "注册选项",
    "firstPublished" : "First Published",
    "homepageDocumentTitle" : "发现 - {instanceName}",
    "lastUpdatedDate" : "Last Updated {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "This course will become available on {date}.",
    "startLearning" : "Start Learning",
    "unenroll" : "取消注册",
+   "unenrollConfirmBody" : "您已成功取消注册“{title}”。",
+   "unenrollConfirmHeader" : "取消注册完成",
    "viewMyList" : "查看列表",
    "welcomeToTheCourse" : "Welcome to the Course!"
 }

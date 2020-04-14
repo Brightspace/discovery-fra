@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "سيصبح {title} متوفرًا قريبًا في الأداة البرمجية مقرراتي التعليمية.",
    "enrollmentMessageSuccessFuture" : "سيصبح {title} متوفرًا في الأداة البرمجية \"مقرراتي التعليمية\" بتاريخ {date}",
    "enrollmentMessageSuccessPast" : "انتهى {title} بتاريخ {date}",
+   "enrollmentOptions" : "خيارات التسجيل",
    "firstPublished" : "تاريخ النشر الأول",
    "homepageDocumentTitle" : "اكتشاف - {instanceName}",
    "lastUpdatedDate" : "تاريخ آخر تحديث {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "سيتوفر هذا المقرر التعليمي بتاريخ {date}.",
    "startLearning" : "بدء التعلم",
    "unenroll" : "إلغاء التسجيل",
+   "unenrollConfirmBody" : "تم إلغاء تسجيلك بنجاح من \"{title}\".",
+   "unenrollConfirmHeader" : "اكتمال إلغاء التسجيل",
    "viewMyList" : "عرض لائحتي",
    "welcomeToTheCourse" : "مرحبًا بك في المقرر التعليمي!"
 }

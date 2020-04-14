@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{title} kommer snart att finnas i Mina kurser-widgeten.",
    "enrollmentMessageSuccessFuture" : "{title} blir tillgänglig i widgeten Mina kurser {date}",
    "enrollmentMessageSuccessPast" : "{title} avslutades {date}",
+   "enrollmentOptions" : "Registreringsalternativ",
    "firstPublished" : "Publicerades första gången",
    "homepageDocumentTitle" : "Upptäck - {instanceName}",
    "lastUpdatedDate" : "Senast uppdaterad {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "Den här kursen blir tillgänglig den {date}.",
    "startLearning" : "Börja inlärning",
    "unenroll" : "Avregistrera",
+   "unenrollConfirmBody" : "Du har avregistrerats från \"{title}\".",
+   "unenrollConfirmHeader" : "Avregistreringen klar",
    "viewMyList" : "Visa min lista",
    "welcomeToTheCourse" : "Välkommen till kursen!"
 }

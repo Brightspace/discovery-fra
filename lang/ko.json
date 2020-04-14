@@ -31,6 +31,7 @@
    "enrollmentMessageSuccess" : "{title}을(를) 곧 내 강의 위젯에서 사용할 수 있습니다.",
    "enrollmentMessageSuccessFuture" : "{date}에 {title}을(를) 내 강의 위젯에서 사용할 수 있습니다.",
    "enrollmentMessageSuccessPast" : "{date}에 {title} 종료됨",
+   "enrollmentOptions" : "등록 옵션",
    "firstPublished" : "처음 게시됨",
    "homepageDocumentTitle" : "검색 - {instanceName}",
    "lastUpdatedDate" : "마지막 업데이트 날짜: {date}",
@@ -63,6 +64,8 @@
    "startDateIsInTheFuture" : "이 강좌는 {date}에 사용 가능합니다.",
    "startLearning" : "학습 시작",
    "unenroll" : "등록 취소",
+   "unenrollConfirmBody" : "“{title}”에서 성공적으로 등록이 취소되었습니다.",
+   "unenrollConfirmHeader" : "등록 취소 완료",
    "viewMyList" : "내 목록 보기",
    "welcomeToTheCourse" : "강의에 오신 것을 환영합니다."
 }
