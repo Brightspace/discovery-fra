@@ -44,7 +44,7 @@ window.D2L.Discovery.LangZh = {
 	"navigateHome": "返回主页。",
 	"noCourseDescription": "课程描述",
 	"noResultsHeading": "未找到“{searchQuery}”的结果",
-	"noResultsMessage": "尝试使用其他搜索词或{link-start}“浏览所有”{link-end}以查看所有可用材料",
+	"noResultsMessage": "尝试使用其他搜索词或{linkStart}“浏览所有”{linkEnd}以查看所有可用材料",
 	"onMyList": "On My List",
 	"openCourse": "打开课程",
 	"or": "或",

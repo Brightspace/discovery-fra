@@ -38,7 +38,7 @@
    "navigateHome" : "Ana sayfaya geri dönün.",
    "noCourseDescription" : "Ders açıklaması yok",
    "noResultsHeading" : "\"{searchQuery}\" araması için sonuç bulunmadı",
-   "noResultsMessage" : "Farklı bir arama terimi kullanmayı deneyin veya mevcut tüm materyalleri görüntülemek için {link-start}Tümüne Gözat{link-end} öğesine tıklayın",
+   "noResultsMessage" : "Farklı bir arama terimi kullanmayı deneyin veya mevcut tüm materyalleri görüntülemek için {linkStart}Tümüne Gözat{linkEnd} öğesine tıklayın",
    "onMyList" : "Listemdekiler",
    "openCourse" : "Dersi Aç",
    "or" : "veya",

@@ -38,7 +38,7 @@
    "navigateHome" : "Ga terug naar de startpagina.",
    "noCourseDescription" : "Geen cursusbeschrijving",
    "noResultsHeading" : "Geen resultaten voor \"{searchQuery}\"",
-   "noResultsMessage" : "Probeer een andere zoekterm of {link-start}Blader door alle inhoud{link-end} om alle beschikbare materialen te bekijken",
+   "noResultsMessage" : "Probeer een andere zoekterm of {linkStart}Blader door alle inhoud{linkEnd} om alle beschikbare materialen te bekijken",
    "onMyList" : "Op mijn lijst",
    "openCourse" : "Cursus openen",
    "or" : "of",

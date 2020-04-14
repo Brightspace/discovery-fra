@@ -44,7 +44,7 @@ window.D2L.Discovery.LangFrfr = {
 	"navigateHome": "Revenir à la page d’accueil.",
 	"noCourseDescription": "Aucune description de cours",
 	"noResultsHeading": "Aucun résultat pour « {searchQuery} »",
-	"noResultsMessage": "Essayez d’utiliser un autre terme de recherche ou {link-start}Tout parcourir{link-end} pour afficher tout le matériel disponible",
+	"noResultsMessage": "Essayez d’utiliser un autre terme de recherche ou {linkStart}Tout parcourir{linkEnd} pour afficher tout le matériel disponible",
 	"onMyList": "Dans ma liste",
 	"openCourse": "Ouvrir le cours",
 	"or": "ou",

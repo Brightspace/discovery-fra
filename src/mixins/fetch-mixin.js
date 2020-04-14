@@ -23,27 +23,51 @@ const internalFetchMixin = (superClass) => class extends superClass {
 	constructor() {
 		super();
 	}
-	_fetchEntity(url, method = 'GET') {
+	_fetchEntity(sirenLinkOrUrl, method = 'GET') {
+		if (!sirenLinkOrUrl) {
+			return;
+		}
+
+		const url = sirenLinkOrUrl.href || sirenLinkOrUrl;
+
 		if (!url) {
 			return;
 		}
+
 		const request = new Request(url, {
 			method,
 			headers: { Accept: 'application/vnd.siren+json' },
 		});
-		return window.d2lfetch
+
+		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
+			? window.d2lfetch.removeTemp('auth')
+			: window.d2lfetch;
+
+		return fetch
 			.fetch(request)
 			.then(this.__responseToSirenEntity.bind(this));
 	}
-	_fetchEntityWithoutDedupe(url, method = 'GET') {
+	_fetchEntityWithoutDedupe(sirenLinkOrUrl, method = 'GET') {
+		if (!sirenLinkOrUrl) {
+			return;
+		}
+
+		const url = sirenLinkOrUrl.href || sirenLinkOrUrl;
+
 		if (!url) {
 			return;
 		}
+
 		const request = new Request(url, {
 			method,
 			headers: { Accept: 'application/vnd.siren+json' },
 		});
-		return window.d2lfetch
+
+		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
+			? window.d2lfetch.removeTemp('auth')
+			: window.d2lfetch;
+
+		return fetch
 			.removeTemp('dedupe')
 			.fetch(request)
 			.then(this.__responseToSirenEntity.bind(this));
@@ -85,6 +109,10 @@ const internalFetchMixin = (superClass) => class extends superClass {
 	}
 	__responseToSirenEntity(response) {
 		if (response.ok) {
+			if (response.status === 204) {
+				return undefined; // let no entity be a valid entity...
+			}
+
 			return response
 				.json()
 				.then(function(json) {
@@ -100,6 +128,17 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		} else {
 			return Promise.resolve(null);
 		}
+	}
+	_shouldSkipAuth(sirenLinkOrUrl) {
+		if (!Array.isArray(sirenLinkOrUrl.rel)) {
+			return false;
+		}
+
+		if (sirenLinkOrUrl.rel.indexOf('nofollow') === -1) {
+			return false;
+		}
+
+		return true;
 	}
 };
 

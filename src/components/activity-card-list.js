@@ -36,7 +36,9 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 							send-event-on-click
 							token="[[token]]"
 							show-organization-code
-							show-semester-name>
+							show-semester-name
+							align-center
+							show-activity-type>
 						</d2l-activity-card>
 					</template>
 				</div>

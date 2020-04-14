@@ -39,7 +39,6 @@ class DiscoveryCourse extends mixinBehaviors(
 					display: flex;
 					flex-direction: row;
 					flex-wrap: nowrap;
-					overflow: auto;
 				}
 
 				.discovery-course-summary {
@@ -183,6 +182,8 @@ class DiscoveryCourse extends mixinBehaviors(
 							course-last-updated=[[_courseLastUpdated]]
 							format=[[_format]]
 							action-enroll=[[_actionEnroll]]
+							self-enrolled-date=[[_selfEnrolledDate]]
+							action-unenroll=[[_actionUnenroll]]
 							organization-homepage=[[_organizationHomepage]]
 							organization-href=[[_organizationHref]]
 							start-date=[[_startDate]]
@@ -214,6 +215,10 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: String,
 				value: ''
 			},
+			_actionUnenroll: {
+				type: String,
+				value: ''
+			},
 			_courseCategory: String,
 			_courseCode: String,
 			_courseDescription: String,
@@ -235,6 +240,7 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: Boolean,
 				value: false
 			},
+			_selfEnrolledDate: String,
 			visible: {
 				type: Boolean,
 				observer: '_visible'
@@ -263,8 +269,15 @@ class DiscoveryCourse extends mixinBehaviors(
 	_routeDataChanged(routeData) {
 		this._reset();
 		this.routeData = routeData.detail.value || {};
+		// Todo: this is likely a bug in polymer where query parameters cannot be extracted from the app-route pattern
+		// We can come back to fix it in polymer later https://github.com/PolymerElements/app-route/blob/master/app-route.js#L278
 		if (this.routeData.courseId) {
-			const parameters = { id: this.routeData.courseId };
+			let courseId = decodeURIComponent(this.routeData.courseId);
+			const parts = courseId.split('?');
+			if (parts.length >= 2) {
+				courseId = parts[0];
+			}
+			const parameters = { id: courseId };
 			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
 				.then(this._handleCourseEntity.bind(this))
@@ -276,11 +289,16 @@ class DiscoveryCourse extends mixinBehaviors(
 	_handleCourseEntity(courseEntity) {
 		if (!courseEntity) return Promise.reject();
 
-		if (courseEntity.hasAction('assign') && !courseEntity.hasClass('enroll')) {
+		if (courseEntity.hasAction('assign')) {
 			this._actionEnroll = courseEntity.getAction('assign');
 		}
 
+		if (courseEntity.hasAction('unassign')) {
+			this._actionUnenroll = courseEntity.getAction('unassign');
+		}
+
 		if (courseEntity.properties) {
+			this._selfEnrolledDate = courseEntity.properties.selfAssignedDate;
 			//TODO: These properties still need to be added
 			// 	// data for the course summary
 			// 	this._courseCategory = '';
@@ -321,17 +339,15 @@ class DiscoveryCourse extends mixinBehaviors(
 			this._updateDocumentTitle();
 			this._courseDescription = description;
 
-			const dateFormat = 'MMM Do, YYYY';
-			moment.locale(this.language);
+			const dateFormat = 'MMMM d, yyyy';
 			if (startDate) {
 				this._startDateIsoFormat = startDate;
-				this._startDate = moment.utc(startDate).format(dateFormat);
+				this._startDate = this.formatDate(new Date(Date.parse(startDate)), {format: dateFormat});
 			}
 			if (endDate) {
 				this._endDateIsoFormat = endDate;
-				this._endDate = moment.utc(endDate).format(dateFormat);
+				this._endDate = this.formatDate(new Date(Date.parse(endDate)), {format: dateFormat});
 			}
-
 			this._processCourseDescriptionItems();
 		}
 
@@ -345,7 +361,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			// TODO: Do we need to do something similar to this?
 			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
 			if (imageEntity.href) {
-				return this._fetchEntity(imageEntity.href)
+				return this._fetchEntity(imageEntity)
 					.then(function(hydratedImageEntity) {
 						this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
 					}.bind(this));

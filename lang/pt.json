@@ -38,7 +38,7 @@
    "navigateHome" : "Volte ao início.",
    "noCourseDescription" : "Não há descrição do curso",
    "noResultsHeading" : "Nenhum resultado para \"{searchQuery}\"",
-   "noResultsMessage" : "Tente usar um termo de pesquisa diferente ou {link-start}Procurar tudo{link-end} para ver todos os materiais disponíveis",
+   "noResultsMessage" : "Tente usar um termo de pesquisa diferente ou {linkStart}Procurar tudo{linkEnd} para ver todos os materiais disponíveis",
    "onMyList" : "Em minha lista",
    "openCourse" : "Abra o curso",
    "or" : "ou",
