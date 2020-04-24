@@ -9,6 +9,7 @@ import './discovery-home.js';
 import './discovery-search.js';
 
 import { IfrauMixin } from './mixins/ifrau-mixin.js';
+import { FeatureMixin } from './mixins/feature-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 
 // Gesture events like tap and track generated from touch will not be
@@ -20,7 +21,7 @@ setPassiveTouchGestures(true);
 window.DiscoveryApp = window.DiscoveryApp || {};
 setRootPath(window.DiscoveryApp.rootPath);
 
-class DiscoveryApp extends RouteLocationsMixin(IfrauMixin(PolymerElement)) {
+class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerElement))) {
 	static get template() {
 		return html`
 			<style>
@@ -46,7 +47,7 @@ class DiscoveryApp extends RouteLocationsMixin(IfrauMixin(PolymerElement)) {
 				attr-for-selected="name"
 				selected-attribute="visible"
 				role="main">
-				<discovery-home name="home"></discovery-home>
+				<discovery-home name="home" promoted-courses-enabled="[[_promotedCoursesEnabled]]"></discovery-home>
 				<discovery-course name="course" route="[[route]]"></discovery-course>
 				<discovery-search name="search" route="[[route]]"></discovery-search>
 				<discovery-404 name="404"></discovery-404>
@@ -67,6 +68,10 @@ class DiscoveryApp extends RouteLocationsMixin(IfrauMixin(PolymerElement)) {
 			},
 			routeData: Object,
 			subroute: Object,
+			_promotedCoursesEnabled: {
+				type: Boolean,
+				computed: '_isPromotedCoursesEnabled()'
+			}
 		};
 	}
 	constructor() {

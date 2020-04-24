@@ -62,6 +62,7 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 					link-name="[[localize('viewAll')]]"
 					page-size="[[_pageSize]]"></home-list-section>
 				<home-all-section token="[[token]]"></home-all-section>
+				<div>[[promotedCoursesEnabled]]</div>
 				<discovery-footer></discovery-footer>
 			</div>
 		`;
@@ -74,6 +75,7 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 				observer: '_visible'
 			},
 			token: String,
+			promotedCoursesEnabled: Boolean,
 			_pageSize: {
 				type: Number,
 				value: 4
