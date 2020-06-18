@@ -15,9 +15,8 @@ const exec = require('child_process').exec;
 const langDirectory = './src/build';
 const localeResources = requireDir('lang');
 
-const polymerBuild = require('polymer-build');
-const polymerJson = require('./polymer.json');
-const polymerProject = new polymerBuild.PolymerProject(polymerJson);
+const ifrautoasterConfigFile = './ifrautoaster-config.json';
+const ifrautoasterCustomFile = './ifrautoaster-custom.json';
 const buildDirectory = './build';
 
 const config = {
@@ -55,13 +54,6 @@ function buildLang() {
 function cleanLang() {
 	return del([langDirectory]);
 }
-
-
-
-
-
-
-/******************************************************************************************/
 
 const createBuildDir = (done) => {
 	if (!fs.exists(config.dest, (exists) => {
@@ -105,13 +97,8 @@ const watching = (cb) => {
 	cb();
 };
 
-
-let frauHost;
 const buildFrauConfig = (done) => {
-	if(frauHost) {
-		frauHost.kill('SIGINT');
-	}
-	frauHost = exec('npm run frau:build-config && npm run frau:resolve', function(err, stdout, stderr) {
+	exec('npm run frau:build-config', function(err, stdout, stderr) {
  		console.log(stdout);
  		console.log(stderr);
  		console.log("Build Frau Config completed");
@@ -119,8 +106,18 @@ const buildFrauConfig = (done) => {
  	});
 }
 
+const startFrauHost = (done) => {
+	exec('npm run frau:resolve', function(err, stdout, stderr) {
+ 		console.log(stdout);
+ 		console.log(stderr);
+ 		console.log("Build Frau Config completed");
+ 		done();
+ 	});
+}
+
+
 const startToaster = (done) => {
-	exec('npm run ifrautoaster', function(err, stdout, stderr) {
+	exec('ifrautoaster --config ' + ifrautoasterConfigFile, function(err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
 		console.log("Ifrautoaster Started");
@@ -128,7 +125,19 @@ const startToaster = (done) => {
 	});
 }
 
-/******************************************************************************************/
+const startToasterCustom = (done) => {
+	if (!fs.existsSync(ifrautoasterCustomFile)) {
+		console.log("'" + ifrautoasterCustomFile + "' does not exist. You must create this file to host with a custom frau configuration.")
+		process.exit();
+	}
+
+	exec('ifrautoaster --config ' + ifrautoasterCustomFile, function(err, stdout, stderr) {
+		console.log(stdout);
+		console.log(stderr);
+		console.log("Ifrautoaster Started");
+		done();
+	});
+}
 
 const buildPolymerLang = gulp.series(
 	cleanLang,
@@ -139,7 +148,6 @@ const buildPolymerDev = gulp.series(
 	createBuildDir,
 	cleanBuildDir,
 	buildPolymer,
-	buildFrauConfig
 )
 
 const buildDev = gulp.parallel(
@@ -147,14 +155,29 @@ const buildDev = gulp.parallel(
 		buildPolymerLang,
 		buildPolymerDev,
 	),
+	gulp.series(
+		buildFrauConfig,
+		startFrauHost
+	),
 	startToaster,
 	watching
 );
 
-
-
+const buildDevCustomConfig = gulp.parallel(
+	gulp.series(
+		buildPolymerLang,
+		buildPolymerDev,
+	),
+	gulp.series(
+		buildFrauConfig,
+		startFrauHost
+	),
+	startToasterCustom,
+	watching
+);
 
 exports['clean'] = cleanLang;
 exports['buildLang'] = buildPolymerLang;
 exports['buildDev'] = buildDev;
-exports['buildTest'] = buildPolymer;
+exports['buildDevCustom'] = buildDevCustomConfig;
+

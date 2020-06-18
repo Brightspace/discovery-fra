@@ -20,7 +20,9 @@
     "frau:resolve": "frau-local-appresolver",
     "frau:publish": "frau-publisher",
     "frau:release": "npm run frau:publish",
-    "install-attest": "npm install --no-save attest"
+    "install-attest": "npm install --no-save attest",
+    "buildDev": "npx gulp buildDev",
+    "buildDev:custom": "npx gulp buildDevCustom"
   },
   "dependencies": {
     "@brightspace-ui/core": "^1.40.3",
