@@ -27,6 +27,13 @@ npm run test
 
 Commits on any branch are deployed to the Dev Brightspace CDN. Check the publish job from CircleCI of your corresponding branch for the published URL.
 
+To build and host via iFrauToaster, run `npm run buildDev`.
+To test against a custom ifrautoaster configuration:
+	- create your config file in the root folder as `ifrautoaster-custom.json`
+	- run `npm run buildDev:custom`. This file will not be commited.
+You should be able to view the fra at http://localhost:9090/d2l/le/discovery/view/home.
+While hosting, it should rebuild after editing the source or lang files, so disable browser caching and refresh your browser after build completion to view changes.
+
 ### Production
 
 #### Publish to CDN
