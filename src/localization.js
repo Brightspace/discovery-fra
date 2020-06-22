@@ -1,27 +1,46 @@
-import { resolveUrl } from '@polymer/polymer/lib/utils/resolve-url.js';
+import ar from './lang/ar.js'
+import dadk from './lang/da-dk.js'
+import de from './lang/de.js'
+import en from './lang/en.js'
+import es from './lang/es.js'
+import fr from './lang/fr.js'
+import ja from './lang/ja.js'
+import ko from './lang/ko.js'
+import nl from './lang/nl.js'
+import pt from './lang/pt.js'
+import sv from './lang/sv.js'
+import tr from './lang/tr.js'
+import zh from './lang/zh.js'
+import zhtw from './lang/zh-tw.js'
 
 const baseUrl = import.meta.url;
 export async function getLocalizeResources(langs) {
-	const imports = [];
-	let supportedLanguage;
-	for (const language of langs.reverse()) {
-		if (['en', 'ar', 'de', 'es', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh', 'zh-tw'].includes(language)) {
-			supportedLanguage = language;
-			const filePath = `./lang/${language}.js`;
-			imports.push(import(resolveUrl(filePath, baseUrl)));
-		}
-	}
 
-	const translationFiles = await Promise.all(imports);
-	const langterms = {};
-	for (const translationFile of translationFiles) {
-		for (const langterm in translationFile.default) {
-			langterms[langterm] = translationFile.default[langterm];
-		}
-	}
+	console.log(langs);
+	langs=['asdsadsadasdds'];
+
+	const resources = {
+		'ar': ar,
+		'da-dk': dadk,
+		'de': de,
+		'en': en,
+		'es': es,
+		'fr': fr,
+		'ja': ja,
+		'ko': ko,
+		'nl': nl,
+		'pt': pt,
+		'sv': sv,
+		'tr': tr,
+		'zh-tw': zhtw,
+		'zh': zh,
+	};
+
+	const supportedLanguage = langs.concat('en').find(lang => resources[lang]);
+	const translationData = resources[supportedLanguage];
 
 	return {
 		language: supportedLanguage,
-		resources: langterms
+		resources: translationData
 	};
 }
