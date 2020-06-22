@@ -3,14 +3,14 @@
 'use strict';
 const death = require('death');
 const del = require('del');
+const ejs = require('gulp-ejs');
+const exec = require('child_process').exec;
 const fs = require('fs');
 const gulp = require('gulp');
-const ejs = require('gulp-ejs');
-const rename = require('gulp-rename');
 const mergeStream = require('merge-stream');
 const path = require('path');
+const rename = require('gulp-rename');
 const requireDir = require('require-dir');
-const exec = require('child_process').exec;
 
 const langDirectory = './src/build';
 const localeResources = requireDir('lang');
@@ -32,6 +32,7 @@ const config = {
 	}))
 };
 
+//Creates the Polymer3 lang .js files in src/build
 function buildLang() {
 	const options = {
 		client: true,
@@ -49,11 +50,11 @@ function buildLang() {
 			}))
 			.pipe(gulp.dest(options.root)))
 	);
-}
+};
 
 function cleanLang() {
 	return del([langDirectory]);
-}
+};
 
 const createBuildDir = (done) => {
 	if (!fs.exists(config.dest, (exists) => {
@@ -82,8 +83,9 @@ const buildPolymer = (done) => {
 		 	done();
 		});
 	});
-}
+};
 
+//Tracks changes to lang and source files, rebuilds on change.
 const watching = (cb) => {
 	const watchers = [
 		gulp.watch(['lang/*.json'], gulp.series(buildPolymerLang, buildPolymerDev)),
@@ -101,29 +103,25 @@ const buildFrauConfig = (done) => {
 	exec('npm run frau:build-config', function(err, stdout, stderr) {
  		console.log(stdout);
  		console.log(stderr);
- 		console.log("Build Frau Config completed");
  		done();
  	});
-}
+};
 
 const startFrauHost = (done) => {
 	exec('npm run frau:resolve', function(err, stdout, stderr) {
  		console.log(stdout);
  		console.log(stderr);
- 		console.log("Build Frau Config completed");
  		done();
  	});
-}
-
+};
 
 const startToaster = (done) => {
 	exec('ifrautoaster --config ' + ifrautoasterConfigFile, function(err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
-		console.log("Ifrautoaster Started");
 		done();
 	});
-}
+};
 
 const startToasterCustom = (done) => {
 	if (!fs.existsSync(ifrautoasterCustomFile)) {
@@ -134,10 +132,9 @@ const startToasterCustom = (done) => {
 	exec('ifrautoaster --config ' + ifrautoasterCustomFile, function(err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
-		console.log("Ifrautoaster Started");
 		done();
 	});
-}
+};
 
 const buildPolymerLang = gulp.series(
 	cleanLang,
@@ -148,7 +145,7 @@ const buildPolymerDev = gulp.series(
 	createBuildDir,
 	cleanBuildDir,
 	buildPolymer,
-)
+);
 
 const buildDev = gulp.parallel(
 	gulp.series(
@@ -176,7 +173,12 @@ const buildDevCustomConfig = gulp.parallel(
 	watching
 );
 
-exports['clean'] = cleanLang;
+const clean = gulp.parallel(
+	cleanLang,
+	cleanBuildDir
+);
+
+exports['cleanBuild'] = clean;
 exports['buildLang'] = buildPolymerLang;
 exports['buildDev'] = buildDev;
 exports['buildDevCustom'] = buildDevCustomConfig;
