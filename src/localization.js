@@ -13,12 +13,7 @@ import tr from './lang/tr.js'
 import zh from './lang/zh.js'
 import zhtw from './lang/zh-tw.js'
 
-const baseUrl = import.meta.url;
 export async function getLocalizeResources(langs) {
-
-	console.log(langs);
-	langs=['asdsadsadasdds'];
-
 	const resources = {
 		'ar': ar,
 		'da-dk': dadk,
@@ -32,10 +27,11 @@ export async function getLocalizeResources(langs) {
 		'pt': pt,
 		'sv': sv,
 		'tr': tr,
-		'zh-tw': zhtw,
 		'zh': zh,
+		'zh-tw': zhtw,
 	};
 
+	//Load the first matching language from the passed langs. Default to english if none are found.
 	const supportedLanguage = langs.concat('en').find(lang => resources[lang]);
 	const translationData = resources[supportedLanguage];
 
