@@ -1,11 +1,15 @@
 'use strict';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import './components/home-header.js';
 import './components/save-close-buttons.js';
+import './components/discover-settings-promoted-content.js';
+import '@brightspace-ui/core/components/button/button.js';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
+import { FetchMixin } from './mixins/fetch-mixin.js';
 
-class DiscoverySettings extends RouteLocationsMixin(LitElement) {
+class DiscoverySettings extends FetchMixin(RouteLocationsMixin(LitElement)) {
 	render() {
 		return html`
 			<style include="discovery-styles"></style>
@@ -13,7 +17,9 @@ class DiscoverySettings extends RouteLocationsMixin(LitElement) {
 				<div class="discovery-settings-header">
 					<home-header query="" .showSettingsButton="${this.canManageDiscover}"></home-header>
 				</div>
-				<div class="discovery-settings-content"></div>
+				<div class="discovery-settings-content">
+					<discover-settings-promoted-content promotedSort="enrolled" candidateSort="" token="${this._token}"></discover-settings-promoted-content>
+				</div>
 				<div class="discovery-settings-page-divider"></div>
 				<save-close-buttons></save-close-buttons>
 			</div>
@@ -38,7 +44,7 @@ class DiscoverySettings extends RouteLocationsMixin(LitElement) {
 					margin: 0 30px;
 				}
 				.discovery-settings-content {
-					min-height: 400px;
+					min-height: 30rem;
 				}
 				.discovery-settings-page-divider {
 					border-top: 1px solid rgba(124,134,149,0.18);
@@ -60,6 +66,7 @@ class DiscoverySettings extends RouteLocationsMixin(LitElement) {
 	constructor() {
 		super();
 		this.canManageDiscover = false;
+		this._updateToken();
 	}
 
 	static get properties() {
@@ -69,6 +76,18 @@ class DiscoverySettings extends RouteLocationsMixin(LitElement) {
 			},
 			canManageDiscover: {
 				type: Boolean
+			},
+
+			_promotedHref: {
+				type: String
+			},
+
+			_relevantHref: {
+				type: String
+			},
+
+			_token: {
+				type: String
 			}
 		};
 	}
@@ -105,6 +124,13 @@ class DiscoverySettings extends RouteLocationsMixin(LitElement) {
 			bubbles: true,
 			composed: true
 		}));
+	}
+
+	_updateToken() {
+		return this._getToken()
+			.then((token) => {
+				this._token = token;
+			});
 	}
 
 	_handleSave() {
