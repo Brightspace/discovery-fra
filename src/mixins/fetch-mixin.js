@@ -87,7 +87,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 				if (!searchAction) {
 					throw new Error('Can\'t find action ' + action);
 				}
-				const defaultParams = searchAction.fields.reduce((defaults, field) => {
+				const defaultParams = searchAction.fields && searchAction.fields.reduce((defaults, field) => {
 					defaults[field.name] = field.value;
 					return defaults;
 				}, {});

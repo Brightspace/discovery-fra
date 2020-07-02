@@ -31,6 +31,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._lastSavedSelection = {};
 		this._selectionCount = 0;
 		this._lastLoadedListItem = null;
+		this._GetPromotedContent();
 	}
 
 	static get properties() {
@@ -65,21 +66,11 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	firstUpdated(changedProperties) {
 		super.updated();
 		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'promotedSort') {
-				this._getSortUrl(this.promotedSort).then(url => {
-					this.promotedHref = url;
-					this._loadPromotedCourses();
-				});
-			}
 			if (propName === 'candidateSort') {
 				this._getSortUrl(this.candidateSort).then(url => {
 					this.candidateHref = url;
 					this._loadCandidateCourses();
 				});
-			}
-
-			if (propName === 'promotedHref') {
-				this._loadPromotedCourses();
 			}
 			if (propName === 'candidateHref') {
 				this._loadCandidateCourses();
@@ -258,6 +249,13 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._currentSelection[e.detail.key] = e.detail.selected;
 		this._selectionCount = this.getSelectedActivities().length;
 	}
+
+	_GetPromotedContent() {
+		this._getActionUrl("get-promoted-courses").then(url => {
+			this.promotedHref = url;
+			this._loadPromotedCourses();
+		});
+    }
 
 	_loadPromotedCourses() {
 		if (this.promotedHref === null || this.promotedHref === undefined) {
