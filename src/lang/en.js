@@ -6,7 +6,7 @@ export default {
 	'clickToViewActivity': 'Click to view activity',
 	'noActivitiesFound': 'There were no activities found using your search term.',
 	'loadMore': 'Load More',
-	'promoteContent': 'Promote Content',
+	'featureContent': 'Feature Content',
 	'save': 'Save',
 	'search': 'Search',
 	'searchPlaceholder': 'Search...',
