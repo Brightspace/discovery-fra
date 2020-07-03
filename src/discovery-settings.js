@@ -18,7 +18,7 @@ class DiscoverySettings extends FetchMixin(RouteLocationsMixin(LitElement)) {
 					<home-header query="" .showSettingsButton="${this.canManageDiscover}"></home-header>
 				</div>
 				<div class="discovery-settings-content">
-					<discover-settings-promoted-content promotedSort="enrolled" candidateSort="" token="${this._token}"></discover-settings-promoted-content>
+					<discover-settings-promoted-content token="${this.token}"></discover-settings-promoted-content>
 				</div>
 				<div class="discovery-settings-page-divider"></div>
 				<save-close-buttons></save-close-buttons>
@@ -86,7 +86,7 @@ class DiscoverySettings extends FetchMixin(RouteLocationsMixin(LitElement)) {
 				type: String
 			},
 
-			_token: {
+			token: {
 				type: String
 			}
 		};
@@ -129,7 +129,7 @@ class DiscoverySettings extends FetchMixin(RouteLocationsMixin(LitElement)) {
 	_updateToken() {
 		return this._getToken()
 			.then((token) => {
-				this._token = token;
+				this.token = token;
 			});
 	}
 

@@ -28,21 +28,20 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._loadedCandidateText = 0;
 		this._candidateItemsLoading = true;
 		this._currentSelection = {};
-		this._lastSavedSelection = {};
+		this._lastApprovedSelection = {};
 		this._selectionCount = 0;
 		this._lastLoadedListItem = null;
-		this._GetPromotedContent();
+
+		this._loadPromotedCourses();
+		this._getSortUrl().then((url) => {
+			this._loadCandidateCourses(url);
+		});
+
 	}
 
 	static get properties() {
 		return {
 			token: { type: String},
-			promotedSort: { type: String}, //Pass in a sort string to calculate the promotedHref instead of passing in promotedHref
-			candidateSort: { type: String}, //Pass in a sort string to calculate the candidateHref instead of passing in candidateHref
-
-			promotedHref: { type: String}, //URL towards the promoted courses organizationCollection entity
-			candidateHref: { type: String}, //URL towards the candidate courses organizationCollection entity
-
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
 
 			_promotedEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
@@ -56,26 +55,11 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			_loadedCandidateText: { type: Number}, //Count of total candidate text ready to be displayed
 
 			_currentSelection: { type: Object}, //Hash of checked/unchecked organizationURLs. All true items are selected.
-			_lastSavedSelection: { type: Object}, //Copy of last accepted state of _currentSelection. Revert to this on cancel.
-			_selectionCount: { type: Number}, //Count of currently checked candidate entities
+			_lastApprovedSelection: { type: Object}, //Copy of last accepted state of _currentSelection. Displayed in promoted list. Revert to this on cancel.
 
+			_selectionCount: { type: Number}, //Count of currently checked candidate entities
 			_lastLoadedListItem: {type: Object} //Tracks the last loaded activity, to focus its new sibling after loading more.
 		};
-	}
-
-	firstUpdated(changedProperties) {
-		super.updated();
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'candidateSort') {
-				this._getSortUrl(this.candidateSort).then(url => {
-					this.candidateHref = url;
-					this._loadCandidateCourses();
-				});
-			}
-			if (propName === 'candidateHref') {
-				this._loadCandidateCourses();
-			}
-		});
 	}
 
 	getSelectedActivities() {
@@ -168,7 +152,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					</div>
 				</div>
 
-				<d2l-button slot="footer" primary dialog-action="add" @click=${this._addActivitiesClicked} ?disabled="${!this._selectionCount}">${this.localize('add')}</d2l-button>
+				<d2l-button slot="footer" primary dialog-action="add" @click=${this._addActivitiesClicked}>${this.localize('add')}</d2l-button>
 				<d2l-button slot="footer" dialog-action>${this.localize('cancel')}</d2l-button>
 
 			</d2l-dialog>
@@ -217,7 +201,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		return html`
 			${this._candidateItemsLoading ? html`<d2l-loading-spinner size="85"></d2l-loading-spinner>` : html`
 				${!this._candidateEntityCollection || !this._candidateEntityCollection.hasNextPage() ? null : html`
-					<d2l-button @click=${this._loadMore}>${this.localize('loadMore')}</d2l-button>
+					<d2l-button @click=${this._loadMoreCandidates}>${this.localize('loadMore')}</d2l-button>
 				`}
 			`}
 		`;
@@ -228,20 +212,19 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	}
 
 	_addActivitiesClicked() {
-		this._lastSavedSelection = this._copyCurrentSelection();
+		this._lastApprovedSelection = this._copyCurrentSelection();
 	}
 
 	_closePromotedDialogClicked() {
 		this._promotedDialogOpen = false;
-		this._currentSelection = this._lastSavedSelection;
-		this._lastSavedSelection = this._copyCurrentSelection();
+		this._currentSelection = this._lastApprovedSelection;
+		this._lastApprovedSelection = this._copyCurrentSelection();
 		this._selectionCount = this.getSelectedActivities().length;
 	}
 
 	_handleSearch(e) {
 		this._getSortUrl('', e.detail.value).then(url => {
-			this.candidateHref = url;
-			this._loadCandidateCourses();
+			this._loadCandidateCourses(url);
 		});
 	}
 
@@ -250,39 +233,27 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._selectionCount = this.getSelectedActivities().length;
 	}
 
-	_GetPromotedContent() {
-		this._getActionUrl("get-promoted-courses").then(url => {
-			this.promotedHref = url;
-			this._loadPromotedCourses();
-		});
-    }
-
 	_loadPromotedCourses() {
-		if (this.promotedHref === null || this.promotedHref === undefined) {
-			return;
-		}
+		this._getActionUrl('get-promoted-courses').then(url => {
 
-		entityFactory(OrganizationCollectionEntity, this.promotedHref, this.token, (entity) => {
-			if (entity === null) {
-				return;
-			}
-			this._promotedEntityCollection = entity;
-			const activities = this._promotedEntityCollection.activities();
+			entityFactory(OrganizationCollectionEntity, url, this.token, (entity) => {
+				if (entity === null) {
+					return;
+				}
+				this._promotedEntityCollection = entity;
+				const activities = this._promotedEntityCollection.activities();
 
-			activities.forEach(entity => {
-				const organizationUrl = entity.hasLink(Rels.organization) && entity.getLinkByRel(Rels.organization).href;
-				this._currentSelection[organizationUrl] = true;
-				this._selectionCount = this.getSelectedActivities().length;
+				activities.forEach(entity => {
+					const organizationUrl = entity.hasLink(Rels.organization) && entity.getLinkByRel(Rels.organization).href;
+					this._currentSelection[organizationUrl] = true;
+					this._selectionCount = this.getSelectedActivities().length;
+				});
+				this._lastApprovedSelection = this._copyCurrentSelection();
 			});
-			this._lastSavedSelection = this._copyCurrentSelection();
 		});
 	}
 
-	_loadCandidateCourses() {
-		if (this.candidateHref === null || this.candidateHref === undefined) {
-			return;
-		}
-
+	_loadCandidateCourses(url) {
 		if (this._candidateEntityCollection !== null && this._candidateEntityCollection !== undefined) {
 			dispose(this._candidateEntityCollection);
 		}
@@ -293,7 +264,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this.requestUpdate();
 		this._lastLoadedListItem = null;
 
-		entityFactory(OrganizationCollectionEntity, this.candidateHref, this.token, (entity) => {
+		entityFactory(OrganizationCollectionEntity, url, this.token, (entity) => {
 			if (entity === null) {
 				return;
 			}
@@ -304,7 +275,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		});
 	}
 
-	_loadMore() {
+	_loadMoreCandidates() {
 		this._candidateItemsLoading = true;
 		this._lastLoadedListItem = this.shadowRoot.querySelector('d2l-dialog d2l-list d2l-list-item:last-of-type');
 		const loadMoreHref = this._candidateEntityCollection.nextPageHref();
