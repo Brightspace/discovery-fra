@@ -77,47 +77,47 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			bodyCompactStyles,
 			bodyStandardStyles,
 			css`
-			.discovery-featured-header {
+			.discover-featured-header {
 				display:flex;
 				justify-content: flex-start;
 				align-items: center;
 			}
-			.discovery-featured-title {
+			.discover-featured-title {
 				margin-right: 1rem;
 			}
-			.discovery-featured-empty {
+			.discover-featured-empty {
 				background-color: var(--d2l-color-regolith);
 				border: solid 1px var(--d2l-color-gypsum);
 				border-radius: 8px;
 				padding: 2.1rem 2rem;
 			}
-			.discovery-featured-dialog {
+			.discover-featured-dialog {
 				height: 100%;
 			}
-			.discovery-featured-dialog-list {
+			.discover-featured-dialog-list {
 				height:25rem;
 			}
-			.discovery-featured-dialog-header {
+			.discover-featured-dialog-header {
 				display:flex;
 				justify-content: space-between;
 				margin-bottom: 1rem;
 			}
-			.discovery-featured-input-search {
+			.discover-featured-input-search {
 				width: 50%;
 			}
-			discovery-featured-list {
+			discover-featured-list {
 				padding: 2.1rem 2rem;
 			}
-			.discovery-featured-selected-nav {
+			.discover-featured-selected-nav {
 				display:flex;
 				justify-content: flex-end;
 				width: 50%
 				height: fit-content;
 			}
-			.discovery-featured-selected-nav-count {
+			.discover-featured-selected-nav-count {
 				margin-right: .5rem;
 			}
-			.discovery-featured-dialog-load-more {
+			.discover-featured-dialog-load-more {
 				margin-top: .5rem;
 				margin-bottom: .5rem;
 			}
@@ -131,23 +131,23 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		const loadMore = this._renderLoadMore();
 
 		return html`
-			<div class="discovery-featured-header">
-				<h2 class="discovery-featured-title">Featured Section</h2>
+			<div class="discover-featured-header">
+				<h2 class="discover-featured-title">Featured Section</h2>
 				<d2l-button primary @click="${this._openPromotedDialogClicked}">${this.localize('featureContent')}</d2l-button>
 			</div>
 
 			${featuredSection}
 
-			<d2l-dialog class="discovery-featured-dialog" title-text="${this.localize('browseDiscoverLibrary')}" ?opened="${this._promotedDialogOpen}" @d2l-dialog-close="${this._closePromotedDialogClicked}">
-				<div class="discovery-featured-dialog-list" aria-live="polite" aria-busy="${this._candidateItemsLoading}">
-					<div class="discovery-featured-dialog-header">
-							<d2l-input-search class="discovery-featured-input-search" label="${this.localize('search')}" placeholder=${this.localize('searchPlaceholder')} @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
+			<d2l-dialog class="discover-featured-dialog" title-text="${this.localize('browseDiscoverLibrary')}" ?opened="${this._promotedDialogOpen}" @d2l-dialog-close="${this._closePromotedDialogClicked}">
+				<div class="discover-featured-dialog-list" aria-live="polite" aria-busy="${this._candidateItemsLoading}">
+					<div class="discover-featured-dialog-header">
+							<d2l-input-search class="discover-featured-input-search" label="${this.localize('search')}" placeholder=${this.localize('searchPlaceholder')} @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
 							${selectedNav}
 					</div>
 					<div>
 						${candidates}
 					</div>
-					<div class="discovery-featured-dialog-load-more">
+					<div class="discover-featured-dialog-load-more">
 						${loadMore}
 					</div>
 				</div>
@@ -167,7 +167,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		return html`
 			${this._candidateEntityCollection === undefined || this._candidateEntityCollection === null ? null : html`
 				${this._candidateActivities.length <= 0 && !this._candidateItemsLoading ? html`
-					<div class="discovery-featured-empty">${this.localize('noActivitiesFound')}</div>` : html`
+					<div class="discover-featured-empty">${this.localize('noActivitiesFound')}</div>` : html`
 
 					<d2l-list @d2l-list-selection-change=${this._handleSelectionChange}>
 					${this._candidateActivities.map(activity => html`
@@ -185,8 +185,8 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	_renderSelectedNav() {
 		return html`
 			${this._selectionCount > 0 ? html`
-				<div class="d2l-body-compact discovery-featured-selected-nav">
-					<div class="discovery-featured-selected-nav-count">
+				<div class="d2l-body-compact discover-featured-selected-nav">
+					<div class="discover-featured-selected-nav-count">
 						${this.localize('selected', 'count', this._selectionCount)}
 					</div>
 					<d2l-link tabindex="0" role="button" @click="${this.clearAllSelected}">
