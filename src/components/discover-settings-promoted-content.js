@@ -172,8 +172,8 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					<d2l-list @d2l-list-selection-change=${this._handleSelectionChange}>
 					${this._candidateActivities.map(activity => html`
 						<d2l-list-item selectable ?hidden="${!activity.loaded}" ?selected="${this._currentSelection[activity.organizationUrl]}" key="${activity.organizationUrl}">
-							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" @d2l-organization-image-loaded="${this._handleOrgImageLoaded}}"></d2l-organization-image>
-							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleOrgAccessible}}"></d2l-organization-name>
+							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" @d2l-organization-image-loaded="${this._handleOrgImageLoaded}"></d2l-organization-image>
+							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleOrgAccessible}"></d2l-organization-name>
 						</d2l-list-item>
 					`)}
 					</d2l-list>
