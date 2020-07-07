@@ -27,8 +27,8 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._loadedCandidateImages = 0;
 		this._loadedCandidateText = 0;
 		this._candidateItemsLoading = true;
-		this._currentSelection = {};
-		this._lastApprovedSelection = {};
+		this._currentSelection = new Set();
+		this._lastApprovedSelection = new Set();
 		this._selectionCount = 0;
 		this._lastLoadedListItem = null;
 
@@ -106,6 +106,9 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			.discover-featured-selected-nav-count {
 				margin-right: .5rem;
 			}
+			.discover-featured-selected-nav-clear {
+				height: fit-content;
+			}
 			.discover-featured-dialog-load-more {
 				margin-top: .5rem;
 				margin-bottom: .5rem;
@@ -160,7 +163,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 					<d2l-list @d2l-list-selection-change=${this._handleSelectionChange}>
 					${this._candidateActivities.map(activity => html`
-						<d2l-list-item selectable ?hidden="${!activity.loaded}" ?selected="${this._currentSelection[activity.organizationUrl]}" key="${activity.organizationUrl}">
+						<d2l-list-item selectable ?hidden="${!activity.loaded}" ?selected="${this._currentSelection.has(activity.organizationUrl)}" key="${activity.organizationUrl}">
 							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" @d2l-organization-image-loaded="${this._handleOrgImageLoaded}"></d2l-organization-image>
 							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleOrgAccessible}"></d2l-organization-name>
 						</d2l-list-item>
@@ -178,7 +181,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					<div class="discover-featured-selected-nav-count">
 						${this.localize('selected', 'count', this._selectionCount)}
 					</div>
-					<d2l-link tabindex="0" role="button" @click="${this._clearAllSelected}">
+					<d2l-link class="discover-featured-selected-nav-clear" tabindex="0" role="button" @click="${this._clearAllSelected}">
 						${this.localize('clearSelected')}
 					</d2l-link>
 				</div>
@@ -197,7 +200,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	}
 
 	_clearAllSelected() {
-		this._currentSelection = {};
+		this._currentSelection = new Set();
 	}
 
 	_openPromotedDialogClicked() {
@@ -211,7 +214,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	_closePromotedDialogClicked() {
 		this._promotedDialogOpen = false;
 		this._currentSelection = this._copySelection(this._lastApprovedSelection);
-		this._selectionCount = this._getKeyList(this._currentSelection).length;
+		this._selectionCount = this._currentSelection.size;
 	}
 
 	_handleSearch(e) {
@@ -222,11 +225,11 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 	_handleSelectionChange(e) {
 		if (e.detail.selected) {
-			this._currentSelection[e.detail.key] = true;
+			this._currentSelection.add(e.detail.key);
 		} else {
-			delete this._currentSelection[e.detail.key];
+			delete this._currentSelection.delete(e.detail.key);
 		}
-		this._selectionCount = this._getKeyList(this._currentSelection).length;
+		this._selectionCount = this._currentSelection.size;
 	}
 
 	_loadPromotedCourses() {
@@ -241,8 +244,8 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 				activities.forEach(entity => {
 					const organizationUrl = entity.hasLink(Rels.organization) && entity.getLinkByRel(Rels.organization).href;
-					this._currentSelection[organizationUrl] = true;
-					this._selectionCount = this._getKeyList(this._currentSelection).length;
+					this._currentSelection.add(organizationUrl);
+					this._selectionCount = this._currentSelection.size;
 				});
 				this._lastApprovedSelection = this._copySelection(this._currentSelection);
 			});
@@ -325,16 +328,11 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 	//Returns a deep copy of the passed object property collection.
 	_copySelection(selectionObject) {
-		const selection = {};
-		this._getKeyList(selectionObject).forEach((activity) => {
-			selection[activity] = true;
+		const selection = new Set();
+		selectionObject.forEach((activity) => {
+			selection.add(activity);
 		});
 		return selection;
-	}
-
-	//Returns an array of the keys within an object property collection.
-	_getKeyList(object) {
-		return Object.keys(object);
 	}
 
 	_getSortUrl(query) {
