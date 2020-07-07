@@ -196,10 +196,6 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		`;
 	}
 
-	_getKeyList(object) {
-		return Object.keys(object);
-	}
-
 	_clearAllSelected() {
 		this._currentSelection = {};
 	}
@@ -209,13 +205,12 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	}
 
 	_addActivitiesClicked() {
-		this._lastApprovedSelection = this._copyCurrentSelection();
+		this._lastApprovedSelection = this._copySelection(this._currentSelection);
 	}
 
 	_closePromotedDialogClicked() {
 		this._promotedDialogOpen = false;
-		this._currentSelection = this._lastApprovedSelection;
-		this._lastApprovedSelection = this._copyCurrentSelection();
+		this._currentSelection = this._copySelection(this._lastApprovedSelection);
 		this._selectionCount = this._getKeyList(this._currentSelection).length;
 	}
 
@@ -249,7 +244,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					this._currentSelection[organizationUrl] = true;
 					this._selectionCount = this._getKeyList(this._currentSelection).length;
 				});
-				this._lastApprovedSelection = this._copyCurrentSelection();
+				this._lastApprovedSelection = this._copySelection(this._currentSelection);
 			});
 		});
 	}
@@ -328,13 +323,18 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		}
 	}
 
-	//Returns a clone of the current activities list.
-	_copyCurrentSelection() {
+	//Returns a deep copy of the passed object property collection.
+	_copySelection(selectionObject) {
 		const selection = {};
-		this._getKeyList(this._currentSelection).forEach((activity) => {
+		this._getKeyList(selectionObject).forEach((activity) => {
 			selection[activity] = true;
 		});
 		return selection;
+	}
+
+	//Returns an array of the keys within an object property collection.
+	_getKeyList(object) {
+		return Object.keys(object);
 	}
 
 	_getSortUrl(query) {
