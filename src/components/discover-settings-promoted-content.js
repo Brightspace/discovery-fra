@@ -45,8 +45,6 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
 
 			_promotedEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
-			_promotedActivities: { type: Array}, //Array of objects containing useful properties of OrganizationEntities within _candidateEntityCollection
-
 			_candidateItemsLoading: { type: Boolean}, //True iff any candidate image or text has not fully loaded.
 			_candidateEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
 			_candidateActivities: { type: Array}, //Array of objects containing useful properties of OrganizationEntities within _candidateEntityCollection
@@ -141,8 +139,8 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			<d2l-dialog class="discover-featured-dialog" title-text="${this.localize('browseDiscoverLibrary')}" ?opened="${this._promotedDialogOpen}" @d2l-dialog-close="${this._closePromotedDialogClicked}">
 				<div class="discover-featured-dialog-list" aria-live="polite" aria-busy="${this._candidateItemsLoading}">
 					<div class="discover-featured-dialog-header">
-							<d2l-input-search class="discover-featured-input-search" label="${this.localize('search')}" placeholder=${this.localize('searchPlaceholder')} @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
-							${selectedNav}
+						<d2l-input-search class="discover-featured-input-search" label="${this.localize('search')}" placeholder=${this.localize('searchPlaceholder')} @d2l-input-search-searched=${this._handleSearch}></d2l-input-search>
+						${selectedNav}
 					</div>
 					<div>
 						${candidates}
