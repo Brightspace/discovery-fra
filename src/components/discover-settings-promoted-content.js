@@ -227,7 +227,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		if (e.detail.selected) {
 			this._currentSelection.add(e.detail.key);
 		} else {
-			delete this._currentSelection.delete(e.detail.key);
+			this._currentSelection.delete(e.detail.key);
 		}
 		this._selectionCount = this._currentSelection.size;
 	}
