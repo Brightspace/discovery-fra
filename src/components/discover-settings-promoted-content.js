@@ -60,15 +60,6 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		};
 	}
 
-	getSelectedActivities() {
-		return Object.keys(this._currentSelection).filter((key) => this._currentSelection[key]);
-	}
-
-	clearAllSelected() {
-		this._currentSelection = {};
-		this._selectionCount = 0;
-	}
-
 	static get styles() {
 		return [
 			heading2Styles,
@@ -187,7 +178,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					<div class="discover-featured-selected-nav-count">
 						${this.localize('selected', 'count', this._selectionCount)}
 					</div>
-					<d2l-link tabindex="0" role="button" @click="${this.clearAllSelected}">
+					<d2l-link tabindex="0" role="button" @click="${this._clearAllSelected}">
 						${this.localize('clearSelected')}
 					</d2l-link>
 				</div>
@@ -205,6 +196,14 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		`;
 	}
 
+	_getKeyList(object) {
+		return Object.keys(object);
+	}
+
+	_clearAllSelected() {
+		this._currentSelection = {};
+	}
+
 	_openPromotedDialogClicked() {
 		this._promotedDialogOpen = true;
 	}
@@ -217,18 +216,22 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._promotedDialogOpen = false;
 		this._currentSelection = this._lastApprovedSelection;
 		this._lastApprovedSelection = this._copyCurrentSelection();
-		this._selectionCount = this.getSelectedActivities().length;
+		this._selectionCount = this._getKeyList(this._currentSelection).length;
 	}
 
 	_handleSearch(e) {
-		this._getSortUrl('', e.detail.value).then(url => {
+		this._getSortUrl(e.detail.value).then(url => {
 			this._loadCandidateCourses(url);
 		});
 	}
 
 	_handleSelectionChange(e) {
-		this._currentSelection[e.detail.key] = e.detail.selected;
-		this._selectionCount = this.getSelectedActivities().length;
+		if(e.detail.selected) {
+			this._currentSelection[e.detail.key] = true;
+		} else {
+			delete this._currentSelection[e.detail.key];
+		}
+		this._selectionCount = this._getKeyList(this._currentSelection).length;
 	}
 
 	_loadPromotedCourses() {
@@ -244,7 +247,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 				activities.forEach(entity => {
 					const organizationUrl = entity.hasLink(Rels.organization) && entity.getLinkByRel(Rels.organization).href;
 					this._currentSelection[organizationUrl] = true;
-					this._selectionCount = this.getSelectedActivities().length;
+					this._selectionCount = this._getKeyList(this._currentSelection).length;
 				});
 				this._lastApprovedSelection = this._copyCurrentSelection();
 			});
@@ -328,27 +331,22 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	//Returns a clone of the current activities list.
 	_copyCurrentSelection() {
 		const selection = {};
-		const currentActivities = this.getSelectedActivities();
-		currentActivities.forEach((activity) => {
+		this._getKeyList(this._currentSelection).forEach((activity) => {
 			selection[activity] = true;
 		});
 		return selection;
 	}
 
-	_getSortUrl(sort, query) {
+	_getSortUrl(query) {
 		const searchAction = 'search-activities';
 		const parameters = {
 			q: query,
 			page: 0,
 			pageSize: this._pageSize,
-			sort: sort
 		};
 
 		if (query === '') {
 			delete parameters.q;
-		}
-		if (sort === '') {
-			delete parameters.sort;
 		}
 		return this._getActionUrl(searchAction, parameters);
 	}
