@@ -7,6 +7,7 @@ export default {
 	'noActivitiesFound': 'There were no activities found using your search term.',
 	'loadMore': 'Load More',
 	'featureContent': 'Feature Content',
+	'removeFromFeatured': 'Click to remove {featured} from the featured activities section.',
 	'save': 'Save',
 	'search': 'Search',
 	'searchPlaceholder': 'Search...',
