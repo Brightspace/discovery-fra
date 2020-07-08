@@ -1,5 +1,6 @@
 'use strict';
 import '@brightspace-ui/core/components/button/button.js';
+import '@brightspace-ui/core/components/button/button-icon.js';
 import '@brightspace-ui/core/components/dialog/dialog.js';
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/list/list.js';
@@ -28,15 +29,15 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		this._loadedCandidateText = 0;
 		this._candidateItemsLoading = true;
 		this._currentSelection = new Set();
-		this._lastApprovedSelection = new Set();
 		this._selectionCount = 0;
 		this._lastLoadedListItem = null;
+		this._promotedActivities = [];
+		this._candidateActivities = [];
 
 		this._loadPromotedCourses();
 		this._getSortUrl().then((url) => {
 			this._loadCandidateCourses(url);
 		});
-
 	}
 
 	static get properties() {
@@ -44,16 +45,16 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			token: { type: String},
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
 
-			_promotedEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
 			_candidateItemsLoading: { type: Boolean}, //True iff any candidate image or text has not fully loaded.
 			_candidateEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
-			_candidateActivities: { type: Array}, //Array of objects containing useful properties of OrganizationEntities within _candidateEntityCollection
+
+			_candidateActivities: { type: Array}, //Array of objects containing properties of OrganizationEntities within the currently loaded candidates
+			_promotedActivities: { type: Array}, //Array of objects containing properties of the currently promoted activities
 
 			_loadedCandidateImages: { type: Number}, //Count of total candidate images ready to be displayed
 			_loadedCandidateText: { type: Number}, //Count of total candidate text ready to be displayed
 
 			_currentSelection: { type: Object}, //Hash of checked/unchecked organizationURLs. All true items are selected.
-			_lastApprovedSelection: { type: Object}, //Copy of last accepted state of _currentSelection. Displayed in promoted list. Revert to this on cancel.
 
 			_selectionCount: { type: Number}, //Count of currently checked candidate entities
 			_lastLoadedListItem: {type: Object} //Tracks the last loaded activity, to focus its new sibling after loading more.
@@ -79,6 +80,9 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 				border: solid 1px var(--d2l-color-gypsum);
 				border-radius: 8px;
 				padding: 2.1rem 2rem;
+			}
+			.discover-featured-list {
+				max-width: 40rem
 			}
 			.discover-featured-dialog {
 				height: 100%;
@@ -152,7 +156,25 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	}
 
 	_renderFeaturedSection() {
-		//US116080
+		return html`
+			${this._promotedActivities.length > 0 ? html`
+				<d2l-list class="discover-featured-list">
+					${this._promotedActivities.map((activity) => html`
+						<d2l-list-item ?hidden="${!activity.loaded}">
+							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}"}"></d2l-organization-image>
+							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._handleSavedOrgAccessible(e, activity)}"></d2l-organization-name>
+							<div slot="actions">
+							<d2l-button-icon text="${this.localize('removeFromFeatured', 'course', activity.organizationName)}" icon="tier1:close-default" @click="${(() => this._removeFromFeatured(activity.organizationUrl))}"></d2l-button-icon>
+							</div>
+						</d2l-list-item>
+					`)}
+				</d2l-list>
+			` : html`
+				<div class="discover-featured-empty">
+					There are no activities in this learning path.
+				</div>
+			`}
+		`;
 	}
 
 	_renderCandidates() {
@@ -165,7 +187,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					${this._candidateActivities.map(activity => html`
 						<d2l-list-item selectable ?hidden="${!activity.loaded}" ?selected="${this._currentSelection.has(activity.organizationUrl)}" key="${activity.organizationUrl}">
 							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" @d2l-organization-image-loaded="${this._handleOrgImageLoaded}"></d2l-organization-image>
-							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleOrgAccessible}"></d2l-organization-name>
+							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleCandidateOrgAccessible}"></d2l-organization-name>
 						</d2l-list-item>
 					`)}
 					</d2l-list>
@@ -202,19 +224,17 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	_clearAllSelected() {
 		this._currentSelection = new Set();
 	}
-
 	_openPromotedDialogClicked() {
 		this._promotedDialogOpen = true;
 	}
 
 	_addActivitiesClicked() {
-		this._lastApprovedSelection = this._copySelection(this._currentSelection);
+		this._updateFeaturedList();
 	}
 
 	_closePromotedDialogClicked() {
 		this._promotedDialogOpen = false;
-		this._currentSelection = this._copySelection(this._lastApprovedSelection);
-		this._selectionCount = this._currentSelection.size;
+		this._resetCheckedCandidates();
 	}
 
 	_handleSearch(e) {
@@ -239,15 +259,14 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 				if (entity === null) {
 					return;
 				}
-				this._promotedEntityCollection = entity;
-				const activities = this._promotedEntityCollection.activities();
+				const activities = entity.activities();
 
 				activities.forEach(entity => {
 					const organizationUrl = entity.hasLink(Rels.organization) && entity.getLinkByRel(Rels.organization).href;
 					this._currentSelection.add(organizationUrl);
 					this._selectionCount = this._currentSelection.size;
 				});
-				this._lastApprovedSelection = this._copySelection(this._currentSelection);
+				this._updateFeaturedList();
 			});
 		});
 	}
@@ -300,7 +319,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		});
 	}
 
-	_handleOrgAccessible() {
+	_handleCandidateOrgAccessible() {
 		this._loadedCandidateText++;
 		this._updateItemLoadingState();
 	}
@@ -308,6 +327,15 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	_handleOrgImageLoaded() {
 		this._loadedCandidateImages++;
 		this._updateItemLoadingState();
+	}
+
+	_handleSavedOrgAccessible(e, activity) {
+		if (!activity) {
+			return;
+		}
+		activity.loaded = true;
+		activity.organizationName = e.detail.organization && e.detail.organization.name;
+		this.requestUpdate();
 	}
 
 	//When all items in candidate list load, clear loading spinner and show them.
@@ -335,12 +363,52 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		return selection;
 	}
 
+	//Updates the data for the displayed promoted selection based on the current selection of checked candidates.
+	async _updateFeaturedList() {
+		const lastSavedSelection = this._currentSelection;
+		const newPromotedActivities = [];
+
+		//Rebuild our list, mantaining unchanged items.
+		let index = 0;
+		lastSavedSelection.forEach((orgUrl) => {
+			if(index < this._promotedActivities.length && orgUrl == this._promotedActivities[index].organizationUrl) {
+				newPromotedActivities.push(this._promotedActivities[index]);
+			} else {
+				const newPromotedActivity = {};
+				newPromotedActivity.organizationName = '';
+				newPromotedActivity.loaded = false;
+				newPromotedActivity.organizationUrl = orgUrl;
+				newPromotedActivities.push(newPromotedActivity);
+			}
+			index++;
+		});
+
+		this._promotedActivities = newPromotedActivities;
+	}
+
+	//set the list of checked candidates to match the last saved list.
+	_resetCheckedCandidates() {
+		const newSelection = new Set();
+		this._promotedActivities.forEach((activity) => {
+			newSelection.add(activity.organizationUrl);
+		});
+
+		this._currentSelection = newSelection;
+	}
+
+	//Removes an item from the promoted list via its 'x' button.
+	_removeFromFeatured(organizationUrl) {
+		this._currentSelection.delete(organizationUrl);
+		this._selectionCount = this._currentSelection.size;
+		this._updateFeaturedList();
+	}
+
 	_getSortUrl(query) {
 		const searchAction = 'search-activities';
 		const parameters = {
 			q: query,
 			page: 0,
-			pageSize: this._pageSize,
+			pageSize: this._pageSize
 		};
 
 		if (query === '') {
