@@ -374,7 +374,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		//Rebuild our list, mantaining unchanged items.
 		let index = 0;
 		lastSavedSelection.forEach((orgUrl) => {
-			if(index < this._promotedActivities.length && orgUrl == this._promotedActivities[index].organizationUrl) {
+			if (index < this._promotedActivities.length && orgUrl === this._promotedActivities[index].organizationUrl) {
 				newPromotedActivities.push(this._promotedActivities[index]);
 			} else {
 				const newPromotedActivity = {};
