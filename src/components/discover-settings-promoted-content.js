@@ -27,6 +27,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		super();
 		this._loadedCandidateImages = 0;
 		this._loadedCandidateText = 0;
+		this._promotedItemsLoading = true;
 		this._candidateItemsLoading = true;
 		this._currentSelection = new Set();
 		this._selectionCount = 0;
@@ -45,6 +46,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			token: { type: String},
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
 
+			_promotedItemsLoading: { type: Boolean},
 			_candidateItemsLoading: { type: Boolean}, //True iff any candidate image or text has not fully loaded.
 			_candidateEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
 
@@ -170,7 +172,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					`)}
 				</d2l-list>
 			` : html`
-				<div class="discover-featured-empty">
+				<div class="discover-featured-empty" ?hidden="${this._promotedItemsLoading}">
 					There are no activities in this learning path.
 				</div>
 			`}
@@ -180,7 +182,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	_renderCandidates() {
 		return html`
 			${this._candidateEntityCollection === undefined || this._candidateEntityCollection === null ? null : html`
-				${this._candidateActivities.length <= 0 && !this._candidateItemsLoading ? html`
+				${this._candidateActivities.length <= 0 && !this._candidateItemsLoading && !this._promotedItemsLoading ? html`
 					<div class="discover-featured-empty">${this.localize('noActivitiesFound')}</div>` : html`
 
 					<d2l-list @d2l-list-selection-change=${this._handleSelectionChange}>
@@ -267,6 +269,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 					this._selectionCount = this._currentSelection.size;
 				});
 				this._updateFeaturedList();
+				this._promotedItemsLoading = false;
 			});
 		});
 	}
@@ -364,7 +367,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	}
 
 	//Updates the data for the displayed promoted selection based on the current selection of checked candidates.
-	async _updateFeaturedList() {
+	_updateFeaturedList() {
 		const lastSavedSelection = this._currentSelection;
 		const newPromotedActivities = [];
 
