@@ -46,7 +46,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			token: { type: String},
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
 
-			_promotedItemsLoading: { type: Boolean},
+			_promotedItemsLoading: { type: Boolean}, //True until the saved promoted items are loaded.
 			_candidateItemsLoading: { type: Boolean}, //True iff any candidate image or text has not fully loaded.
 			_candidateEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
 
@@ -163,7 +163,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 				<d2l-list class="discover-featured-list">
 					${this._promotedActivities.map((activity) => html`
 						<d2l-list-item ?hidden="${!activity.loaded}">
-							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}"}"></d2l-organization-image>
+							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}"></d2l-organization-image>
 							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._handleSavedOrgAccessible(e, activity)}"></d2l-organization-name>
 							<div slot="actions">
 							<d2l-button-icon text="${this.localize('removeFromFeatured', 'course', activity.organizationName)}" icon="tier1:close-default" @click="${(() => this._removeFromFeatured(activity.organizationUrl))}"></d2l-button-icon>
