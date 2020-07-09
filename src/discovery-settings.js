@@ -4,6 +4,7 @@ import './components/save-close-buttons.js';
 import './components/discover-settings-promoted-content.js';
 import '@brightspace-ui/core/components/button/button.js';
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
+import '@brightspace-ui/core/components/alert/alert-toast.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
@@ -23,6 +24,10 @@ class DiscoverySettings extends FetchMixin(RouteLocationsMixin(LitElement)) {
 				<div class="discovery-settings-page-divider"></div>
 				<save-close-buttons></save-close-buttons>
 			</div>
+
+			<d2l-alert-toast type="success">
+				A default toast alert.
+			</d2l-alert-toast>
 		`;
 	}
 
@@ -133,10 +138,16 @@ class DiscoverySettings extends FetchMixin(RouteLocationsMixin(LitElement)) {
 			});
 	}
 
-	_handleSave() {
+	async _handleSave() {
+		await this.shadowRoot.querySelector("discover-settings-promoted-content").save();
+		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = "Changes have been saved."
+		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
 	}
 
 	_handleCancel() {
+		this.shadowRoot.querySelector("discover-settings-promoted-content").cancel();
+		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = "Changes have been cancelled."
+		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
 	}
 }
 

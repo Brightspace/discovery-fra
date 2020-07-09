@@ -16,8 +16,9 @@ import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { entityFactory, dispose } from 'siren-sdk/src/es6/EntityFactory';
 import { OrganizationCollectionEntity } from 'siren-sdk/src/organizations/OrganizationCollectionEntity';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
+import { SavePromotedMixin } from '../mixins/save-promoted-mixin.js';
 
-class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(LocalizeMixin(LitElement))) {
+class DiscoverSettingsPromotedContent extends SavePromotedMixin(RouteLocationsMixin(FetchMixin(LocalizeMixin(LitElement)))) {
 
 	static async getLocalizeResources(langs) {
 		return getLocalizeResources(langs);
@@ -123,6 +124,34 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 				margin-bottom: .5rem;
 			}
 		`];
+	}
+
+	async save() {
+		if( this._promotedItemsLoading === true || this._candidateItemsLoading === true) {
+			return;
+		}
+
+		const orgUrlArray = [];
+
+		this._currentSelection.forEach(activity => {
+			orgUrlArray.push(activity);
+		});
+
+		return await this.savePromotedCourses(orgUrlArray);
+	}
+
+	cancel() {
+		if( this._promotedItemsLoading === true || this._candidateItemsLoading === true) {
+			return;
+		}
+
+		this._promotedItemsLoading = true;
+		this._candidateItemsLoading = true;
+		this._currentSelection = new Set();
+		this._loadPromotedCourses();
+		this._getSortUrl().then((url) => {
+			this._loadCandidateCourses(url);
+		});
 	}
 
 	render() {
