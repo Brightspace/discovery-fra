@@ -10,6 +10,8 @@ export default {
 	'featureContent': 'Feature Content',
 	'removeFromFeatured': 'Click to remove {course} from the featured activities section.',
 	'save': 'Save',
+	'saveCompleted' : 'Changes have been saved.',
+	'saveCancelled' : 'Changes have been cancelled.',
 	'search': 'Search',
 	'searchPlaceholder': 'Search...',
 	'selected': '{count} selected.',
