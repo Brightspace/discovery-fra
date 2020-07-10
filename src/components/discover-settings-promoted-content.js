@@ -397,6 +397,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		});
 
 		this._currentSelection = newSelection;
+		this._selectionCount = this._currentSelection.size;
 	}
 
 	//Removes an item from the promoted list via its 'x' button.
