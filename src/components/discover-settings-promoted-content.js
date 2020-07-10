@@ -130,7 +130,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 		return html`
 			<div class="discover-featured-header">
-				<h2 class="discover-featured-title">Featured Section</h2>
+				<h2 class="discover-featured-title">${this.localize('settingsFeaturedSection')}</h2>
 				<d2l-button primary @click="${this._openPromotedDialogClicked}">${this.localize('featureContent')}</d2l-button>
 			</div>
 

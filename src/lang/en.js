@@ -11,5 +11,6 @@ export default {
 	'save': 'Save',
 	'search': 'Search',
 	'searchPlaceholder': 'Search...',
-	'selected': '{count} selected.'
+	'selected': '{count} selected.',
+	'settingsFeaturedSection' : 'Featured Section'
 };
