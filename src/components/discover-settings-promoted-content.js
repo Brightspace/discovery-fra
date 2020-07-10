@@ -371,12 +371,16 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 		const lastSavedSelection = this._currentSelection;
 		const newPromotedActivities = [];
 
-		//Rebuild our list, mantaining unchanged items.
+		//Rebuild our list of featured activities, mantaining unchanged items.
 		let index = 0;
 		lastSavedSelection.forEach((orgUrl) => {
+
+			//If the orgUrl between the current list and the new list exactly matches for a given index, maintain the prior loaded object.
+			//Since the orgUrl of the inner <d2l-organization-x> components will not be changed, they will not re-fire accessibility/loaded events.
 			if (index < this._promotedActivities.length && orgUrl === this._promotedActivities[index].organizationUrl) {
 				newPromotedActivities.push(this._promotedActivities[index]);
 			} else {
+				//As the OrgUrl for this index has changed, create an object to be updated when the inner components load.
 				const newPromotedActivity = {};
 				newPromotedActivity.organizationName = '';
 				newPromotedActivity.loaded = false;
