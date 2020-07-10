@@ -12,5 +12,6 @@ export default {
 	'search': 'Search',
 	'searchPlaceholder': 'Search...',
 	'selected': '{count} selected.',
+	'selectedFromMaximum': '{count} ∕ {maximum} selected.',
 	'settingsFeaturedSection' : 'Featured Section'
 };
