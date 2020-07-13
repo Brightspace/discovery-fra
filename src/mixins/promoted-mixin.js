@@ -1,5 +1,4 @@
 import "./fetch-mixin";
-import { FetchMixin } from "./fetch-mixin";
 
 const promotedAction = 'get-promoted-courses';
 const discoverRel =  'https://discovery.brightspace.com'
