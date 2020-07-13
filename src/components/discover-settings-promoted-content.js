@@ -209,7 +209,6 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			${this._selectionCount > 0 ? html`
 				<div class="d2l-body-compact discover-featured-selected-nav">
 					<div class="discover-featured-selected-nav-count">
-						${this.localize('selected', 'count', this._selectionCount)}
 						${this.maxPromotedCourses > 0 ? html`
 							${this.localize('selectedFromMaximum', 'count', this._selectionCount, 'maximum', this.maxPromotedCourses)}` : html`
 							${this.localize('selected', 'count', this._selectionCount)}
