@@ -190,9 +190,8 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 					<d2l-list @d2l-list-selection-change=${this._handleSelectionChange}>
 					${this._candidateActivities.map(activity => html`
-						<d2l-list-item selectable ?hidden="${!activity.loaded}" ?selected="${this._currentSelection.has(activity.organizationUrl)}"
-							?disabled="${!this._currentSelection.has(activity.organizationUrl) && this._selectionCount >= this.maxPromotedCourses && this.maxPromotedCourses > 0}"
-							key="${activity.organizationUrl}">
+						<d2l-list-item selectable ?hidden="${!activity.loaded}" key="${activity.organizationUrl}"
+							?selected="${this._isCandidateSelected(activity)}" ?disabled="${this._isCandidateDisabled(activity)}">
 
 							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" @d2l-organization-image-loaded="${this._handleOrgImageLoaded}"></d2l-organization-image>
 							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleCandidateOrgAccessible}"></d2l-organization-name>
@@ -247,6 +246,16 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	_closePromotedDialogClicked() {
 		this._promotedDialogOpen = false;
 		this._resetCheckedCandidates();
+	}
+
+	_isCandidateSelected(activity) {
+		return this._currentSelection.has(activity.organizationUrl);
+	}
+
+	_isCandidateDisabled(activity) {
+		return !this._isCandidateSelected(activity) &&
+		this._selectionCount >= this.maxPromotedCourses &&
+		this.maxPromotedCourses > 0;
 	}
 
 	_handleSearch(e) {
