@@ -25,7 +25,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 
 	constructor() {
 		super();
-		this.maxPromotedCourses = 0;
+		this.maxPromotedCourses = 4;
 		this._loadedCandidateImages = 0;
 		this._loadedCandidateText = 0;
 		this._promotedItemsLoading = true;
@@ -45,7 +45,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 	static get properties() {
 		return {
 			token: { type: String},
-			maxPromotedCourses: {type: Number }, //If set greater than zero, limits the number of selectable items in the dialog's list.
+			maxPromotedCourses: {type: Number }, //Limits the number of selectable items in the dialog's list to this number.
 
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
 
@@ -208,10 +208,7 @@ class DiscoverSettingsPromotedContent extends RouteLocationsMixin(FetchMixin(Loc
 			${this._selectionCount > 0 ? html`
 				<div class="d2l-body-compact discover-featured-selected-nav">
 					<div class="discover-featured-selected-nav-count">
-						${this.maxPromotedCourses > 0 ? html`
-							${this.localize('selectedFromMaximum', 'count', this._selectionCount, 'maximum', this.maxPromotedCourses)}` : html`
-							${this.localize('selected', 'count', this._selectionCount)}
-						`}
+						${this.localize('selectedFromMaximum', 'count', this._selectionCount, 'maximum', this.maxPromotedCourses)}
 					</div>
 					<d2l-link class="discover-featured-selected-nav-clear" tabindex="0" role="button" @click="${this._clearAllSelected}">
 						${this.localize('clearSelected')}
