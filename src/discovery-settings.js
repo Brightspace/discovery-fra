@@ -144,13 +144,13 @@ class DiscoverySettings extends LocalizeMixin(FetchMixin(RouteLocationsMixin(Lit
 	}
 
 	async _handleSave() {
-		await this.shadowRoot.querySelector("discover-settings-promoted-content").save();
+		await this.shadowRoot.querySelector('discover-settings-promoted-content').save();
 		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('saveCompleted');
 		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
 	}
 
 	_handleCancel() {
-		this.shadowRoot.querySelector("discover-settings-promoted-content").cancel();
+		this.shadowRoot.querySelector('discover-settings-promoted-content').cancel();
 		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('saveCancelled');
 		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
 	}

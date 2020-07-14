@@ -1,7 +1,7 @@
-import "./fetch-mixin";
+import './fetch-mixin';
 
 const promotedAction = 'get-promoted-courses';
-const discoverRel =  'https://discovery.brightspace.com'
+const discoverRel =  'https://discovery.brightspace.com';
 
 //Mixin for handling promoted fetching and saving.
 export const PromotedMixin = FetchMixin => class extends FetchMixin {
@@ -36,15 +36,14 @@ export const PromotedMixin = FetchMixin => class extends FetchMixin {
 		const token = await this._getToken();
 		// Default options are marked with *
 		const response = await fetch(url, {
-		  method: 'POST',
-		  headers: {
-			'Content-Type': 'application/json',
-			'Authorization' : 'Bearer ' + token
-			// 'Content-Type': 'application/x-www-form-urlencoded',
-		  },
-		  body: JSON.stringify(data) // body data type must match "Content-Type" header
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization' : 'Bearer ' + token
+			},
+			body: JSON.stringify(data) // body data type must match "Content-Type" header
 		});
-		if(response.ok) {
+		if (response.ok) {
 			return response.json();
 		}
 		else {

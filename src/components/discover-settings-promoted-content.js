@@ -127,7 +127,7 @@ class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(
 	}
 
 	async save() {
-		if( this._promotedItemsLoading === true || this._candidateItemsLoading === true) {
+		if (this._promotedItemsLoading === true || this._candidateItemsLoading === true) {
 			return;
 		}
 
@@ -140,12 +140,11 @@ class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(
 	}
 
 	cancel() {
-		if( this._promotedItemsLoading === true || this._candidateItemsLoading === true) {
+		if (this._promotedItemsLoading === true || this._candidateItemsLoading === true) {
 			return;
 		}
 
 		this._promotedItemsLoading = true;
-		this._candidateItemsLoading = true;
 		this._currentSelection = new Set();
 		this._loadPromotedCourses();
 	}
