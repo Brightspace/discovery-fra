@@ -6,6 +6,7 @@ const discoverRel =  'https://discovery.brightspace.com';
 //Mixin for handling promoted fetching and saving.
 export const PromotedMixin = FetchMixin => class extends FetchMixin {
 
+	//Returns an array containing the current set of promoted activities.
 	async fetchPromotedActivities() {
 		const url = await this._getActionUrl(promotedAction);
 		const promotedCollectionEntity = await this._fetchEntity(url);
@@ -17,6 +18,7 @@ export const PromotedMixin = FetchMixin => class extends FetchMixin {
 		return null;
 	}
 
+	//Takes an array of org URLs and writes them as the new set of promoted courses.
 	async savePromotedActivities(orgUrlArray) {
 		orgUrlArray = this._parseCourseIDs(orgUrlArray);
 
@@ -34,14 +36,13 @@ export const PromotedMixin = FetchMixin => class extends FetchMixin {
 
 	async _postData(url, data) {
 		const token = await this._getToken();
-		// Default options are marked with *
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization' : 'Bearer ' + token
 			},
-			body: JSON.stringify(data) // body data type must match "Content-Type" header
+			body: JSON.stringify(data)
 		});
 		if (response.ok) {
 			return response.json();
