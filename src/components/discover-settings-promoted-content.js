@@ -132,7 +132,6 @@ class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(
 		}
 
 		const orgUrlArray = [];
-
 		this._currentSelection.forEach(activity => {
 			orgUrlArray.push(activity);
 		});
@@ -149,9 +148,6 @@ class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(
 		this._candidateItemsLoading = true;
 		this._currentSelection = new Set();
 		this._loadPromotedCourses();
-		this._getSortUrl().then((url) => {
-			this._loadCandidateCourses(url);
-		});
 	}
 
 	render() {

@@ -28,9 +28,7 @@ class DiscoverySettings extends LocalizeMixin(FetchMixin(RouteLocationsMixin(Lit
 				<save-close-buttons></save-close-buttons>
 			</div>
 
-			<d2l-alert-toast type="success">
-				A default toast alert.
-			</d2l-alert-toast>
+			<d2l-alert-toast type="success"></d2l-alert-toast>
 		`;
 	}
 
