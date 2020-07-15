@@ -30,6 +30,8 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 				}
 				.discovery-no-courses-message {
 					@apply --d2l-body-compact-text;
+					padding-top: 60px;
+					text-align: center;
 				}
 				@media only screen and (max-width: 929px) {
 					.discovery-home-main {
@@ -47,12 +49,12 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 				<div class="discovery-home-home-header">
 					<home-header id="discovery-home-home-header" query="" show-settings-button="[[canManageDiscover]]"></home-header>
 				</div>
-				<div class="discovery-no-courses-message" hidden$="[[_hasCourses]]">[[localize('noActivities')]]</div>
 				<template is="dom-if" if="[[promotedCoursesEnabled]]">
 					<featured-list-section
 						href="[[_promotedCoursesHref]]"
 						token="[[token]]"></featured-list-section>
 				</template>
+				<div class="discovery-no-courses-message" hidden$="[[_hasCoursesFromAllSection]]">[[_noActivitiesMsg]]</div>
 				<home-list-section
 					href="[[_addedHref]]"
 					token="[[token]]"
@@ -99,10 +101,7 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 				type: Boolean,
 				value: false
 			},
-			_hasCourses: {
-				type: Boolean,
-				value: true
-			}
+			_noActivitiesMsg: String
 		};
 	}
 
@@ -116,11 +115,10 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 		if (e && e.detail) {
 			if (e.detail.value > 0) {
 				this._hasCoursesFromAllSection = true;
-				this._hasCourses = true;
 			} else {
 				this._hasCoursesFromAllSection = false;
-				this._hasCourses = this._hasPromotedCourses;
 			}
+			this._updateNoActivitiesMsg();
 		}
 	}
 
@@ -128,11 +126,21 @@ class DiscoveryHome extends FetchMixin(LocalizeMixin(PolymerElement)) {
 		if (e && e.detail) {
 			if (e.detail.value > 0) {
 				this._hasPromotedCourses = true;
-				this._hasCourses = true;
 			} else {
 				this._hasPromotedCourses = false;
-				this._hasCourses = this._hasCoursesFromAllSection;
 			}
+			this._updateNoActivitiesMsg();
+		}
+	}
+
+	_updateNoActivitiesMsg() {
+		if (this._hasCoursesFromAllSection) {
+			return;
+		}
+		if (this._hasPromotedCourses) {
+			this._noActivitiesMsg = this.localize('noActivitiesExceptPrmoted');
+		} else {
+			this._noActivitiesMsg = this.localize('noActivities');
 		}
 	}
 

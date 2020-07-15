@@ -79,6 +79,7 @@ window.D2L.Discovery.LangEn = {
 	"new": "New",
 	"all": "All",
 	"noActivities": "There are no activities available or you're already enrolled in all of them. Try again later.",
+	"noActivitiesExceptPrmoted": "There are no new or updated activities available or you're already enrolled in all of them. Try again later.",
 	"recentlyUpdatedAllLoadedMessage": "All recently updated courses have been loaded",
 	"pageAllLoadedMessage": "The page of courses has been loaded.",
 	"loadMore": "Load More",
