@@ -19,7 +19,7 @@ class DiscoverySettings extends LocalizeMixin(FetchMixin(RouteLocationsMixin(Lit
 			<style include="discovery-styles"></style>
 			<div class="discovery-settings-main">
 				<div class="discovery-settings-header">
-					<home-header query="" .showSettingsButton="${this.canManageDiscover}"></home-header>
+					<home-header query="" reset-page="settings" .showSettingsButton="${this.canManageDiscover}"></home-header>
 				</div>
 				<div class="discovery-settings-content">
 					<discover-settings-promoted-content token="${this.token}"></discover-settings-promoted-content>
@@ -150,9 +150,13 @@ class DiscoverySettings extends LocalizeMixin(FetchMixin(RouteLocationsMixin(Lit
 	}
 
 	_handleCancel() {
-		this.shadowRoot.querySelector('discover-settings-promoted-content').cancel();
+		this._reset();
 		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('saveCancelled');
 		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
+	}
+
+	_reset() {
+		this.shadowRoot.querySelector('discover-settings-promoted-content').cancel();
 	}
 }
 

@@ -147,7 +147,8 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 		return {
 			query: String,
 			searchInput: Object,
-			showSettingsButton: Boolean
+			showSettingsButton: Boolean,
+			resetPage: String //The app name of a page to reset upon navigation
 		};
 	}
 	ready() {
@@ -182,6 +183,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
 				path: this.routeLocations().navLink(),
+				resetPages: [this.resetPage]
 			},
 			bubbles: true,
 			composed: true,
@@ -190,7 +192,8 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	_navigateToBrowseAll() {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: this.routeLocations().search('', { sort: 'relevant' })
+				path: this.routeLocations().search('', { sort: 'relevant' }),
+				resetPages: [this.resetPage]
 			},
 			bubbles: true,
 			composed: true
@@ -199,7 +202,8 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	_navigateToSettings() {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: this.routeLocations().settings()
+				path: this.routeLocations().settings(),
+				resetPages: [this.resetPage]
 			},
 			bubbles: true,
 			composed: true
