@@ -80,6 +80,10 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 			_manageDiscover: {
 				type: Boolean,
 				computed: '_canManageDiscover()'
+			},
+			_discoverCustomizationsEnabled: {
+				type: Boolean,
+				computed: '_isDiscoverCustomizationsEnabled()'
 			}
 		};
 	}

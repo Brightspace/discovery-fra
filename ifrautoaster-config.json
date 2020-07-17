@@ -16,7 +16,8 @@
           "webServerName": "localhost:9090",
           "userId": "169",
           "promotedCourses": "true",
-          "canManageDiscover": "true"
+          "canManageDiscover": "true",
+          "discoverCustomizations": "true"
         }
       }
     }
