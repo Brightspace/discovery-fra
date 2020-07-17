@@ -59,10 +59,29 @@ class DiscoverySettings extends LocalizeMixin(FetchMixin(RouteLocationsMixin(Lit
 					.discovery-settings-main {
 						margin: 0 24px;
 					}
+					.discovery-settings-content {
+						min-height: 29rem;
+					}
 				}
 				@media only screen and (max-width: 767px) {
 					.discovery-settings-main {
 						margin: 0 18px;
+					}
+					.discovery-settings-content {
+						min-height: 27rem;
+					}
+				}
+				@media only screen and (max-width: 671px) {
+					.discovery-settings-main {
+						margin: 0 18px;
+					}
+					.discovery-settings-content {
+						min-height: 22rem;
+					}
+				}
+				@media only screen and (max-width: 615px) {
+					.discovery-settings-content {
+						min-height: 20rem;
 					}
 				}
 			`
