@@ -200,7 +200,7 @@ class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(
 				</d2l-list>
 			` : html`
 				<div class="discover-featured-empty" ?hidden="${this._promotedItemsLoading}">
-					There are no activities in this learning path.
+					${this.localize('noFeaturedActivities')}
 				</div>
 			`}
 		`;
