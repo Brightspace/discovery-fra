@@ -16,9 +16,9 @@ import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { entityFactory, dispose } from 'siren-sdk/src/es6/EntityFactory';
 import { OrganizationCollectionEntity } from 'siren-sdk/src/organizations/OrganizationCollectionEntity';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
-import { PromotedMixin } from '../mixins/promoted-mixin.js';
+import { DiscoverSettingsMixin } from '../mixins/discover-settings-mixin.js';
 
-class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(FetchMixin(LocalizeMixin(LitElement)))) {
+class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocationsMixin(FetchMixin(LocalizeMixin(LitElement)))) {
 
 	static async getLocalizeResources(langs) {
 		return getLocalizeResources(langs);
@@ -136,7 +136,7 @@ class DiscoverSettingsPromotedContent extends PromotedMixin(RouteLocationsMixin(
 			orgUrlArray.push(activity);
 		});
 
-		return await this.savePromotedActivities(orgUrlArray);
+		return await this.saveDiscoverSettings(orgUrlArray);
 	}
 
 	cancel() {
