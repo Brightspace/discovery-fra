@@ -146,7 +146,6 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 
 		this._promotedItemsLoading = true;
 		this._currentSelection = new Set();
-		this._selectionCount = this._currentSelection.size;
 		this._loadPromotedCourses();
 	}
 
@@ -300,8 +299,8 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 			activities.forEach(entity => {
 				const organizationUrl = entity.hasLink(Rels.organization) && entity.getLinkByRel(Rels.organization).href;
 				this._currentSelection.add(organizationUrl);
-				this._selectionCount = this._currentSelection.size;
 			});
+			this._selectionCount = this._currentSelection.size;
 			this._updateFeaturedList();
 			this._promotedItemsLoading = false;
 		});
