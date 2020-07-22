@@ -146,6 +146,7 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 
 		this._promotedItemsLoading = true;
 		this._currentSelection = new Set();
+		this._selectionCount = this._currentSelection.size;
 		this._loadPromotedCourses();
 	}
 
