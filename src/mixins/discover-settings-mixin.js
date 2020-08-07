@@ -2,6 +2,7 @@ import './fetch-mixin';
 
 const getPromotedAction = 'get-promoted-courses';
 const setDiscoverSettings = 'set-discover-settings';
+const getDiscoverSettings = 'get-discover-settings';
 const discoverRel =  'https://discovery.brightspace.com';
 
 //Mixin for handling promoted fetching and saving.
@@ -15,6 +16,17 @@ export const DiscoverSettingsMixin = FetchMixin => class extends FetchMixin {
 		if (promotedCollectionEntity !== null) {
 			const activities = promotedCollectionEntity.getSubEntitiesByRel(discoverRel);
 			return activities;
+		}
+		return null;
+	}
+
+	async fetchDiscoverSettings() {
+		const url = await this._getActionUrl(getDiscoverSettings);
+		const discoverSettingsEntity = await this._fetchEntity(url);
+
+		if (discoverSettingsEntity !== null) {
+			const settings = discoverSettingsEntity.properties;
+			return settings;
 		}
 		return null;
 	}

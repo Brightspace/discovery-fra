@@ -27,7 +27,9 @@ class HomeListSection extends EntityMixinLit(RouteLocationsMixin(LitElement)) {
 					</div>
 					<activity-card-list
 						.activities="${this._sortedCourses}"
-						token="${this.token}">
+						token="${this.token}"
+						?show-organization-code="${this.showOrganizationCode}"
+						?show-semester-name="${this.showSemesterName}">
 					</activity-card-list>
 				</div>
 			</div>
@@ -89,6 +91,12 @@ class HomeListSection extends EntityMixinLit(RouteLocationsMixin(LitElement)) {
 			},
 			_sortedCourses: {
 				type: Array,
+			},
+			showOrganizationCode: {
+				type: Boolean
+			},
+			showSemesterName: {
+				type: Boolean,
 			}
 		};
 	}

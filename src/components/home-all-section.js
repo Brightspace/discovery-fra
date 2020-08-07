@@ -53,7 +53,9 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 					<activity-card-list
 						header="[[localize('recentlyUpdated')]]"
 						activities="[[_recentlyUpdatedItems]]"
-						token="[[token]]">
+						token="[[token]]"
+						show-organization-code$="[[showOrganizationCode]]"
+						show-semester-name$="[[showSemesterName]]">
 					</activity-card-list>
 					<d2l-button
 						class="discovery-home-load-more-button"
@@ -87,6 +89,12 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 			_recentlyUpdatedItemsHasMore: {
 				type: Boolean,
 				value: false
+			},
+			showOrganizationCode: {
+				type: Boolean
+			},
+			showSemesterName: {
+				type: Boolean,
 			},
 			token: String
 		};

@@ -26,7 +26,9 @@ class FeaturedListSection extends EntityMixinLit(RouteLocationsMixin(LocalizeMix
 					</div>
 					<activity-card-list
 						.activities="${this._promotedCourses}"
-						token="${this.token}">
+						token="${this.token}"
+						?show-organization-code="${this.showOrganizationCode}"
+						?show-semester-name="${this.showSemesterName}">
 					</activity-card-list>
 				</div>
 			</div>
@@ -76,6 +78,12 @@ class FeaturedListSection extends EntityMixinLit(RouteLocationsMixin(LocalizeMix
 			},
 			_promotedCourses: {
 				type: Array,
+			},
+			showOrganizationCode: {
+				type: Boolean
+			},
+			showSemesterName: {
+				type: Boolean,
 			}
 		};
 	}

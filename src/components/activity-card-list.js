@@ -34,8 +34,8 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 							entity=[[item]]
 							send-event-on-click
 							token="[[token]]"
-							show-organization-code
-							show-semester-name
+							show-organization-code="[[showOrganizationCode]]"
+							show-semester-name="[[showSemesterName]]"
 							align-center
 							show-activity-type>
 						</d2l-activity-card>
@@ -52,6 +52,8 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 				type: String,
 				value: '0.75rem'
 			},
+			showOrganizationCode: Boolean,
+			showSemesterName: Boolean,
 			token: String
 		};
 	}
