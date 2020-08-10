@@ -190,7 +190,6 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 				}
 			});
 		}
-
 		this._setUpUrls();
 	}
 
