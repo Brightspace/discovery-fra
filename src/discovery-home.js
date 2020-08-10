@@ -179,7 +179,7 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 	}
 
 	_setUpUrls() {
-		if(this._isDiscoverCustomizationsEnabled()) {
+		if (this._isDiscoverCustomizationsEnabled()) {
 			this.fetchDiscoverSettings().then(properties => {
 				this.showOrganizationCode = properties.showCourseCode;
 				this.showSemesterName = properties.showSemester;
