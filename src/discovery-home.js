@@ -11,8 +11,9 @@ import './styles/discovery-styles.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 import { DiscoverSettingsMixin } from './mixins/discover-settings-mixin.js';
 import { LocalizeMixin } from './mixins/localize-mixin.js';
+import { FeatureMixin } from './mixins/feature-mixin.js';
 
-class DiscoveryHome extends DiscoverSettingsMixin(FetchMixin(LocalizeMixin(PolymerElement))) {
+class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(LocalizeMixin(PolymerElement)))) {
 	static get template() {
 
 		return html`
@@ -178,10 +179,15 @@ class DiscoveryHome extends DiscoverSettingsMixin(FetchMixin(LocalizeMixin(Polym
 	}
 
 	_setUpUrls() {
-		this.fetchDiscoverSettings().then(properties => {
-			this.showOrganizationCode = properties.showCourseCode;
-			this.showSemesterName = properties.showSemester;
-		});
+		if(this._isDiscoverCustomizationsEnabled()) {
+			this.fetchDiscoverSettings().then(properties => {
+				this.showOrganizationCode = properties.showCourseCode;
+				this.showSemesterName = properties.showSemester;
+			});
+		} else {
+			this.showOrganizationCode = true;
+			this.showSemesterName = true;
+		}
 
 		this._getSortUrl('added').then(url => {
 			this._addedHref = url;
