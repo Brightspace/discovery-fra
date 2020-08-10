@@ -176,7 +176,8 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 								max="[[_pageTotal]]"
 								size=[[_countDigits(_pageTotal)]]
 								on-keydown="_toPage"
-								on-blur="_inputPageCounterOnBlur">
+								on-blur="_inputPageCounterOnBlur"
+								novalidate>
 							</d2l-input-text>
 							<div>
 							/ [[_pageTotal]]
