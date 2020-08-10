@@ -23,12 +23,7 @@ export const DiscoverSettingsMixin = FetchMixin => class extends FetchMixin {
 	async fetchDiscoverSettings() {
 		const url = await this._getActionUrl(getDiscoverSettings);
 		const discoverSettingsEntity = await this._fetchEntity(url);
-
-		if (discoverSettingsEntity !== null) {
-			const settings = discoverSettingsEntity.properties;
-			return settings;
-		}
-		return null;
+		return discoverSettingsEntity && discoverSettingsEntity.properties;
 	}
 
 	//Takes an array of org URLs and writes them as the new set of promoted courses.
