@@ -10,6 +10,8 @@ import 'd2l-colors/d2l-colors.js';
 import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
+import { FeatureMixin } from './mixins/feature-mixin.js';
+import { DiscoverSettingsMixin } from './mixins/discover-settings-mixin.js';
 
 import './components/course-action.js';
 import './components/course-summary.js';
@@ -18,7 +20,7 @@ import './styles/discovery-styles.js';
 
 class DiscoveryCourse extends mixinBehaviors(
 	[D2L.PolymerBehaviors.Hypermedia.OrganizationHMBehavior, IronResizableBehavior],
-	FetchMixin(RouteLocationsMixin(LocalizeMixin(PolymerElement)))) {
+	DiscoverSettingsMixin(FeatureMixin(FetchMixin(RouteLocationsMixin(LocalizeMixin(PolymerElement)))))) {
 	static get template() {
 		return html `
 			<style include="discovery-styles">
@@ -193,7 +195,7 @@ class DiscoveryCourse extends mixinBehaviors(
 							data-is-ready=[[_dataIsReady]]>
 						</course-summary>
 
-						<course-action
+						<course-action hidden$="[[_hideCourseAction(_courseDescriptionItems, _dataIsReady)]]"
 							class="discovery-course-action"
 							course-tags=[[_courseTags]]
 							course-description-items=[[_courseDescriptionItems]]
@@ -234,6 +236,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			_courseDescriptionItems: Array,
 			_organizationHomepage: String,
 			_organizationHref: String,
+			_showOrganizationCode: Boolean,
 			_startDateIsoFormat: String,
 			_endDateIsoFormat: String,
 			_dataIsReady: {
@@ -324,7 +327,7 @@ class DiscoveryCourse extends mixinBehaviors(
 
 		return Promise.resolve();
 	}
-	_handleOrganizationEntity(organizationEntity) {
+	async _handleOrganizationEntity(organizationEntity) {
 		if (!organizationEntity) return Promise.reject();
 
 		if (!organizationEntity.hasClass('active') || !organizationEntity.hasClass('self-assignable')) {
@@ -348,7 +351,7 @@ class DiscoveryCourse extends mixinBehaviors(
 				this._endDateIsoFormat = endDate;
 				this._endDate = this.formatDate(new Date(Date.parse(endDate)), {format: dateFormat});
 			}
-			this._processCourseDescriptionItems();
+			await this._processCourseDescriptionItems();
 		}
 
 		this._organizationHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
@@ -370,7 +373,8 @@ class DiscoveryCourse extends mixinBehaviors(
 
 		return Promise.resolve();
 	}
-	_processCourseDescriptionItems() {
+
+	async _processCourseDescriptionItems() {
 		const courseDescriptionItemsArray = [];
 		if (this._startDate) {
 			courseDescriptionItemsArray.push({
@@ -384,7 +388,9 @@ class DiscoveryCourse extends mixinBehaviors(
 				description: this._endDate
 			});
 		}
-		if (this._courseCode) {
+
+		await this._initializeShowOrganizationCode();
+		if (this._courseCode && this._showOrganizationCode) {
 			courseDescriptionItemsArray.push({
 				term: this.localize('courseCode'),
 				description: this._courseCode
@@ -506,6 +512,25 @@ class DiscoveryCourse extends mixinBehaviors(
 	_updateDocumentTitle() {
 		const instanceName = window.D2L && window.D2L.frau && window.D2L.frau.options && window.D2L.frau.options.instanceName;
 		document.title = this.localize('coursePageDocumentTitle', 'courseName', this._courseTitle, 'instanceName', instanceName ? instanceName : '');
+	}
+
+	_hideCourseAction(items, dataIsReady) {
+		if ((items && items.length > 0) || !dataIsReady) {
+			return false;
+		}
+
+		return true;
+	}
+
+	async _initializeShowOrganizationCode() {
+		this._showOrganizationCode = true;
+
+		if (this._isDiscoverCustomizationsEnabled()) {
+			const properties = await this.fetchDiscoverSettings();
+			if (properties) {
+				this._showOrganizationCode = properties.showCourseCode;
+			}
+		}
 	}
 }
 
