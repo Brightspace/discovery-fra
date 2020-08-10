@@ -168,7 +168,6 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 
 		this._updateToken();
 		this._initializeSettings();
-		this._setUpUrls();
 		const instanceName = window.D2L && window.D2L.frau && window.D2L.frau.options && window.D2L.frau.options.instanceName;
 		document.title = this.localize('homepageDocumentTitle', 'instanceName', instanceName ? instanceName : '');
 
@@ -180,15 +179,19 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 	}
 
 	_initializeSettings() {
+		this.showOrganizationCode = true;
+		this.showSemesterName = true;
+
 		if (this._isDiscoverCustomizationsEnabled()) {
 			this.fetchDiscoverSettings().then(properties => {
-				this.showOrganizationCode = properties.showCourseCode;
-				this.showSemesterName = properties.showSemester;
+				if (properties) {
+					this.showOrganizationCode = properties.showCourseCode;
+					this.showSemesterName = properties.showSemester;
+				}
 			});
-		} else {
-			this.showOrganizationCode = true;
-			this.showSemesterName = true;
 		}
+
+		this._setUpUrls();
 	}
 
 	_setUpUrls() {
