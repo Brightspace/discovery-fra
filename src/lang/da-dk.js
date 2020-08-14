@@ -1,5 +1,6 @@
 export default {
 	'add': 'Tilføj',
+	'backToDiscover': 'Tilbage til Registrer',
 	'browseDiscoverLibrary': 'Gennemse Registrer bibliotek',
 	'cancel': 'Annuller',
 	'clearSelected': 'Ryd valg',

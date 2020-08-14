@@ -1,5 +1,6 @@
 export default {
 	'add': '追加',
+	'backToDiscover': 'Discover に戻る',
 	'browseDiscoverLibrary': 'Discovery ライブラリの参照',
 	'cancel': 'キャンセル',
 	'clearSelected': '選択のクリア',

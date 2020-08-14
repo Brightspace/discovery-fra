@@ -1,5 +1,6 @@
 export default {
 	'add': '新增',
+	'backToDiscover': '返回探索',
 	'browseDiscoverLibrary': '瀏覽探索資料庫',
 	'cancel': '取消',
 	'clearSelected': '清除選取範圍',

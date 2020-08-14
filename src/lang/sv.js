@@ -1,5 +1,6 @@
 export default {
 	'add': 'Lägg till',
+	'backToDiscover': 'Tillbaka till Upptäck',
 	'browseDiscoverLibrary': 'Bläddra i upptäcksbiblioteket',
 	'cancel': 'Avbryt',
 	'clearSelected': 'Rensa val',

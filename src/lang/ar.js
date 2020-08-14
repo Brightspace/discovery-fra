@@ -1,5 +1,6 @@
 export default {
 	'add': 'إضافة',
+	'backToDiscover': 'العودة إلى أداة الاكتشاف',
 	'browseDiscoverLibrary': 'استعراض مكتبة أداة الاكتشاف',
 	'cancel': 'إلغاء',
 	'clearSelected': 'مسح التحديد',

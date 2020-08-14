@@ -1,5 +1,6 @@
 export default {
 	'add': 'Ajouter',
+	'backToDiscover': 'Retour à la section Discover (Découvrir)',
 	'browseDiscoverLibrary': 'Parcourir la bibliothèque de découverte',
 	'cancel': 'Annuler',
 	'clearSelected': 'Effacer la sélection',

@@ -1,5 +1,6 @@
 export default {
 	'add': 'Add',
+	'backToDiscover': 'Back to Discover',
 	'browseDiscoverLibrary': 'Browse Discover Library',
 	'cancel': 'Cancel',
 	'clearSelected': 'Clear Selection',

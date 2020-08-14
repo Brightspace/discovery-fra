@@ -1,5 +1,6 @@
 export default {
 	'add': 'Toevoegen',
+	'backToDiscover': 'Terug naar Ontdekken',
 	'browseDiscoverLibrary': 'Door detectiebibliotheek bladeren',
 	'cancel': 'Annuleren',
 	'clearSelected': 'Selectie wissen',

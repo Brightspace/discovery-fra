@@ -1,5 +1,6 @@
 export default {
 	'add': 'Ekle',
+	'backToDiscover': 'Keşfet\'e Geri Dön',
 	'browseDiscoverLibrary': 'Keşfet Kütüphanesine Göz At',
 	'cancel': 'İptal',
 	'clearSelected': 'Seçimi Temizle',

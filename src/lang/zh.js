@@ -1,5 +1,6 @@
 export default {
 	'add': '添加',
+	'backToDiscover': '返回“发现”',
 	'browseDiscoverLibrary': '浏览发现库',
 	'cancel': '取消',
 	'clearSelected': '清除选择',

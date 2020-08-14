@@ -1,5 +1,6 @@
 export default {
 	'add': 'Ychwanegu',
+	'backToDiscover': 'Back to Discover',
 	'browseDiscoverLibrary': 'Pori Llyfrgell Darganfod',
 	'cancel': 'Cancel',
 	'clearSelected': 'Clirio Detholiad',

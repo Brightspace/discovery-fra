@@ -1,5 +1,6 @@
 export default {
 	'add': '추가',
+	'backToDiscover': 'Discover로 돌아가기',
 	'browseDiscoverLibrary': '감지 라이브러리 찾아보기',
 	'cancel': '취소',
 	'clearSelected': '선택 지우기',
