@@ -26,7 +26,8 @@ class DiscoverSettingsBreadcrumbsLit extends LocalizeMixin(RouteLocationsMixin(L
 
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: this.routeLocations().home()
+				path: this.routeLocations().home(),
+				resetPages: ['settings']
 			},
 			bubbles: true,
 			composed: true
