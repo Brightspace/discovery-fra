@@ -78,11 +78,6 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 				.discovery-settings-h1 {
 					margin-top: .5rem;
 				}
-
-				.discovery-settings-breadcrumbs {
-					font-size: 14px;
-				}
-
 				.discovery-settings-main {
 					margin: 0 30px;
 				}
