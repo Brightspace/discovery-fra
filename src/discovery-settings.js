@@ -255,24 +255,6 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		}));
 	}
 
-	_navigateToHome(e) {
-		if (e) {
-			e.preventDefault();
-		}
-
-		this.dispatchEvent(new CustomEvent('navigate', {
-			detail: {
-				path: this.routeLocations().home()
-			},
-			bubbles: true,
-			composed: true
-		}));
-	}
-
-	_getHomeHref() {
-		return this.valenceHomeHref();
-	}
-
 	_updateToken() {
 		return this._getToken()
 			.then((token) => {
