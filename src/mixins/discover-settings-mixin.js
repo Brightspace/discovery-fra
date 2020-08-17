@@ -6,6 +6,7 @@ const getDiscoverSettings = 'get-discover-settings';
 const discoverRel =  'https://discovery.brightspace.com';
 
 //Mixin for handling promoted fetching and saving.
+/* @polymerMixin */
 export const DiscoverSettingsMixin = FetchMixin => class extends FetchMixin {
 
 	//Returns an array containing the current set of promoted activities.
