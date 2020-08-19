@@ -1,32 +1,32 @@
-import '../build/lang/ar.js';
-import '../build/lang/de.js';
-import '../build/lang/en.js';
-import '../build/lang/es.js';
-import '../build/lang/fr.js';
-import '../build/lang/ja.js';
-import '../build/lang/ko.js';
-import '../build/lang/nl.js';
-import '../build/lang/pt.js';
-import '../build/lang/sv.js';
-import '../build/lang/tr.js';
-import '../build/lang/zh-tw.js';
-import '../build/lang/zh.js';
+import ar from '../lang_polymer/ar.js';
+import de from '../lang_polymer/de.js';
+import en from '../lang_polymer/en.js';
+import es from '../lang_polymer/es.js';
+import fr from '../lang_polymer/fr.js';
+import ja from '../lang_polymer/ja.js';
+import ko from '../lang_polymer/ko.js';
+import nl from '../lang_polymer/nl.js';
+import pt from '../lang_polymer/pt.js';
+import sv from '../lang_polymer/sv.js';
+import tr from '../lang_polymer/tr.js';
+import zhtw from '../lang_polymer/zh-tw.js';
+import zh from '../lang_polymer/zh.js';
 
 window.D2L = window.D2L || {};
 window.D2L.Discovery = window.D2L.Discovery || {};
 
 window.D2L.Discovery.Locales = {
-	'ar': D2L.Discovery.LangAr,
-	'de': D2L.Discovery.LangDe,
-	'en': D2L.Discovery.LangEn,
-	'es': D2L.Discovery.LangEs,
-	'fr': D2L.Discovery.LangFr,
-	'ja': D2L.Discovery.LangJa,
-	'ko': D2L.Discovery.LangKo,
-	'nl': D2L.Discovery.LangNl,
-	'pt': D2L.Discovery.LangPt,
-	'sv': D2L.Discovery.LangSv,
-	'tr': D2L.Discovery.LangTr,
-	'zh-tw': D2L.Discovery.LangZhtw,
-	'zh': D2L.Discovery.LangZh,
+	'ar': ar,
+	'de': de,
+	'en': en,
+	'es': es,
+	'fr': fr,
+	'ja': ja,
+	'ko': ko,
+	'nl': nl,
+	'pt': pt,
+	'sv': sv,
+	'tr': tr,
+	'zh-tw': zhtw,
+	'zh': zh,
 };

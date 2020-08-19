@@ -119,7 +119,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 							class="discovery-home-header-search-input"
 							label="[[localize('search')]]"
 							value="[[query]]"
-							placeholder="[[localize('search.placeholder')]]">
+							placeholder="[[localize('searchPlaceholder')]]">
 						</d2l-input-search>
 						<d2l-link
 							class="discovery-home-header-browse-all-link"

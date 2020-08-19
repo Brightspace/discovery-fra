@@ -81,7 +81,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 							id="discovery-search-header-search-input"
 							label="[[localize('search')]]"
 							value="[[query]]"
-							placeholder="[[localize('search.placeholder')]]">
+							placeholder="[[localize('searchPlaceholder')]]">
 						</d2l-input-search>
 					</div>
 				</div>

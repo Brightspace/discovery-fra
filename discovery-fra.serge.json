@@ -1,8 +1,12 @@
 [
   {
-    "name": "discovery-fra",
-    "source_dir": "lang",
-    "output_file_path": "lang/%LANG%.json",
+    "name": "discover",
+    "parser_plugin": {
+        "plugin": "parse_js"
+    },
+    "source_match": "en\\.js$",
+    "source_dir": "src/lang_polymer",
+    "output_file_path": "src/lang_polymer/%LANG%.js",
     "output_lang_rewrite": [
       "ar-sa ar",
       "de-de de",
@@ -30,7 +34,6 @@
       "ar-sa ar",
       "de-de de",
       "es-mx es",
-      "fi-FI fi",
       "fr-ca fr",
       "ja-jp ja",
       "ko-kr ko",

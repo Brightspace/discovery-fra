@@ -3,17 +3,11 @@
 'use strict';
 const death = require('death');
 const del = require('del');
-const ejs = require('gulp-ejs');
 const exec = require('child_process').exec;
 const fs = require('fs');
 const gulp = require('gulp');
-const mergeStream = require('merge-stream');
 const path = require('path');
-const rename = require('gulp-rename');
-const requireDir = require('require-dir');
 
-const langDirectory = './src/build';
-const localeResources = requireDir('lang');
 
 const ifrautoasterConfigFile = './ifrautoaster-config.json';
 const ifrautoasterCustomFile = './ifrautoaster-custom.json';
@@ -21,39 +15,6 @@ const buildDirectory = './build';
 
 const config = {
 	dest: buildDirectory,
-	localeFiles: Object.keys(localeResources).map((lang) => ({
-		filename: lang,
-		data: {
-			lang: lang,
-			properLang: lang.charAt(0).toUpperCase() + lang.slice(1).replace('-', ''),
-			resources: JSON.stringify(localeResources[lang], null, '\t'),
-			comment: 'This file is auto-generated. Do not modify.'
-		}
-	}))
-};
-
-//Creates the Polymer3 lang .js files in src/build
-function buildLang() {
-	const options = {
-		client: true,
-		strict: true,
-		root: langDirectory +'/lang',
-		localsName: 'data'
-	};
-
-	return mergeStream(config.localeFiles.map(({ filename, data }) =>
-		gulp.src('./templates/lang.ejs')
-			.pipe(ejs(data, options))
-			.pipe(rename({
-				basename: filename,
-				extname: '.js'
-			}))
-			.pipe(gulp.dest(options.root)))
-	);
-};
-
-function cleanLang() {
-	return del([langDirectory]);
 };
 
 const createBuildDir = (done) => {
@@ -88,8 +49,7 @@ const buildPolymer = (done) => {
 //Tracks changes to lang and source files, rebuilds on change.
 const watching = (cb) => {
 	const watchers = [
-		gulp.watch(['lang/*.json'], gulp.series(buildPolymerLang, buildPolymerDev)),
-		gulp.watch(['src/**/*.js', '!src/build/**/*'], gulp.series(buildPolymerDev))
+		gulp.watch(['src/**/*.js'], gulp.series(buildPolymerDev))
 	];
 
 	const done = death(() => {
@@ -136,11 +96,6 @@ const startToasterCustom = (done) => {
 	});
 };
 
-const buildPolymerLang = gulp.series(
-	cleanLang,
-	buildLang,
-);
-
 const buildPolymerDev = gulp.series(
 	createBuildDir,
 	cleanBuildDir,
@@ -149,7 +104,6 @@ const buildPolymerDev = gulp.series(
 
 const buildDev = gulp.parallel(
 	gulp.series(
-		buildPolymerLang,
 		buildPolymerDev,
 	),
 	gulp.series(
@@ -162,7 +116,6 @@ const buildDev = gulp.parallel(
 
 const buildDevCustomConfig = gulp.parallel(
 	gulp.series(
-		buildPolymerLang,
 		buildPolymerDev,
 	),
 	gulp.series(
@@ -174,11 +127,9 @@ const buildDevCustomConfig = gulp.parallel(
 );
 
 const clean = gulp.parallel(
-	cleanLang,
 	cleanBuildDir
 );
 
 exports['cleanBuild'] = clean;
-exports['buildLang'] = buildPolymerLang;
 exports['buildDev'] = buildDev;
 exports['buildDevCustom'] = buildDevCustomConfig;

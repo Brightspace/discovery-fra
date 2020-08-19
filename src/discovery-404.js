@@ -13,7 +13,7 @@ class Discovery404 extends LocalizeMixin(PolymerElement) {
 					padding: 10px;
 				}
 	  		</style>
-			<p>[[localize('404message')]] <a href="javascript:void(0)" on-click="_goToHome">[[localize('navigateHome')]]</a></p>
+			<p>[[localize('message404')]] <a href="javascript:void(0)" on-click="_goToHome">[[localize('navigateHome')]]</a></p>
 		`;
 	}
 	_goToHome() {
