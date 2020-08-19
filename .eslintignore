@@ -1,1 +1,6 @@
-build/*
+/build/
+node_modules/
+ifrautoaster-custom.json
+
+src/lang/**/*.js
+src/lang_polymer/**/*.js
