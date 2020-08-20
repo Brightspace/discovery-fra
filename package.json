@@ -25,6 +25,7 @@
     "buildDev:custom": "npx gulp buildDevCustom"
   },
   "dependencies": {
+    "@brightspace-ui-labs/pagination": "0.0.8",
     "@brightspace-ui/core": "^1.66.2",
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
