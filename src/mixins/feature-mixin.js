@@ -1,7 +1,7 @@
 'use strict';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 
-/* @mixin */
+/* @polymerMixin */
 const internalFeatureMixin = (superClass) => class extends superClass {
 	constructor() {
 		super();
