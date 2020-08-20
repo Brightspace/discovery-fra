@@ -23,7 +23,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			<div class="discovery-settings-main">
 				<div class="discovery-settings-header">
 					<discover-settings-breadcrumbs-lit></discover-settings-breadcrumbs-lit>
-					<h1 class="d2l-heading-1 discovery-settings-h1">Discover Settings</h1>
+					<h1 class="d2l-heading-1 discovery-settings-h1">${this.localize('discoverSettings')}</h1>
 				</div>
 				<div class="discovery-settings-content">
 					<discover-settings-promoted-content token="${this.token}"></discover-settings-promoted-content>
