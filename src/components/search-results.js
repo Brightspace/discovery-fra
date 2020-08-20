@@ -345,7 +345,6 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this._navigateToPage(e.detail.page);
 	}
 
-
 	_navigateToPage(pageNumber) {
 		// keep page number within the range of the search results.
 		pageNumber = Math.min(pageNumber, this._pageTotal);
