@@ -110,11 +110,13 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 			.discover-featured-selected-nav {
 				display:flex;
 				justify-content: flex-end;
-				width: 50%
+				width: 50%;
 				height: fit-content;
 			}
 			.discover-featured-selected-nav-count {
+				margin-left: 1rem;
 				margin-right: .5rem;
+				word-break: break-word;
 			}
 			.discover-featured-selected-nav-clear {
 				height: fit-content;
