@@ -3,6 +3,7 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import 'd2l-activities/components/d2l-activity-list-item/d2l-activity-list-item.js';
 import '@brightspace-ui/core/components/icons/icon.js';
+import '@brightspace-ui-labs/pagination/pagination.js';
 import 'd2l-button/d2l-button-icon.js';
 import 'd2l-inputs/d2l-input-text.js';
 import 'd2l-link/d2l-link.js';
@@ -159,36 +160,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 							</d2l-discover-list>
 						</div>
 						<div class="discovery-search-results-page-number-container">
-							<d2l-button-icon
-								icon="d2l-tier1:chevron-left"
-								aria-label$="[[localize('pagePrevious')]]"
-								disabled$="[[_previousPageDisabled(_pageCurrent)]]"
-								on-click="_toPreviousPage"
-								on-keydown="_toPreviousPage">
-							</d2l-button-icon>
-							<d2l-input-text
-								class="discovery-search-results-page-count"
-								type="number"
-								aria-label$="[[localize('pageSelection', 'pageCurrent', _pageCurrent, 'pageTotal', _pageTotal)]]"
-								name="myInput"
-								value="[[_pageCurrent]]"
-								min="1"
-								max="[[_pageTotal]]"
-								size=[[_countDigits(_pageTotal)]]
-								on-keydown="_toPage"
-								on-blur="_inputPageCounterOnBlur"
-								novalidate>
-							</d2l-input-text>
-							<div>
-							/ [[_pageTotal]]
-							</div>
-							<d2l-button-icon
-								icon="d2l-tier1:chevron-right"
-								aria-label$="[[localize('pageNext')]]"
-								disabled$="[[_nextPageDisabled(_pageCurrent, _pageTotal)]]"
-								on-click="_toNextPage"
-								on-keydown="_toNextPage">
-							</d2l-button-icon>
+							<d2l-labs-pagination on-pagination-page-change="_paginationPageChanged" page-number="[[_pageCurrent]]" max-page-number="[[_pageTotal]]"></d2l-labs-pagination>
 						</div>
 					</template>
 				</template>
@@ -368,34 +340,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		}
 	}
 
-	_toPreviousPage(event) {
-		if (event.type === 'keydown' && event.keyCode !== 13 && event.keyCode !== 32) {
-			return;
-		}
+	_paginationPageChanged(e) {
 
-		this._navigateToPage(this._pageCurrent - 1);
-	}
-	_previousPageDisabled(pageCurrent) {
-		return pageCurrent <= 1;
-	}
-	_toNextPage(event) {
-		if (event.type === 'keydown' && event.keyCode !== 13 && event.keyCode !== 32) {
-			return;
-		}
-
-		this._navigateToPage(this._pageCurrent + 1);
-	}
-	_nextPageDisabled(pageCurrent, pageTotal) {
-		return pageCurrent >= pageTotal;
-	}
-	_toPage(event) {
-		if (event.type !== 'keydown' || event.keyCode !== 13) {
-			return;
-		}
-		this._navigateToPage(event.srcElement.value);
-	}
-	_inputPageCounterOnBlur(event) {
-		event.srcElement.value = this._pageCurrent;
+		this._navigateToPage(e.detail.page);
 	}
 
 	_navigateToPage(pageNumber) {

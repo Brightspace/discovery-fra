@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@brightspace-ui/core": "^1.71.0",
+    "@brightspace-ui-labs/pagination": "0.0.8",
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
     "@polymer/iron-resizable-behavior": "^3.0.0",
