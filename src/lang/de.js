@@ -18,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Suchen...',
 	'selected': '{count} ausgewählt.',
 	'selectedFromMaximum': '{count}∕{maximum} ausgewählt.',
-	'settingsFeaturedSection' : 'Abschnitt „Angeboten“'
+	'settingsFeaturedSection': 'Abschnitt „Angeboten“',
+	'customizeDiscover': 'Discover personalisieren',
+	'showCourseCode': 'Kurscodes anzeigen',
+	'showSemester': 'Semester anzeigen'
 };

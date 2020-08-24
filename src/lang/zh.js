@@ -18,5 +18,8 @@ export default {
 	'searchPlaceholder': '搜索...',
 	'selected': '{count} 个已选择。',
 	'selectedFromMaximum': '已选 {count} 个（共 {maximum} 个）。',
-	'settingsFeaturedSection' : '特色部分'
+	'settingsFeaturedSection': '特色部分',
+	'customizeDiscover': '自定义发现',
+	'showCourseCode': '显示课程代码',
+	'showSemester': '显示学期'
 };

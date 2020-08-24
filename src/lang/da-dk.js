@@ -18,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Søg ...',
 	'selected': '{count} valgt.',
 	'selectedFromMaximum': '{count} ∕ {maximum} valgt.',
-	'settingsFeaturedSection' : 'Fremhævet sektion'
+	'settingsFeaturedSection': 'Fremhævet sektion',
+	'customizeDiscover': 'Tilpas Find',
+	'showCourseCode': 'Vis kursuskoder',
+	'showSemester': 'Vis semestre'
 };

@@ -18,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Buscar…',
 	'selected': '{count} seleccionado(s).',
 	'selectedFromMaximum': '{count} ∕ {maximum} seleccionado(s).',
-	'settingsFeaturedSection' : 'Sección destacada'
+	'settingsFeaturedSection': 'Sección destacada',
+	'customizeDiscover': 'Personalizar el apartado Descubrir',
+	'showCourseCode': 'Mostrar códigos del curso',
+	'showSemester': 'Mostrar semestres'
 };

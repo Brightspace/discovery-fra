@@ -7,10 +7,10 @@ export default {
 	'clickToViewActivity': 'Etkinliği görüntülemek için tıklayın',
 	'loadMore': 'Daha Fazla Yükle',
 	'noActivitiesFound': 'Arama teriminizi kullanan etkinlik bulunamadı.',
-	'noFeaturedActivities' : 'Þu anda öne çýkan bir içerik mevcut deðil.',
+	'noFeaturedActivities' : 'Şu anda öne çıkan bir içerik mevcut değil.',
 	'featured': 'Öne Çıkarıldı',
 	'featureContent': 'İçeriği Öne Çıkar',
-	'removeFromFeatured': 'Öne çýkan içerik bölümünden {course} dersini kaldýrmak için týklayýn.',
+	'removeFromFeatured': 'Öne çıkan içerik bölümünden {course} dersini kaldırmak için tıklayın.',
 	'save': 'Kaydet',
 	'saveCompleted' : 'Değişiklikler kaydedildi.',
 	'saveCancelled' : 'Değişiklikler iptal edildi.',
@@ -18,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Ara...',
 	'selected': '{count} öge seçildi.',
 	'selectedFromMaximum': '{count} ∕ {maximum} öğe seçildi.',
-	'settingsFeaturedSection' : 'Öne Çıkarılan Bölüm'
+	'settingsFeaturedSection': 'Öne Çıkarılan Bölüm',
+	'customizeDiscover': 'Keşfet Öğesini Özelleştir',
+	'showCourseCode': 'Ders kodlarını göster',
+	'showSemester': 'Dönemleri göster'
 };

@@ -10,7 +10,7 @@ export default {
 	'noFeaturedActivities' : 'No momento, não há nenhum conteúdo em destaque.',
 	'featured': 'Em destaque',
 	'featureContent': 'Destacar conteúdo',
-	'removeFromFeatured': 'Clique para remover o curso {course} da seção de conteúdo em destaque.',
+	'removeFromFeatured': 'Clique aqui para remover o curso {course} da seção de conteúdo em destaque.',
 	'save': 'Salvar',
 	'saveCompleted' : 'As alterações foram salvas.',
 	'saveCancelled' : 'As alterações foram canceladas.',
@@ -18,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Pesquisar…',
 	'selected': '{count} selecionado.',
 	'selectedFromMaximum': '{count} ∕ {maximum} selecionado.',
-	'settingsFeaturedSection' : 'Seção em destaque'
+	'settingsFeaturedSection': 'Seção em destaque',
+	'customizeDiscover': 'Personalizar descoberta',
+	'showCourseCode': 'Mostrar códigos de curso',
+	'showSemester': 'Mostrar semestres'
 };
