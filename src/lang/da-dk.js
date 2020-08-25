@@ -5,6 +5,7 @@ export default {
 	'cancel': 'Annuller',
 	'clearSelected': 'Ryd valg',
 	'clickToViewActivity': 'Klik for at få vist aktivitet',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': 'Indlæs flere',
 	'noActivitiesFound': 'Der blev ikke fundet nogen aktiviteter for dit søgeord.',
 	'noFeaturedActivities' : 'Der vises i øjeblikket ikke noget indhold.',

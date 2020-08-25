@@ -5,6 +5,7 @@ export default {
 	'cancel': '取消',
 	'clearSelected': '清除选择',
 	'clickToViewActivity': '点击查看活动',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': '加载更多',
 	'noActivitiesFound': '使用您的搜索术语未找到任何活动。',
 	'noFeaturedActivities' : '当前没有特色内容。',

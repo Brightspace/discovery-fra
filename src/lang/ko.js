@@ -5,6 +5,7 @@ export default {
 	'cancel': '취소',
 	'clearSelected': '선택 지우기',
 	'clickToViewActivity': '클릭하여 활동 보기',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': '더 많이 로드',
 	'noActivitiesFound': '검색어로 찾은 활동이 없습니다.',
 	'noFeaturedActivities' : '현재 추천 콘텐츠가 없습니다.',

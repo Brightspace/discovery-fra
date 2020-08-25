@@ -5,6 +5,7 @@ export default {
 	'cancel': 'إلغاء',
 	'clearSelected': 'مسح التحديد',
 	'clickToViewActivity': 'النقر لعرض النشاط',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': 'تحميل المزيد',
 	'noActivitiesFound': 'لم يتم العثور على أي أنشطة باستخدام مصطلح البحث.',
 	'noFeaturedActivities' : 'لا يتوفر حاليًا محتوى مميز.',
