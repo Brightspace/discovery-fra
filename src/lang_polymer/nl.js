@@ -1,5 +1,4 @@
 export default {
-	message404: "Oeps, u kreeg een 404-melding.",
 	OK: "OK",
 	accessMaterials: "Toegang tot materialen",
 	addToMyList: "Toevoegen aan mijn lijst",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Ontdekken - {instanceName}",
 	lastUpdatedDate: "Laatst bijgewerkt op {date}",
 	loadMore: "Meer laden",
+	message404: "Oeps, u kreeg een 404-melding.",
 	navigateHome: "Ga terug naar de startpagina.",
 	new: "Nieuw",
 	noActivities: "Er zijn geen activiteiten beschikbaar of u hebt u al voor alle activiteiten ingeschreven. Probeer het later opnieuw.",

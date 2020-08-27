@@ -1,5 +1,4 @@
 export default {
-	message404: "404를 기록했습니다.",
 	OK: "확인",
 	accessMaterials: "자료 접근",
 	addToMyList: "내 목록에 추가",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "검색 - {instanceName}",
 	lastUpdatedDate: "마지막 업데이트 날짜: {date}",
 	loadMore: "더 많이 로드",
+	message404: "404를 기록했습니다.",
 	navigateHome: "홈으로 돌아갑니다.",
 	new: "신규",
 	noActivities: "사용 가능한 활동이 없거나 이미 모든 활동에 등록되어 있습니다. 나중에 다시 시도하십시오.",

@@ -1,5 +1,4 @@
 export default {
-	message404: "Opa, ocorreu um erro 404.",
 	OK: "OK",
 	accessMaterials: "Materiais de acesso",
 	addToMyList: "Adicionar à minha lista",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Discover - {instanceName}",
 	lastUpdatedDate: "Última atualização {date}",
 	loadMore: "Carregar Mais",
+	message404: "Opa, ocorreu um erro 404.",
 	navigateHome: "Volte ao início.",
 	new: "Novas",
 	noActivities: "Não há atividades disponíveis, ou você já se inscreveu em todas elas. Tente novamente mais tarde.",

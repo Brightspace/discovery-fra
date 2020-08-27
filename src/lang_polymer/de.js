@@ -1,5 +1,4 @@
 export default {
-	message404: "Hoppla, Sie sind auf einen Fehler 404 gestoßen.",
 	OK: "OK",
 	accessMaterials: "Auf Materialien zugreifen",
 	addToMyList: "Meiner Liste hinzufügen",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Discover – {instanceName}",
 	lastUpdatedDate: "Zuletzt aktualisiert am {date}",
 	loadMore: "Mehr laden",
+	message404: "Hoppla, Sie sind auf einen Fehler 404 gestoßen.",
 	navigateHome: "Zurück zur Startseite.",
 	new: "Neu",
 	noActivities: "Es sind keine Aktivitäten verfügbar, oder Sie sind bereits bei allen Aktivitäten angemeldet. Versuchen Sie es später noch einmal.",

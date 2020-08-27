@@ -1,5 +1,4 @@
 export default {
-	message404: "抱歉！出现 404 错误。",
 	OK: "确定",
 	accessMaterials: "访问材料",
 	addToMyList: "添加至我的列表",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "发现 - {instanceName}",
 	lastUpdatedDate: "上次更新日期：{date}",
 	loadMore: "加载更多",
+	message404: "抱歉！出现 404 错误。",
 	navigateHome: "返回主页。",
 	new: "新建",
 	noActivities: "没有可用的活动或者您已注册所有活动。请稍后重试。",

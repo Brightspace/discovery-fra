@@ -1,5 +1,4 @@
 export default {
-	message404: "Hovsa, du aktiverede en 404.",
 	OK: "OK",
 	accessMaterials: "Få adgang til materialer",
 	addToMyList: "Føj til min liste",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Registrer – {instanceName}",
 	lastUpdatedDate: "Senest opdateret {date}",
 	loadMore: "Indlæs flere",
+	message404: "Hovsa, du aktiverede en 404.",
 	navigateHome: "Gå tilbage til startsiden.",
 	new: "Ny",
 	noActivities: "Der er ingen aktiviteter tilgængelige, eller du er allerede tilmeldt dem alle. Prøv igen senere.",

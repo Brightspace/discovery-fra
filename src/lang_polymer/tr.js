@@ -1,5 +1,4 @@
 export default {
-	message404: "Hay aksi! 404 hatası.",
 	OK: "Tamam",
 	accessMaterials: "Materyallere Eriş",
 	addToMyList: "Listeme Ekle",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Keşfet - {instanceName}",
 	lastUpdatedDate: "Son Güncelleme: {date}",
 	loadMore: "Daha Fazla Yükle",
+	message404: "Hay aksi! 404 hatası.",
 	navigateHome: "Ana sayfaya geri dönün.",
 	new: "Yeni",
 	noActivities: "Mevcut etkinlik yok veya tümü için kayıt yapmış bulunuyorsunuz. Daha sonra tekrar deneyin.",

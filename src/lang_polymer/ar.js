@@ -1,5 +1,4 @@
 export default {
-	message404: "عذرًا، تم الانتقال إلى صفحة 404.",
 	OK: "موافق",
 	accessMaterials: "الوصول إلى المواد",
 	addToMyList: "الإضافة إلى لائحتي",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "أداة الاكتشاف - {instanceName}",
 	lastUpdatedDate: "تاريخ آخر تحديث {date}",
 	loadMore: "تحميل المزيد",
+	message404: "عذرًا، تم الانتقال إلى صفحة 404.",
 	navigateHome: "عُد إلى الصفحة الرئيسية.",
 	new: "جديد",
 	noActivities: "لا تتوفر أي أنشطة، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.",

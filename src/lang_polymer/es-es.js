@@ -1,5 +1,4 @@
 export default {
-	message404 : "Lo sentimos. Se ha producido un 404.",
 	OK : "Aceptar",
 	accessMaterials : "Acceder a materiales",
 	addToMyList : "Agregar a mi lista",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle : "Descubrir: {instanceName}",
 	lastUpdatedDate : "Última actualización {date}",
 	loadMore : "Cargar más",
+	message404 : "Lo sentimos. Se ha producido un 404.",
 	navigateHome : "Regresar a la página de inicio.",
 	new : "Nuevo",
 	noActivities : "No hay ninguna actividad disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.",

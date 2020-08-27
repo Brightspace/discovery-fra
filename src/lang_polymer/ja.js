@@ -1,5 +1,4 @@
 export default {
-	message404: "404 エラーが発生しました。",
 	OK: "OK",
 	accessMaterials: "資料へのアクセス",
 	addToMyList: "マイリストに追加",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Discover - {instanceName}",
 	lastUpdatedDate: "最終更新日 {date}",
 	loadMore: "さらに読み込む",
+	message404: "404 エラーが発生しました。",
 	navigateHome: "ホームに戻ります。",
 	new: "新規",
 	noActivities: "使用可能なアクティビティがないか、すべてのアクティビティにすでに登録済みです。後でもう一度試してください。",

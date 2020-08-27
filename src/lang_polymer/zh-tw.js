@@ -1,5 +1,4 @@
 export default {
-	message404: "糟糕，發生 404 錯誤。",
 	OK: "確定",
 	accessMaterials: "存取資料",
 	addToMyList: "新增至我的清單",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "探索 - {instanceName}",
 	lastUpdatedDate: "上次更新時間：{date}",
 	loadMore: "載入更多",
+	message404: "糟糕，發生 404 錯誤。",
 	navigateHome: "返回首頁。",
 	new: "新式",
 	noActivities: "沒有可用的活動或您已經註冊所有的活動。請稍後再試。",

@@ -1,5 +1,4 @@
 export default {
-	message404: "Erreur 404.",
 	OK: "OK",
 	accessMaterials: "Accéder au matériel didactique",
 	addToMyList: "Ajouter à ma liste",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Discover (Découvrir) - {instanceName}",
 	lastUpdatedDate: "Dernière mise à jour le {date}",
 	loadMore: "Charger plus",
+	message404: "Erreur 404.",
 	navigateHome: "Revenir à la page d’accueil.",
 	new: "Nouvelle",
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit à toutes les activités. Réessayez ultérieurement.",

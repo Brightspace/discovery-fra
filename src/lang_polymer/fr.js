@@ -1,5 +1,4 @@
 export default {
-	message404: "Oups, une erreur 404 de page introuvable est survenue.",
 	OK: "OK",
 	accessMaterials: "Accéder au matériel",
 	addToMyList: "Ajouter à ma liste",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Découvrir – {instanceName}",
 	lastUpdatedDate: "Dernière mise à jour effectuée le {date}",
 	loadMore: "En voir plus",
+	message404: "Oups, une erreur 404 de page introuvable est survenue.",
 	navigateHome: "Revenir à la page d'accueil.",
 	new: "Nouvelle",
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit(e) dans chacune d'elles. Réessayez plus tard.",

@@ -1,5 +1,4 @@
 export default {
-	message404 : "O na! Rydych chi wedi dod ar draws 404.",
 	OK : "Iawn",
 	accessMaterials : "Mynd i’r Deunyddiau",
 	addToMyList : "Ychwanegu at fy Rhestr",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle : "Darganfod - {instanceName}",
 	lastUpdatedDate : "Diweddarwyd diwethaf {date}",
 	loadMore : "Llwytho Mwy",
+	message404 : "O na! Rydych chi wedi dod ar draws 404.",
 	navigateHome : "Mynd yn ôl i’r dudalen hafan.",
 	new : "Newydd",
 	noActivities : "Nid oes unrhyw weithgareddau ar gael neu rydych chi eisoes wedi cofrestru ar gyfer pob un ohonynt. Rhowch gynnig arall arni’n hwyrach.",

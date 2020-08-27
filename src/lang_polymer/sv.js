@@ -1,5 +1,4 @@
 export default {
-	message404: "Det uppstod ett 404-fel (sidan saknas).",
 	OK: "OK",
 	accessMaterials: "Åtkomst till material",
 	addToMyList: "Lägg till i min lista",
@@ -39,6 +38,7 @@ export default {
 	homepageDocumentTitle: "Upptäck - {instanceName}",
 	lastUpdatedDate: "Senast uppdaterad {date}",
 	loadMore: "Ladda mer",
+	message404: "Det uppstod ett 404-fel (sidan saknas).",
 	navigateHome: "Tillbaka till startsidan.",
 	new: "Ny",
 	noActivities: "Det finns inga tillgängliga aktiviteter eller så är du redan registrerad i alla. Försök igen senare.",
