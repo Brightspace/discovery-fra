@@ -1,5 +1,6 @@
 export default {
 	'add': '新增',
+	'backToDiscover': '返回探索',
 	'browseDiscoverLibrary': '瀏覽探索資料庫',
 	'cancel': '取消',
 	'clearSelected': '清除選取範圍',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': '搜尋...',
 	'selected': '已選取 {count} 個。',
 	'selectedFromMaximum': '已選取 {count} 個，上限為 {maximum} 個。',
-	'settingsFeaturedSection' : '特色章節'
+	'settingsFeaturedSection': '特色章節',
+	'customizeDiscover': '自訂探索',
+	'showCourseCode': '顯示課程代碼',
+	'showSemester': '顯示學期'
 };

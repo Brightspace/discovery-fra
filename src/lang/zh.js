@@ -1,5 +1,6 @@
 export default {
 	'add': '添加',
+	'backToDiscover': '返回“发现”',
 	'browseDiscoverLibrary': '浏览发现库',
 	'cancel': '取消',
 	'clearSelected': '清除选择',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': '搜索...',
 	'selected': '{count} 个已选择。',
 	'selectedFromMaximum': '已选 {count} 个（共 {maximum} 个）。',
-	'settingsFeaturedSection' : '特色部分'
+	'settingsFeaturedSection': '特色部分',
+	'customizeDiscover': '自定义发现',
+	'showCourseCode': '显示课程代码',
+	'showSemester': '显示学期'
 };

@@ -1,13 +1,13 @@
 'use strict';
-import './components/home-header.js';
 import './components/save-close-buttons.js';
 import './components/discover-settings-promoted-content.js';
 import '@brightspace-ui/core/components/button/button.js';
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import '@brightspace-ui/core/components/alert/alert-toast.js';
-import '@brightspace-ui/core/components/switch/switch-visibility.js';
+import '@brightspace-ui/core/components/inputs/input-checkbox.js';
+import './components/discover-settings-breadcrumbs-lit.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { heading1Styles, heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
@@ -22,7 +22,8 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			<style include="discovery-styles"></style>
 			<div class="discovery-settings-main">
 				<div class="discovery-settings-header">
-					<home-header query="" reset-page="settings" .showSettingsButton="${this.canManageDiscover}"></home-header>
+					<discover-settings-breadcrumbs-lit></discover-settings-breadcrumbs-lit>
+					<h1 class="d2l-heading-1 discovery-settings-h1">${this.localize('discoverSettings')}</h1>
 				</div>
 				<div class="discovery-settings-content">
 					<discover-settings-promoted-content token="${this.token}"></discover-settings-promoted-content>
@@ -42,16 +43,14 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 				<div class="discover-customization-section">
 					<h2 class="discover-customization-title">${this.localize('customizeDiscover')}</h2>
 					<div class="discover-customization-settings" ?hidden="${this._hideCustomizationSettings}">
-						<d2l-switch-visibility
-							id="showCourseCodeSwitch"
-							text=${this.localize('showCourseCode')}
-							?on=${this._savedShowCourseCode}
-							@change=${this._onShowCourseCodeChange}></d2l-switch-visibility>
-						<d2l-switch-visibility
-							id="showSemesterSwitch"
-							text=${this.localize('showSemester')}
-							?on=${this._savedShowSemester}
-							@change=${this._onShowSemesterChange}></d2l-switch-visibility>
+						<d2l-input-checkbox
+							id="showCourseCodeCheckbox"
+							?checked=${this._savedShowCourseCode}
+							@change=${this._onShowCourseCodeChange}>${this.localize('showCourseCode')}</d2l-input-checkbox>
+						<d2l-input-checkbox
+							id="showSemesterCheckbox"
+							?checked=${this._savedShowSemester}
+							@change=${this._onShowSemesterChange}>${this.localize('showSemester')}</d2l-input-checkbox>
 					</div>
 				</div>
 			` : html``}
@@ -60,6 +59,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 
 	static get styles() {
 		return [
+			heading1Styles,
 			heading2Styles,
 			bodyCompactStyles,
 			bodyStandardStyles,
@@ -71,6 +71,10 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 				}
 				.discovery-settings-header {
 					margin-bottom: 1rem;
+					margin-top: .75rem;
+				}
+				.discovery-settings-h1 {
+					margin-top: .5rem;
 				}
 				.discovery-settings-main {
 					margin: 0 30px;
@@ -207,13 +211,13 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_onShowCourseCodeChange() {
-		const showCourseCodeSwitch = this.shadowRoot.querySelector('#showCourseCodeSwitch');
-		this._showCourseCode = showCourseCodeSwitch.on;
+		const showCourseCodeCheckbox = this.shadowRoot.querySelector('#showCourseCodeCheckbox');
+		this._showCourseCode = showCourseCodeCheckbox.checked;
 	}
 
 	_onShowSemesterChange() {
-		const showSemesterSwitch = this.shadowRoot.querySelector('#showSemesterSwitch');
-		this._showSemester = showSemesterSwitch.on;
+		const showSemesterCheckbox = this.shadowRoot.querySelector('#showSemesterCheckbox');
+		this._showSemester = showSemesterCheckbox.checked;
 	}
 
 	_initializeSettings() {
@@ -271,10 +275,10 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 
 	_reset() {
 		this.shadowRoot.querySelector('discover-settings-promoted-content').cancel();
-		const showCourseCodeSwitch = this.shadowRoot.querySelector('#showCourseCodeSwitch');
-		showCourseCodeSwitch.on = this._savedShowCourseCode;
-		const showSemesterSwitch = this.shadowRoot.querySelector('#showSemesterSwitch');
-		showSemesterSwitch.on = this._savedShowSemester;
+		const showCourseCodeCheckbox = this.shadowRoot.querySelector('#showCourseCodeCheckbox');
+		showCourseCodeCheckbox.checked = this._savedShowCourseCode;
+		const showSemesterCheckbox = this.shadowRoot.querySelector('#showSemesterCheckbox');
+		showSemesterCheckbox.checked = this._savedShowSemester;
 		this._showCourseCode = this._savedShowCourseCode;
 		this._showSemester = this._savedShowSemester;
 	}

@@ -1,5 +1,6 @@
 export default {
 	'add': '추가',
+	'backToDiscover': 'Discover로 돌아가기',
 	'browseDiscoverLibrary': '감지 라이브러리 찾아보기',
 	'cancel': '취소',
 	'clearSelected': '선택 지우기',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': '검색...',
 	'selected': '{count}개 선택됨',
 	'selectedFromMaximum': '{count} ∕ {maximum}개의 항목이 선택되었습니다.',
-	'settingsFeaturedSection' : '추천 섹션'
+	'settingsFeaturedSection': '추천 섹션',
+	'customizeDiscover': 'Customize Discover',
+	'showCourseCode': 'Show course codes',
+	'showSemester': 'Show semesters'
 };

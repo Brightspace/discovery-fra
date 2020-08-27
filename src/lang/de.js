@@ -1,5 +1,6 @@
 export default {
 	'add': 'Hinzufügen',
+	'backToDiscover': 'Zurück zu Discover',
 	'browseDiscoverLibrary': 'Discover Bibliothek durchsuchen',
 	'cancel': 'Abbrechen',
 	'clearSelected': 'Auswahl löschen',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Suchen...',
 	'selected': '{count} ausgewählt.',
 	'selectedFromMaximum': '{count}∕{maximum} ausgewählt.',
-	'settingsFeaturedSection' : 'Abschnitt „Angeboten“'
+	'settingsFeaturedSection': 'Abschnitt „Angeboten“',
+	'customizeDiscover': 'Discover personalisieren',
+	'showCourseCode': 'Kurscodes anzeigen',
+	'showSemester': 'Semester anzeigen'
 };

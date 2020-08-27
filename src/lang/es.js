@@ -1,5 +1,6 @@
 export default {
 	'add': 'Agregar',
+	'backToDiscover': 'Volver a Descubrir',
 	'browseDiscoverLibrary': 'Examinar la biblioteca de descubrimientos',
 	'cancel': 'Cancelar',
 	'clearSelected': 'Borrar selección',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Buscar…',
 	'selected': '{count} seleccionada(s).',
 	'selectedFromMaximum': '{count}∕{maximum} seleccionados.',
-	'settingsFeaturedSection' : 'Sección destacada'
+	'settingsFeaturedSection': 'Sección destacada',
+	'customizeDiscover': 'Personalizar descubrimiento',
+	'showCourseCode': 'Mostrar códigos del curso',
+	'showSemester': 'Mostrar semestres'
 };

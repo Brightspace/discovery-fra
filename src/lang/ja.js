@@ -1,5 +1,6 @@
 export default {
 	'add': '追加',
+	'backToDiscover': 'Discover に戻る',
 	'browseDiscoverLibrary': 'Discovery ライブラリの参照',
 	'cancel': 'キャンセル',
 	'clearSelected': '選択のクリア',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': '検索...',
 	'selected': '{count} 件を選択済み。',
 	'selectedFromMaximum': '{count}/{maximum} 件を選択済み。',
-	'settingsFeaturedSection' : '注目のセクション'
+	'settingsFeaturedSection': '注目のセクション',
+	'customizeDiscover': '検出のカスタマイズ',
+	'showCourseCode': 'コースコードの表示',
+	'showSemester': '学期の表示'
 };

@@ -1,5 +1,6 @@
 export default {
 	'add': 'Tilføj',
+	'backToDiscover': 'Tilbage til Registrer',
 	'browseDiscoverLibrary': 'Gennemse Registrer bibliotek',
 	'cancel': 'Annuller',
 	'clearSelected': 'Ryd valg',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Søg ...',
 	'selected': '{count} valgt.',
 	'selectedFromMaximum': '{count} ∕ {maximum} valgt.',
-	'settingsFeaturedSection' : 'Fremhævet sektion'
+	'settingsFeaturedSection': 'Fremhævet sektion',
+	'customizeDiscover': 'Tilpas Find',
+	'showCourseCode': 'Vis kursuskoder',
+	'showSemester': 'Vis semestre'
 };

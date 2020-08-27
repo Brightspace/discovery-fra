@@ -72,15 +72,15 @@ const cleanBuildDir = (done) => {
 	done();
 };
 
-
 const buildPolymer = (done) => {
 	exec('polymer build --name=\"es6-unbundled\" --add-service-worker --add-push-manifest --insert-prefetch-links', function (err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
 		done();
-		 exec('mv ./build/es6-unbundled/* ./build && rmdir \"./build/es6-unbundled\"', function(err, stdout, stderr) {
-		 	console.log("Polymer build completed");
-		 	done();
+		exec('mv ./build/es6-unbundled/* ./build && rmdir \"./build/es6-unbundled\"', function(err, stdout, stderr) {
+			console.log(stdout);
+			console.log(stderr);
+			console.log("Polymer build completed");
 		});
 	});
 };
@@ -182,4 +182,3 @@ exports['cleanBuild'] = clean;
 exports['buildLang'] = buildPolymerLang;
 exports['buildDev'] = buildDev;
 exports['buildDevCustom'] = buildDevCustomConfig;
-

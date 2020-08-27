@@ -1,5 +1,6 @@
 export default {
 	'add': 'Toevoegen',
+	'backToDiscover': 'Terug naar Ontdekken',
 	'browseDiscoverLibrary': 'Door detectiebibliotheek bladeren',
 	'cancel': 'Annuleren',
 	'clearSelected': 'Selectie wissen',
@@ -17,5 +18,8 @@ export default {
 	'searchPlaceholder': 'Zoeken...',
 	'selected': '{count} geselecteerd.',
 	'selectedFromMaximum': '{count}/{maximum} geselecteerd.',
-	'settingsFeaturedSection' : 'Uitgelichte sectie'
+	'settingsFeaturedSection': 'Uitgelichte sectie',
+	'customizeDiscover': 'Customize Discover',
+	'showCourseCode': 'Show course codes',
+	'showSemester': 'Show semesters'
 };

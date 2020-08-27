@@ -1,9 +1,11 @@
 export default {
 	'add': 'Add',
+	'backToDiscover': 'Back to Discover',
 	'browseDiscoverLibrary': 'Browse Discover Library',
 	'cancel': 'Cancel',
 	'clearSelected': 'Clear Selection',
 	'clickToViewActivity': 'Click to view activity',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': 'Load More',
 	'noActivitiesFound': 'There were no activities found using your search term.',
 	'noFeaturedActivities' : 'There is currently no featured content.',
