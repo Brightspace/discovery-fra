@@ -1,6 +1,6 @@
 [
   {
-    "name": "discover",
+    "name": "discovery-fra",
     "parser_plugin": {
         "plugin": "parse_js"
     },
