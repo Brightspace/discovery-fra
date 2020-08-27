@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Det uppstod ett 404-fel (sidan saknas).",
 	OK: "OK",
 	accessMaterials: "Åtkomst till material",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Klicka för att visa nyligen uppdaterade aktiviteter",
 	viewMyList: "Visa min lista",
 	welcomeToTheCourse: "Välkommen till kursen!"
-}
+};

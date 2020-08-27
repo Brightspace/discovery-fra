@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "404 エラーが発生しました。",
 	OK: "OK",
 	accessMaterials: "資料へのアクセス",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "クリックして新しく更新されたアクティビティを表示",
 	viewMyList: "マイリストの表示",
 	welcomeToTheCourse: "コースへようこそ。"
-}
+};

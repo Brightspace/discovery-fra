@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Hay aksi! 404 hatası.",
 	OK: "Tamam",
 	accessMaterials: "Materyallere Eriş",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Yeni güncellenen etkinlikleri görüntülemek için tıklayın",
 	viewMyList: "Listemi görüntüle",
 	welcomeToTheCourse: "Derse Hoş Geldiniz!"
-}
+};

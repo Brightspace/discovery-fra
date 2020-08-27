@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Hoppla, Sie sind auf einen Fehler 404 gestoßen.",
 	OK: "OK",
 	accessMaterials: "Auf Materialien zugreifen",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Zum Anzeigen neuer aktualisierter Aktivitäten klicken",
 	viewMyList: "Meine Liste anzeigen",
 	welcomeToTheCourse: "Willkommen beim Kurs!"
-}
+};

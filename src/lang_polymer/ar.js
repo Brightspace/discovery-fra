@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "عذرًا، تم الانتقال إلى صفحة 404.",
 	OK: "موافق",
 	accessMaterials: "الوصول إلى المواد",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "النقر لعرض الأنشطة المحدّثة مؤخرًا",
 	viewMyList: "عرض لائحتي",
 	welcomeToTheCourse: "مرحبًا بك في المقرر التعليمي!"
-}
+};

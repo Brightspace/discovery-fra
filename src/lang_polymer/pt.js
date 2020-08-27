@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Opa, ocorreu um erro 404.",
 	OK: "OK",
 	accessMaterials: "Materiais de acesso",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Clique aqui para visualizar atividades recém-atualizadas",
 	viewMyList: "Exibir minha lista",
 	welcomeToTheCourse: "Bem-vindo(a) ao curso!"
-}
+};

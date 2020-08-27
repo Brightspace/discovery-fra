@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "糟糕，發生 404 錯誤。",
 	OK: "確定",
 	accessMaterials: "存取資料",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "按一下以檢視最近已更新的活動",
 	viewMyList: "檢視我的清單",
 	welcomeToTheCourse: "歡迎參加本課程！"
-}
+};

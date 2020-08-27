@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "404를 기록했습니다.",
 	OK: "확인",
 	accessMaterials: "자료 접근",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "클릭하여 새로 업데이트된 활동 보기",
 	viewMyList: "내 목록 보기",
 	welcomeToTheCourse: "강의에 오신 것을 환영합니다."
-}
+};

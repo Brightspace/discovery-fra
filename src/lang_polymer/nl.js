@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Oeps, u kreeg een 404-melding.",
 	OK: "OK",
 	accessMaterials: "Toegang tot materialen",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Klik om onlangs bijgewerkte activiteiten te bekijken",
 	viewMyList: "Mijn lijst weergeven",
 	welcomeToTheCourse: "Welkom bij de cursus."
-}
+};

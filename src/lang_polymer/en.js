@@ -1,4 +1,4 @@
-export default{
+export default {
 	discover: "Discover", //Title text for the homepage.
 	discoverHomeMessage: "This is the Discover home page.", // Old message, unused.
 	discovery: "Discovery", //Old title text, unused.
@@ -85,4 +85,4 @@ export default{
 	sorting_enrolled: "Already Enrolled", // Search's sort option that displays results that the user is already enrolled in.
 	settings: "Settings", // An action that opens up Discover's Settings page.
 	settingsLabel: "Click to view settings page" // The aria label describing the action that opens up Discover's Settings page.
-}
+};

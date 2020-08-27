@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Oups, une erreur 404 de page introuvable est survenue.",
 	OK: "OK",
 	accessMaterials: "Accéder au matériel",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Cliquer pour afficher les activités nouvellement mises à jour",
 	viewMyList: "Afficher ma liste",
 	welcomeToTheCourse: "Bienvenue au cours!"
-}
+};

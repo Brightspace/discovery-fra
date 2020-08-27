@@ -1,4 +1,4 @@
-export default{
+export default {
 	message404: "Hovsa, du aktiverede en 404.",
 	OK: "OK",
 	accessMaterials: "Få adgang til materialer",
@@ -85,4 +85,4 @@ export default{
 	viewAllUpdatedLabel: "Klik for at få vist aktiviteter, der er opdateret for nylig",
 	viewMyList: "Vis min liste",
 	welcomeToTheCourse: "Velkommen til kurset!"
-}
+};
