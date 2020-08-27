@@ -5,6 +5,7 @@ export default {
 	'cancel': 'Annuler',
 	'clearSelected': 'Effacer la sélection',
 	'clickToViewActivity': 'Cliquer pour afficher l’activité',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': 'Charger plus',
 	'noActivitiesFound': 'Aucune activité n’a été trouvée à l’aide de votre terme de recherche.',
 	'noFeaturedActivities' : 'Aucun contenu dans cette liste.',

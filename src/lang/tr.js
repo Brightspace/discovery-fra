@@ -5,6 +5,7 @@ export default {
 	'cancel': 'İptal',
 	'clearSelected': 'Seçimi Temizle',
 	'clickToViewActivity': 'Etkinliği görüntülemek için tıklayın',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': 'Daha Fazla Yükle',
 	'noActivitiesFound': 'Arama teriminizi kullanan etkinlik bulunamadı.',
 	'noFeaturedActivities' : 'Şu anda öne çıkan bir içerik mevcut değil.',

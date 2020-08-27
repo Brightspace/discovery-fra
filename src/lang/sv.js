@@ -5,6 +5,7 @@ export default {
 	'cancel': 'Avbryt',
 	'clearSelected': 'Rensa val',
 	'clickToViewActivity': 'Klicka för att visa aktivitet',
+	'discoverSettings': 'Discover Settings', //Header of the Discover Settings page.
 	'loadMore': 'Ladda mer',
 	'noActivitiesFound': 'Det gick inte att hitta några aktiviteter med det sökord du angav.',
 	'noFeaturedActivities' : 'Det finns för tillfället inget valt innehåll.',
