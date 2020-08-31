@@ -54,7 +54,7 @@
     "d2l-organization-hm-behavior": "github:Brightspace/organization-hm-behavior#semver:^3",
     "d2l-organizations": "github:BrightspaceHypermediaComponents/organizations#semver:^5",
     "d2l-typography": "github:BrightspaceUI/typography#semver:^7",
-    "dompurify": "^1.0.10",
+    "dompurify": "^2.0.3",
     "fastdom": "^1.0.8",
     "promise-polyfill": "8.1.0",
     "siren-parser": "^8.2.0",
