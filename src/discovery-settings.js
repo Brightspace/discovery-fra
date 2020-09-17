@@ -219,7 +219,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_hasChanges() {
-		if(this.discoverCustomizationsEnabled) {
+		if (this.discoverCustomizationsEnabled) {
 			if (this._showCourseCode !== this._savedShowCourseCode) {
 				return true;
 			}
