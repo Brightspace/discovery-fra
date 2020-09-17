@@ -113,10 +113,7 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 		if (e && e.detail) {
 			if (e.detail.resetPages) {
 				e.detail.resetPages.forEach((page) => {
-					const pageElement = this.shadowRoot.querySelector(`[name="${page}"]`);
-					if (pageElement && typeof pageElement._reset === 'function') {
-						pageElement._reset();
-					}
+					this._resetPage(page);
 				});
 			}
 			if (e.detail.path) {
@@ -132,6 +129,14 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 
 	_routeChanged(route) {
 		route = route.detail.value || {};
+
+		//If a user navigated via browser back/forward functionality, the path of the routes will be different.
+		if (this.route && this.route.path !== route.path) {
+			if (this.route.path === '/d2l/le/discovery/view/settings') {
+				this._resetPage('settings');
+			}
+		}
+
 		this.route = route;
 		if (route.path === '/d2l/le/discovery/view/') { // navlink home
 			var appLocationIfrau = this.shadowRoot.querySelector('app-location-ifrau');
@@ -157,6 +162,12 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 	_queryParamsChanged(queryParams) {
 		queryParams = queryParams.detail.value || {};
 		this.queryParams = queryParams;
+	}
+	_resetPage(pageName) {
+		const pageElement = this.shadowRoot.querySelector(`[name="${pageName}"]`);
+		if (pageElement && typeof pageElement._reset === 'function') {
+			pageElement._reset();
+		}
 	}
 }
 

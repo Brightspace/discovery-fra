@@ -219,13 +219,15 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_hasChanges() {
-		if (this._showCourseCode !== this._savedShowCourseCode) {
-			return true;
+		if(this.discoverCustomizationsEnabled) {
+			if (this._showCourseCode !== this._savedShowCourseCode) {
+				return true;
+			}
+			if (this._showSemester !== this._savedShowSemester) {
+				return true;
+			}
+			return this.shadowRoot.querySelector('discover-settings-promoted-content').hasChanges();
 		}
-		if (this._showSemester !== this._savedShowSemester) {
-			return true;
-		}
-		return this.shadowRoot.querySelector('discover-settings-promoted-content').hasChanges();
 	}
 
 	async _handleNavigate(e) {
