@@ -29,7 +29,7 @@
   "dependencies": {
     "@brightspace-ui-labs/facet-filter-sort": "github:BrightspaceUI/facet-filter-sort#semver:^3",
     "@brightspace-ui-labs/pagination": "0.0.8",
-    "@brightspace-ui/core": "^1.76.2",
+    "@brightspace-ui/core": "^1.80.0",
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
     "@polymer/iron-resizable-behavior": "^3.0.0",
