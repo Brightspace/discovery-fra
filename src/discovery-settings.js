@@ -334,12 +334,16 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 
 	_reset() {
 		this.shadowRoot.querySelector('discover-settings-promoted-content').cancel();
-		const showCourseCodeCheckbox = this.shadowRoot.querySelector('#showCourseCodeCheckbox');
-		showCourseCodeCheckbox.checked = this._savedShowCourseCode;
-		const showSemesterCheckbox = this.shadowRoot.querySelector('#showSemesterCheckbox');
-		showSemesterCheckbox.checked = this._savedShowSemester;
-		this._showCourseCode = this._savedShowCourseCode;
-		this._showSemester = this._savedShowSemester;
+
+		//checkboxes are conditionally rendered based on this flag, need to confirm they exist.
+		if (this.discoverCustomizationsEnabled) {
+			const showCourseCodeCheckbox = this.shadowRoot.querySelector('#showCourseCodeCheckbox');
+			showCourseCodeCheckbox.checked = this._savedShowCourseCode;
+			const showSemesterCheckbox = this.shadowRoot.querySelector('#showSemesterCheckbox');
+			showSemesterCheckbox.checked = this._savedShowSemester;
+			this._showCourseCode = this._savedShowCourseCode;
+			this._showSemester = this._savedShowSemester;
+		}
 	}
 }
 
