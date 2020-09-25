@@ -9,7 +9,7 @@ import '@brightspace-ui/core/components/dialog/dialog.js';
 import './components/discover-settings-breadcrumbs-lit.js';
 import './components/discover-settings-toast.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { heading1Styles, heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { heading1Styles, heading2Styles, heading4Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
@@ -46,10 +46,12 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_renderCustomizeDiscoverSection() {
+		const renderToggleSections = this._renderToggleSections();
 		return html`
 			${this.discoverCustomizationsEnabled ? html`
 				<div class="discover-customization-section">
 					<h2 class="discover-customization-title">${this.localize('customizeDiscover')}</h2>
+					<h4 class="discovery-settings-h4">${this.localize('courseTileSettings')}</h4>
 					<div class="discover-customization-settings" ?hidden="${this._hideCustomizationSettings}">
 						<d2l-input-checkbox
 							id="showCourseCodeCheckbox"
@@ -60,7 +62,26 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 							?checked=${this._savedShowSemester}
 							@change=${this._onShowSemesterChange}>${this.localize('showSemester')}</d2l-input-checkbox>
 					</div>
+					${renderToggleSections}
 				</div>
+			` : html``}
+		`;
+	}
+
+	_renderToggleSections() {
+		return html`
+			${this.discoverToggleSectionsEnabled ? html`
+					<h4 class="discovery-settings-h4">${this.localize('sectionsSettings')}</h4>
+					<div class="discover-customization-settings" ?hidden="${this._hideCustomizationSettings}">
+						<d2l-input-checkbox
+							id="showUpdatedSectionCheckbox"
+							?checked=${this._savedShowUpdatedSection}
+							@change=${this._onShowUpdatedSectionChange}>${this.localize('showUpdatedSection')}</d2l-input-checkbox>
+						<d2l-input-checkbox
+							id="showNewSectionCheckbox"
+							?checked=${this._savedShowNewSection}
+							@change=${this._onShowNewSectionChange}>${this.localize('showNewSection')}</d2l-input-checkbox>
+					</div>
 			` : html``}
 		`;
 	}
@@ -69,6 +90,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		return [
 			heading1Styles,
 			heading2Styles,
+			heading4Styles,
 			bodyCompactStyles,
 			bodyStandardStyles,
 			css`
@@ -83,6 +105,9 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 				}
 				.discovery-settings-h1 {
 					margin-top: .5rem;
+				}
+				.discovery-settings-h4 {
+					margin: 0rem;
 				}
 				.discovery-settings-main {
 					margin: 0 30px;
@@ -144,8 +169,11 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		super();
 		this.canManageDiscover = false;
 		this.discoverCustomizationsEnabled = false;
+		this.discoverToggleSectionsEnabled = false;
 		this._showCourseCode = true;
 		this._showSemester = true;
+		this._showUpdatedSection = true;
+		this._showNewSection = true;
 		this._hideCustomizationSettings = true;
 		this._updateToken();
 	}
@@ -161,16 +189,31 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			discoverCustomizationsEnabled: {
 				type: Boolean
 			},
+			discoverToggleSectionsEnabled: {
+				type: Boolean
+			},
 			_savedShowCourseCode: {
 				type: Boolean
 			},
 			_savedShowSemester: {
 				type: Boolean
 			},
+			_savedShowUpdatedSection: {
+				type: Boolean
+			},
+			_savedShowNewSection: {
+				type: Boolean
+			},
 			_showCourseCode: {
 				type: Boolean
 			},
 			_showSemester: {
+				type: Boolean
+			},
+			_showUpdatedSection: {
+				type: Boolean
+			},
+			_showNewSection: {
 				type: Boolean
 			},
 			_promotedHref: {
@@ -219,15 +262,17 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_hasChanges() {
+		let hasChanges = false;
 		if (this.discoverCustomizationsEnabled) {
-			if (this._showCourseCode !== this._savedShowCourseCode) {
-				return true;
-			}
-			if (this._showSemester !== this._savedShowSemester) {
-				return true;
-			}
-			return this.shadowRoot.querySelector('discover-settings-promoted-content').hasChanges();
+			hasChanges = hasChanges || this._showCourseCode !== this._savedShowCourseCode
+			hasChanges = hasChanges || this._showSemester !== this._savedShowSemester
+			hasChanges = hasChanges || this.shadowRoot.querySelector('discover-settings-promoted-content').hasChanges();
 		}
+		if (this.discoverToggleSectionsEnabled) {
+			hasChanges = hasChanges || this._showNewSection !== this._savedShowNewSection
+			hasChanges = hasChanges || this._showUpdatedSection !== this._savedShowUpdatedSection
+		}
+		return hasChanges;
 	}
 
 	async _handleNavigate(e) {
@@ -276,6 +321,16 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		this._showSemester = showSemesterCheckbox.checked;
 	}
 
+	_onShowUpdatedSectionChange() {
+		const showUpdatedSectionCheckbox = this.shadowRoot.querySelector('#showUpdatedSectionCheckbox');
+		this._showUpdatedSection = showUpdatedSectionCheckbox.checked;
+	}
+
+	_onShowNewSectionChange() {
+		const showNewSectionCheckbox = this.shadowRoot.querySelector('#showNewSectionCheckbox');
+		this._showNewSection = showNewSectionCheckbox.checked;
+	}
+
 	_initializeSettings() {
 		if (this.discoverCustomizationsEnabled) {
 			this.fetchDiscoverSettings().then(properties => {
@@ -285,6 +340,13 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 					this._showCourseCode = properties.showCourseCode;
 					this._showSemester = properties.showSemester;
 					this._hideCustomizationSettings = false;
+
+					if(this.discoverToggleSectionsEnabled) {
+						this._savedShowUpdatedSection = properties.showUpdatedSection;
+						this._showUpdatedSection = properties.showUpdatedSection;
+						this._savedShowNewSection = properties.showNewSection;
+						this._showNewSection = properties.showNewSection;
+					}
 				}
 			});
 		}
@@ -316,10 +378,12 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			return;
 		}
 
-		await this.saveDiscoverSettings(this._selectedPromotedCourses, this._showCourseCode, this._showSemester);
+		await this.saveDiscoverSettings(this._selectedPromotedCourses, this._showCourseCode, this._showSemester, this._showUpdatedSection, this._showNewSection);
 		this.shadowRoot.querySelector('discover-settings-promoted-content').save();
 		this._savedShowCourseCode = this._showCourseCode;
 		this._savedShowSemester = this._showSemester;
+		this._savedShowUpdatedSection = this._showUpdatedSection;
+		this._savedShowNewSection = this._showNewSection;
 	}
 
 	async _handleSave() {
@@ -343,6 +407,12 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			showSemesterCheckbox.checked = this._savedShowSemester;
 			this._showCourseCode = this._savedShowCourseCode;
 			this._showSemester = this._savedShowSemester;
+		}
+		if (this.discoverToggleSectionsEnabled) {
+			this._showCourseCode = this._savedShowCourseCode;
+			this._showSemester = this._savedShowSemester;
+			this._showUpdatedSection = this._savedShowUpdatedSection;
+			this._showNewSection = this._savedShowNewSection;
 		}
 	}
 }

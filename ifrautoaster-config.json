@@ -17,7 +17,8 @@
           "userId": "169",
           "promotedCourses": "true",
           "canManageDiscover": "true",
-          "discoverCustomizations": "true"
+          "discoverCustomizations": "true",
+          "discoverToggleSections": "true"
         }
       }
     }

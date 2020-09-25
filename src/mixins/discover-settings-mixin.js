@@ -28,7 +28,7 @@ export const DiscoverSettingsMixin = FetchMixin => class extends FetchMixin {
 	}
 
 	//Takes an array of org URLs and writes them as the new set of promoted courses.
-	async saveDiscoverSettings(orgUrlArray, showCourseCode, showSemester) {
+	async saveDiscoverSettings(orgUrlArray, showCourseCode, showSemester, showUpdatedSection, showNewSection) {
 		orgUrlArray = this._parseCourseIDs(orgUrlArray);
 
 		const url = await this._getActionUrl(setDiscoverSettings);
@@ -38,6 +38,12 @@ export const DiscoverSettingsMixin = FetchMixin => class extends FetchMixin {
 		}
 		if (showSemester !== undefined) {
 			data.showSemester = showSemester;
+		}
+		if (showUpdatedSection !== undefined) {
+			data.showUpdatedSection = showUpdatedSection;
+		}
+		if (showNewSection !== undefined) {
+			data.showNewSection = showNewSection;
 		}
 		return await this._postData(url, data);
 	}
