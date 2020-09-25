@@ -21,7 +21,7 @@ export default {
 	durationMinutes: "{minutes} o funudau", // When viewing a course summary, this will display the duration of a course in minutes.
 	emailFeedback: "Anfon eich adborth i {email}", // Unused
 	endDate: "Dyddiad dod i ben", // A subtitle for displaying the date a course will end
-	endDateIsInThePast: "Mae’r cwrs hwn wedi cau ar {dyddiad}.", // A message describing the date a course was closed on.
+	endDateIsInThePast: "Mae’r cwrs hwn wedi cau ar {date}.", // A message describing the date a course was closed on.
 	enrollInCourse: "Cofrestru ar Gwrs", // An action to enroll the user into the currently displayed course
 	enrollmentHeaderFail: "Methwyd â Chofrestru", // Displays as a header when there was an error enrolling into an activity
 	enrollmentHeaderPending: "Cofrestru ar y Gweill", // Displays as a header when the enrollment is pending completion
@@ -38,14 +38,14 @@ export default {
 	homepageDocumentTitle: "Darganfod - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Diweddarwyd diwethaf {date}", //The most recent date that the current course was updated
 	loadMore: "Llwytho Mwy", // An action that will load additional activities to be displayed.
-	message404: " O na! Rydych chi wedi dod ar draws 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "O na! Rydych chi wedi dod ar draws 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Mynd yn ôl i’r dudalen hafan.", // An action that will navigate the user back to the Discover homepage.
 	new: "Newydd", // The name of the homepage section for new activities.
 	noActivities: "Nid oes unrhyw weithgareddau ar gael neu rydych chi eisoes wedi cofrestru ar gyfer pob un ohonynt. Rhowch gynnig arall arni’n hwyrach.", // When there are no activities to display on the homepage, this message will display.
 	noActivitiesExceptPrmoted: "Nid oes unrhyw weithgareddau newydd neu wedi’u diweddaru ar gael neu rydych chi eisoes wedi cofrestru ar gyfer pob un ohonynt. Rhowch gynnig arall arni’n hwyrach.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noCourseDescription: "Dim disgrifiad o’r cwrs", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Dim canlyniadau ar gyfer \"{searchQuery}\"", // Displays as a header when a search query has no results
-	noResultsMessage: "Ceisiwch ddefnyddio term chwilio gwahanol neu {link-start}Pori’r Cyfan{link-end} i weld yr holl ddeunyddiau sydd ar gael", // When a search query has no results, suggests different search term or filter.
+	noResultsMessage: "Ceisiwch ddefnyddio term chwilio gwahanol neu {linkStart}Pori’r Cyfan{linkEnd} i weld yr holl ddeunyddiau sydd ar gael", // When a search query has no results, suggests different search term or filter.
 	onMyList: "Ar Fy Rhestr", // Unused
 	openCourse: "Agor Cwrs", // An action that will open the currently displayed course in brightspace.
 	or: "neu", //Unused

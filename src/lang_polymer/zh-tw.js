@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "探索 - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "上次更新時間：{date}", //The most recent date that the current course was updated
 	loadMore: "載入更多", // An action that will load additional activities to be displayed.
-	message404: " 糟糕，發生 404 錯誤。", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "糟糕，發生 404 錯誤。", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "返回首頁。", // An action that will navigate the user back to the Discover homepage.
 	new: "新式", // The name of the homepage section for new activities.
 	noActivities: "沒有可用的活動或您已經註冊所有的活動。請稍後再試。", // When there are no activities to display on the homepage, this message will display.

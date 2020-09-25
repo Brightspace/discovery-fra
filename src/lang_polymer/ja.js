@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Discover - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "最終更新日 {date}", //The most recent date that the current course was updated
 	loadMore: "さらに読み込む", // An action that will load additional activities to be displayed.
-	message404: " 404 エラーが発生しました。", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "404 エラーが発生しました。", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "ホームに戻ります。", // An action that will navigate the user back to the Discover homepage.
 	new: "新規", // The name of the homepage section for new activities.
 	noActivities: "使用可能なアクティビティがないか、すべてのアクティビティにすでに登録済みです。後でもう一度試してください。", // When there are no activities to display on the homepage, this message will display.

@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "검색 - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "마지막 업데이트 날짜: {date}", //The most recent date that the current course was updated
 	loadMore: "더 많이 로드", // An action that will load additional activities to be displayed.
-	message404: " 404를 기록했습니다.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "404를 기록했습니다.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "홈으로 돌아갑니다.", // An action that will navigate the user back to the Discover homepage.
 	new: "신규", // The name of the homepage section for new activities.
 	noActivities: "사용 가능한 활동이 없거나 이미 모든 활동에 등록되어 있습니다. 나중에 다시 시도하십시오.", // When there are no activities to display on the homepage, this message will display.

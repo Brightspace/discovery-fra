@@ -17,7 +17,7 @@ export default {
 	save: "Enregistrer", // Action to save the current settings for Discover.
 	saveChanges: "Enregistrer les modifications", //Dialog prompt title when user tries to navigate away the page
 	saveChangesBoldBody: "Cette page a été modifiée.", //Dialog prompt body in bold when user tries to navigate away the page
-	saveChangesBody: "Enregistrer les modifications ?", //Dialog prompt body after bold text when user tries to navigate away the page
+	saveChangesBody: "Enregistrer les modifications?", //Dialog prompt body after bold text when user tries to navigate away the page
 	saveCompleted: "Les modifications ont été enregistrées.", // Message that occurs after changed settings have been successfully saved in Discover.
 	saveCancelled: "Les modifications ont été annulées.", // Message that occurs after changed settings were cancelled in Discover.
 	search: "Rechercher", // When adding Featured activities to discover, this will allow you to search for different activities.

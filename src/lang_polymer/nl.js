@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Ontdekken - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Laatst bijgewerkt op {date}", //The most recent date that the current course was updated
 	loadMore: "Meer laden", // An action that will load additional activities to be displayed.
-	message404: " Oeps, u kreeg een 404-melding.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Oeps, u kreeg een 404-melding.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Terug naar de startpagina.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nieuw", // The name of the homepage section for new activities.
 	noActivities: "Er zijn geen activiteiten beschikbaar of u hebt u al voor alle activiteiten ingeschreven. Probeer het later opnieuw.", // When there are no activities to display on the homepage, this message will display.

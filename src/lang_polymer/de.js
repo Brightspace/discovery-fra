@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Discover – {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Zuletzt aktualisiert am {date}", //The most recent date that the current course was updated
 	loadMore: "Mehr laden", // An action that will load additional activities to be displayed.
-	message404: " Hoppla, Sie sind auf einen Fehler 404 gestoßen.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Hoppla, Sie sind auf einen Fehler 404 gestoßen.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Zurück zur Startseite.", // An action that will navigate the user back to the Discover homepage.
 	new: "Neu", // The name of the homepage section for new activities.
 	noActivities: "Es sind keine Aktivitäten verfügbar, oder Sie sind bereits bei allen Aktivitäten angemeldet. Versuchen Sie es später noch einmal.", // When there are no activities to display on the homepage, this message will display.

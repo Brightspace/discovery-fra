@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "أداة الاكتشاف - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "تاريخ آخر تحديث {date}", //The most recent date that the current course was updated
 	loadMore: "تحميل المزيد", // An action that will load additional activities to be displayed.
-	message404: " عذرًا، تم الانتقال إلى صفحة 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "عذرًا، تم الانتقال إلى صفحة 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "عُد إلى الصفحة الرئيسية.", // An action that will navigate the user back to the Discover homepage.
 	new: "الجديدة", // The name of the homepage section for new activities.
 	noActivities: "لا تتوفر أي أنشطة، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.", // When there are no activities to display on the homepage, this message will display.

@@ -14,7 +14,7 @@ export default {
 	courseDescription: "Descrição do curso", // Subtitle displayed on a course's summary page above the course description.
 	courseInfo: "Informações do curso", // A subtitle for displaying an area of information about a course
 	coursePageDocumentTitle: "{courseName} – Descubra – {instanceName}", // Displays as the page/tab header for the course page.
-	courseSummaryReadyMessage: "{CourseTitle} está pronto", // When the course summary page has finished loading.
+	courseSummaryReadyMessage: "{courseTitle} está pronto", // When the course summary page has finished loading.
 	discover: "Descubra", //Title text for the homepage.
 	discoverHomeMessage: "Esta é a página inicial do Descubra.", // Old message, unused.
 	discovery: "Descoberta", //Old title text, unused.
@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Descubra: {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Última atualização {date}", //The most recent date that the current course was updated
 	loadMore: "Carregar mais", // An action that will load additional activities to be displayed.
-	message404: " Opa, ocorreu um erro 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Opa, ocorreu um erro 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Volte ao início.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nova", // The name of the homepage section for new activities.
 	noActivities: "Não há atividades disponíveis ou você já se inscreveu em todas elas. Tente novamente mais tarde.", // When there are no activities to display on the homepage, this message will display.

@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Registrer – {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Senest opdateret {date}", //The most recent date that the current course was updated
 	loadMore: "Indlæs flere", // An action that will load additional activities to be displayed.
-	message404: " Hovsa, du aktiverede en 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Hovsa, du aktiverede en 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Gå tilbage til startsiden.", // An action that will navigate the user back to the Discover homepage.
 	new: "Ny", // The name of the homepage section for new activities.
 	noActivities: "Der er ingen aktiviteter tilgængelige, eller du er allerede tilmeldt dem alle. Prøv igen senere.", // When there are no activities to display on the homepage, this message will display.

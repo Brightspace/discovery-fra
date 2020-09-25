@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Découvrir – {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Dernière mise à jour effectuée le {date}", //The most recent date that the current course was updated
 	loadMore: "En voir plus", // An action that will load additional activities to be displayed.
-	message404: " Oups, une erreur 404 de page introuvable est survenue.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Oups, une erreur 404 de page introuvable est survenue.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Revenir à la page d’accueil.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nouveau", // The name of the homepage section for new activities.
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit(e) dans chacune d’elles. Réessayez plus tard.", // When there are no activities to display on the homepage, this message will display.
@@ -76,7 +76,7 @@ export default {
 	startDateIsInTheFuture: "Ce cours sera disponible à compter du {date}.", // A message describing the date a course will become available is.
 	startLearning: "Débuter l’apprentissage", // Unused
 	unenroll: "Se désinscrire",  // An action that will un-enroll the user from the displayed activity.
-	unenrollConfirmBody: "Vous avez été désinscrit(e) de « {Title} ».", // A confirmation message that displays when a user has completed un-enrolling from an activity
+	unenrollConfirmBody: "Vous avez été désinscrit(e) de « {title} ».", // A confirmation message that displays when a user has completed un-enrolling from an activity
 	unenrollConfirmHeader: "Désinscription effectuée", // A confirmation header that displays when a user has completed un-enrolling from an activity
 	updated: "Mis à jour", // The name of the homepage section for recently updated activities.
 	viewAll: "Tout afficher", // Action that opens the search page to view all activities within a certain category.

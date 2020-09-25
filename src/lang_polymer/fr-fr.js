@@ -38,14 +38,14 @@ export default {
 	homepageDocumentTitle: "Découvrir - {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Dernière mise à jour le {date}", //The most recent date that the current course was updated
 	loadMore: "Charger plus", // An action that will load additional activities to be displayed.
-	message404: " Erreur 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Erreur 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Revenir à la page d’accueil.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nouveau", // The name of the homepage section for new activities.
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit à toutes les activités. Réessayez ultérieurement.", // When there are no activities to display on the homepage, this message will display.
 	noActivitiesExceptPrmoted: "Il n’y a pas d’activité nouvelle ou mise à jour ou vous êtes déjà inscrit à toutes les activités. Réessayez ultérieurement.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noCourseDescription: "Aucune description de cours", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Aucun résultat pour « {searchQuery} »", // Displays as a header when a search query has no results
-	noResultsMessage: "Essayez d’utiliser un autre terme de recherche ou {link-start}Tout parcourir{link-end} pour afficher tout le matériel disponible", // When a search query has no results, suggests different search term or filter.
+	noResultsMessage: "Essayez d’utiliser un autre terme de recherche ou {linkStart}Tout parcourir{linkEnd} pour afficher tout le matériel disponible", // When a search query has no results, suggests different search term or filter.
 	onMyList: "Dans ma liste", // Unused
 	openCourse: "Ouvrir le cours", // An action that will open the currently displayed course in brightspace.
 	or: "ou", //Unused

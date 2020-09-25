@@ -38,7 +38,7 @@ export default {
 	homepageDocumentTitle: "Descubrir: {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Última actualización {date}", //The most recent date that the current course was updated
 	loadMore: "Cargar más", // An action that will load additional activities to be displayed.
-	message404: " Lo sentimos. Se ha producido un 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Lo sentimos. Se ha producido un 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Regresar a la página de inicio.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nuevas", // The name of the homepage section for new activities.
 	noActivities: "No hay ninguna actividad disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.", // When there are no activities to display on the homepage, this message will display.
