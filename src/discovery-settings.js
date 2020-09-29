@@ -268,13 +268,13 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	_hasChanges() {
 		let hasChanges = false;
 		if (this.discoverCustomizationsEnabled) {
-			hasChanges = hasChanges || this._showCourseCode !== this._savedShowCourseCode
-			hasChanges = hasChanges || this._showSemester !== this._savedShowSemester
+			hasChanges = hasChanges || this._showCourseCode !== this._savedShowCourseCode;
+			hasChanges = hasChanges || this._showSemester !== this._savedShowSemester;
 			hasChanges = hasChanges || this.shadowRoot.querySelector('discover-settings-promoted-content').hasChanges();
 		}
 		if (this.discoverToggleSectionsEnabled) {
-			hasChanges = hasChanges || this._showNewSection !== this._savedShowNewSection
-			hasChanges = hasChanges || this._showUpdatedSection !== this._savedShowUpdatedSection
+			hasChanges = hasChanges || this._showNewSection !== this._savedShowNewSection;
+			hasChanges = hasChanges || this._showUpdatedSection !== this._savedShowUpdatedSection;
 		}
 		return hasChanges;
 	}
@@ -345,7 +345,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 					this._showSemester = properties.showSemester;
 					this._hideCustomizationSettings = false;
 
-					if(this.discoverToggleSectionsEnabled) {
+					if (this.discoverToggleSectionsEnabled) {
 						this._savedShowUpdatedSection = properties.showUpdatedSection;
 						this._showUpdatedSection = properties.showUpdatedSection;
 						this._savedShowNewSection = properties.showNewSection;
