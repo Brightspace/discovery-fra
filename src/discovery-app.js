@@ -57,7 +57,8 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 				<discovery-settings
 					name="settings"
 					can-manage-discover="[[_manageDiscover]]"
-					discover-customizations-enabled = "[[_discoverCustomizationsEnabled]]">
+					discover-customizations-enabled = "[[_discoverCustomizationsEnabled]]"
+					discover-toggle-sections-enabled = "[[_discoverToggleSectionsEnabled]]">
 				</discovery-settings>
 				<discovery-404 name="404"></discovery-404>
 			</iron-pages>
@@ -88,6 +89,10 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 			_discoverCustomizationsEnabled: {
 				type: Boolean,
 				computed: '_isDiscoverCustomizationsEnabled()'
+			},
+			_discoverToggleSectionsEnabled: {
+				type: Boolean,
+				computed: '_isDiscoverToggleSectionsEnabled()'
 			}
 		};
 	}

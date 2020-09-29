@@ -51,7 +51,11 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			${this.discoverCustomizationsEnabled ? html`
 				<div class="discover-customization-section">
 					<h2 class="discover-customization-title">${this.localize('customizeDiscover')}</h2>
-					<h4 class="discovery-settings-h4">${this.localize('courseTileSettings')}</h4>
+
+					${this.discoverToggleSectionsEnabled ? html`
+						<h4 class="discovery-settings-h4">${this.localize('courseTileSettings')}</h4>
+					` : html``}
+
 					<div class="discover-customization-settings" ?hidden="${this._hideCustomizationSettings}">
 						<d2l-input-checkbox
 							id="showCourseCodeCheckbox"
