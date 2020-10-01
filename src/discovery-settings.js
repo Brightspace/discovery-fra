@@ -54,7 +54,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 						<h4 class="discovery-settings-h4">${this.localize('courseTileSettings')}</h4>
 					` : html``}
 
-					<div class="discover-customization-settings" ?hidden="${this._hideCustomizationSettings}">
+					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
 						<d2l-input-checkbox
 							id="showCourseCodeCheckbox"
 							?checked=${this._savedShowCourseCode}
@@ -74,7 +74,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		return html`
 			${this.discoverToggleSectionsEnabled ? html`
 					<h4 class="discovery-settings-h4">${this.localize('sectionsSettings')}</h4>
-					<div class="discover-customization-settings" ?hidden="${this._hideCustomizationSettings}">
+					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
 						<d2l-input-checkbox
 							id="showUpdatedSectionCheckbox"
 							?checked=${this._savedShowUpdatedSection}
@@ -176,7 +176,11 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		this._showSemester = true;
 		this._showUpdatedSection = true;
 		this._showNewSection = true;
-		this._hideCustomizationSettings = true;
+		this._SavedShowCourseCode = true;
+		this._SavedShowSemester = true;
+		this._SavedShowUpdatedSection = true;
+		this._SavedShowNewSection = true;
+		this._settingsLoaded = false;
 		this._updateToken();
 	}
 
@@ -227,7 +231,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			_selectedPromotedCourses: {
 				type: Array
 			},
-			_hideCustomizationSettings: {
+			_settingsLoaded: {
 				type: Boolean
 			},
 			token: {
@@ -264,6 +268,10 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_hasChanges() {
+		if (this._settingsLoaded === false) {
+			return false;
+		}
+
 		let hasChanges = false;
 		if (this.discoverCustomizationsEnabled) {
 			hasChanges = hasChanges || this._showCourseCode !== this._savedShowCourseCode;
@@ -278,6 +286,10 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	async _handleNavigate(e) {
+		if (!this.canManageDiscover) {
+			return;
+		}
+
 		const detail = e.detail;
 		if (this._hasChanges() && !detail.fromDialog) {
 			detail.fromDialog = true;
@@ -302,6 +314,9 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_handleBeforeUnload(e) {
+		if (!this.canManageDiscover) {
+			return;
+		}
 		if (this._hasChanges()) {
 			e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
 			// Chrome requires returnValue to be set
@@ -341,7 +356,6 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 					this._savedShowSemester = properties.showSemester;
 					this._showCourseCode = properties.showCourseCode;
 					this._showSemester = properties.showSemester;
-					this._hideCustomizationSettings = false;
 
 					if (this.discoverToggleSectionsEnabled) {
 						this._savedShowUpdatedSection = properties.showUpdatedSection;
@@ -350,6 +364,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 						this._showNewSection = properties.showNewSection;
 					}
 				}
+				this._settingsLoaded = true;
 			});
 		}
 	}
@@ -376,7 +391,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	async _save() {
-		if (this._selectedPromotedCourses === undefined) {
+		if (this._selectedPromotedCourses === undefined || !this._settingsLoaded) {
 			return;
 		}
 
