@@ -413,8 +413,10 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			this._showSemester = this._savedShowSemester;
 		}
 		if (this.discoverToggleSectionsEnabled) {
-			this._showCourseCode = this._savedShowCourseCode;
-			this._showSemester = this._savedShowSemester;
+			const showUpdatedSectionCheckbox = this.shadowRoot.querySelector('#showUpdatedSectionCheckbox');
+			showUpdatedSectionCheckbox.checked = this._savedShowUpdatedSection;
+			const showNewSectionCheckbox = this.shadowRoot.querySelector('#showNewSectionCheckbox');
+			showNewSectionCheckbox.checked = this._savedShowNewSection;
 			this._showUpdatedSection = this._savedShowUpdatedSection;
 			this._showNewSection = this._savedShowNewSection;
 		}
