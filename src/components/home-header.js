@@ -1,7 +1,7 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import 'd2l-inputs/d2l-input-search.js';
-import 'd2l-link/d2l-link.js';
+import '@brightspace-ui/core/components/inputs/input-search.js';
+import '@brightspace-ui/core/components/link/link.js';
 import 'd2l-typography/d2l-typography.js';
 
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';

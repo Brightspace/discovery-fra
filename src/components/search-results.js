@@ -1,12 +1,8 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
-import 'd2l-activities/components/d2l-activity-list-item/d2l-activity-list-item.js';
-import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui-labs/pagination/pagination.js';
-import 'd2l-button/d2l-button-icon.js';
-import 'd2l-inputs/d2l-input-text.js';
-import 'd2l-link/d2l-link.js';
+import '@brightspace-ui/core/components/link/link.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';

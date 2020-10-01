@@ -1,6 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import 'd2l-button/d2l-button.js';
+import '@brightspace-ui/core/components/button/button.js';
 import 'd2l-typography/d2l-typography.js';
 import '../components/activity-card-list.js';
 import '../styles/discovery-styles.js';

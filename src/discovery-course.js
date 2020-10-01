@@ -5,7 +5,7 @@ import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-res
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 
 import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
-import 'd2l-colors/d2l-colors.js';
+import '@brightspace-ui/core/components/colors/colors.js';
 
 import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';

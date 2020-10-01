@@ -1,6 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import 'd2l-loading-spinner/d2l-loading-spinner.js';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 
 class LoadingOverlay extends PolymerElement {
 	static get template() {

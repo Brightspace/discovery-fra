@@ -2,8 +2,7 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import '@brightspace-ui/core/components/icons/icon.js';
-import 'd2l-link/d2l-link.js';
+import '@brightspace-ui/core/components/link/link.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
 

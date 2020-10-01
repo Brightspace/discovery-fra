@@ -2,8 +2,6 @@
 import './components/save-close-buttons.js';
 import './components/discover-settings-promoted-content.js';
 import '@brightspace-ui/core/components/button/button.js';
-import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
-import '@brightspace-ui/core/components/alert/alert-toast.js';
 import '@brightspace-ui/core/components/inputs/input-checkbox.js';
 import '@brightspace-ui/core/components/dialog/dialog.js';
 import './components/discover-settings-breadcrumbs-lit.js';

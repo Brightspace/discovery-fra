@@ -1,6 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import 'd2l-colors/d2l-colors.js';
+import '@brightspace-ui/core/components/colors/colors.js';
 
 class LoadingSkeleton extends PolymerElement {
 	static get template() {
