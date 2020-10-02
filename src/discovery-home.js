@@ -54,34 +54,40 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 					<featured-list-section
 						href="[[_promotedCoursesHref]]"
 						token="[[token]]"
-						showOrganizationCode$="[[showOrganizationCode]]"
-						showSemesterName$="[[showSemesterName]]"></featured-list-section>
+						showOrganizationCode$="[[_showOrganizationCode]]"
+						showSemesterName$="[[_showSemesterName]]"></featured-list-section>
 				</template>
 				<div class="discovery-no-courses-message" hidden$="[[_hasCoursesFromAllSection]]">[[_noActivitiesMsg]]</div>
-				<home-list-section
-					href="[[_addedHref]]"
-					token="[[token]]"
-					sort="added"
-					section-name="[[localize('new')]]"
-					link-label="[[localize('viewAllNewLabel')]]"
-					link-name="[[localize('viewAll')]]"
-					page-size="[[_pageSize]]"
-					showOrganizationCode$="[[showOrganizationCode]]"
-					showSemesterName$="[[showSemesterName]]"></home-list-section>
-				<home-list-section
-					href="[[_updatedHref]]"
-					token="[[token]]"
-					sort="updated"
-					section-name="[[localize('updated')]]"
-					link-label="[[localize('viewAllUpdatedLabel')]]"
-					link-name="[[localize('viewAll')]]"
-					page-size="[[_pageSize]]"
-					showOrganizationCode$="[[showOrganizationCode]]"
-					showSemesterName$="[[showSemesterName]]"></home-list-section>
+				<template is="dom-if" if="[[_showNewSection]]">
+					<home-list-section
+						hidden$="[[_settingsNotLoaded]]"
+						href="[[_addedHref]]"
+						token="[[token]]"
+						sort="added"
+						section-name="[[localize('new')]]"
+						link-label="[[localize('viewAllNewLabel')]]"
+						link-name="[[localize('viewAll')]]"
+						page-size="[[_pageSize]]"
+						showOrganizationCode$="[[_showOrganizationCode]]"
+						showSemesterName$="[[_showSemesterName]]"></home-list-section>
+				</template>
+				<template is="dom-if" if="[[_showUpdatedSection]]">
+					<home-list-section
+						hidden$="[[_settingsNotLoaded]]"
+						href="[[_updatedHref]]"
+						token="[[token]]"
+						sort="updated"
+						section-name="[[localize('updated')]]"
+						link-label="[[localize('viewAllUpdatedLabel')]]"
+						link-name="[[localize('viewAll')]]"
+						page-size="[[_pageSize]]"
+						showOrganizationCode$="[[_showOrganizationCode]]"
+						showSemesterName$="[[_showSemesterName]]"></home-list-section>
+				</template>
 				<home-all-section
 					token="[[token]]"
-					show-organization-code$="[[showOrganizationCode]]"
-					show-semester-name$="[[showSemesterName]]"></home-all-section>
+					show-organization-code$="[[_showOrganizationCode]]"
+					show-semester-name$="[[_showSemesterName]]"></home-all-section>
 				<discovery-footer></discovery-footer>
 			</div>
 		`;
@@ -111,13 +117,23 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 				type: Boolean,
 				value: false
 			},
-			showOrganizationCode: {
+			_showOrganizationCode: {
 				type: Boolean
 			},
-			showSemesterName: {
+			_showSemesterName: {
 				type: Boolean,
 			},
-			_noActivitiesMsg: String
+			_noActivitiesMsg: String,
+			_showUpdatedSection: {
+				type: Boolean
+			},
+			_showNewSection: {
+				type: Boolean
+			},
+			_settingsNotLoaded: {
+				type: Boolean,
+				value: true
+			}
 		};
 	}
 
@@ -178,16 +194,27 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 	}
 
 	_initializeSettings() {
-		this.showOrganizationCode = true;
-		this.showSemesterName = true;
+		this._showOrganizationCode = true;
+		this._showSemesterName = true;
+		this._showNewSection = true;
+		this._showUpdatedSection = true;
 
 		if (this._isDiscoverCustomizationsEnabled()) {
 			this.fetchDiscoverSettings().then(properties => {
 				if (properties) {
-					this.showOrganizationCode = properties.showCourseCode;
-					this.showSemesterName = properties.showSemester;
+					this._showOrganizationCode = properties.showCourseCode;
+					this._showSemesterName = properties.showSemester;
+
+					if (this._isDiscoverToggleSectionsEnabled()) {
+						this._showNewSection = properties.showNewSection;
+						this._showUpdatedSection = properties.showUpdatedSection;
+					}
 				}
+				this._settingsNotLoaded = false;
 			});
+		}
+		else {
+			this._settingsNotLoaded = false;
 		}
 		this._setUpUrls();
 	}
