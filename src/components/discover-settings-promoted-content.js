@@ -175,17 +175,12 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 		const candidates = this._renderCandidates();
 		const selectedNav = this._renderSelectedNav();
 		const loadMore = this._renderLoadMore();
-		const loadingPlaceholder = this._renderLoadingPlaceholder();
 
 		return html`
 			<div class="discover-featured-header">
 				<h2 class="discover-featured-title">${this.localize('settingsFeaturedSection')}</h2>
 				<d2l-button primary @click="${this._openPromotedDialogClicked}">${this.localize('featureContent')}</d2l-button>
 			</div>
-
-			${this._promotedItemsLoading ? html`
-				${loadingPlaceholder}
-			` : html``}
 
 			${featuredSection}
 
