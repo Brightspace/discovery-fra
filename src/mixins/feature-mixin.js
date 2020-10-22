@@ -33,6 +33,11 @@ const internalFeatureMixin = (superClass) => class extends superClass {
 	_getOptions() {
 		return window.D2L && window.D2L.frau && window.D2L.frau.options;
 	}
+
+	_initializeOptions(optionsJSON) {
+		window.D2L.frau.options = JSON.parse(optionsJSON);
+		window.D2L.bffEndpoint = window.D2L.frau.options.endpoint;
+	}
 };
 
 export const FeatureMixin = dedupingMixin(internalFeatureMixin);

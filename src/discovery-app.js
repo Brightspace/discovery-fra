@@ -66,6 +66,10 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 	}
 	static get properties() {
 		return {
+			options: {
+				type: String,
+				observer: '_optionsChanged'
+			},
 			page: {
 				type: String,
 				reflectToAttribute: true
@@ -79,20 +83,16 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 			routeData: Object,
 			subroute: Object,
 			_promotedCoursesEnabled: {
-				type: Boolean,
-				computed: '_isPromotedCoursesEnabled()'
+				type: Boolean
 			},
 			_manageDiscover: {
-				type: Boolean,
-				computed: '_canManageDiscover()'
+				type: Boolean
 			},
 			_discoverCustomizationsEnabled: {
-				type: Boolean,
-				computed: '_isDiscoverCustomizationsEnabled()'
+				type: Boolean
 			},
 			_discoverToggleSectionsEnabled: {
-				type: Boolean,
-				computed: '_isDiscoverToggleSectionsEnabled()'
+				type: Boolean
 			}
 		};
 	}
@@ -168,6 +168,16 @@ class DiscoveryApp extends FeatureMixin(RouteLocationsMixin(IfrauMixin(PolymerEl
 		queryParams = queryParams.detail.value || {};
 		this.queryParams = queryParams;
 	}
+
+	//Assigns feature/flags/endpoint/other information from LMS.
+	_optionsChanged(optionsJSON) {
+		this._initializeOptions(optionsJSON);
+		this._promotedCoursesEnabled = this._isPromotedCoursesEnabled();
+		this._manageDiscover = this._canManageDiscover();
+		this._discoverCustomizationsEnabled = this._isDiscoverCustomizationsEnabled();
+		this._discoverToggleSectionsEnabled = this._isDiscoverToggleSectionsEnabled();
+	}
+
 	_resetPage(pageName) {
 		const pageElement = this.shadowRoot.querySelector(`[name="${pageName}"]`);
 		if (pageElement && typeof pageElement._reset === 'function') {
