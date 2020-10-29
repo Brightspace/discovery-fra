@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Revenir à la page d’accueil.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nouveau", // The name of the homepage section for new activities.
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit(e) dans chacune d’elles. Réessayez plus tard.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Aucune activité nouvelle ou mise à jour n’est disponible, ou vous êtes déjà inscrit(e) à toutes les activités. Réessayez plus tard.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Aucune activité supplémentaire disponible ou vous êtes déjà inscrit(e) dans chacune d\'elles. Réessayez plus tard.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Aucun cours nouvellement ajouté.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Vous n\'êtes inscrit à aucun cours actuellement", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Veuillez utiliser une autre méthode de tri.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Aucun résultat pour Plus pertinent.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Aucun cours nouvellement mis à jour.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Aucune description du cours", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Aucun résultat pour « {searchQuery} »", // Displays as a header when a search query has no results
 	noResultsMessage: "Essayer un terme de recherche différent ou {linkStart}parcourez tout{linkEnd} pour voir tout le matériel disponible", // When a search query has no results, suggests different search term or filter.

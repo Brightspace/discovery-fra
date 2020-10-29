@@ -42,7 +42,12 @@ export default {
 	navigateHome: "عُد إلى الصفحة الرئيسية.", // An action that will navigate the user back to the Discover homepage.
 	new: "الجديدة", // The name of the homepage section for new activities.
 	noActivities: "لا تتوفر أي أنشطة، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "لا تتوفر أي أنشطة جديدة أو محدّثة، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "لا تتوفر أي أنشطة إضافية، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "لا تتوفر مقررات تعليمية تمت إضافتها حديثًا.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "لست مسجّلاً حاليًا في أي مقرر تعليمي.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "يُرجى استخدام طريقة فرز مختلفة.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "لا تتوفر أي نتائج للأكثر صلة.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "لا تتوفر مقررات تعليمية تم تحديثها مؤخرًا.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "ما من وصف للمقرر التعليمي", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "ما من نتائج لـ \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "حاول استخدام مصطلح بحث مختلف أو {linkStart}استعراض الكل{linkEnd} لعرض كل المواد المتوفرة", // When a search query has no results, suggests different search term or filter.

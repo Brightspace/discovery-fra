@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Ana sayfaya geri dönün.", // An action that will navigate the user back to the Discover homepage.
 	new: "Yeni", // The name of the homepage section for new activities.
 	noActivities: "Mevcut etkinlik yok veya zaten tümüne kayıtlısınız. Daha sonra tekrar deneyin.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Mevcut yeni veya güncellenmiş etkinlik yok veya zaten tümüne kayıtlısınız. Daha sonra tekrar deneyin.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Mevcut ek etkinlik yok veya zaten tümüne kayıtlısınız. Daha sonra tekrar deneyin.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Yeni eklenen ders yok.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Şu anda herhangi bir derse kayıtlı değilsiniz.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Lütfen farklı bir sıralama yöntemi kullanın.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "En İlgili için sonuç yok.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Yeni güncellenen ders yok.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Ders açıklaması yok", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "\"{searchQuery}\" için sonuç bulunamadı", // Displays as a header when a search query has no results
 	noResultsMessage: "Farklı bir arama terimi kullanmayı deneyin veya mevcut tüm materyalleri görüntülemek için {linkStart}Tümüne Gözat{linkEnd} seçeneğini belirleyin", // When a search query has no results, suggests different search term or filter.

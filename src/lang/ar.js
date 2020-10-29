@@ -26,5 +26,9 @@ export default {
 	selectedFromMaximum: "تم تحديد {count} ∕ {maximum}.", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "قسم مميّز", // The header for setting the featured items in Discover.
 	showCourseCode: "عرض رموز المقرر التعليمي", // The setting for whether or not to display course codes within Discover.
-	showSemester: "عرض الفصول الدراسية" // The setting for whether or not to display semecter names within Discover.
+	showSemester: "عرض الفصول الدراسية", // The setting for whether or not to display semecter names within Discover.
+	showUpdatedSection: "إظهار القسم المحدّث", // The setting for whether or not to display the Updated section on the Discover homepage.
+	showNewSection: "إظهار القسم الجديد", // The setting for whether or not to display the New section on the Discover homepage.
+	courseTileSettings: "الإطارات المتجانبة للمقرر التعليمي", // The subheader for the settings that determine what to display within course tiles.
+	sectionsSettings: "المقاطع" // The subheader for the settings that determine which sections will be shown on the Discover homepage.
 };

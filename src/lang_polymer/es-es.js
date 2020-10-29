@@ -38,11 +38,16 @@ export default {
 	homepageDocumentTitle: "Descubrir: {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Última actualización {date}", //The most recent date that the current course was updated
 	loadMore: "Cargar más", // An action that will load additional activities to be displayed.
-	message404: "Lo sentimos. Se ha producido un 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Lo sentimos. Se ha producido un error 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Regresar a la página de inicio.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nuevas", // The name of the homepage section for new activities.
 	noActivities: "No hay ninguna actividad disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "No hay ninguna actividad nueva o actualizada disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "No hay ninguna actividad adicional disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "No hay cursos recién añadidos.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "En este momento, no está inscrito en ningún curso.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Utilice un método de clasificación diferente.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "No hay resultados para Más relevante.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "No hay cursos actualizados recientemente.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Sin descripción del curso", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "No hay resultados para \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Intente utilizar un término de búsqueda distinto o {linkStart}Examinar todo{linkEnd} para ver todos los materiales disponibles.", // When a search query has no results, suggests different search term or filter.

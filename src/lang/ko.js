@@ -26,5 +26,9 @@ export default {
 	selectedFromMaximum: "{count} ∕ {maximum}개의 항목이 선택되었습니다.", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "추천 섹션", // The header for setting the featured items in Discover.
 	showCourseCode: "Show course codes", // The setting for whether or not to display course codes within Discover.
-	showSemester: "Show semesters" // The setting for whether or not to display semecter names within Discover.
+	showSemester: "Show semesters", // The setting for whether or not to display semecter names within Discover.
+	showUpdatedSection: "업데이트된 섹션 표시", // The setting for whether or not to display the Updated section on the Discover homepage.
+	showNewSection: "새 섹션 표시", // The setting for whether or not to display the New section on the Discover homepage.
+	courseTileSettings: "강의 타일", // The subheader for the settings that determine what to display within course tiles.
+	sectionsSettings: "섹션" // The subheader for the settings that determine which sections will be shown on the Discover homepage.
 };

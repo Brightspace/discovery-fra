@@ -26,5 +26,9 @@ export default {
 	selectedFromMaximum: "{count}∕{maximum} har valts.", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "Valt avsnitt", // The header for setting the featured items in Discover.
 	showCourseCode: "Visa kurskoder", // The setting for whether or not to display course codes within Discover.
-	showSemester: "Visa terminer" // The setting for whether or not to display semecter names within Discover.
+	showSemester: "Visa terminer", // The setting for whether or not to display semecter names within Discover.
+	showUpdatedSection: "Visa avsnittet Uppdaterat", // The setting for whether or not to display the Updated section on the Discover homepage.
+	showNewSection: "Visa avsnittet Nytt", // The setting for whether or not to display the New section on the Discover homepage.
+	courseTileSettings: "Kurspaneler", // The subheader for the settings that determine what to display within course tiles.
+	sectionsSettings: "Sektioner" // The subheader for the settings that determine which sections will be shown on the Discover homepage.
 };

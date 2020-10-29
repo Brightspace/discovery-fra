@@ -26,5 +26,9 @@ export default {
 	selectedFromMaximum: "已選取 {count} 個，上限為 {maximum} 個。", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "特色章節", // The header for setting the featured items in Discover.
 	showCourseCode: "顯示課程代碼", // The setting for whether or not to display course codes within Discover.
-	showSemester: "顯示學期" // The setting for whether or not to display semecter names within Discover.
+	showSemester: "顯示學期", // The setting for whether or not to display semecter names within Discover.
+	showUpdatedSection: "顯示已更新章節", // The setting for whether or not to display the Updated section on the Discover homepage.
+	showNewSection: "顯示新章節", // The setting for whether or not to display the New section on the Discover homepage.
+	courseTileSettings: "課程標題", // The subheader for the settings that determine what to display within course tiles.
+	sectionsSettings: "章節" // The subheader for the settings that determine which sections will be shown on the Discover homepage.
 };

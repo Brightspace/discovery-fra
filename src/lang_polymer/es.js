@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Regresar a la página de inicio.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nuevo", // The name of the homepage section for new activities.
 	noActivities: "No hay actividades disponibles o ya está inscrito en todas ellas. Inténtelo de nuevo más tarde.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "No hay actividades nuevas ni actualizadas disponibles o ya está inscrito en todas ellas. Inténtelo de nuevo más tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "No hay actividades adicionales disponibles o ya está inscrito en todas ellas. Inténtelo de nuevo más tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "No hay cursos recientemente agregados.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "En este momento, no está inscrito en ningún curso.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Utilice un método de clasificación diferente.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "No hay resultados para la opción “Más relevante”.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "No hay cursos recientemente actualizados.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Sin descripción del curso", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "No hay resultados para \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Intente utilizar un término de búsqueda distinto o use {linkStart}Examinar todo{linkEnd} para ver todos los materiales disponibles", // When a search query has no results, suggests different search term or filter.
