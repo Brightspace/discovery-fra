@@ -71,7 +71,7 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				<div class="discovery-search-header-container">
 					<div class="discovery-search-header-nav-container">
 						<d2l-breadcrumbs class="discovery-search-header-breadcrumb" compact>
-							<d2l-breadcrumb href="[[_homeHref]]" text="[[localize('backToDiscover')]]"></d2l-breadcrumb>
+							<d2l-breadcrumb href="[[_getHomeHref()]]" text="[[localize('backToDiscover')]]"></d2l-breadcrumb>
 						</d2l-breadcrumbs>
 					</div>
 
@@ -97,10 +97,6 @@ class SearchHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 			query: String,
 			searchInput: Object,
 			sortParameter: String,
-			_homeHref: {
-				type: String,
-				computed: '_getHomeHref()'
-			},
 			page: Number
 		};
 	}

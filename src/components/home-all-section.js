@@ -46,7 +46,7 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 						<d2l-link
 							aria-label$="[[localize('viewAllLabel')]]"
 							class="activity-card-list-header-view-all-link"
-							href="[[_viewAllHref]]">
+							href="[[_getViewAllHref()]]">
 							[[localize('viewAll')]]
 						</d2l-link>
 					</div>
@@ -97,11 +97,7 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 			showSemesterName: {
 				type: Boolean,
 			},
-			token: String,
-			_viewAllHref: {
-				type: String,
-				computed: '_getViewAllHref()'
-			}
+			token: String
 		};
 	}
 

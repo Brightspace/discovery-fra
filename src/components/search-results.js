@@ -216,11 +216,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				type: Boolean,
 				value: false
 			},
-			token: String,
-			_browseAllHref: {
-				type: String,
-				computed: '_getBrowseAllHref()'
-			}
+			token: String
 		};
 	}
 
@@ -488,7 +484,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				noResultsMessage = this.localize(
 					'noResultsMessage',
 					'linkStart',
-					'<d2l-link href="[[_browseAllHref]]" id="discovery-search-results-browse-all">',
+					'<d2l-link href="[[_getBrowseAllHref()]]" id="discovery-search-results-browse-all">',
 					'linkEnd',
 					'</d2l-link>');
 			}

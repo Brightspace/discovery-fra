@@ -18,18 +18,9 @@ class Discovery404 extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 			
 			<div>
 				<span>[[localize('message404')]]</span>
-				<d2l-link href="[[_homeHref]]">[[localize('navigateHome')]]</d2l-link>
+				<d2l-link href="[[_getHomeHref()]]">[[localize('navigateHome')]]</d2l-link>
 			</div>
 		`;
-	}
-
-	static get properties() {
-		return {
-			_homeHref: {
-				type: String,
-				computed: '_getHomeHref()'
-			}
-		};
 	}
 
 	_getHomeHref() {

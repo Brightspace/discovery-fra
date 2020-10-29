@@ -27,21 +27,12 @@ class SearchSidebar extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				<div class="discovery-search-sidebar-container">
 					<div class="discovery-search-sidebar-nav-container">
 						<d2l-breadcrumbs compact>
-							<d2l-breadcrumb href="[[_homeHref]]" text="[[localize('backToDiscover')]]"></d2l-breadcrumb>
+							<d2l-breadcrumb href="[[_getHomeHref()]]" text="[[localize('backToDiscover')]]"></d2l-breadcrumb>
 						</d2l-breadcrumbs>
 					</div>
 				</div>
 			</div>
 		`;
-	}
-
-	static get properties() {
-		return {
-			_homeHref: {
-				type: String,
-				computed: '_getHomeHref()'
-			}
-		};
 	}
 
 	_getHomeHref() {

@@ -348,7 +348,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					<div id="discovery-course-summary-card" class="discovery-course-summary-card">
 						<div class="discovery-course-summary-breadcrumbs">
 							<d2l-breadcrumbs>
-								<d2l-breadcrumb href="[[_homeHref]]" text="[[localize('discover')]]" aria-label="[[localize('backToDiscover')]]"></d2l-breadcrumb>
+								<d2l-breadcrumb href="[[_getHomeHref()]]" text="[[localize('discover')]]" aria-label="[[localize('backToDiscover')]]"></d2l-breadcrumb>
 							</d2l-breadcrumbs>
 						</div>
 
@@ -518,10 +518,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			selfEnrolledDate: String,
 			_enrollmentDialogHeader: String,
 			_enrollmentDialogMessage: String,
-			_homeHref: {
-				type: String,
-				computed: '_getHomeHref()'
-			},
 			startDate: String,
 			startDateIsoFormat: String,
 			_startDateIsFuture: {

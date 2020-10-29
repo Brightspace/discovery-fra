@@ -111,7 +111,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 				<div class="discovery-home-header-container">
 					<div>
 						<h1 class="d2l-heading-1 discovery-home-header-d2l-heading-1">
-							<a class="discovery-home-header-clickable" href="[[_homeHref]]">[[localize('discover')]]</a>
+							<a class="discovery-home-header-clickable" href="[[_getHomeHref()]]">[[localize('discover')]]</a>
 						</h1>
 					</div>
 					<div class="discovery-home-header-search-container">
@@ -124,7 +124,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 						</d2l-input-search>
 						<d2l-link
 							class="discovery-home-header-browse-all-link"
-							href="[[_browseAllHref]]">
+							href="[[_getBrowseAllHref()]]">
 							[[localize('browseAllContent')]]
 						</d2l-link>
 					</div>
@@ -150,15 +150,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 			query: String,
 			searchInput: Object,
 			showSettingsButton: Boolean,
-			resetPage: String, //The app name of a page to reset upon navigation
-			_homeHref: {
-				type: String,
-				computed: '_getHomeHref()'
-			},
-			_browseAllHref: {
-				type: String,
-				computed: '_getBrowseAllHref()'
-			}
+			resetPage: String //The app name of a page to reset upon navigation
 		};
 	}
 
