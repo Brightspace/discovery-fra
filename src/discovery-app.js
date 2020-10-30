@@ -108,20 +108,26 @@ class DiscoveryApp extends FetchMixin(FeatureMixin(RouteLocationsMixin(IfrauMixi
 	constructor() {
 		super();
 
-		if (window.location.pathname && window.location.pathname.includes('search')) {
-			this.page = 'search';
-		} else if (window.location.pathname && window.location.pathname.includes('settings')) {
-			this.page = 'settings';
-		} else if (window.location.pathname && window.location.pathname.includes('course')) {
-			this.page = 'course';
-		} else if (window.location.pathname && window.location.pathname.includes('404')) {
-			this.page = '404';
+		const path = window.location.pathname;
+		if (path) {
+			if (path === this.routeLocations().settings()) {
+				this.page = 'settings';
+			} else if (path === this.routeLocations().noQuerySearch()) {
+				this.page = 'search';
+			} else if (path.includes(this.routeLocations().course(''))) {
+				this.page = 'course';
+			} else if (path === this.routeLocations().home() || path === this.routeLocations().navLink()) {
+				this.page = 'home';
+			} else {
+				this.page = '404';
+			}
 		} else {
-			this.page = 'home';
+			this.page = '404';
 		}
 
 		this._routeDataChangedHandled = this._routeDataChanged.bind(this);
 	}
+
 	ready() {
 		super.ready();
 		this.addEventListener('navigate', this._navigate);
