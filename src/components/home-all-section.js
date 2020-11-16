@@ -37,10 +37,14 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 						font-size: 0.7rem;
 					}
 				}
+
+				[hidden] {
+					display: none !important;
+				}
 			</style>
 			
-			<div class="d2l-typography">
-				<div class="discovery-home-recently-updated-container" hidden$="[[!_hasCourses(_recentlyUpdatedItems)]]">
+			<div class="d2l-typography" hidden$="[[!_hasCourses(_recentlyUpdatedItems)]]">
+				<div class="discovery-home-recently-updated-container">
 					<div class="activity-card-list-header">
 						<h2 class="d2l-heading-2" aria-label$="[[localize('all')]]">[[localize('all')]]</h2>
 						<d2l-link
