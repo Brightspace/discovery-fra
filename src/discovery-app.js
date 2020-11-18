@@ -83,9 +83,9 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 			case 'settings': return html `
 				<discovery-settings
 					name="settings"
-					can-manage-discover="${this._manageDiscover}"
-					discover-customizations-enabled = "${this._discoverCustomizationsEnabled}"
-					discover-toggle-sections-enabled = "${this._discoverToggleSectionsEnabled}">
+					?can-manage-discover="${this._manageDiscover}"
+					?discover-customizations-enabled = "${this._discoverCustomizationsEnabled}"
+					?discover-toggle-sections-enabled = "${this._discoverToggleSectionsEnabled}">
 				</discovery-settings>`;
 
 			case 'course': return html `
