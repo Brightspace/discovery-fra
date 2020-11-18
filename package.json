@@ -48,6 +48,7 @@
     "d2l-typography": "github:BrightspaceUI/typography#semver:^7",
     "dompurify": "^2.0.7",
     "fastdom": "^1.0.8",
+    "lit-element-router": "^2.0.3",
     "promise-polyfill": "8.1.0",
     "siren-parser": "^8.2.0",
     "siren-sdk": "github:BrightspaceHypermediaComponents/siren-sdk#semver:^1",
