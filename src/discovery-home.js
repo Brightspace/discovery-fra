@@ -138,7 +138,6 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 		this.addEventListener('d2l-discover-home-all-section-courses', this._checkCoursesFromAllSection.bind(this));
 		this.addEventListener('d2l-discover-home-featured-section-courses', this._checkPromotedCourses.bind(this));
 		this._initialize();
-
 	}
 
 	_checkCoursesFromAllSection(e) {
@@ -175,7 +174,6 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 	}
 
 	_initialize() {
-
 		this._updateToken();
 		this._initializeSettings();
 		const instanceName = window.D2L && window.D2L.frau && window.D2L.frau.options && window.D2L.frau.options.instanceName;
