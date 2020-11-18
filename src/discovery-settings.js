@@ -198,9 +198,6 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 
 	static get properties() {
 		return {
-			visible: {
-				type: Boolean
-			},
 			token: {
 				type: String
 			},
@@ -275,7 +272,7 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
-			if (propName === 'canManageDiscover' || propName === 'visible') {
+			if (propName === 'canManageDiscover') {
 				this._checkPermission();
 				this._initializeSettings();
 			}
@@ -385,7 +382,7 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 	}
 
 	_checkPermission() {
-		if (!this.visible || this.canManageDiscover) {
+		if (this.canManageDiscover) {
 			return;
 		}
 
