@@ -201,6 +201,9 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 			token: {
 				type: String
 			},
+			token: {
+				type: String
+			},
 			canManageDiscover: {
 				type: Boolean,
 				attribute: 'can-manage-discover'
