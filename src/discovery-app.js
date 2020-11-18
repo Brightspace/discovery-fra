@@ -130,7 +130,6 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 	_isDiscoverInitialized(resolvedToken, options) {
 		if (resolvedToken && options) {
 			return true;
-
 		}
 		return false;
 	}
