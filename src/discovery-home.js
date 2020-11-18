@@ -48,7 +48,7 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 
 			<div class="discovery-home-main">
 				<div class="discovery-home-home-header">
-					<home-header id="discovery-home-home-header" query="" show-settings-button="[[canManageDiscover]]"></home-header>
+					<home-header id="discovery-home-home-header" query="" show-settings-button$="[[canManageDiscover]]"></home-header>
 				</div>
 				<template is="dom-if" if="[[promotedCoursesEnabled]]">
 					<featured-list-section
@@ -95,10 +95,6 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 
 	static get properties() {
 		return {
-			visible: {
-				type: Boolean,
-				observer: '_visible'
-			},
 			token: String,
 			promotedCoursesEnabled: Boolean,
 			canManageDiscover: Boolean,
@@ -141,6 +137,8 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 		super.ready();
 		this.addEventListener('d2l-discover-home-all-section-courses', this._checkCoursesFromAllSection.bind(this));
 		this.addEventListener('d2l-discover-home-featured-section-courses', this._checkPromotedCourses.bind(this));
+		this._initialize();
+
 	}
 
 	_checkCoursesFromAllSection(e) {
@@ -176,10 +174,7 @@ class DiscoveryHome extends FeatureMixin(DiscoverSettingsMixin(FetchMixin(Locali
 		}
 	}
 
-	_visible(visible) {
-		if (!visible) {
-			return;
-		}
+	_initialize() {
 
 		this._updateToken();
 		this._initializeSettings();

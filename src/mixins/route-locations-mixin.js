@@ -3,13 +3,51 @@ import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
 
-var discoveryBasePath = '/d2l/le/discovery/view';
+const discoveryBasePath = '/d2l/le/discovery/view';
 
 /* @polymerMixin */
 const internalRouteLocationsMixin = (superClass) =>
 	class extends superClass {
 		constructor() {
 			super();
+		}
+
+		//Manages the expected routes and the names of associated pages for each route.
+		static get routes() {
+			return [
+				{
+					name: 'home',
+					pattern: discoveryBasePath + '/'
+				},
+				{
+					name: 'home',
+					pattern: discoveryBasePath + '/home'
+				},
+				{
+					name: 'settings',
+					pattern: discoveryBasePath + '/settings'
+				},
+				{
+					name: 'course',
+					pattern: discoveryBasePath + '/course/:id'
+				},
+				{
+					name: 'search',
+					pattern: discoveryBasePath + '/search'
+				},
+				{
+					name: 'notFound',
+					pattern: '*'
+				}
+			];
+		}
+
+		//Triggers upon this.navigate.
+		//Divides the resulting query up into components to be passed to child components as necessary, based on route name and pattern.
+		router(route, params, query) {
+			this.route = route; //The name of the route
+			this.params = params; //The parameters passed to the route ie courseId
+			this.query = query;// The query of the route, ie search query and sort.
 		}
 
 		search(query, queryParams = {}) {

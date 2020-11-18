@@ -85,7 +85,7 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 						<d2l-input-checkbox skeleton>${this.localize('showUpdatedSection')}</d2l-input-checkbox>
 						<d2l-input-checkbox skeleton>${this.localize('showNewSection')}</d2l-input-checkbox>
 					` : html``}
-					
+
 					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
 						<d2l-input-checkbox
 							id="showUpdatedSectionCheckbox"
@@ -201,14 +201,20 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 			visible: {
 				type: Boolean
 			},
+			token: {
+				type: String
+			},
 			canManageDiscover: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'can-manage-discover'
 			},
 			discoverCustomizationsEnabled: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'discover-customizations-enabled'
 			},
 			discoverToggleSectionsEnabled: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'discover-toggle-sections-enabled'
 			},
 			_savedShowCourseCode: {
 				type: Boolean
@@ -246,9 +252,6 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 			_settingsLoaded: {
 				type: Boolean
 			},
-			token: {
-				type: String
-			}
 		};
 	}
 
