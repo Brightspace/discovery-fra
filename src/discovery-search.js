@@ -5,9 +5,7 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
-import '@polymer/app-route/app-route.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
-import './components/app-location-ifrau.js';
 import './components/discovery-footer.js';
 import './components/search-header.js';
 import './components/search-results.js';
@@ -121,12 +119,6 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 					}
 				}
 			</style>
-			<app-location-ifrau route="[[route]]"></app-location-ifrau>
-			<app-route
-				route="[[route]]"
-				pattern="/d2l/le/discovery/view/search/"
-				data="[[routeData]]">
-			</app-route>
 
 			<h1 class="discovery-search-offscreen-text" tabindex="0">[[localize('searchResultsOffscreen', 'searchQuery', searchQuerySanitized)]]</h1>
 
@@ -142,15 +134,15 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 							<search-header
 								id="discovery-search-search-header"
 								query="[[searchQuerySanitized]]"
-								page="[[_pageCurrent]]"
-								sort-parameter="[[_sortParameter]]">
+								page="[[_page]]"
+								sort-parameter="[[_sort]]">
 							</search-header>
 						</div>
 						<div class="discovery-search-results">
 							<search-results
 								href="[[_searchActionHref]]"
 								search-query="[[searchQuerySanitized]]"
-								sort-parameter="[[_sortParameter]]">
+								sort-parameter="[[_sort]]">
 							</search-results>
 						</div>
 						<discovery-footer></discovery-footer>
@@ -162,132 +154,84 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 	}
 	static get properties() {
 		return {
-			route: {
-				type: Object,
-				value: () => {
-					return {
-						path: ''
-					};
-				}
-			},
-			routeData: Object,
 			queryParams: {
 				type: Object,
 				value: () => {
 					return {};
-				}
-			},
-			_pageCurrent: {
-				type: Number,
-				value: undefined
-			},
-			_searchQuery: {
-				type: String,
-				value: '',
-			},
-			_sortParameter: {
-				type: String,
-				value: 'relevant'
+				},
+				observer: '_queryParamsChanged'
 			},
 			searchQuerySanitized: {
 				type: String,
-				computed: '_searchQuerySanitizedComputed(_searchQuery)'
+				computed: '_searchQuerySanitizedComputed(_query)'
 			},
 			_searchActionHref: String,
-			visible: {
-				type: Boolean,
-				observer: '_visible'
-			},
 			_searchLoading: {
 				type: Boolean,
 				value: true
 			},
-			_minViewPortHeight: Number
+			_minViewPortHeight: Number,
+			_query: {
+				type: String,
+				value: ''
+			},
+			_sort: {
+				type: String,
+				value: 'relevant'
+			},
+			_page: {
+				type: Number,
+				value: 0
+			},
+			_searchAction: {
+				type: String,
+				value: 'search-activities'
+			}
 		};
 	}
-	static get _searchAction() {
-		return 'search-activities';
-	}
+
 	ready() {
 		super.ready();
-		const route = this.shadowRoot.querySelector('app-route');
-		route.addEventListener('route-changed', this._routeChanged.bind(this));
-
-		const location = this.shadowRoot.querySelector('app-location-ifrau');
-		location.addEventListener('query-params-changed', this._queryParamsChanged.bind(this));
-
 		this.addEventListener('iron-resize', this._onIronResize.bind(this));
 		this.addEventListener('search-loading', this._searchLoadingChanged);
 	}
-	_visible(visible) {
-		if (visible) {
-			this._updateDocumentTitle();
 
-			beforeNextRender(this, () => {
-				this._onIronResize();
-			});
-		} else {
-			this._reset();
-		}
-	}
-	_routeChanged(route) {
-		route.stopPropagation();
-		this.route = route.detail.value || {};
-	}
 	_queryParamsChanged(queryParams) {
-		if (!this.visible) {
-			return;
-		}
-
-		queryParams.stopPropagation();
-		queryParams = queryParams.detail.value || {};
-
-		const hasSearchQueryParam = queryParams && queryParams.has && queryParams.has('query');
-		const prevSearchQuery = this.searchQuerySanitized;
-
-		if (hasSearchQueryParam) {
-			this._searchQuery = queryParams.get('query');
-		} else {
-			this._searchQuery = '';
-		}
-		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._searchQuery);
-
-		const hasPageQueryParam = queryParams && queryParams.has && queryParams.has('page');
-		const prevCurrentPage = this._pageCurrent;
-		if (!this.visible) {
-			this._pageCurrent = undefined;
-		} else if (!hasPageQueryParam) {
-			this._pageCurrent = 0;
-		} else {
-			this._pageCurrent = Math.max(queryParams.get('page') - 1, 0);
-		}
-
-		const prevSort = this._sortParameter;
-		if (queryParams && queryParams.has && queryParams.has('sort')) {
-			this._sortParameter = queryParams.get('sort');
-		}
-
 		this.queryParams = queryParams;
 
-		const pageChanged = prevCurrentPage !== this._pageCurrent;
-		const queryChanged = prevSearchQuery !== this.searchQuerySanitized;
-		const sortChanged = prevSort !== this._sortParameter;
-		if (pageChanged || queryChanged || sortChanged) {
-			this._getDecodedQuery(this.searchQuerySanitized, this._pageCurrent);
+		if (queryParams.query) {
+			this._query = queryParams.query;
+		} else {
+			this._query = '';
+		}
+		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._query);
+		
+		if (queryParams.sort && (queryParams.sort === 'added' || queryParams.sort === 'updated' || queryParams.sort === 'enrolled')) {
+			this._sort = queryParams.sort;
+		}
+		else {
+			this._sort = 'relevant'; 
+		}
+		
+		if (!Number.isNaN(queryParams.page) && queryParams.page > 1) {
+			this._page = queryParams.page - 1;
+		}
+		else {
+			this._page = 0;
 		}
 
-		if (queryChanged) {
-			this._updateDocumentTitle();
-
-			const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
-			if (searchHeader) {
-				searchHeader.showClear(this.searchQuerySanitized);
-			}
-			this.setInitialFocusAfterRender();
+		this._getDecodedQuery(this._query, this._page);
+		//Title Update needs to be fixed
+		//this._updateDocumentTitle();
+		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
+		if (searchHeader) {
+			searchHeader.showClear(this.searchQuerySanitized);
 		}
+		this.setInitialFocusAfterRender();
 	}
+
 	_getDecodedQuery(searchQuery, page) {
-		if (page === undefined || !this.visible) {
+		if (page === undefined) {
 			this._searchActionHref = undefined;
 			return;
 		}
@@ -295,7 +239,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		const parameters = {
 			q: searchQuery,
 			page: page,
-			sort: this._sortParameter
+			sort: this._sort
 		};
 
 		if (!searchQuery) {
@@ -316,6 +260,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				}));
 			});
 	}
+
 	_searchLoadingChanged(e) {
 		if (e && e.detail) {
 			this._searchLoading = e.detail.loading;
@@ -324,15 +269,14 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			});
 		}
 	}
+
 	_getIframeHeight() {
 		const windowInnerHeight = window.innerHeight;
 		const documentElementClientHeight  = document.documentElement.clientHeight;
 		return Math.max(documentElementClientHeight, windowInnerHeight || 0);
 	}
+
 	_onIronResize() {
-		if (!this.visible) {
-			return;
-		}
 		const container = this.shadowRoot.querySelector('.discovery-search-container');
 		if (!this._searchLoading) {
 			fastdom.measure(() => {
@@ -340,11 +284,6 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				const heightOfIframe = this._getIframeHeight();
 				const containerHeight = container.offsetHeight;
 				const heightToUse = Math.max(heightOfIframe, containerHeight);
-				if (heightToUse) {
-					this.iframeApplyStyles({
-						height: heightToUse + 'px'
-					});
-				}
 				// Make sure the height of container is at least the full viewport
 				fastdom.mutate(() => {
 					if (containerHeight > this._minViewPortHeight) {
@@ -355,10 +294,6 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				});
 			});
 		} else {
-			this.iframeApplyStyles({
-				display: 'block',
-				height: '100vh'
-			});
 			afterNextRender(this, () => {
 				fastdom.measure(() => {
 					// Set min-height of the container to be the iframe's height at 100vh
@@ -373,6 +308,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			});
 		}
 	}
+
 	setInitialFocusAfterRender() {
 		const itemToFocus = this.shadowRoot.querySelector('.discovery-search-offscreen-text');
 		afterNextRender(this, () => {
@@ -381,20 +317,23 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			}
 		});
 	}
+
 	_reset() {
-		this._searchQuery = null;
+		this._query = null;
 		this.searchQuerySanitized = null;
-		this._pageCurrent = undefined;
+		this._page = undefined;
 		this._searchActionHref = undefined;
 		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
 		searchHeader.reset();
 	}
-	_searchQuerySanitizedComputed(_searchQuery) {
-		if (_searchQuery === null || _searchQuery === undefined) {
-			return _searchQuery;
+
+	_searchQuerySanitizedComputed(_query) {
+		if (_query === null || _query === undefined) {
+			return _query;
 		}
-		return DOMPurify.sanitize(_searchQuery, {ALLOWED_TAGS: []});
+		return DOMPurify.sanitize(_query, {ALLOWED_TAGS: []});
 	}
+
 	_updateDocumentTitle() {
 		const instanceName = window.D2L && window.D2L.frau && window.D2L.frau.options && window.D2L.frau.options.instanceName;
 		document.title = this.localize(
