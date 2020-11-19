@@ -152,6 +152,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			</div>
 		`;
 	}
+
 	static get properties() {
 		return {
 			queryParams: {
@@ -205,14 +206,14 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			this._query = '';
 		}
 		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._query);
-		
+
 		if (queryParams.sort && (queryParams.sort === 'added' || queryParams.sort === 'updated' || queryParams.sort === 'enrolled')) {
 			this._sort = queryParams.sort;
 		}
 		else {
-			this._sort = 'relevant'; 
+			this._sort = 'relevant';
 		}
-		
+
 		if (!Number.isNaN(queryParams.page) && queryParams.page > 1) {
 			this._page = queryParams.page - 1;
 		}
@@ -221,8 +222,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		}
 
 		this._getDecodedQuery(this._query, this._page);
-		//Title Update needs to be fixed
-		//this._updateDocumentTitle();
+		this._updateDocumentTitle();
 		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
 		if (searchHeader) {
 			searchHeader.showClear(this.searchQuerySanitized);
@@ -281,9 +281,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		if (!this._searchLoading) {
 			fastdom.measure(() => {
 				// Set height of the iframe to be max of container and height of iframe
-				const heightOfIframe = this._getIframeHeight();
 				const containerHeight = container.offsetHeight;
-				const heightToUse = Math.max(heightOfIframe, containerHeight);
 				// Make sure the height of container is at least the full viewport
 				fastdom.mutate(() => {
 					if (containerHeight > this._minViewPortHeight) {
@@ -316,15 +314,6 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				itemToFocus.focus();
 			}
 		});
-	}
-
-	_reset() {
-		this._query = null;
-		this.searchQuerySanitized = null;
-		this._page = undefined;
-		this._searchActionHref = undefined;
-		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
-		searchHeader.reset();
 	}
 
 	_searchQuerySanitizedComputed(_query) {
