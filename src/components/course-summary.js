@@ -598,13 +598,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_navigateToOrganizationHomepage(organizationHomepage) {
-		this.dispatchEvent(new CustomEvent('navigate-parent', {
-			detail: {
-				path: organizationHomepage
-			},
-			bubbles: true,
-			composed: true
-		}));
+		window.location.href = organizationHomepage;
 	}
 
 	_tryNavigateToOrganizationHomepage() {
