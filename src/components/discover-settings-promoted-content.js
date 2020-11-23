@@ -8,6 +8,7 @@ import '@brightspace-ui/core/components/list/list-item.js';
 import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
+import './d2l-discover-list/d2l-discover-list.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { Rels } from 'd2l-hypermedia-constants';
 import { heading2Styles, bodyCompactStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -128,6 +129,29 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 				margin-top: .5rem;
 				margin-bottom: .5rem;
 			}
+			.d2l-discover-list-item-pulse-placeholder {
+				animation: pulsingAnimation 1.8s linear infinite;
+				height: 100%;
+				width: 100%;
+				border-radius: 4px;
+			}
+			.d2l-discover-list-item-content-placeholder {
+				flex-grow: 1;
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+			}
+			.d2l-discover-list-item-image-placeholder {
+				width: 90px;
+				height: 38.33px;
+				border: 1px solid var(--d2l-color-gypsum);
+			}
+			.d2l-discover-list-item-category-placeholder {
+				display: block;
+				height: 0.95rem;
+				margin: 0.3rem 0;
+				width: 50%;
+			}
 		`];
 	}
 
@@ -182,10 +206,14 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 	}
 
 	_renderFeaturedSection() {
+		const loadingPlaceholder = this._renderLoadingPlaceholder();
 		return html`
 			${this._promotedActivities.length > 0 ? html`
 				<d2l-list class="discover-featured-list">
 					${this._promotedActivities.map((activity) => html`
+						${!activity.loaded ? html`
+							${loadingPlaceholder}
+						` : html``}
 						<d2l-list-item ?hidden="${!activity.loaded}">
 							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}"></d2l-organization-image>
 							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._handleSavedOrgAccessible(e, activity)}"></d2l-organization-name>
@@ -246,6 +274,19 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 					<d2l-button @click=${this._loadMoreCandidates}>${this.localize('loadMore')}</d2l-button>
 				`}
 			`}
+		`;
+	}
+
+	_renderLoadingPlaceholder() {
+		return html`
+			<d2l-list-item>
+				<div slot="illustration" class="d2l-discover-list-item-image-placeholder">
+					<div class="d2l-discover-list-item-pulse-placeholder"></div>
+				</div>
+				<div class="d2l-discover-list-item-content-placeholder">
+					<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
+				</div>
+			</d2l-list-item>
 		`;
 	}
 

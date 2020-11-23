@@ -1,8 +1,9 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { LocalizeMixin } from './mixins/localize-mixin.js';
+import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 
-class Discovery404 extends LocalizeMixin(PolymerElement) {
+class Discovery404 extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	static get template() {
 		return html`
 	  		<style>
@@ -19,7 +20,7 @@ class Discovery404 extends LocalizeMixin(PolymerElement) {
 	_goToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
-				path: '/d2l/le/discovery/view/'
+				path:  this.routeLocations().navLink()
 			},
 			bubbles: true,
 			composed: true,

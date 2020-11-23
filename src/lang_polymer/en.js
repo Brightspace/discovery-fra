@@ -42,7 +42,7 @@ export default {
 	navigateHome: "Head back to home.", // An action that will navigate the user back to the Discover homepage.
 	new: "New", // The name of the homepage section for new activities.
 	noActivities: "There are no activities available or you're already enrolled in all of them. Try again later.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "There are no new or updated activities available or you're already enrolled in all of them. Try again later.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "There are no additional activities available or you're already enrolled in all of them. Try again later.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noContentAdded: "There are no newly-added courses.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
 	noContentEnrolled: "You are not currently enrolled in any courses.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
 	noContentMessage: "Please use a different sorting method.", // Displays in a search result when no content is loaded and nothing was searched.

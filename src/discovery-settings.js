@@ -13,8 +13,9 @@ import { FetchMixin } from './mixins/fetch-mixin.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { DiscoverSettingsMixin } from './mixins/discover-settings-mixin.js';
 import { getLocalizeResources } from './localization.js';
+import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
-class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(RouteLocationsMixin(LitElement)))) {
+class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixin(FetchMixin(RouteLocationsMixin(LitElement))))) {
 
 	render() {
 		const customizeDiscoverSection = this._renderCustomizeDiscoverSection();
@@ -54,6 +55,11 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 						<h4 class="discovery-settings-h4">${this.localize('courseTileSettings')}</h4>
 					` : html``}
 
+					${!this._settingsLoaded ? html`
+						<d2l-input-checkbox skeleton>${this.localize('showCourseCode')}</d2l-input-checkbox>
+						<d2l-input-checkbox skeleton>${this.localize('showSemester')}</d2l-input-checkbox>
+					` : html``}
+
 					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
 						<d2l-input-checkbox
 							id="showCourseCodeCheckbox"
@@ -74,6 +80,12 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 		return html`
 			${this.discoverToggleSectionsEnabled ? html`
 					<h4 class="discovery-settings-h4">${this.localize('sectionsSettings')}</h4>
+
+					${!this._settingsLoaded ? html`
+						<d2l-input-checkbox skeleton>${this.localize('showUpdatedSection')}</d2l-input-checkbox>
+						<d2l-input-checkbox skeleton>${this.localize('showNewSection')}</d2l-input-checkbox>
+					` : html``}
+
 					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
 						<d2l-input-checkbox
 							id="showUpdatedSectionCheckbox"
@@ -186,17 +198,20 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 
 	static get properties() {
 		return {
-			visible: {
-				type: Boolean
+			token: {
+				type: String
 			},
 			canManageDiscover: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'can-manage-discover'
 			},
 			discoverCustomizationsEnabled: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'discover-customizations-enabled'
 			},
 			discoverToggleSectionsEnabled: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'discover-toggle-sections-enabled'
 			},
 			_savedShowCourseCode: {
 				type: Boolean
@@ -234,9 +249,6 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 			_settingsLoaded: {
 				type: Boolean
 			},
-			token: {
-				type: String
-			}
 		};
 	}
 
@@ -260,7 +272,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
-			if (propName === 'canManageDiscover' || propName === 'visible') {
+			if (propName === 'canManageDiscover') {
 				this._checkPermission();
 				this._initializeSettings();
 			}
@@ -370,7 +382,7 @@ class DiscoverySettings extends DiscoverSettingsMixin(LocalizeMixin(FetchMixin(R
 	}
 
 	_checkPermission() {
-		if (!this.visible || this.canManageDiscover) {
+		if (this.canManageDiscover) {
 			return;
 		}
 

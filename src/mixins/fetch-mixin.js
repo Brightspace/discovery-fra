@@ -1,16 +1,6 @@
 'use strict';
 import 'whatwg-fetch'; // Required for d2l-fetch + IE11
 import { d2lfetch } from 'd2l-fetch/src/index.js';
-import fetchAuthFramed from 'd2l-fetch-auth/es6/d2lfetch-auth-framed.js';
-d2lfetch.use({
-	name: 'auth',
-	fn: fetchAuthFramed,
-	options: {
-		enableTokenCache: true
-	}
-});
-import { fetchDedupe } from 'd2l-fetch-dedupe';
-d2lfetch.use({name: 'dedupe', fn: fetchDedupe});
 window.d2lfetch = d2lfetch;
 
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
@@ -23,7 +13,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 	constructor() {
 		super();
 	}
-	_fetchEntity(sirenLinkOrUrl, method = 'GET') {
+	async _fetchEntity(sirenLinkOrUrl, method = 'GET') {
 		if (!sirenLinkOrUrl) {
 			return;
 		}
@@ -34,10 +24,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			return;
 		}
 
-		const request = new Request(url, {
-			method,
-			headers: { Accept: 'application/vnd.siren+json' },
-		});
+		const request = await this._createRequest(url, method);
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
@@ -47,7 +34,8 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			.fetch(request)
 			.then(this.__responseToSirenEntity.bind(this));
 	}
-	_fetchEntityWithoutDedupe(sirenLinkOrUrl, method = 'GET') {
+
+	async _fetchEntityWithoutDedupe(sirenLinkOrUrl, method = 'GET') {
 		if (!sirenLinkOrUrl) {
 			return;
 		}
@@ -58,10 +46,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			return;
 		}
 
-		const request = new Request(url, {
-			method,
-			headers: { Accept: 'application/vnd.siren+json' },
-		});
+		const request = await this._createRequest(url, method);
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
@@ -121,14 +106,32 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		}
 		return Promise.reject(response.status + ' ' + response.statusText);
 	}
-	_getToken(scope = '*:*:*') {
-		const client = window.D2L && window.D2L.frau && window.D2L.frau.client;
-		if (client) {
-			return client.request('frau-jwt-new-jwt', scope);
-		} else {
-			return Promise.resolve(null);
+
+	async _createRequest(url, method) {
+		const token = await this._getToken();
+		const request = new Request(url, {
+			method,
+			headers: {
+				Accept: 'application/vnd.siren+json',
+				Authorization: 'Bearer ' + token
+			},
+		});
+
+		return request;
+	}
+
+	//Globally initializes the token using the passed tokenReciever function.
+	async _initializeToken(tokenPromise) {
+		window.D2L.tokenPromise = tokenPromise;
+	}
+
+	async _getToken() {
+		if (window.D2L.tokenPromise) {
+			const token = await window.D2L.tokenPromise();
+			return token;
 		}
 	}
+
 	_shouldSkipAuth(sirenLinkOrUrl) {
 		if (!Array.isArray(sirenLinkOrUrl.rel)) {
 			return false;

@@ -5,18 +5,17 @@ import '@brightspace-ui/core/components/list/list.js';
 import '@brightspace-ui/core/components/list/list-item.js';
 import '@brightspace-ui/core/components/list/list-item-content.js';
 import 'fastdom/fastdom.min.js';
-import 'd2l-fetch/d2l-fetch.js';
 import 'd2l-organizations/components/d2l-organization-name/d2l-organization-name.js';
 import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
-import SirenParse from 'siren-parser';
 import { Rels } from 'd2l-hypermedia-constants';
 import { heading1Styles, heading2Styles, heading4Styles, bodyCompactStyles, bodyStandardStyles, labelStyles} from '@brightspace-ui/core/components/typography/styles.js';
 import { DiscoverListItemResponsiveConstants } from './DiscoverListItemResponsiveConstants.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 import { getLocalizeResources } from '../../localization.js';
 import { OrganizationEntity } from 'siren-sdk/src/organizations/OrganizationEntity.js';
+import { FetchMixin } from '../../mixins/fetch-mixin.js';
 
-class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(LitElement)) {
+class D2lDiscoverList extends FetchMixin(LocalizeMixin(DiscoverListItemResponsiveConstants(LitElement))) {
 	constructor() {
 		super();
 		this._descriptionPlaceholderLines = [{}, {}];
@@ -252,29 +251,6 @@ class D2lDiscoverList extends LocalizeMixin(DiscoverListItemResponsiveConstants(
 			return text && typeof text === 'string';
 		}).join(', ');
 		return accessibilityText;
-	}
-
-	_fetchEntity(url) {
-		if (!url) {
-			return;
-		}
-
-		return window.d2lfetch
-			.fetch(new Request(url, {
-				headers: { Accept: 'application/vnd.siren+json' },
-			}))
-			.then(this._responseToSirenEntity.bind(this));
-	}
-
-	_responseToSirenEntity(response) {
-		if (response.ok) {
-			return response
-				.json()
-				.then(function(json) {
-					return SirenParse(json);
-				});
-		}
-		return Promise.reject(response.status + ' ' + response.statusText);
 	}
 
 	_shouldRenderTextSkeletons() {

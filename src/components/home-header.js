@@ -142,6 +142,7 @@ class HomeHeader extends RouteLocationsMixin(LocalizeMixin(PolymerElement)) {
 	constructor() {
 		super();
 		this.query = '';
+		this.showSettingsButton = false;
 	}
 	static get properties() {
 		return {
