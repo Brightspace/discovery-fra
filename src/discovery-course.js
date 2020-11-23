@@ -382,11 +382,9 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._courseDescriptionItems = courseDescriptionItemsArray;
 	}
 
-
 	async _loadCourseImage(imageHref) {
 		if (imageHref) {
-			this._fetchEntity(imageHref)
-			.then(function(hydratedImageEntity) {
+			this._fetchEntity(imageHref).then(function(hydratedImageEntity) {
 				this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
 			}.bind(this));
 		}
