@@ -158,12 +158,6 @@ class DiscoveryCourse extends mixinBehaviors(
 				}
 			</style>
 
-			<app-route
-				route="[[route]]"
-				pattern="/d2l/le/discovery/view/course/:courseId"
-				data="[[routeData]]">
-			</app-route>
-
 			<div aria-busy$="[[!_dataIsReady]]">
 				<img id="discovery-course-header-image" on-load="_headerImageLoaded" src="[[_courseImage]]" hidden/>
 				<div class="discovery-course-header-container">
@@ -210,9 +204,10 @@ class DiscoveryCourse extends mixinBehaviors(
 
 	static get properties() {
 		return {
-			route: Object,
-			routeData: Object,
-
+			courseId:  {
+				type: Number,
+				observer: '_courseIdChanged'
+			},
 			_actionEnroll: {
 				type: String,
 				value: ''
@@ -256,30 +251,17 @@ class DiscoveryCourse extends mixinBehaviors(
 	}
 	ready() {
 		super.ready();
-		const route = this.shadowRoot.querySelector('app-route');
 		this.addEventListener('iron-resize', this._onIronResize.bind(this));
-		route.addEventListener('route-changed', this._routeChanged.bind(this));
-		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
 	}
 	_visible(visible) {
 		if (visible) {
 			this._updateDocumentTitle();
 		}
 	}
-	_routeChanged(route) {
-		this.route = route.detail.value || {};
-	}
-	_routeDataChanged(routeData) {
-		this._reset();
-		this.routeData = routeData.detail.value || {};
-		// Todo: this is likely a bug in polymer where query parameters cannot be extracted from the app-route pattern
-		// We can come back to fix it in polymer later https://github.com/PolymerElements/app-route/blob/master/app-route.js#L278
-		if (this.routeData.courseId) {
-			let courseId = decodeURIComponent(this.routeData.courseId);
-			const parts = courseId.split('?');
-			if (parts.length >= 2) {
-				courseId = parts[0];
-			}
+	_courseIdChanged() {
+		if (this.courseId) {
+			const courseId = this.courseId;
+
 			const parameters = { id: courseId };
 			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
