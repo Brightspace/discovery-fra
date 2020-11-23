@@ -2,7 +2,7 @@
   "name": "discovery",
   "appId": "urn:d2l:fra:class:discovery",
   "description": "Discovery",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "repository": "git@github.com:Brightspace/discovery-fra.git",
