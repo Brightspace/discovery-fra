@@ -28,7 +28,6 @@
     "buildDev:customNoWatch": "npx gulp buildDevCustomNoWatch"
   },
   "dependencies": {
-    "@brightspace-ui-labs/facet-filter-sort": "github:BrightspaceUI/facet-filter-sort#semver:^3",
     "@brightspace-ui-labs/pagination": "^1",
     "@brightspace-ui/core": "^1.102.5",
     "@polymer/app-route": "^3.0.0-pre.15",
