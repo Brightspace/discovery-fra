@@ -255,8 +255,8 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 		this._searchQueryLoading = true;
 		this._processBeforeLoading();
-		this.setUpNoResultsMessage();
 		this.sortParameter = sortEvent.detail.value;
+		this.setUpNoResultsMessage();
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
 				path: this.routeLocations().search(this.searchQuery, {
