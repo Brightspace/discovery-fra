@@ -345,12 +345,7 @@ class DiscoveryCourse extends mixinBehaviors(
 			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
 			// TODO: Do we need to do something similar to this?
 			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
-			if (imageEntity.href) {
-				return this._fetchEntity(imageEntity)
-					.then(function(hydratedImageEntity) {
-						this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
-					}.bind(this));
-			}
+			this._loadCourseImage(imageEntity.href);
 		}
 
 		return Promise.resolve();
@@ -386,6 +381,15 @@ class DiscoveryCourse extends mixinBehaviors(
 		}
 		this._courseDescriptionItems = courseDescriptionItemsArray;
 	}
+
+	async _loadCourseImage(imageHref) {
+		if (imageHref) {
+			this._fetchEntity(imageHref).then(function(hydratedImageEntity) {
+				this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
+			}.bind(this));
+		}
+	}
+
 	_reset() {
 		this._actionEnroll = '';
 		this._organizationHomepage = '';

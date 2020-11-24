@@ -175,8 +175,8 @@ class CourseAction extends mixinBehaviors([IronResizableBehavior], LocalizeMixin
 	}
 
 	_setInitialDescriptionListSizes()  {
-		this.descriptionListElements = this.shadowRoot.querySelectorAll('dt')
-			.concat(this.shadowRoot.querySelectorAll('dd'));
+		this.descriptionListElements = this.shadowRoot.querySelectorAll('dt, dd');
+		this.descriptionListElements = Array.from(this.descriptionListElements);
 		this.descriptionListGutters = this.shadowRoot
 			.querySelectorAll('.discovery-course-action-description-list-gutter');
 
