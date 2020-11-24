@@ -33,9 +33,11 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 	connectedCallback() {
 		super.connectedCallback();
 		window.addEventListener('navigate', this._handleNavigate.bind(this));
+		window.addEventListener('navigate-parent', this._handleNavigateParent.bind(this));
 	}
 	disconnectedCallback() {
 		window.removeEventListener('navigate', this._handleNavigate.bind(this));
+		window.addEventListener('navigate-parent', this._handleNavigateParent.bind(this));
 	}
 
 	static get properties() {
@@ -115,6 +117,12 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 				});
 			}
 			this.navigate(e.detail.path);
+		}
+	}
+
+	_handleNavigateParent(e) {
+		if (e && e.detail && e.detail.path) {
+			window.location.href = e.detail.path;
 		}
 	}
 
