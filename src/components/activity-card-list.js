@@ -88,7 +88,7 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 		// Calculate container width by walking up its parent;
 		var containerWidth = this.offsetWidth;
 		for (var parent = this._getHostElement(this); containerWidth <= 0 && parent; parent = this._getHostElement(parent)) {
-			if (parent.offsetWidth !== undefined && parent.offsetWidth > 0) {
+			if (parent.offsetWidth !== undefined) {
 				containerWidth = parent.offsetWidth;
 			}
 		}
