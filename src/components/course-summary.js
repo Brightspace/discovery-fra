@@ -282,6 +282,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				:host(:dir(rtl)) .discovery-course-summary-offscreen-text {
 					@apply --d2l-offscreen-rtl;
 				}
+
+				.unenroll-dropdown {
+					margin-left: 8px;
+				}
 			</style>
 
 			<span class="discovery-course-summary-offscreen-text" aria-live="polite">[[_loadingMessage(dataIsReady)]]</span>
@@ -378,7 +382,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 										[[localize('openCourse')]]
 									</d2l-button>
 									<template is="dom-if" if="[[actionUnenroll]]">
-										<d2l-dropdown-more>
+										<d2l-dropdown-more text="Other Options" class="unenroll-dropdown">
 											<d2l-dropdown-menu>
 												<d2l-menu label="[[localize('enrollmentOptions')]]">
 													<d2l-menu-item
