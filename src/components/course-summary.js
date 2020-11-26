@@ -641,9 +641,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_dismissUnenrollment() {
 		this._unenrolledDialogOpen = false;
-		setTimeout(() => { //Adds a small delay so that the navigation to the homepage doesn't negate the dialog being set to false
-			this._navigateToHome();
-		}, 250);
+		this._navigateToHome();
 	}
 
 	retryFetchOrganizationHomepage({ maxRetries, intervalInMs }) {
