@@ -87,8 +87,10 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 
 		// Calculate container width by walking up its parent;
 		var containerWidth = this.offsetWidth;
-		for (var parent = this.parentNode; containerWidth <= 0 && parent; parent = parent.parentNode) {
-			containerWidth = parent.offsetWidth;
+		for (var parent = this._getHostElement(this); containerWidth <= 0 && parent; parent = this._getHostElement(parent)) {
+			if (parent.offsetWidth !== undefined && parent.offsetWidth > 0) {
+				containerWidth = parent.offsetWidth;
+			}
 		}
 
 		// Determine number of columns and its appropriate columns css
@@ -120,6 +122,14 @@ class ActivityCardList extends mixinBehaviors([IronResizableBehavior], PolymerEl
 				}
 			}
 		}
+	}
+
+	//Traverse up through shadowDOM to find our parent.
+	_getHostElement(element) {
+		if (element.parentNode) {
+			return element.parentNode;
+		}
+		return element.host;
 	}
 }
 
