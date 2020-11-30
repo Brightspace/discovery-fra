@@ -433,6 +433,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				<d2l-button
 					slot = "footer"
 					data-dialog-action
+					on-click="_dismissEnrollment"
 					primary>
 					[[localize('OK')]]
 				</d2l-button>
@@ -641,6 +642,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					this.actionUnenroll = actionUnenroll; // give the user a chance to try again...
 				});
 		}
+	}
+
+	_dismissEnrollment() {
+		this._enrolledDialogOpen = false;
 	}
 
 	_dismissUnenrollment() {
