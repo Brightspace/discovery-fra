@@ -27,6 +27,8 @@ const internalFetchMixin = (superClass) => class extends superClass {
 
 		const request = await this._createRequest(url, method);
 
+		window.d2lfetch.removeTemp('simple-cache');
+
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
 			: window.d2lfetch;
@@ -49,35 +51,14 @@ const internalFetchMixin = (superClass) => class extends superClass {
 
 		const request = await this._createRequest(url, method);
 
+		window.d2lfetch.removeTemp('simple-cache');
+
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
 			: window.d2lfetch;
 
 		return fetch
 			.removeTemp('dedupe')
-			.fetch(request)
-			.then(this.__responseToSirenEntity.bind(this));
-	}
-
-	async _fetchEntityWithoutCache(sirenLinkOrUrl, method = 'GET') {
-		if (!sirenLinkOrUrl) {
-			return;
-		}
-
-		const url = sirenLinkOrUrl.href || sirenLinkOrUrl;
-
-		if (!url) {
-			return;
-		}
-
-		const request = await this._createRequest(url, method);
-
-		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
-			? window.d2lfetch.removeTemp('auth')
-			: window.d2lfetch;
-
-		return fetch
-			.removeTemp('simple-cache')
 			.fetch(request)
 			.then(this.__responseToSirenEntity.bind(this));
 	}
