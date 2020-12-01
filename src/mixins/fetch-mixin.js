@@ -25,9 +25,9 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			return;
 		}
 
-		window.d2lfetch.removeTemp('simple-cache');
-
 		const request = await this._createRequest(url, method);
+
+		window.d2lfetch.removeTemp('simple-cache');
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
@@ -49,9 +49,9 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			return;
 		}
 
-		window.d2lfetch.removeTemp('simple-cache');
-
 		const request = await this._createRequest(url, method);
+
+		window.d2lfetch.removeTemp('simple-cache');
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
