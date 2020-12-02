@@ -23,7 +23,7 @@ export const DiscoverSettingsMixin = FetchMixin => class extends FetchMixin {
 
 	async fetchDiscoverSettings() {
 		const url = await this._getActionUrl(getDiscoverSettings);
-		const discoverSettingsEntity = await this._fetchEntityWithoutCache(url);
+		const discoverSettingsEntity = await this._fetchEntity(url);
 		return discoverSettingsEntity && discoverSettingsEntity.properties;
 	}
 
