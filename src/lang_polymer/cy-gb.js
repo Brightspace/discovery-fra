@@ -21,7 +21,7 @@ export default {
 	durationMinutes: "{minutes} o funudau", // When viewing a course summary, this will display the duration of a course in minutes.
 	emailFeedback: "Anfon eich adborth i {email}", // Unused
 	endDate: "Dyddiad dod i ben", // A subtitle for displaying the date a course will end
-	endDateIsInThePast: "Mae’r cwrs hwn wedi cau ar {date}.", // A message describing the date a course was closed on.
+	endDateIsInThePast: "Mae’r cwrs hwn wedi cau ar {dyddiad}.", // A message describing the date a course was closed on.
 	enrollInCourse: "Cofrestru ar Gwrs", // An action to enroll the user into the currently displayed course
 	enrollmentHeaderFail: "Methwyd â Chofrestru", // Displays as a header when there was an error enrolling into an activity
 	enrollmentHeaderPending: "Cofrestru ar y Gweill", // Displays as a header when the enrollment is pending completion
@@ -50,7 +50,7 @@ export default {
 	noContentUpdated: "Nid oes unrhyw gyrsiau newydd eu diweddaru.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Dim disgrifiad o’r cwrs", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Dim canlyniadau ar gyfer \"{searchQuery}\"", // Displays as a header when a search query has no results
-	noResultsMessage: "Ceisiwch ddefnyddio term chwilio gwahanol neu {linkStart}Pori’r Cyfan{linkEnd} i weld yr holl ddeunyddiau sydd ar gael", // When a search query has no results, suggests different search term or filter.
+	noResultsMessage: "Ceisiwch ddefnyddio term chwilio gwahanol neu {link-start}Pori’r Cyfan{link-end} i weld yr holl ddeunyddiau sydd ar gael", // When a search query has no results, suggests different search term or filter.
 	onMyList: "Ar Fy Rhestr", // Unused
 	openCourse: "Agor Cwrs", // An action that will open the currently displayed course in brightspace.
 	or: "neu", //Unused

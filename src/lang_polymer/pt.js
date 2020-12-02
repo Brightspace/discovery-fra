@@ -14,7 +14,7 @@ export default {
 	courseDescription: "Descrição do curso", // Subtitle displayed on a course's summary page above the course description.
 	courseInfo: "Informações do curso", // A subtitle for displaying an area of information about a course
 	coursePageDocumentTitle: "{courseName} – Descubra – {instanceName}", // Displays as the page/tab header for the course page.
-	courseSummaryReadyMessage: "{courseTitle} está pronto", // When the course summary page has finished loading.
+	courseSummaryReadyMessage: "{CourseTitle} está pronto", // When the course summary page has finished loading.
 	discover: "Descubra", //Title text for the homepage.
 	discoverHomeMessage: "Esta é a página inicial do Descubra.", // Old message, unused.
 	discovery: "Descoberta", //Old title text, unused.

@@ -40,7 +40,7 @@ export default {
 	loadMore: "تحميل المزيد", // An action that will load additional activities to be displayed.
 	message404: "عذرًا، تم الانتقال إلى صفحة 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "عُد إلى الصفحة الرئيسية.", // An action that will navigate the user back to the Discover homepage.
-	new: "الجديدة", // The name of the homepage section for new activities.
+	new: "New (جديدة)", // The name of the homepage section for new activities.
 	noActivities: "لا تتوفر أي أنشطة، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.", // When there are no activities to display on the homepage, this message will display.
 	noActivitiesExceptPrmoted: "لا تتوفر أي أنشطة إضافية، أو سبق أن تم تسجيلك في الأنشطة كلها. حاول مرة أخرى في وقت لاحق.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noContentAdded: "لا تتوفر مقررات تعليمية تمت إضافتها حديثًا.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
@@ -74,7 +74,7 @@ export default {
 	settingsLabel: "النقر لعرض صفحة الإعدادات", // The aria label describing the action that opens up Discover's Settings page.
 	sorting_enrolled: "تم التسجيل في السابق", // Search's sort option that displays results that the user is already enrolled in.
 	sorting_mostRelevant: "الأكثر صلة", // Search's sort option that displays results ordered by most relevant to the search query
-	sorting_new: "الجديدة", // Search's sort option that displays results ordered by newest to the search query
+	sorting_new: "New (جديدة)", // Search's sort option that displays results ordered by newest to the search query
 	sorting_sortBy: "الفرز حسب", // The title of the sort filter in the search page
 	sorting_updated: "تم التحديث", // Search's sort option that displays results ordered by most recently updated to the search query
 	startDate: "تاريخ البدء", // A subtitle for displaying the date a course will begin

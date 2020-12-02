@@ -40,7 +40,7 @@ export default {
 	loadMore: "Charger plus", // An action that will load additional activities to be displayed.
 	message404: "Erreur 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Revenir à la page d’accueil.", // An action that will navigate the user back to the Discover homepage.
-	new: "Nouveau", // The name of the homepage section for new activities.
+	new: "Nouvelle", // The name of the homepage section for new activities.
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit à toutes les activités. Réessayez ultérieurement.", // When there are no activities to display on the homepage, this message will display.
 	noActivitiesExceptPrmoted: "Aucune activité supplémentaire disponible ou vous êtes déjà inscrit à toutes les activités. Réessayez ultérieurement.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noContentAdded: "Il n’y a pas de cours récemment ajoutés.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
@@ -50,7 +50,7 @@ export default {
 	noContentUpdated: "Il n’y a pas de cours récemment mis à jour.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Aucune description de cours", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Aucun résultat pour « {searchQuery} »", // Displays as a header when a search query has no results
-	noResultsMessage: "Essayez d’utiliser un autre terme de recherche ou {linkStart}Tout parcourir{linkEnd} pour afficher tout le matériel disponible", // When a search query has no results, suggests different search term or filter.
+	noResultsMessage: "Essayez d’utiliser un autre terme de recherche ou {link-start}Tout parcourir{link-end} pour afficher tout le matériel disponible", // When a search query has no results, suggests different search term or filter.
 	onMyList: "Dans ma liste", // Unused
 	openCourse: "Ouvrir le cours", // An action that will open the currently displayed course in brightspace.
 	or: "ou", //Unused
@@ -74,7 +74,7 @@ export default {
 	settingsLabel: "Cliquez pour afficher la page des paramètres", // The aria label describing the action that opens up Discover's Settings page.
 	sorting_enrolled: "Déjà inscrit", // Search's sort option that displays results that the user is already enrolled in.
 	sorting_mostRelevant: "Les plus pertinents", // Search's sort option that displays results ordered by most relevant to the search query
-	sorting_new: "Nouveau", // Search's sort option that displays results ordered by newest to the search query
+	sorting_new: "Nouvelle", // Search's sort option that displays results ordered by newest to the search query
 	sorting_sortBy: "Trier par", // The title of the sort filter in the search page
 	sorting_updated: "Mis à jour", // Search's sort option that displays results ordered by most recently updated to the search query
 	startDate: "Date de début", // A subtitle for displaying the date a course will begin

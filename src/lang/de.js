@@ -13,7 +13,7 @@ export default {
 	noFeaturedActivities: "Derzeit werden keine Inhalte angeboten.", // When viewing the settings for Discover, this will show if no featured activities are currently set.
 	featured: "Angeboten", // The Header of the Featured section on the Discover homepage.
 	featureContent: "Inhalt anbieten", // Action that will open the dialog list to add or remove items in the Featured section.
-	removeFromFeatured: "Klicken Sie hier, um {course} aus dem Abschnitt mit den angebotenen Inhalten zu entfernen.", // Action that will remove an associated course from the Featured section.
+	removeFromFeatured: "Klicken Sie hier, um {Course} aus dem Abschnitt mit den angebotenen Inhalten zu entfernen.", // Action that will remove an associated course from the Featured section.
 	save: "Speichern", // Action to save the current settings for Discover.
 	saveChanges: "Änderungen speichern", //Dialog prompt title when user tries to navigate away the page
 	saveChangesBoldBody: "Diese Seite wurde bearbeitet.", //Dialog prompt body in bold when user tries to navigate away the page

@@ -40,11 +40,11 @@ export default {
 	loadMore: "En voir plus", // An action that will load additional activities to be displayed.
 	message404: "Oups, une erreur 404 de page introuvable est survenue.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Revenir à la page d’accueil.", // An action that will navigate the user back to the Discover homepage.
-	new: "Nouveau", // The name of the homepage section for new activities.
+	new: "Nouvelle", // The name of the homepage section for new activities.
 	noActivities: "Aucune activité disponible ou vous êtes déjà inscrit(e) dans chacune d’elles. Réessayez plus tard.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Aucune activité supplémentaire disponible ou vous êtes déjà inscrit(e) dans chacune d\'elles. Réessayez plus tard.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Aucune activité supplémentaire disponible ou vous êtes déjà inscrit(e) dans chacune d’elles. Réessayez plus tard.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noContentAdded: "Aucun cours nouvellement ajouté.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
-	noContentEnrolled: "Vous n\'êtes inscrit à aucun cours actuellement", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentEnrolled: "Vous n’êtes inscrit à aucun cours actuellement", // Displays as a header when sorting by enrolled while not having any courses enrolled.
 	noContentMessage: "Veuillez utiliser une autre méthode de tri.", // Displays in a search result when no content is loaded and nothing was searched.
 	noContentRelevant: "Aucun résultat pour Plus pertinent.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
 	noContentUpdated: "Aucun cours nouvellement mis à jour.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
@@ -74,14 +74,14 @@ export default {
 	settingsLabel: "Cliquez pour afficher la page des réglages", // The aria label describing the action that opens up Discover's Settings page.
 	sorting_enrolled: "Déjà inscrit", // Search's sort option that displays results that the user is already enrolled in.
 	sorting_mostRelevant: "Le plus pertinent", // Search's sort option that displays results ordered by most relevant to the search query
-	sorting_new: "Nouveau", // Search's sort option that displays results ordered by newest to the search query
+	sorting_new: "Nouvelle", // Search's sort option that displays results ordered by newest to the search query
 	sorting_sortBy: "Trier par", // The title of the sort filter in the search page
 	sorting_updated: "Mis à jour", // Search's sort option that displays results ordered by most recently updated to the search query
 	startDate: "Date du début", // A subtitle for displaying the date a course will begin
 	startDateIsInTheFuture: "Ce cours sera disponible à compter du {date}.", // A message describing the date a course will become available is.
 	startLearning: "Débuter l’apprentissage", // Unused
 	unenroll: "Se désinscrire",  // An action that will un-enroll the user from the displayed activity.
-	unenrollConfirmBody: "Vous avez été désinscrit(e) de « {title} ».", // A confirmation message that displays when a user has completed un-enrolling from an activity
+	unenrollConfirmBody: "Vous avez été désinscrit(e) de « {Title} ».", // A confirmation message that displays when a user has completed un-enrolling from an activity
 	unenrollConfirmHeader: "Désinscription effectuée", // A confirmation header that displays when a user has completed un-enrolling from an activity
 	updated: "Mis à jour", // The name of the homepage section for recently updated activities.
 	viewAll: "Tout afficher", // Action that opens the search page to view all activities within a certain category.

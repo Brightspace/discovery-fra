@@ -1,5 +1,5 @@
 export default {
-	add: "Agregar",  // When adding activities to the promoted content lane in Discover, this will bulk add the selected candidate activites.
+	add: "Añadir",  // When adding activities to the promoted content lane in Discover, this will bulk add the selected candidate activites.
 	backToDiscover: "Volver a Descubrir",
 	browseDiscoverLibrary: "Buscar en la biblioteca Discover", // Open the list of candidate activities to add to the promoted content lane.
 	cancel: "Cancelar", // Cancels an action in Discover.
