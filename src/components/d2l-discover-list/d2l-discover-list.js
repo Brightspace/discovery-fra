@@ -351,8 +351,8 @@ class D2lDiscoverList extends FetchMixin(LocalizeMixin(DiscoverListItemResponsiv
 			.d2l-discover-list-item-image {
 				flex-shrink: 0;
 				margin-right: 1.2rem;
-				width: 216px;
-				height: 120px;
+				width: 90px;
+				height: 52px;
 				display: flex;
 				align-items: center;
 				justify-content: center;

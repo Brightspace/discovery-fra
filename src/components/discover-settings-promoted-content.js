@@ -126,8 +126,8 @@ class DiscoverSettingsPromotedContent extends SkeletonMixin(DiscoverSettingsMixi
 				margin-bottom: .5rem;
 			}
 			.img-skeleton {
-				width: 180px;
-				height: 76.66px;
+				width: 90px;
+				height: 44.86px;
 			}
 			.discovery-featured-placeholder-container {
 				width: 100%
