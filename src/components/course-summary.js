@@ -700,11 +700,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_startDateIsFutureComputed(startDateIsoFormat) {
-		return startDateIsoFormat ? moment().isBefore(moment(startDateIsoFormat)) : false;
+		return startDateIsoFormat ? Date.now() < new Date(startDateIsoFormat) : false;
 	}
-
 	_endDateIsPastComputed(endDateIsoFormat) {
-		return endDateIsoFormat ? moment().isAfter(moment(endDateIsoFormat)) : false;
+		return endDateIsoFormat ? Date.now() > new Date(endDateIsoFormat) : false;
 	}
 
 	_getImageAnchorHeight() {
