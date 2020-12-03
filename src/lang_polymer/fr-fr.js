@@ -50,7 +50,7 @@ export default {
 	noContentUpdated: "Il n’y a pas de cours récemment mis à jour.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Aucune description de cours", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Aucun résultat pour « {searchQuery} »", // Displays as a header when a search query has no results
-	noResultsMessage: "Essayez d’utiliser un autre terme de recherche ou {link-start}Tout parcourir{link-end} pour afficher tout le matériel disponible", // When a search query has no results, suggests different search term or filter.
+	noResultsMessage: "Essayez d’utiliser un autre terme de recherche ou {linkStart}Tout parcourir{linkEnd} pour afficher tout le matériel disponible", // When a search query has no results, suggests different search term or filter.
 	onMyList: "Dans ma liste", // Unused
 	openCourse: "Ouvrir le cours", // An action that will open the currently displayed course in brightspace.
 	or: "ou", //Unused

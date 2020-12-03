@@ -81,7 +81,7 @@ export default {
 	startDateIsInTheFuture: "Ce cours sera disponible à compter du {date}.", // A message describing the date a course will become available is.
 	startLearning: "Débuter l’apprentissage", // Unused
 	unenroll: "Se désinscrire",  // An action that will un-enroll the user from the displayed activity.
-	unenrollConfirmBody: "Vous avez été désinscrit(e) de « {Title} ».", // A confirmation message that displays when a user has completed un-enrolling from an activity
+	unenrollConfirmBody: "Vous avez été désinscrit(e) de « {title} ».", // A confirmation message that displays when a user has completed un-enrolling from an activity
 	unenrollConfirmHeader: "Désinscription effectuée", // A confirmation header that displays when a user has completed un-enrolling from an activity
 	updated: "Mis à jour", // The name of the homepage section for recently updated activities.
 	viewAll: "Tout afficher", // Action that opens the search page to view all activities within a certain category.

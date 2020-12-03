@@ -23,7 +23,7 @@ export default {
 	search: "検索", // When adding Featured activities to discover, this will allow you to search for different activities.
 	searchPlaceholder: "検索...",  // Placeholder text for search inputs.
 	selected: "{count} 件を選択済み。", // The number of currently selected featured activities.
-	selectedFromMaximum: "{Count}/{maximum} 件を選択済み。", // The number of currently selected featured activities out of a maximum available.
+	selectedFromMaximum: "{count}/{maximum} 件を選択済み。", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "注目のセクション", // The header for setting the featured items in Discover.
 	showCourseCode: "コースコードの表示", // The setting for whether or not to display course codes within Discover.
 	showSemester: "学期の表示", // The setting for whether or not to display semecter names within Discover.
