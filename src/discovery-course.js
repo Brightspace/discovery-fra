@@ -1,6 +1,6 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { Classes, Rels } from 'd2l-hypermedia-constants';
+import { Rels } from 'd2l-hypermedia-constants';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { LocalizeMixin } from './mixins/localize-mixin.js';
@@ -354,8 +354,6 @@ class DiscoveryCourse extends mixinBehaviors(
 			&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 
 		this._dataIsReadyProcess();
-
-
 		return Promise.resolve();
 	}
 
@@ -472,7 +470,7 @@ class DiscoveryCourse extends mixinBehaviors(
 		this.courseImageIsReady = true;
 	}
 	_clearHeaderImage() {
-		this._bannerImageHref = "";
+		this._bannerImageHref = '';
 	}
 	_dataIsReadyProcess() {
 		this._dataIsReady = true;
