@@ -61,6 +61,10 @@ class FeaturedListSection extends EntityMixinLit(RouteLocationsMixin(LocalizeMix
 						font-size: 0.7rem;
 					}
 				}
+
+				[hidden] {
+					display: none !important;
+				}
 			`
 		];
 	}
