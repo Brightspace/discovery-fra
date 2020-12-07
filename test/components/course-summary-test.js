@@ -353,6 +353,7 @@ describe('course-summary', () => {
 				const dismiss = component.$$('#discovery-course-summary-dialog-unenroll-dismiss');
 				dismiss.click();
 			});
+			done();
 		});
 
 	});
