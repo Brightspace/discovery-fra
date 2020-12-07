@@ -91,7 +91,7 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 				</discovery-settings>`;
 
 			case 'course': return html `
-				<discovery-course name="course" course-id="${this.params.id}"></discovery-course>`;
+				<discovery-course name="course" token="${this.resolvedToken}" course-id="${this.params.id}"></discovery-course>`;
 
 			case 'search': return html `
 				<discovery-search name="search" .queryParams="${this.query}"></discovery-search>`;

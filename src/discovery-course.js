@@ -3,16 +3,15 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { Classes, Rels } from 'd2l-hypermedia-constants';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-
-import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
-import '@brightspace-ui/core/components/colors/colors.js';
-
 import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 import { FeatureMixin } from './mixins/feature-mixin.js';
 import { DiscoverSettingsMixin } from './mixins/discover-settings-mixin.js';
 
+import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
+import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
+import '@brightspace-ui/core/components/colors/colors.js';
 import './components/course-action.js';
 import './components/course-summary.js';
 import './components/discovery-footer.js';
@@ -73,10 +72,6 @@ class DiscoveryCourse extends mixinBehaviors(
 					position: absolute;
 					width: 100%;
 					z-index: -10;
-				}
-				.discovery-course-header-image-container {
-					background-position: center center;
-					background-size: cover;
 				}
 
 				.discovery-course-header-gradient-container {
@@ -159,9 +154,8 @@ class DiscoveryCourse extends mixinBehaviors(
 			</style>
 
 			<div aria-busy$="[[!_dataIsReady]]">
-				<img id="discovery-course-header-image" on-load="_headerImageLoaded" src="[[_courseImage]]" hidden/>
 				<div class="discovery-course-header-container">
-					<div id="discovery-course-header-image-container" class="discovery-course-header-image-container" hidden$="[[!courseImageIsReady]]"></div>
+					<d2l-organization-image type="narrow" tile-sizes=[[_backgroundImageSizes]] id="discovery-course-header-image-container" href="[[_bannerImageHref]]" token="[[token]]" on-d2l-organization-image-loaded="_headerImageLoaded"></d2l-organization-image>
 					<div id="discovery-course-header-image-placeholder" class="discovery-course-header-image-placeholder" hidden$="[[courseImageIsReady]]"></div>
 					<div id="discovery-course-header-gradient-container" class="discovery-course-header-gradient-container"></div>
 				</div>
@@ -208,6 +202,7 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: Number,
 				observer: '_courseIdChanged'
 			},
+			token: String,
 			_actionEnroll: {
 				type: String,
 				value: ''
@@ -216,11 +211,29 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: String,
 				value: ''
 			},
+			_backgroundImageSizes: {
+				type: Object,
+				value: function() {
+					return {
+						mobile: {
+							maxwidth: 767,
+							size: 100
+						},
+						tablet: {
+							maxwidth: 1243,
+							size: 100
+						},
+						desktop: {
+							size: 100
+						}
+					};
+				}
+			},
 			_courseCategory: String,
 			_courseCode: String,
 			_courseDescription: String,
 			_courseDuration: Number,
-			_courseImage: String,
+			_bannerImageHref: String,
 			_courseLastUpdated: String,
 			_courseTags: Array,
 			_courseTitle: String,
@@ -336,17 +349,12 @@ class DiscoveryCourse extends mixinBehaviors(
 			await this._processCourseDescriptionItems();
 		}
 
+		this._bannerImageHref = this._organizationHref;
 		this._organizationHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
 			&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 
 		this._dataIsReadyProcess();
 
-		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
-			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
-			// TODO: Do we need to do something similar to this?
-			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
-			this._loadCourseImage(imageEntity.href);
-		}
 
 		return Promise.resolve();
 	}
@@ -382,14 +390,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._courseDescriptionItems = courseDescriptionItemsArray;
 	}
 
-	async _loadCourseImage(imageHref) {
-		if (imageHref) {
-			this._fetchEntity(imageHref).then(function(hydratedImageEntity) {
-				this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
-			}.bind(this));
-		}
-	}
-
 	_reset() {
 		this._actionEnroll = '';
 		this._organizationHomepage = '';
@@ -397,7 +397,7 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._courseCode = '';
 		this._courseDescription = '';
 		this._courseDuration =  null;
-		this._courseImage = '';
+		this._bannerImageHref = '';
 		this._courseLastUpdated =  '';
 		this._courseTags =  [];
 		this._courseTitle =  '';
@@ -432,10 +432,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		}));
 	}
 	_onIronResize() {
-		if (!this.visible) {
-			return;
-		}
-
 		const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
 		const headerImageContainerPlaceholder = this.shadowRoot.querySelector('#discovery-course-header-image-placeholder');
@@ -470,23 +466,13 @@ class DiscoveryCourse extends mixinBehaviors(
 	}
 	_headerImageLoaded() {
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
-		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined && this._courseImage) {
-			headerImageContainer.style['background-image'] = `url('${this._courseImage}')`;
+		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined && this._bannerImageHref) {
 			this._onIronResize();
-		}
-		const imageElement = this.shadowRoot.querySelector('#discovery-course-header-image');
-		if (imageElement) {
-			fastdom.mutate(() => {
-				imageElement.parentNode.removeChild(imageElement);
-			});
 		}
 		this.courseImageIsReady = true;
 	}
 	_clearHeaderImage() {
-		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
-		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined) {
-			headerImageContainer.style['background-image'] = '';
-		}
+		this._bannerImageHref = "";
 	}
 	_dataIsReadyProcess() {
 		this._dataIsReady = true;
