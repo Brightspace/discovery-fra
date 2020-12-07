@@ -1,5 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { Rels } from 'd2l-hypermedia-constants';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
 import '@brightspace-ui/core/components/alert/alert.js';
@@ -323,7 +324,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					<div id="discovery-course-summary-card" class="discovery-course-summary-card">
 						<div class="discovery-course-summary-breadcrumbs">
 							<d2l-breadcrumbs>
-								<d2l-breadcrumb on-click="_navigateToHome" href="[[_homeHref]]" text="[[localize('discover')]]" aria-label="[[localize('backToDiscover')]]"></d2l-breadcrumb>
+								<d2l-breadcrumb on-click="_navigateToHome" text="[[localize('discover')]]" aria-label="[[localize('backToDiscover')]]"></d2l-breadcrumb>
 							</d2l-breadcrumbs>
 						</div>
 
@@ -428,12 +429,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				id="discovery-course-summary-enroll-dialog"
 				title-text="[[_enrollmentDialogHeader]]"
 				text="[[_enrollmentDialogMessage]]"
-				opened="[[_enrolledDialogOpen]]"
 				aria-modal="true">
 				<d2l-button
 					slot = "footer"
 					data-dialog-action
-					on-click="_dismissEnrollment"
 					primary>
 					[[localize('OK')]]
 				</d2l-button>
@@ -444,13 +443,11 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				id="discovery-course-summary-dialog-unenroll-confirm"
 				title-text="[[localize('unenrollConfirmHeader')]]"
 				text="[[localize('unenrollConfirmBody', 'title', courseTitle)]]"
-				opened="[[_unenrolledDialogOpen]]"
 				aria-modal="true">
 				<d2l-button
 					slot = "footer"
 					id="discovery-course-summary-dialog-unenroll-dismiss"
 					data-dialog-action
-					on-click="_dismissUnenrollment"
 					primary>
 					[[localize('OK')]]
 				</d2l-button>
@@ -476,10 +473,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			selfEnrolledDate: String,
 			_enrollmentDialogHeader: String,
 			_enrollmentDialogMessage: String,
-			_homeHref: {
-				type: String,
-				computed: '_getHomeHref()'
-			},
 			startDate: String,
 			startDateIsoFormat: String,
 			_startDateIsFuture: {
@@ -509,14 +502,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			_isPastAndCannotAccess: {
 				type: Boolean,
 				value: false
-			},
-			_enrolledDialogOpen: {
-				type: Boolean,
-				value: false
-			},
-			_unenrolledDialogOpen: {
-				type: Boolean,
-				value: false
 			}
 		};
 	}
@@ -540,9 +525,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			bubbles: true,
 			composed: true
 		}));
-
-		this._enrolledDialogOpen = false;
-		this._unenrolledDialogOpen = false;
 	}
 
 	_navigateToSearch(e) {
@@ -584,7 +566,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 							this._enrollmentDialogHeader = this.localize('enrollmentHeaderUnenrolled');
 							this._enrollmentDialogMessage = this.localize('enrollmentMessageUnenrolled');
 						}
-						this._enrolledDialogOpen = true;
+						this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog').opened = true;
 					}
 				});
 		} else {
@@ -625,7 +607,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					this._enrollmentDialogMessage = this.localize('enrollmentMessageFail');
 				})
 				.finally(() => {
-					this._enrolledDialogOpen = true;
+					this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog').opened = true;
 				});
 		}
 	}
@@ -636,21 +618,16 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			this.actionUnenroll = null;
 			return this._fetchEntity(actionUnenroll.href, actionUnenroll.method)
 				.then(() => {
-					this._unenrolledDialogOpen = true;
+					const dialog = this.shadowRoot.querySelector('#discovery-course-summary-dialog-unenroll-confirm');
+					dialog.opened = true;
+					dialog.addEventListener('d2l-dialog-close', (e) => {
+						afterNextRender(this, this._navigateToHome(e));
+					});
 				})
 				.catch(() => {
 					this.actionUnenroll = actionUnenroll; // give the user a chance to try again...
 				});
 		}
-	}
-
-	_dismissEnrollment() {
-		this._enrolledDialogOpen = false;
-	}
-
-	_dismissUnenrollment() {
-		this._unenrolledDialogOpen = false;
-		this._navigateToHome();
 	}
 
 	retryFetchOrganizationHomepage({ maxRetries, intervalInMs }) {
@@ -693,10 +670,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		fastdom.mutate(() => {
 			descriptionElement.innerHTML = DOMPurify.sanitize(description);
 		});
-	}
-
-	_getHomeHref() {
-		return this.valenceHomeHref();
 	}
 
 	_startDateIsFutureComputed(startDateIsoFormat) {
