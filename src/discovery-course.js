@@ -408,8 +408,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._endDateIsoFormat = '';
 		this._dataIsReady = false;
 		this.courseImageIsReady = false;
-
-		this._clearHeaderImage();
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {
@@ -469,9 +467,7 @@ class DiscoveryCourse extends mixinBehaviors(
 		}
 		this.courseImageIsReady = true;
 	}
-	_clearHeaderImage() {
-		this._bannerImageHref = '';
-	}
+
 	_dataIsReadyProcess() {
 		this._dataIsReady = true;
 		const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
