@@ -425,7 +425,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			</div>
 
 			<d2l-dialog-confirm
-				class="discovery-course-summary-dialog d2l-typography"
+				class="discovery-course-summary-dialog"
 				id="discovery-course-summary-enroll-dialog"
 				title-text="[[_enrollmentDialogHeader]]"
 				text="[[_enrollmentDialogMessage]]"
@@ -439,7 +439,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			</d2l-dialog-confirm>
 			
 			<d2l-dialog-confirm
-				class="discovery-course-summary-dialog d2l-typography"
+				class="discovery-course-summary-dialog"
 				id="discovery-course-summary-dialog-unenroll-confirm"
 				title-text="[[localize('unenrollConfirmHeader')]]"
 				text="[[localize('unenrollConfirmBody', 'title', courseTitle)]]"
