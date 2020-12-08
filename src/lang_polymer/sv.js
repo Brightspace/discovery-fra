@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Tillbaka till startsidan.", // An action that will navigate the user back to the Discover homepage.
 	new: "Ny", // The name of the homepage section for new activities.
 	noActivities: "Det finns inga tillgängliga aktiviteter eller så är du redan registrerad i alla. Försök igen senare.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Det finns inga nya eller uppdaterade aktiviteter tillgängliga eller så är du redan registrerad i alla. Försök igen senare.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Det finns inga ytterligare tillgängliga aktiviteter, alternativt så är du redan registrerad för alla. Försök igen senare.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Det finns inga nyligen tillagda kurser.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Du är inte registrerad för några kurser.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Använd en annan sorteringsmetod.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Det gick inte att hitta något resultat för Mest relevanta.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Det finns inga nyligen uppdaterade kurser.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Ingen kursbeskrivning", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Inga resultat för \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Prova med ett annat sökord eller {linkStart}Bläddra bland alla{linkEnd} för att visa alla tillgängliga material", // When a search query has no results, suggests different search term or filter.

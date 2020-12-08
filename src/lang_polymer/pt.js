@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Volte ao início.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nova", // The name of the homepage section for new activities.
 	noActivities: "Não há atividades disponíveis ou você já se inscreveu em todas elas. Tente novamente mais tarde.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Não há atividades novas ou atualizadas disponíveis ou você já se inscreveu em todas elas. Tente novamente mais tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Não há atividades adicionais disponíveis ou você já se inscreveu em todas elas. Tente novamente mais tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Não há cursos adicionados recentemente.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Você não está inscrito em nenhum curso no momento.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Use um método de classificação diferente.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Nenhum resultado para o mais relevante.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Não há cursos atualizados recentemente.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Não há descrição do curso", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Nenhum resultado para \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Use um termo de pesquisa diferente ou clique em {linkStart}Procurar todos{linkEnd} para visualizar todos os materiais disponíveis", // When a search query has no results, suggests different search term or filter.

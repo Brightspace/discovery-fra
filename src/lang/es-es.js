@@ -26,5 +26,9 @@ export default {
 	selectedFromMaximum: "{count} ∕ {maximum} seleccionado(s).", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "Sección destacada", // The header for setting the featured items in Discover.
 	showCourseCode: "Mostrar códigos del curso", // The setting for whether or not to display course codes within Discover.
-	showSemester: "Mostrar semestres" // The setting for whether or not to display semecter names within Discover.
+	showSemester: "Mostrar semestres", // The setting for whether or not to display semecter names within Discover.
+	showUpdatedSection: "Mostrar Sección actualizada", // The setting for whether or not to display the Updated section on the Discover homepage.
+	showNewSection: "Mostrar Nueva sección", // The setting for whether or not to display the New section on the Discover homepage.
+	courseTileSettings: "Mosaicos del curso", // The subheader for the settings that determine what to display within course tiles.
+	sectionsSettings: "Secciones" // The subheader for the settings that determine which sections will be shown on the Discover homepage.
 };

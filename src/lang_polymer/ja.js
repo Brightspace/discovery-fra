@@ -42,7 +42,12 @@ export default {
 	navigateHome: "ホームに戻ります。", // An action that will navigate the user back to the Discover homepage.
 	new: "新規", // The name of the homepage section for new activities.
 	noActivities: "使用可能なアクティビティがないか、すべてのアクティビティにすでに登録済みです。後でもう一度試してください。", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "使用可能な新規または更新済みのアクティビティがないか、すべてのアクティビティにすでに登録済みです。後でもう一度試してください。", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "使用可能な追加のアクティビティがないか、すべてのアクティビティにすでに登録済みです。後でもう一度試してください。", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "新規追加のコースはありません。", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "現在どのコースにも登録されていません。", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "別の並べ替え方式を使用してください。", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "関連性が最も高い検索結果はありません。", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "新規更新のコースはありません。", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "コースの説明がありません", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "「{searchQuery}」の検索結果はありません", // Displays as a header when a search query has no results
 	noResultsMessage: "別の語句で検索するか、{linkStart}すべてを参照{linkEnd}して使用可能なすべての資料を表示してください", // When a search query has no results, suggests different search term or filter.

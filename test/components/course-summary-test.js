@@ -708,10 +708,10 @@ describe('course-summary', () => {
 		});
 	});
 
-	describe('enrolled by user but then removed by Admin', () => {
+	describe('enrolled by user but then removed by Admin / pending enrollment', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
-			setComponentForEnrollment({ component, enrolled: false }, new Date(Date.now() - 1000 * 60 * 11).toString());
+			setComponentForEnrollment({ component, enrolled: false });
 			setComponentHomepage({ component, homepage: false });
 			afterNextRender(component, done);
 		});
@@ -753,6 +753,9 @@ describe('course-summary', () => {
 					// Enroll button is hidden
 					expect(enrollButton.style.display).to.equal('none');
 
+					//Self enrollment date has been assigned
+					expect(component.selfEnrolledDate).to.not.equal(undefined);
+
 					// Click the open course button
 					openCourseButton.click();
 
@@ -761,17 +764,39 @@ describe('course-summary', () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
 						const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
-						expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
+						expect(dialogMessage).to.include('Your enrollment to this course is pending, check back soon to access this course.');
 
 						// Open Course button still exists and is displayed
 						const openCourseButton = component.$$('#discovery-course-summary-open-course');
 						expect(openCourseButton).to.exist;
 						expect(openCourseButton.style.display).to.not.equal('none');
 
-						// Set organization-href to something that will now return a homepage
-						component.setAttribute('organization-href', testOrganizationHref);
+						//Close the dialog
+						dialog.closed = true;
+
+						//Set self enrollment date to a time that is greater than 10 minutes in the past
+						component.setAttribute('self-enrolled-date', new Date(Date.now() - 1000 * 60 * 11) )
+
+						// Click the open course button a second time
+						openCourseButton.click();
+
+						// Timeout un-enrolled dialog is shown
 						afterNextRender(component, () => {
-							openCourseButton.click();
+							const dialog = component.$$('#discovery-course-summary-enroll-dialog');
+							expect(dialog.opened).to.equal(true);
+							const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
+							expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
+
+							// Open Course button still exists and is displayed
+							const openCourseButton = component.$$('#discovery-course-summary-open-course');
+							expect(openCourseButton).to.exist;
+							expect(openCourseButton.style.display).to.not.equal('none');
+
+							// Set organization-href to something that will now return a homepage
+							component.setAttribute('organization-href', testOrganizationHref);
+							afterNextRender(component, () => {
+								openCourseButton.click();
+							});
 						});
 					});
 				}, timeToExhaustRetriesInMs);
@@ -779,7 +804,7 @@ describe('course-summary', () => {
 		});
 	});
 
-	describe('enrolled by user but then removed by Admin without selfEnrolledDate', () => {
+	describe('enrolled by user but then removed by Admin, selfEnrollDate is null', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
 			setComponentForEnrollment({ component, enrolled: false });
@@ -827,7 +852,10 @@ describe('course-summary', () => {
 					// Click the open course button
 					openCourseButton.click();
 
-					// Pending dialog is shown
+					//Set self enrollment date to null
+					component.setAttribute('self-enrolled-date', null )
+
+					// unenrolled dialog is shown
 					afterNextRender(component, () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
