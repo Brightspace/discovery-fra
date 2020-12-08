@@ -1,6 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { Rels } from 'd2l-hypermedia-constants';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
 import '@brightspace-ui/core/components/alert/alert.js';
@@ -621,7 +620,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					const dialog = this.shadowRoot.querySelector('#discovery-course-summary-dialog-unenroll-confirm');
 					dialog.opened = true;
 					dialog.addEventListener('d2l-dialog-close', (e) => {
-						afterNextRender(this, this._navigateToHome(e));
+						this._navigateToHome(e);
 					});
 				})
 				.catch(() => {
