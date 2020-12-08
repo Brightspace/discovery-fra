@@ -763,7 +763,7 @@ describe('course-summary', () => {
 					afterNextRender(component, () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
-						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 						expect(dialogMessage).to.include('Your enrollment to this course is pending, check back soon to access this course.');
 
 						// Open Course button still exists and is displayed
@@ -784,7 +784,7 @@ describe('course-summary', () => {
 						afterNextRender(component, () => {
 							const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 							expect(dialog.opened).to.equal(true);
-							const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+							const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 							expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
 
 							// Open Course button still exists and is displayed
