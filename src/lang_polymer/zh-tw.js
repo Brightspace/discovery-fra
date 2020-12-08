@@ -42,7 +42,12 @@ export default {
 	navigateHome: "返回首頁。", // An action that will navigate the user back to the Discover homepage.
 	new: "新式", // The name of the homepage section for new activities.
 	noActivities: "沒有可用的活動或您已經註冊所有的活動。請稍後再試。", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "沒有全新或更新的活動可用，或您已經註冊所有的活動。請稍後再試。", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "沒有其他可用的活動，或您已經註冊所有的活動。請稍後再試。", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "沒有最近新增的課程。", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "您目前未註冊任何課程。", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "請使用不同的排序方法。", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "沒有「最相關」項目的結果。", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "沒有最近更新的課程。", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "沒有課程說明", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "沒有任何結果符合「{searchQuery}」", // Displays as a header when a search query has no results
 	noResultsMessage: "請嘗試使用不同的搜尋詞彙，或是{linkStart}瀏覽全部{linkEnd}以檢視所有可用的資料", // When a search query has no results, suggests different search term or filter.

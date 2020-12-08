@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Gå tilbage til startsiden.", // An action that will navigate the user back to the Discover homepage.
 	new: "Ny", // The name of the homepage section for new activities.
 	noActivities: "Der er ingen aktiviteter tilgængelige, eller du er allerede tilmeldt dem alle. Prøv igen senere.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Der er ingen nye eller opdaterede aktiviteter tilgængelige, eller du er allerede tilmeldt dem alle. Prøv igen senere.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Der er ikke flere tilgængelige aktiviteter, eller du er allerede tilmeldt dem alle. Prøv igen senere.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Der er ingen kurser tilføjet for nylig.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Du er ikke tilmeldt nogen kurser i øjeblikket.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Brug en anden sorteringsmetode.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Ingen resultater for Mest relevant.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Der er ingen kurser, der er blevet opdateret for nylig.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Ingen kursusbeskrivelse", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Ingen resultater for \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Prøv at bruge et andet søgeord eller {linkStart}Gennemse alle{linkEnd} for at få vist alt tilgængeligt materiale", // When a search query has no results, suggests different search term or filter.

@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Mynd yn ôl i’r dudalen hafan.", // An action that will navigate the user back to the Discover homepage.
 	new: "Newydd", // The name of the homepage section for new activities.
 	noActivities: "Nid oes unrhyw weithgareddau ar gael neu rydych chi eisoes wedi cofrestru ar gyfer pob un ohonynt. Rhowch gynnig arall arni’n hwyrach.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Nid oes unrhyw weithgareddau newydd neu wedi’u diweddaru ar gael neu rydych chi eisoes wedi cofrestru ar gyfer pob un ohonynt. Rhowch gynnig arall arni’n hwyrach.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Nid oes unrhyw weithgareddau ychwanegol ar gael neu rydych chi eisoes wedi cofrestru ar gyfer pob un ohonynt. Rhowch gynnig arall arni’n hwyrach.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Nid oes unrhyw gyrsiau sydd newydd eu hychwanegu.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Ar hyn o bryd nid ydych wedi cofrestru mewn unrhyw gyrsiau.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Defnyddiwch ddull trefnu gwahanol.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Dim canlyniadau ar gyfer Mwyaf Perthnasol.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Nid oes unrhyw gyrsiau newydd eu diweddaru.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Dim disgrifiad o’r cwrs", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Dim canlyniadau ar gyfer \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Ceisiwch ddefnyddio term chwilio gwahanol neu {linkStart}Pori’r Cyfan{linkEnd} i weld yr holl ddeunyddiau sydd ar gael", // When a search query has no results, suggests different search term or filter.

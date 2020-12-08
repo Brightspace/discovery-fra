@@ -26,5 +26,9 @@ export default {
 	selectedFromMaximum: "{count} / {maximum} wedi’u dewis.", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "Adran Dan Sylw", // The header for setting the featured items in Discover.
 	showCourseCode: "Dangos codau cwrs", // The setting for whether or not to display course codes within Discover.
-	showSemester: "Dangos semestrau" // The setting for whether or not to display semecter names within Discover.
+	showSemester: "Dangos semestrau", // The setting for whether or not to display semecter names within Discover.
+	showUpdatedSection: "Dangos yr adran Diweddarwyd", // The setting for whether or not to display the Updated section on the Discover homepage.
+	showNewSection: "Dangos yr adran Newydd", // The setting for whether or not to display the New section on the Discover homepage.
+	courseTileSettings: "Teils y Cwrs", // The subheader for the settings that determine what to display within course tiles.
+	sectionsSettings: "Adrannau" // The subheader for the settings that determine which sections will be shown on the Discover homepage.
 };

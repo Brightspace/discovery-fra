@@ -42,7 +42,12 @@ export default {
 	navigateHome: "홈으로 돌아갑니다.", // An action that will navigate the user back to the Discover homepage.
 	new: "신규", // The name of the homepage section for new activities.
 	noActivities: "사용 가능한 활동이 없거나 이미 모든 활동에 등록되어 있습니다. 나중에 다시 시도하십시오.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "새로운 또는 업데이트된 활동이 없거나 이미 모든 활동에 등록되어 있습니다. 나중에 다시 시도하십시오.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "사용 가능한 추가 활동이 없거나 이미 모든 활동에 등록되어 있습니다. 나중에 다시 시도하십시오.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "새로 추가된 강의가 없습니다.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "현재 어느 강의에도 등록되어 있지 않습니다.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "다른 점수 산정법을 사용하십시오.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "가장 관련성이 높은 결과는 없습니다.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "새로 업데이트된 강의가 없습니다.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "강의 설명 없음", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "\"{searchQuery}\"에 대한 결과 없음", // Displays as a header when a search query has no results
 	noResultsMessage: "사용 가능한 모든 자료를 살펴보려면 다른 검색어 또는 {linkStart}모두 찾아보기{linkEnd}를 사용해 보십시오.", // When a search query has no results, suggests different search term or filter.

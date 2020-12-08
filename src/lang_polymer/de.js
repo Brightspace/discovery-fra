@@ -38,11 +38,16 @@ export default {
 	homepageDocumentTitle: "Discover – {instanceName}", // Displays as the page/tab header for the homepage.
 	lastUpdatedDate: "Zuletzt aktualisiert am {date}", //The most recent date that the current course was updated
 	loadMore: "Mehr laden", // An action that will load additional activities to be displayed.
-	message404: "Hoppla, Sie sind auf einen Fehler 404 gestoßen.", // A 404 message that appears when the user navigates to a page that doesn't exist.
+	message404: "Hoppla, Sie sind auf einen Fehler 404 gestoßen.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Zurück zur Startseite.", // An action that will navigate the user back to the Discover homepage.
 	new: "Neu", // The name of the homepage section for new activities.
 	noActivities: "Es sind keine Aktivitäten verfügbar, oder Sie sind bereits bei allen Aktivitäten angemeldet. Versuchen Sie es später noch einmal.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Es sind keine neuen oder aktualisierten Aktivitäten verfügbar, oder Sie sind bereits bei allen Aktivitäten angemeldet. Versuchen Sie es später noch einmal.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Es sind keine zusätzlichen Aktivitäten verfügbar, oder Sie sind bereits bei allen Aktivitäten angemeldet. Versuchen Sie es später noch einmal.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Es gibt keine neu hinzugefügten Kurse.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "Sie sind derzeit für keine Kurse angemeldet.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Verwenden Sie eine andere Sortiermethode.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Keine Ergebnisse für „Am relevantesten“.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Es gibt keine neu aktualisierten Kurse.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Keine Kursbeschreibung", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Keine Ergebnisse für „{searchQuery}“", // Displays as a header when a search query has no results
 	noResultsMessage: "Versuchen Sie, einen anderen Suchbegriff zu verwenden, oder {linkStart}durchstöbern Sie alles{linkEnd}, um sich alle verfügbaren Materialien anzeigen zu lassen.", // When a search query has no results, suggests different search term or filter.

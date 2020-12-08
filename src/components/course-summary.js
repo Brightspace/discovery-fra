@@ -599,6 +599,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 								this._enrollmentDialogMessage = this.localize('enrollmentMessageSuccess', 'title', this.courseTitle);
 							}
 							this.organizationHomepage = organizationHomepage;
+							this.selfEnrolledDate = Date.now();
 						});
 				})
 				.catch(() => {

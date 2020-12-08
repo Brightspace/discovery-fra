@@ -42,7 +42,12 @@ export default {
 	navigateHome: "Terug naar de startpagina.", // An action that will navigate the user back to the Discover homepage.
 	new: "Nieuw", // The name of the homepage section for new activities.
 	noActivities: "Er zijn geen activiteiten beschikbaar of u hebt u al voor alle activiteiten ingeschreven. Probeer het later opnieuw.", // When there are no activities to display on the homepage, this message will display.
-	noActivitiesExceptPrmoted: "Er zijn geen nieuwe of bijgewerkte activiteiten beschikbaar of u hebt u al voor alle activiteiten ingeschreven. Probeer het later opnieuw.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noActivitiesExceptPrmoted: "Er zijn geen aanvullende activiteiten beschikbaar of u hebt u al voor alle activiteiten ingeschreven. Probeer het later opnieuw.", // When only promoted activities are displayed on the homepage, this will display underneath.
+	noContentAdded: "Er zijn geen onlangs toegevoegde cursussen.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
+	noContentEnrolled: "U bent momenteel niet ingeschreven voor cursussen.", // Displays as a header when sorting by enrolled while not having any courses enrolled.
+	noContentMessage: "Gebruik een andere sorteermethode.", // Displays in a search result when no content is loaded and nothing was searched.
+	noContentRelevant: "Geen resultaten voor Meest relevant.", // Displays as a header when sorting by relevant while there being no courses to enroll in that haven't already been enrolled in.
+	noContentUpdated: "Er zijn geen onlangs bijgewerkte cursussen.", // Displays as a header when sorting by newly updated while having no courses be recently updated (within whatever the specified timeframe is).
 	noCourseDescription: "Geen cursusbeschrijving", // Displays in a course's summary if it does not have a description.
 	noResultsHeading: "Geen resultaten voor \"{searchQuery}\"", // Displays as a header when a search query has no results
 	noResultsMessage: "Probeer een andere zoekterm of {linkStart}Blader door alle inhoud{linkEnd} om alle beschikbare materialen te bekijken", // When a search query has no results, suggests different search term or filter.
