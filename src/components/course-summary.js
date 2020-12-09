@@ -521,7 +521,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			e.preventDefault();
 		}
 
-		if(this._beenEnrolledOrUnenrolled) { // Reloads the page because otherwise, it could cause some inconsistencies.
+		if (this._beenEnrolledOrUnenrolled) { // Reloads the page because otherwise, it could cause some inconsistencies.
 			this.dispatchEvent(new CustomEvent('navigate-parent', {
 				detail: {
 					path: this.routeLocations().home()
