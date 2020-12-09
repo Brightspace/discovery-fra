@@ -501,6 +501,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			_isPastAndCannotAccess: {
 				type: Boolean,
 				value: false
+			},
+			_beenEnrolledOrUnenrolled: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -517,13 +521,23 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			e.preventDefault();
 		}
 
-		this.dispatchEvent(new CustomEvent('navigate', {
-			detail: {
-				path: this.routeLocations().home()
-			},
-			bubbles: true,
-			composed: true
-		}));
+		if(this._beenEnrolledOrUnenrolled) { // Reloads the page because otherwise, it could cause some inconsistencies.
+			this.dispatchEvent(new CustomEvent('navigate-parent', {
+				detail: {
+					path: this.routeLocations().home()
+				},
+				bubbles: true,
+				composed: true
+			}));
+		} else {
+			this.dispatchEvent(new CustomEvent('navigate', {
+				detail: {
+					path: this.routeLocations().home()
+				},
+				bubbles: true,
+				composed: true
+			}));
+		}
 	}
 
 	_navigateToSearch(e) {
@@ -607,6 +621,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					this._enrollmentDialogMessage = this.localize('enrollmentMessageFail');
 				})
 				.finally(() => {
+					this._beenEnrolledOrUnenrolled = true;
 					this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog').opened = true;
 				});
 		}
@@ -618,6 +633,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			this.actionUnenroll = null;
 			return this._fetchEntity(actionUnenroll.href, actionUnenroll.method)
 				.then(() => {
+					this._beenEnrolledOrUnenrolled = true;
 					const dialog = this.shadowRoot.querySelector('#discovery-course-summary-dialog-unenroll-confirm');
 					dialog.opened = true;
 					dialog.addEventListener('d2l-dialog-close', (e) => {
