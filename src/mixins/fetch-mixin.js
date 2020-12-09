@@ -8,6 +8,8 @@ import SirenParse from 'siren-parser';
 import 'promise-polyfill/src/polyfill.js';
 import 'url-polyfill/url-polyfill.min.js';
 
+window.d2lfetch = d2lfetch.removeTemp('simple-cache');
+
 /* @polymerMixin */
 const internalFetchMixin = (superClass) => class extends superClass {
 	constructor() {
@@ -27,7 +29,6 @@ const internalFetchMixin = (superClass) => class extends superClass {
 
 		const request = await this._createRequest(url, method);
 
-		window.d2lfetch.removeTemp('simple-cache');
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
@@ -51,7 +52,6 @@ const internalFetchMixin = (superClass) => class extends superClass {
 
 		const request = await this._createRequest(url, method);
 
-		window.d2lfetch.removeTemp('simple-cache');
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
