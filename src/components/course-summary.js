@@ -323,7 +323,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					<div id="discovery-course-summary-card" class="discovery-course-summary-card">
 						<div class="discovery-course-summary-breadcrumbs">
 							<d2l-breadcrumbs>
-								<d2l-breadcrumb on-click="_navigateToHome" text="[[localize('discover')]]" aria-label="[[localize('backToDiscover')]]"></d2l-breadcrumb>
+								<d2l-breadcrumb on-click="_navigateToHome" href="[[_getHomeHref()]]" text="[[localize('discover')]]" aria-label="[[localize('backToDiscover')]]"></d2l-breadcrumb>
 							</d2l-breadcrumbs>
 						</div>
 
@@ -502,7 +502,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				type: Boolean,
 				value: false
 			},
-			_beenEnrolledOrUnenrolled: {
+			_enrollmentStatusChanged: {
 				type: Boolean,
 				value: false
 			}
@@ -521,7 +521,8 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			e.preventDefault();
 		}
 
-		if (this._beenEnrolledOrUnenrolled) { // Reloads the page because otherwise, it could cause some inconsistencies.
+		// Due to how Siren-SDK handles caching, enrollment status changes won't be applied on any page unless a full reload occurs.
+		if (this._enrollmentStatusChanged) {
 			this.dispatchEvent(new CustomEvent('navigate-parent', {
 				detail: {
 					path: this.routeLocations().home()
@@ -621,7 +622,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					this._enrollmentDialogMessage = this.localize('enrollmentMessageFail');
 				})
 				.finally(() => {
-					this._beenEnrolledOrUnenrolled = true;
+					this._enrollmentStatusChanged = true;
 					this.shadowRoot.querySelector('#discovery-course-summary-enroll-dialog').opened = true;
 				});
 		}
@@ -633,7 +634,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			this.actionUnenroll = null;
 			return this._fetchEntity(actionUnenroll.href, actionUnenroll.method)
 				.then(() => {
-					this._beenEnrolledOrUnenrolled = true;
+					this._enrollmentStatusChanged = true;
 					const dialog = this.shadowRoot.querySelector('#discovery-course-summary-dialog-unenroll-confirm');
 					dialog.opened = true;
 					dialog.addEventListener('d2l-dialog-close', (e) => {
@@ -691,6 +692,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	_startDateIsFutureComputed(startDateIsoFormat) {
 		return startDateIsoFormat ? Date.now() < new Date(startDateIsoFormat) : false;
 	}
+
 	_endDateIsPastComputed(endDateIsoFormat) {
 		return endDateIsoFormat ? Date.now() > new Date(endDateIsoFormat) : false;
 	}
@@ -733,6 +735,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			return this.localize('courseSummaryReadyMessage', 'courseTitle', this.courseTitle);
 		}
 		return '';
+	}
+
+	_getHomeHref() {
+		return this.routeLocations().home();
 	}
 }
 
