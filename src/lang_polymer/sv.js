@@ -40,7 +40,7 @@ export default {
 	loadMore: "Ladda mer", // An action that will load additional activities to be displayed.
 	message404: "Det uppstod ett 404-fel (sidan saknas).", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Tillbaka till startsidan.", // An action that will navigate the user back to the Discover homepage.
-	new: "Ny", // The name of the homepage section for new activities.
+	new: "Nytt", // The name of the homepage section for new activities.
 	noActivities: "Det finns inga tillgängliga aktiviteter eller så är du redan registrerad i alla. Försök igen senare.", // When there are no activities to display on the homepage, this message will display.
 	noActivitiesExceptPrmoted: "Det finns inga ytterligare tillgängliga aktiviteter, alternativt så är du redan registrerad för alla. Försök igen senare.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noContentAdded: "Det finns inga nyligen tillagda kurser.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).

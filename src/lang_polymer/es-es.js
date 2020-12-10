@@ -40,7 +40,7 @@ export default {
 	loadMore: "Cargar más", // An action that will load additional activities to be displayed.
 	message404: "Lo sentimos. Se ha producido un error 404.", // A 404 message that appears when the user navigates to a page that doesn't exist.
 	navigateHome: "Regresar a la página de inicio.", // An action that will navigate the user back to the Discover homepage.
-	new: "Nuevas", // The name of the homepage section for new activities.
+	new: "Más reciente", // The name of the homepage section for new activities.
 	noActivities: "No hay ninguna actividad disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.", // When there are no activities to display on the homepage, this message will display.
 	noActivitiesExceptPrmoted: "No hay ninguna actividad adicional disponible o ya se ha inscrito en todas. Vuelva a intentarlo más tarde.", // When only promoted activities are displayed on the homepage, this will display underneath.
 	noContentAdded: "No hay cursos recién añadidos.", // Displays as a header when sorting by newly added while having no courses be new (within whatever the specified timeframe is).
@@ -74,16 +74,16 @@ export default {
 	settingsLabel: "Haga clic para acceder a la página de ajustes", // The aria label describing the action that opens up Discover's Settings page.
 	sorting_enrolled: "Ya está inscrito", // Search's sort option that displays results that the user is already enrolled in.
 	sorting_mostRelevant: "Más relevantes", // Search's sort option that displays results ordered by most relevant to the search query
-	sorting_new: "Más recientes", // Search's sort option that displays results ordered by newest to the search query
+	sorting_new: "Más reciente", // Search's sort option that displays results ordered by newest to the search query
 	sorting_sortBy: "Ordenar por", // The title of the sort filter in the search page
-	sorting_updated: "Actualizado", // Search's sort option that displays results ordered by most recently updated to the search query
+	sorting_updated: "Se ha actualizado", // Search's sort option that displays results ordered by most recently updated to the search query
 	startDate: "Fecha de inicio", // A subtitle for displaying the date a course will begin
 	startDateIsInTheFuture: "Este curso estará disponible el {date}.", // A message describing the date a course will become available is.
 	startLearning: "Iniciar aprendizaje", // Unused
 	unenroll: "Anular inscripción",  // An action that will un-enroll the user from the displayed activity.
 	unenrollConfirmBody: "Se ha anulado correctamente la inscripción a \"{title}\".", // A confirmation message that displays when a user has completed un-enrolling from an activity
 	unenrollConfirmHeader: "Anulación de inscripción completa", // A confirmation header that displays when a user has completed un-enrolling from an activity
-	updated: "Actualizado", // The name of the homepage section for recently updated activities.
+	updated: "Se ha actualizado", // The name of the homepage section for recently updated activities.
 	viewAll: "Ver todo", // Action that opens the search page to view all activities within a certain category.
 	viewAllLabel: "Haga clic para ver todas las actividades", // Message that describes the view all action for all activities.
 	viewAllNewLabel: "Haga clic para ver las actividades nuevas", // Message that describes the view all action for new activities.
