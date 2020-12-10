@@ -5,7 +5,7 @@ export default {
 	cancel: "취소", // Cancels an action in Discover.
 	clearSelected: "선택 지우기", // When adding activities to the promoted content lane in Discover, this will clear all selected candidate activites.
 	clickToViewActivity: "클릭하여 활동 보기", // When viewing activities in Discover, this will open its summary page.
-	customizeDiscover: "Customize Discover", // The header for setting additional customization options in Discover.
+	customizeDiscover: "검색 사용자 지정", // The header for setting additional customization options in Discover.
 	discoverSettings: "설정 검색", //Header of the Discover Settings page.
 	doNotSave: "저장하지 않음", //Dialog prompt Don't Dave button when user tries to navigate away the page
 	loadMore: "더 많이 로드", // When adding activities to the promoted content lane in Discover, this will load additional candidate activites.
@@ -25,8 +25,8 @@ export default {
 	selected: "{count}개 선택됨", // The number of currently selected featured activities.
 	selectedFromMaximum: "{count} ∕ {maximum}개의 항목이 선택되었습니다.", // The number of currently selected featured activities out of a maximum available.
 	settingsFeaturedSection: "추천 섹션", // The header for setting the featured items in Discover.
-	showCourseCode: "Show course codes", // The setting for whether or not to display course codes within Discover.
-	showSemester: "Show semesters", // The setting for whether or not to display semecter names within Discover.
+	showCourseCode: "강의 코드 표시", // The setting for whether or not to display course codes within Discover.
+	showSemester: "학기 표시", // The setting for whether or not to display semecter names within Discover.
 	showUpdatedSection: "업데이트된 섹션 표시", // The setting for whether or not to display the Updated section on the Discover homepage.
 	showNewSection: "새 섹션 표시", // The setting for whether or not to display the New section on the Discover homepage.
 	courseTileSettings: "강의 타일", // The subheader for the settings that determine what to display within course tiles.
