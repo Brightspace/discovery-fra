@@ -1,14 +1,12 @@
 'use strict';
 import 'whatwg-fetch'; // Required for d2l-fetch + IE11
 import { d2lfetch } from 'd2l-fetch/src/index.js';
-window.d2lfetch = d2lfetch;
+window.d2lfetch = d2lfetch.removeTemp('simple-cache');
 
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
 import SirenParse from 'siren-parser';
 import 'promise-polyfill/src/polyfill.js';
 import 'url-polyfill/url-polyfill.min.js';
-
-window.d2lfetch = d2lfetch.removeTemp('simple-cache');
 
 /* @polymerMixin */
 const internalFetchMixin = (superClass) => class extends superClass {
@@ -28,7 +26,6 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		}
 
 		const request = await this._createRequest(url, method);
-
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
@@ -51,7 +48,6 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		}
 
 		const request = await this._createRequest(url, method);
-
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
