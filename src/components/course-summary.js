@@ -748,11 +748,11 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	_onActionUnenrollChanged(unenrollAction) {
 		if (unenrollAction) {
 			afterNextRender(this, () => {
-				this.shadowRoot.querySelector("#discovery-course-summary-unenroll")
-					.addEventListener('d2l-menu-item-select', (e) => {
+				this.shadowRoot.querySelector('#discovery-course-summary-unenroll')
+					.addEventListener('d2l-menu-item-select', () => {
 						this._unenroll();
-				});
-			})
+					});
+			});
 		}
 	}
 }
