@@ -1,4 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { Rels } from 'd2l-hypermedia-constants';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
@@ -466,7 +467,10 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			courseLastUpdated: String,
 			format: String,
 			actionEnroll: Object,
-			actionUnenroll: Object,
+			actionUnenroll: {
+				type: Object,
+				observer: '_onActionUnenrollChanged'
+			},
 			organizationHomepage: String,
 			organizationHref: String,
 			selfEnrolledDate: String,
@@ -739,6 +743,17 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_getHomeHref() {
 		return this.routeLocations().home();
+	}
+
+	_onActionUnenrollChanged(unenrollAction) {
+		if (unenrollAction) {
+			afterNextRender(this, () => {
+				this.shadowRoot.querySelector("#discovery-course-summary-unenroll")
+					.addEventListener('d2l-menu-item-select', (e) => {
+						this._unenroll();
+				});
+			})
+		}
 	}
 }
 
