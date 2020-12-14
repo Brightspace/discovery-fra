@@ -1,5 +1,4 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { Rels } from 'd2l-hypermedia-constants';
 import createDOMPurify from 'dompurify/dist/purify.es.js';
 const DOMPurify = createDOMPurify(window);
@@ -467,10 +466,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			courseLastUpdated: String,
 			format: String,
 			actionEnroll: Object,
-			actionUnenroll: {
-				type: Object,
-				observer: '_onActionUnenrollChanged'
-			},
+			actionUnenroll: Object,
 			organizationHomepage: String,
 			organizationHref: String,
 			selfEnrolledDate: String,
@@ -525,6 +521,8 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			e.preventDefault();
 		}
 
+		this.removeEventListener('d2l-menu-item-select', this._unenroll.bind(this));
+
 		// Due to how Siren-SDK handles caching, enrollment status changes won't be applied on any page unless a full reload occurs.
 		if (this._enrollmentStatusChanged) {
 			this.dispatchEvent(new CustomEvent('navigate-parent', {
@@ -547,6 +545,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_navigateToSearch(e) {
 		if (e && e.target && e.target.value) {
+			this.removeEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 			this.dispatchEvent(new CustomEvent('navigate', {
 				detail: {
 					path: this.routeLocations().search(e.target.value)
@@ -558,6 +557,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_navigateToOrganizationHomepage(organizationHomepage) {
+		this.removeEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 		this.dispatchEvent(new CustomEvent('navigate-parent', {
 			detail: {
 				path: organizationHomepage
@@ -745,15 +745,9 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		return this.routeLocations().home();
 	}
 
-	_onActionUnenrollChanged(unenrollAction) {
-		if (unenrollAction) {
-			afterNextRender(this, () => {
-				this.shadowRoot.querySelector('#discovery-course-summary-unenroll')
-					.addEventListener('d2l-menu-item-select', () => {
-						this._unenroll();
-					});
-			});
-		}
+	ready() {
+		super.ready();
+		this.addEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 	}
 }
 
