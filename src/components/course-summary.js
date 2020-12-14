@@ -387,8 +387,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 												<d2l-menu label="[[localize('enrollmentOptions')]]">
 													<d2l-menu-item
 														id="discovery-course-summary-unenroll"
-														text="[[localize('unenroll')]]"
-														on-click="_unenroll">
+														text="[[localize('unenroll')]]">
 													</d2l-menu-item>
 												</d2l-menu>
 											</d2l-dropdown-menu>
@@ -507,6 +506,11 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				value: false
 			}
 		};
+	}
+
+	ready() {
+		super.ready();
+		this.addEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 	}
 
 	static get observers() {
@@ -743,11 +747,6 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_getHomeHref() {
 		return this.routeLocations().home();
-	}
-
-	ready() {
-		super.ready();
-		this.addEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 	}
 }
 
