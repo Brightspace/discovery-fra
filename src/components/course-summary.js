@@ -387,8 +387,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 												<d2l-menu label="[[localize('enrollmentOptions')]]">
 													<d2l-menu-item
 														id="discovery-course-summary-unenroll"
-														text="[[localize('unenroll')]]"
-														on-click="_unenroll">
+														text="[[localize('unenroll')]]">
 													</d2l-menu-item>
 												</d2l-menu>
 											</d2l-dropdown-menu>
@@ -509,6 +508,11 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		};
 	}
 
+	ready() {
+		super.ready();
+		this.addEventListener('d2l-menu-item-select', this._unenroll.bind(this));
+	}
+
 	static get observers() {
 		return [
 			'_isFutureAndCannotAccessObserver(_startDateIsFuture, organizationHomepage)',
@@ -520,6 +524,8 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		if (e) {
 			e.preventDefault();
 		}
+
+		this.removeEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 
 		// Due to how Siren-SDK handles caching, enrollment status changes won't be applied on any page unless a full reload occurs.
 		if (this._enrollmentStatusChanged) {
@@ -543,6 +549,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_navigateToSearch(e) {
 		if (e && e.target && e.target.value) {
+			this.removeEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 			this.dispatchEvent(new CustomEvent('navigate', {
 				detail: {
 					path: this.routeLocations().search(e.target.value)
@@ -554,6 +561,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	_navigateToOrganizationHomepage(organizationHomepage) {
+		this.removeEventListener('d2l-menu-item-select', this._unenroll.bind(this));
 		this.dispatchEvent(new CustomEvent('navigate-parent', {
 			detail: {
 				path: organizationHomepage
