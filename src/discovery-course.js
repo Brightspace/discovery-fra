@@ -83,6 +83,10 @@ class DiscoveryCourse extends mixinBehaviors(
 					border-bottom: 1px solid var(--d2l-color-gypsum);
 				}
 
+				[hidden] {
+					display: none !important;
+				}
+
 				@media only screen and (max-width: 929px) {
 					.discovery-course-container {
 						align-items: center;
