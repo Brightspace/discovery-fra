@@ -28,6 +28,12 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 					align-items: center;
 				}
 
+				@media only screen and (max-width: 615px) {	
+					.activity-card-list-header-view-all-link {	
+						font-size: 0.8rem;	
+					}	
+				}
+
 				[hidden] {
 					display: none !important;
 				}
@@ -37,6 +43,7 @@ class HomeAllSection extends RouteLocationsMixin(FetchMixin(LocalizeMixin(Polyme
 					<div class="activity-card-list-header">
 						<h2 class="d2l-heading-2" aria-label$="[[localize('all')]]">[[localize('all')]]</h2>
 						<d2l-link
+							class="activity-card-list-header-view-all-link"
 							aria-label$="[[localize('viewAllLabel')]]"
 							href="javascript:void(0)"
 							on-click="_navigateToViewAll">
