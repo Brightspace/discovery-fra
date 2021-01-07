@@ -261,7 +261,7 @@ describe('search-results', () => {
 
 		it('should show 4 sort options with enrolled sort option selected', done => {
 			afterNextRender(component, () => {
-				const sortOptions = component.shadowRoot.querySelectorAll('#sortDropdown d2l-sort-by-dropdown-option');
+				const sortOptions = component.shadowRoot.querySelectorAll('#sortDropdown d2l-labs-sort-by-dropdown-option');
 				expect(sortOptions.length).to.equal(4);
 				const sortDropdown = component.shadowRoot.querySelector('#sortDropdown');
 				expect(sortDropdown).is.not.undefined;
