@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@d2l/ifrautoaster": "^1.1.9",
     "@polymer/iron-component-page": "^3.0.0-pre.18",
     "@polymer/iron-test-helpers": "^3.0.0-pre.18",
     "@webcomponents/webcomponentsjs": "^2.5.0",
