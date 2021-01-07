@@ -2,7 +2,7 @@
   "name": "discovery",
   "appId": "urn:d2l:fra:class:discovery",
   "description": "Discovery",
-  "version": "3.0.8",
+  "version": "3.1.0",
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "repository": "git@github.com:Brightspace/discovery-fra.git",
@@ -28,6 +28,7 @@
     "buildDev:customNoWatch": "npx gulp buildDevCustomNoWatch"
   },
   "dependencies": {
+    "@brightspace-ui-labs/facet-filter-sort": "^4",
     "@brightspace-ui-labs/pagination": "^1",
     "@brightspace-ui/core": "^1.102.5",
     "@polymer/app-route": "^3.0.0-pre.15",
@@ -35,7 +36,6 @@
     "@polymer/iron-resizable-behavior": "^3.0.0",
     "@polymer/polymer": "^3",
     "d2l-activities": "github:BrightspaceHypermediaComponents/activities#semver:^3",
-    "d2l-facet-filter-sort": "github:BrightspaceUI/facet-filter-sort#semver:^3",
     "d2l-fetch": "github:Brightspace/d2l-fetch#semver:^2",
     "d2l-fetch-auth": "^1",
     "d2l-fetch-dedupe": "^1.3.0",
