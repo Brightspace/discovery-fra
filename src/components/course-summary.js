@@ -392,8 +392,8 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 												</d2l-menu>
 											</d2l-dropdown-menu>
 										</d2l-dropdown-more>
+										<span class="discovery-course-summary-already-enrolled d2l-body-compact">[[localize('alreadyEnrolled')]]</span>
 									</template>
-									<span class="discovery-course-summary-already-enrolled d2l-body-compact">[[localize('alreadyEnrolled')]]</span>
 								</div>
 							</template>
 							<template is="dom-if" if="[[actionEnroll]]">
@@ -435,7 +435,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 					[[localize('OK')]]
 				</d2l-button>
 			</d2l-dialog-confirm>
-			
+
 			<d2l-dialog-confirm
 				class="discovery-course-summary-dialog"
 				id="discovery-course-summary-dialog-unenroll-confirm"
