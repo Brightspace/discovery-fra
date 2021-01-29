@@ -345,14 +345,15 @@ describe('course-summary', () => {
 				// Dialog is opened with success message
 				const dialog = component.$$('#discovery-course-summary-dialog-unenroll-confirm');
 				expect(dialog.opened).to.equal(true);
-				const dialogTitle = component.$$('#discovery-course-summary-dialog-unenroll-confirm-label').innerText;
+				const dialogTitle = component.$$('#discovery-course-summary-dialog-unenroll-confirm').titleText;
 				expect(dialogTitle).to.equal('Unenrollment Complete');
-				const dialogMessage = component.$$('#discovery-course-summary-dialog-unenroll-confirm-describe').innerText;
+				const dialogMessage = component.$$('#discovery-course-summary-dialog-unenroll-confirm').text;
 				expect(dialogMessage).to.equal(`You've been successfully unenrolled from "${testTitle}".`);
 
 				const dismiss = component.$$('#discovery-course-summary-dialog-unenroll-dismiss');
 				dismiss.click();
 			});
+			done();
 		});
 
 	});
@@ -389,7 +390,7 @@ describe('course-summary', () => {
 				// Dialog is opened with success message
 				const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 				expect(dialog.opened).to.equal(true);
-				const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+				const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 				expect(dialogMessage).to.include(dialogMessageIncludes);
 
 				// Open Course button does exist and is displayed
@@ -579,7 +580,7 @@ describe('course-summary', () => {
 				// Dialog is opened with error message
 				const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 				expect(dialog.opened).to.equal(true);
-				const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+				const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 				expect(dialogMessage).to.include('Unable to enroll at this time, please try again later.');
 
 				// Open Course button does not exist
@@ -671,7 +672,7 @@ describe('course-summary', () => {
 					// Dialog is opened with success message
 					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 					expect(dialog.opened).to.equal(true);
-					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+					const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 					expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
 
 					// Open Course button does exist and is displayed
@@ -689,7 +690,7 @@ describe('course-summary', () => {
 					afterNextRender(component, () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
-						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 						expect(dialogMessage).to.include('Your enrollment to this course is pending, check back soon to access this course.');
 
 						// Open Course button still exists and is displayed
@@ -708,7 +709,7 @@ describe('course-summary', () => {
 		});
 	});
 
-	describe('enrolled by user but then removed by Admin / pending enrollmentt', () => {
+	describe('enrolled by user but then removed by Admin / pending enrollment', () => {
 		before(done => {
 			component = fixture('course-summary-basic-fixture');
 			setComponentForEnrollment({ component, enrolled: false });
@@ -742,7 +743,7 @@ describe('course-summary', () => {
 					// Dialog is opened with success message
 					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 					expect(dialog.opened).to.equal(true);
-					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+					const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 					expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
 
 					// Open Course button does exist and is displayed
@@ -763,7 +764,7 @@ describe('course-summary', () => {
 					afterNextRender(component, () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
-						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 						expect(dialogMessage).to.include('Your enrollment to this course is pending, check back soon to access this course.');
 
 						// Open Course button still exists and is displayed
@@ -784,7 +785,7 @@ describe('course-summary', () => {
 						afterNextRender(component, () => {
 							const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 							expect(dialog.opened).to.equal(true);
-							const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+							const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 							expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
 
 							// Open Course button still exists and is displayed
@@ -838,7 +839,7 @@ describe('course-summary', () => {
 					// Dialog is opened with success message
 					const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 					expect(dialog.opened).to.equal(true);
-					const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+					const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 					expect(dialogMessage).to.include('will soon be available in the My Courses widget.');
 
 					// Open Course button does exist and is displayed
@@ -859,7 +860,7 @@ describe('course-summary', () => {
 					afterNextRender(component, () => {
 						const dialog = component.$$('#discovery-course-summary-enroll-dialog');
 						expect(dialog.opened).to.equal(true);
-						const dialogMessage = component.$$('.discovery-course-summary-dialog-content-container').innerHTML;
+						const dialogMessage = component.$$('#discovery-course-summary-enroll-dialog').text;
 						expect(dialogMessage).to.include('You have been un-enrolled by an Administrator, contact your Administrator in order to enroll again.');
 
 						// Open Course button still exists and is displayed

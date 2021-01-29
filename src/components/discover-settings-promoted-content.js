@@ -19,8 +19,10 @@ import { entityFactory, dispose } from 'siren-sdk/src/es6/EntityFactory';
 import { OrganizationCollectionEntity } from 'siren-sdk/src/organizations/OrganizationCollectionEntity';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { DiscoverSettingsMixin } from '../mixins/discover-settings-mixin.js';
+import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import './loading-skeleton.js';
 
-class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocationsMixin(FetchMixin(LocalizeMixin(LitElement)))) {
+class DiscoverSettingsPromotedContent extends SkeletonMixin(DiscoverSettingsMixin(RouteLocationsMixin(FetchMixin(LocalizeMixin(LitElement))))) {
 
 	static async getLocalizeResources(langs) {
 		return getLocalizeResources(langs);
@@ -50,21 +52,15 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 		return {
 			token: { type: String},
 			maxPromotedCourses: {type: Number }, //Limits the number of selectable items in the dialog's list to this number.
-
 			_promotedDialogOpen: { type: Boolean}, //True iff the dialog is open
-
 			_promotedItemsLoading: { type: Boolean}, //True until the saved promoted items are loaded.
 			_candidateItemsLoading: { type: Boolean}, //True iff any candidate image or text has not fully loaded.
 			_candidateEntityCollection: { type: Object}, //OrganizationEntityCollection siren object.
-
 			_candidateActivities: { type: Array}, //Array of objects containing properties of OrganizationEntities within the currently loaded candidates
 			_promotedActivities: { type: Array}, //Array of objects containing properties of the currently promoted activities
-
 			_loadedCandidateImages: { type: Number}, //Count of total candidate images ready to be displayed
 			_loadedCandidateText: { type: Number}, //Count of total candidate text ready to be displayed
-
 			_currentSelection: { type: Object}, //Hash of checked/unchecked organizationURLs. All true items are selected.
-
 			_selectionCount: { type: Number}, //Count of currently checked candidate entities
 			_lastLoadedListItem: {type: Object}, //Tracks the last loaded activity, to focus its new sibling after loading more.
 			_savedPromotedActivities: { type: Array}, //initial load of promoted courses
@@ -129,27 +125,16 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 				margin-top: .5rem;
 				margin-bottom: .5rem;
 			}
-			.d2l-discover-list-item-pulse-placeholder {
-				animation: pulsingAnimation 1.8s linear infinite;
-				height: 100%;
-				width: 100%;
-				border-radius: 4px;
-			}
-			.d2l-discover-list-item-content-placeholder {
-				flex-grow: 1;
-				display: flex;
-				flex-direction: column;
-				width: 100%;
-			}
-			.d2l-discover-list-item-image-placeholder {
+			.img-skeleton {
 				width: 90px;
-				height: 38.33px;
-				border: 1px solid var(--d2l-color-gypsum);
+				height: 44.86px;
 			}
-			.d2l-discover-list-item-category-placeholder {
-				display: block;
-				height: 0.95rem;
-				margin: 0.3rem 0;
+			.discovery-featured-placeholder-container {
+				width: 100%
+			}
+			.discovery-featured-title-placeholder {
+				height: 1.1rem;
+				margin: 0.17rem 0rem;
 				width: 50%;
 			}
 		`];
@@ -181,9 +166,7 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 				<h2 class="discover-featured-title">${this.localize('settingsFeaturedSection')}</h2>
 				<d2l-button primary @click="${this._openPromotedDialogClicked}">${this.localize('featureContent')}</d2l-button>
 			</div>
-
 			${featuredSection}
-
 			<d2l-dialog class="discover-featured-dialog" title-text="${this.localize('browseDiscoverLibrary')}" ?opened="${this._promotedDialogOpen}" @d2l-dialog-close="${this._closePromotedDialogClicked}">
 				<div class="discover-featured-dialog-list" aria-live="polite" aria-busy="${this._candidateItemsLoading}">
 					<div class="discover-featured-dialog-header">
@@ -197,29 +180,29 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 						${loadMore}
 					</div>
 				</div>
-
 				<d2l-button slot="footer" primary dialog-action="add" @click=${this._addActivitiesClicked}>${this.localize('add')}</d2l-button>
 				<d2l-button slot="footer" dialog-action>${this.localize('cancel')}</d2l-button>
-
 			</d2l-dialog>
 		`;
 	}
 
 	_renderFeaturedSection() {
-		const loadingPlaceholder = this._renderLoadingPlaceholder();
 		return html`
 			${this._promotedActivities.length > 0 ? html`
 				<d2l-list class="discover-featured-list">
 					${this._promotedActivities.map((activity) => html`
-						${!activity.loaded ? html`
-							${loadingPlaceholder}
-						` : html``}
-						<d2l-list-item ?hidden="${!activity.loaded}">
-							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}"></d2l-organization-image>
-							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${(e) => this._handleSavedOrgAccessible(e, activity)}"></d2l-organization-name>
-							<div slot="actions">
-							<d2l-button-icon text="${this.localize('removeFromFeatured', 'course', activity.organizationName)}" icon="tier1:close-default" @click="${(() => this._removeFromFeatured(activity.organizationUrl))}"></d2l-button-icon>
-							</div>
+						<d2l-list-item>
+							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" class="img-skeleton" ?skeleton="${!activity.loaded}"></d2l-organization-image>
+							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" ?hidden="${!activity.loaded}" @d2l-organization-accessible="${(e) => this._handleSavedOrgAccessible(e, activity)}"></d2l-organization-name>
+							${activity.loaded ? html`
+								<div slot="actions">
+									<d2l-button-icon text="${this.localize('removeFromFeatured', 'course', activity.organizationName)}" icon="tier1:close-default" @click="${(() => this._removeFromFeatured(activity.organizationUrl))}"></d2l-button-icon>
+								</div>
+							` : html`
+								<div class="discovery-featured-placeholder-container">
+									<loading-skeleton class="discovery-featured-title-placeholder"></loading-skeleton>
+								</div>
+							`}
 						</d2l-list-item>
 					`)}
 				</d2l-list>
@@ -236,12 +219,10 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 			${this._candidateEntityCollection === undefined || this._candidateEntityCollection === null ? null : html`
 				${this._candidateActivities.length <= 0 && !this._candidateItemsLoading && !this._promotedItemsLoading ? html`
 					<div class="discover-featured-empty">${this.localize('noActivitiesFound')}</div>` : html`
-
 					<d2l-list @d2l-list-selection-change=${this._handleSelectionChange}>
 					${this._candidateActivities.map(activity => html`
 						<d2l-list-item selectable ?hidden="${!activity.loaded}" key="${activity.organizationUrl}"
 							?selected="${this._isCandidateSelected(activity)}" ?disabled="${this._isCandidateDisabled(activity)}">
-
 							<d2l-organization-image href="${activity.organizationUrl}" slot="illustration" token="${this.token}" @d2l-organization-image-loaded="${this._handleOrgImageLoaded}"></d2l-organization-image>
 							<d2l-organization-name href="${activity.organizationUrl}" token="${this.token}" @d2l-organization-accessible="${this._handleCandidateOrgAccessible}"></d2l-organization-name>
 						</d2l-list-item>
@@ -274,19 +255,6 @@ class DiscoverSettingsPromotedContent extends DiscoverSettingsMixin(RouteLocatio
 					<d2l-button @click=${this._loadMoreCandidates}>${this.localize('loadMore')}</d2l-button>
 				`}
 			`}
-		`;
-	}
-
-	_renderLoadingPlaceholder() {
-		return html`
-			<d2l-list-item>
-				<div slot="illustration" class="d2l-discover-list-item-image-placeholder">
-					<div class="d2l-discover-list-item-pulse-placeholder"></div>
-				</div>
-				<div class="d2l-discover-list-item-content-placeholder">
-					<div class="d2l-discover-list-item-pulse-placeholder d2l-discover-list-item-category-placeholder"></div>
-				</div>
-			</d2l-list-item>
 		`;
 	}
 

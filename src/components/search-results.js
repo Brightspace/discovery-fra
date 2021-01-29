@@ -1,13 +1,13 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/sort-by-dropdown/sort-by-dropdown-option.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/sort-by-dropdown/sort-by-dropdown.js';
 import '@brightspace-ui-labs/pagination/pagination.js';
 import '@brightspace-ui/core/components/link/link.js';
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fastdom/fastdom.js';
-import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown-option.js';
-import 'd2l-facet-filter-sort/components/d2l-sort-by-dropdown/d2l-sort-by-dropdown.js';
 import { FetchMixin } from '../mixins/fetch-mixin.js';
 import { RouteLocationsMixin } from '../mixins/route-locations-mixin.js';
 import { LocalizeMixin } from '../mixins/localize-mixin.js';
@@ -127,24 +127,24 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 									<span class="d2l-label-text discovery-search-results-search-message">[[localize('searchResultCountForAllResults', 'searchResultRange', _searchResultsRangeToString, 'searchResultsTotal', _searchResultsTotal)]]</span>
 								</div>
 							</template>
-							<d2l-sort-by-dropdown id="sortDropdown" label="Sort by options" align="end">
-								<d2l-sort-by-dropdown-option
+							<d2l-labs-sort-by-dropdown id="sortDropdown" label="Sort by options" align="end">
+								<d2l-labs-sort-by-dropdown-option
 									selected="[[_isSelected('relevant')]]"
 									value="relevant"
-									text="[[getSortText('relevant')]]"></d2l-sort-by-dropdown-option>
-								<d2l-sort-by-dropdown-option
+									text="[[getSortText('relevant')]]"></d2l-labs-sort-by-dropdown-option>
+								<d2l-labs-sort-by-dropdown-option
 									selected="[[_isSelected('updated')]]"
 									value="updated"
-									text="[[getSortText('updated')]]"></d2l-sort-by-dropdown-option>
-								<d2l-sort-by-dropdown-option
+									text="[[getSortText('updated')]]"></d2l-labs-sort-by-dropdown-option>
+								<d2l-labs-sort-by-dropdown-option
 									selected="[[_isSelected('added')]]"
 									value="added"
-									text="[[getSortText('added')]]"></d2l-sort-by-dropdown-option>
-								<d2l-sort-by-dropdown-option
+									text="[[getSortText('added')]]"></d2l-labs-sort-by-dropdown-option>
+								<d2l-labs-sort-by-dropdown-option
 									selected="[[_isSelected('enrolled')]]"
 									value="enrolled"
-									text="[[getSortText('enrolled')]]"></d2l-sort-by-dropdown-option>
-							</d2l-sort-by-dropdown>
+									text="[[getSortText('enrolled')]]"></d2l-labs-sort-by-dropdown-option>
+							</d2l-labs-sort-by-dropdown>
 						</template>
 					</template>
 				</div>
@@ -241,7 +241,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 		this.addEventListener('d2l-discover-activity-triggered', this._navigateToCourse.bind(this));
 		this.addEventListener('d2l-discover-text-loaded', this._removeTextPlaceholders);
 		this.addEventListener('d2l-discover-image-loaded', this._removeImagePlaceholders);
-		this.addEventListener('d2l-sort-by-dropdown-change', this._onSortChanged.bind(this));
+		this.addEventListener('d2l-labs-sort-by-dropdown-change', this._onSortChanged.bind(this));
 	}
 
 	_isSelected(item) {
@@ -255,8 +255,8 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 		this._searchQueryLoading = true;
 		this._processBeforeLoading();
-		this.setUpNoResultsMessage();
 		this.sortParameter = sortEvent.detail.value;
+		this.setUpNoResultsMessage();
 		this.dispatchEvent(new CustomEvent('navigate', {
 			detail: {
 				path: this.routeLocations().search(this.searchQuery, {
@@ -321,7 +321,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 	}
 
 	setSortSelection() {
-		const sortOptions = this.shadowRoot.querySelectorAll('#sortDropdown d2l-sort-by-dropdown-option');
+		const sortOptions = this.shadowRoot.querySelectorAll('#sortDropdown d2l-labs-sort-by-dropdown-option');
 		for (const option of sortOptions) {
 			option.selected = option.value === this.sortParameter;
 		}

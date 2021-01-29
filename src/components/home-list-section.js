@@ -13,13 +13,12 @@ class HomeListSection extends EntityMixinLit(RouteLocationsMixin(LitElement)) {
 	render() {
 		return html`
 			<style include="discovery-styles"></style>
-			<div class="d2l-typography">
-				<div class="discovery-home-list-section-container" ?hidden="${!this._hasCourses(this._sortedCourses)}">
+			<div class="d2l-typography" ?hidden="${!this._hasCourses(this._sortedCourses)}">
+				<div class="discovery-home-list-section-container">
 					<div class="activity-card-list-header">
 						<h2 class="d2l-heading-2" aria-label="${this.sectionName}">${this.sectionName}</h2>
 						<d2l-link
 							aria-label="${this.linkLabel}"
-							class="activity-card-list-header-view-all-link"
 							href="javascript:void(0)"
 							@click="${this._navigateToViewAll}">
 							${this.linkName}
@@ -51,16 +50,6 @@ class HomeListSection extends EntityMixinLit(RouteLocationsMixin(LitElement)) {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-				}
-
-				.activity-card-list-header-view-all-link {
-					@apply --d2l-body-compact-text;
-				}
-
-				@media only screen and (max-width: 615px) {
-					.activity-card-list-header-view-all-link {
-						font-size: 0.7rem;
-					}
 				}
 			`
 		];

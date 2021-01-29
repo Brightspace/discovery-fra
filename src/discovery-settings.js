@@ -53,26 +53,26 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 
 					${this.discoverToggleSectionsEnabled ? html`
 						<h4 class="discovery-settings-h4">${this.localize('courseTileSettings')}</h4>
-					` : html``}
+					` : null}
 
 					${!this._settingsLoaded ? html`
 						<d2l-input-checkbox skeleton>${this.localize('showCourseCode')}</d2l-input-checkbox>
 						<d2l-input-checkbox skeleton>${this.localize('showSemester')}</d2l-input-checkbox>
-					` : html``}
-
-					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
-						<d2l-input-checkbox
-							id="showCourseCodeCheckbox"
-							?checked=${this._savedShowCourseCode}
-							@change=${this._onShowCourseCodeChange}>${this.localize('showCourseCode')}</d2l-input-checkbox>
-						<d2l-input-checkbox
-							id="showSemesterCheckbox"
-							?checked=${this._savedShowSemester}
-							@change=${this._onShowSemesterChange}>${this.localize('showSemester')}</d2l-input-checkbox>
-					</div>
+					` : html`
+						<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
+							<d2l-input-checkbox
+								id="showCourseCodeCheckbox"
+								?checked=${this._savedShowCourseCode}
+								@change=${this._onShowCourseCodeChange}>${this.localize('showCourseCode')}</d2l-input-checkbox>
+							<d2l-input-checkbox
+								id="showSemesterCheckbox"
+								?checked=${this._savedShowSemester}
+								@change=${this._onShowSemesterChange}>${this.localize('showSemester')}</d2l-input-checkbox>
+						</div>
+					`}
 					${renderToggleSections}
 				</div>
-			` : html``}
+			` : null}
 		`;
 	}
 
@@ -84,19 +84,19 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 					${!this._settingsLoaded ? html`
 						<d2l-input-checkbox skeleton>${this.localize('showUpdatedSection')}</d2l-input-checkbox>
 						<d2l-input-checkbox skeleton>${this.localize('showNewSection')}</d2l-input-checkbox>
-					` : html``}
-					
-					<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
-						<d2l-input-checkbox
-							id="showUpdatedSectionCheckbox"
-							?checked=${this._savedShowUpdatedSection}
-							@change=${this._onShowUpdatedSectionChange}>${this.localize('showUpdatedSection')}</d2l-input-checkbox>
-						<d2l-input-checkbox
-							id="showNewSectionCheckbox"
-							?checked=${this._savedShowNewSection}
-							@change=${this._onShowNewSectionChange}>${this.localize('showNewSection')}</d2l-input-checkbox>
-					</div>
-			` : html``}
+					` : html`
+						<div class="discover-customization-settings" ?hidden="${!this._settingsLoaded}">
+							<d2l-input-checkbox
+								id="showUpdatedSectionCheckbox"
+								?checked=${this._savedShowUpdatedSection}
+								@change=${this._onShowUpdatedSectionChange}>${this.localize('showUpdatedSection')}</d2l-input-checkbox>
+							<d2l-input-checkbox
+								id="showNewSectionCheckbox"
+								?checked=${this._savedShowNewSection}
+								@change=${this._onShowNewSectionChange}>${this.localize('showNewSection')}</d2l-input-checkbox>
+						</div>
+					`}
+			` : null}
 		`;
 	}
 
@@ -198,17 +198,20 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 
 	static get properties() {
 		return {
-			visible: {
-				type: Boolean
+			token: {
+				type: String
 			},
 			canManageDiscover: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'can-manage-discover'
 			},
 			discoverCustomizationsEnabled: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'discover-customizations-enabled'
 			},
 			discoverToggleSectionsEnabled: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'discover-toggle-sections-enabled'
 			},
 			_savedShowCourseCode: {
 				type: Boolean
@@ -246,9 +249,6 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 			_settingsLoaded: {
 				type: Boolean
 			},
-			token: {
-				type: String
-			}
 		};
 	}
 
@@ -272,7 +272,7 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
-			if (propName === 'canManageDiscover' || propName === 'visible') {
+			if (propName === 'canManageDiscover') {
 				this._checkPermission();
 				this._initializeSettings();
 			}
@@ -382,7 +382,7 @@ class DiscoverySettings extends SkeletonMixin(DiscoverSettingsMixin(LocalizeMixi
 	}
 
 	_checkPermission() {
-		if (!this.visible || this.canManageDiscover) {
+		if (this.canManageDiscover) {
 			return;
 		}
 

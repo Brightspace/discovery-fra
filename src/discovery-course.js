@@ -1,18 +1,17 @@
 'use strict';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { Classes, Rels } from 'd2l-hypermedia-constants';
+import { Rels } from 'd2l-hypermedia-constants';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-
-import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
-import '@brightspace-ui/core/components/colors/colors.js';
-
 import { LocalizeMixin } from './mixins/localize-mixin.js';
 import { RouteLocationsMixin } from './mixins/route-locations-mixin.js';
 import { FetchMixin } from './mixins/fetch-mixin.js';
 import { FeatureMixin } from './mixins/feature-mixin.js';
 import { DiscoverSettingsMixin } from './mixins/discover-settings-mixin.js';
 
+import 'd2l-organization-hm-behavior/d2l-organization-hm-behavior.js';
+import 'd2l-organizations/components/d2l-organization-image/d2l-organization-image.js';
+import '@brightspace-ui/core/components/colors/colors.js';
 import './components/course-action.js';
 import './components/course-summary.js';
 import './components/discovery-footer.js';
@@ -74,10 +73,6 @@ class DiscoveryCourse extends mixinBehaviors(
 					width: 100%;
 					z-index: -10;
 				}
-				.discovery-course-header-image-container {
-					background-position: center center;
-					background-size: cover;
-				}
 
 				.discovery-course-header-gradient-container {
 					background: linear-gradient(to bottom,  rgba(249,250,251,1) 0%,rgba(249,250,251,0) 100%);
@@ -86,6 +81,10 @@ class DiscoveryCourse extends mixinBehaviors(
 				.discovery-course-header-image-placeholder {
 					background-color: var(--d2l-color-regolith);
 					border-bottom: 1px solid var(--d2l-color-gypsum);
+				}
+
+				[hidden] {
+					display: none !important;
 				}
 
 				@media only screen and (max-width: 929px) {
@@ -158,16 +157,9 @@ class DiscoveryCourse extends mixinBehaviors(
 				}
 			</style>
 
-			<app-route
-				route="[[route]]"
-				pattern="/d2l/le/discovery/view/course/:courseId"
-				data="[[routeData]]">
-			</app-route>
-
 			<div aria-busy$="[[!_dataIsReady]]">
-				<img id="discovery-course-header-image" on-load="_headerImageLoaded" src="[[_courseImage]]" hidden/>
 				<div class="discovery-course-header-container">
-					<div id="discovery-course-header-image-container" class="discovery-course-header-image-container" hidden$="[[!courseImageIsReady]]"></div>
+					<d2l-organization-image type="narrow" tile-sizes=[[_backgroundImageSizes]] id="discovery-course-header-image-container" href="[[_bannerImageHref]]" token="[[token]]" on-d2l-organization-image-loaded="_headerImageLoaded"></d2l-organization-image>
 					<div id="discovery-course-header-image-placeholder" class="discovery-course-header-image-placeholder" hidden$="[[courseImageIsReady]]"></div>
 					<div id="discovery-course-header-gradient-container" class="discovery-course-header-gradient-container"></div>
 				</div>
@@ -210,9 +202,11 @@ class DiscoveryCourse extends mixinBehaviors(
 
 	static get properties() {
 		return {
-			route: Object,
-			routeData: Object,
-
+			courseId:  {
+				type: Number,
+				observer: '_courseIdChanged'
+			},
+			token: String,
 			_actionEnroll: {
 				type: String,
 				value: ''
@@ -221,11 +215,29 @@ class DiscoveryCourse extends mixinBehaviors(
 				type: String,
 				value: ''
 			},
+			_backgroundImageSizes: {
+				type: Object,
+				value: function() {
+					return {
+						mobile: {
+							maxwidth: 767,
+							size: 100
+						},
+						tablet: {
+							maxwidth: 1243,
+							size: 100
+						},
+						desktop: {
+							size: 100
+						}
+					};
+				}
+			},
 			_courseCategory: String,
 			_courseCode: String,
 			_courseDescription: String,
 			_courseDuration: Number,
-			_courseImage: String,
+			_bannerImageHref: String,
 			_courseLastUpdated: String,
 			_courseTags: Array,
 			_courseTitle: String,
@@ -256,30 +268,17 @@ class DiscoveryCourse extends mixinBehaviors(
 	}
 	ready() {
 		super.ready();
-		const route = this.shadowRoot.querySelector('app-route');
 		this.addEventListener('iron-resize', this._onIronResize.bind(this));
-		route.addEventListener('route-changed', this._routeChanged.bind(this));
-		route.addEventListener('data-changed', this._routeDataChanged.bind(this));
 	}
 	_visible(visible) {
 		if (visible) {
 			this._updateDocumentTitle();
 		}
 	}
-	_routeChanged(route) {
-		this.route = route.detail.value || {};
-	}
-	_routeDataChanged(routeData) {
-		this._reset();
-		this.routeData = routeData.detail.value || {};
-		// Todo: this is likely a bug in polymer where query parameters cannot be extracted from the app-route pattern
-		// We can come back to fix it in polymer later https://github.com/PolymerElements/app-route/blob/master/app-route.js#L278
-		if (this.routeData.courseId) {
-			let courseId = decodeURIComponent(this.routeData.courseId);
-			const parts = courseId.split('?');
-			if (parts.length >= 2) {
-				courseId = parts[0];
-			}
+	_courseIdChanged() {
+		if (this.courseId) {
+			const courseId = this.courseId;
+
 			const parameters = { id: courseId };
 			return this._getActionUrl('course', parameters)
 				.then(url => this._fetchEntity(url))
@@ -354,23 +353,11 @@ class DiscoveryCourse extends mixinBehaviors(
 			await this._processCourseDescriptionItems();
 		}
 
+		this._bannerImageHref = this._organizationHref;
 		this._organizationHomepage = organizationEntity.hasLink(Rels.organizationHomepage)
 			&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
 
 		this._dataIsReadyProcess();
-
-		if (organizationEntity.hasSubEntityByClass(Classes.courseImage.courseImage)) {
-			const imageEntity = organizationEntity.getSubEntityByClass(Classes.courseImage.courseImage);
-			// TODO: Do we need to do something similar to this?
-			// https://github.com/Brightspace/course-image/blob/master/d2l-course-image.js#L147
-			if (imageEntity.href) {
-				return this._fetchEntity(imageEntity)
-					.then(function(hydratedImageEntity) {
-						this._courseImage = this.getDefaultImageLink(hydratedImageEntity, 'banner');
-					}.bind(this));
-			}
-		}
-
 		return Promise.resolve();
 	}
 
@@ -404,6 +391,7 @@ class DiscoveryCourse extends mixinBehaviors(
 		}
 		this._courseDescriptionItems = courseDescriptionItemsArray;
 	}
+
 	_reset() {
 		this._actionEnroll = '';
 		this._organizationHomepage = '';
@@ -411,7 +399,7 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._courseCode = '';
 		this._courseDescription = '';
 		this._courseDuration =  null;
-		this._courseImage = '';
+		this._bannerImageHref = '';
 		this._courseLastUpdated =  '';
 		this._courseTags =  [];
 		this._courseTitle =  '';
@@ -424,8 +412,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		this._endDateIsoFormat = '';
 		this._dataIsReady = false;
 		this.courseImageIsReady = false;
-
-		this._clearHeaderImage();
 	}
 	_navigateToHome() {
 		this.dispatchEvent(new CustomEvent('navigate', {
@@ -446,10 +432,6 @@ class DiscoveryCourse extends mixinBehaviors(
 		}));
 	}
 	_onIronResize() {
-		if (!this.visible) {
-			return;
-		}
-
 		const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
 		const headerImageContainerPlaceholder = this.shadowRoot.querySelector('#discovery-course-header-image-placeholder');
@@ -484,24 +466,12 @@ class DiscoveryCourse extends mixinBehaviors(
 	}
 	_headerImageLoaded() {
 		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
-		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined && this._courseImage) {
-			headerImageContainer.style['background-image'] = `url('${this._courseImage}')`;
+		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined && this._bannerImageHref) {
 			this._onIronResize();
-		}
-		const imageElement = this.shadowRoot.querySelector('#discovery-course-header-image');
-		if (imageElement) {
-			fastdom.mutate(() => {
-				imageElement.parentNode.removeChild(imageElement);
-			});
 		}
 		this.courseImageIsReady = true;
 	}
-	_clearHeaderImage() {
-		const headerImageContainer = this.shadowRoot.querySelector('#discovery-course-header-image-container');
-		if (headerImageContainer && headerImageContainer.style['background-image'] !== undefined) {
-			headerImageContainer.style['background-image'] = '';
-		}
-	}
+
 	_dataIsReadyProcess() {
 		this._dataIsReady = true;
 		const courseSummary = this.shadowRoot.querySelector('#discovery-course-summary');
