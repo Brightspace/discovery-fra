@@ -47,13 +47,14 @@ const internalRouteLocationsMixin = (superClass) =>
 		router(route, params, query) {
 			this.route = route; //The name of the route
 			this.params = params; //The parameters passed to the route ie courseId
+			query.query = decodeURIComponent(query.query)
 			this.query = query;// The query of the route, ie search query and sort.
 		}
 
 		search(query, queryParams = {}) {
 			const sanitizedQuery = DOMPurify.sanitize(query, {ALLOWED_TAGS: []});
 			var queryParamsKeys = Object.keys(queryParams);
-			var queryParamsUrl = `query=${encodeURIComponent(sanitizedQuery)}`;
+			var queryParamsUrl = `query=${this.encodeURITwice(sanitizedQuery)}`;
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
 			}
@@ -80,6 +81,10 @@ const internalRouteLocationsMixin = (superClass) =>
 			window.D2L.frau = window.D2L.frau || {};
 			const valenceHost = window.D2L.frau.valenceHost;
 			return valenceHost + this.routeLocations().navLink();
+		}
+
+		encodeURITwice(query) {
+			return encodeURI(encodeURIComponent(query));
 		}
 	};
 
