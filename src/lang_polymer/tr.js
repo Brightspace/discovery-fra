@@ -2,11 +2,11 @@ export default {
 	OK: "Tamam", // An action that will confirm the currently displayed option.
 	accessMaterials: "Materyallere Eriş", // Unused
 	addToMyList: "Listeme Ekle", // Unused
-	addedToMyLearningHeader: "My Learning\'e Başarıyla Eklendi", // Unused
+	addedToMyLearningHeader: "My Learning'e Başarıyla Eklendi", // Unused
 	addedToYourList: "Listenize eklendi", // Unused
 	all: "Tümü", // The name of the homepage section for all activities.
 	alreadyEnrolled: "Zaten kayıtlı", // Displays when the user views the enrollment state for an activity they are already enrolled in.
-	backToDiscover: "Keşfet\'e Geri Dön", //This breadcrumb will return the user to the homepage.
+	backToDiscover: "Keşfet'e Geri Dön", //This breadcrumb will return the user to the homepage.
 	browseAllContent: "Tüm İçeriklere Göz At", // Action that opens the search page with all available activities displayed.
 	close: "Kapat", // An action that will close the currently displayed option.
 	continueBrowsing: "Göz Atmaya Devam Et", // Unused

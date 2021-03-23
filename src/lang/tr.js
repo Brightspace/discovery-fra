@@ -1,6 +1,6 @@
 export default {
 	add: "Ekle",  // When adding activities to the promoted content lane in Discover, this will bulk add the selected candidate activites.
-	backToDiscover: "Keşfet\'e Geri Dön",
+	backToDiscover: "Keşfet'e Geri Dön",
 	browseDiscoverLibrary: "Keşfet Kütüphanesine Göz At", // Open the list of candidate activities to add to the promoted content lane.
 	cancel: "İptal", // Cancels an action in Discover.
 	clearSelected: "Seçimi Temizle", // When adding activities to the promoted content lane in Discover, this will clear all selected candidate activites.
