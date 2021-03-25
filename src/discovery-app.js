@@ -116,7 +116,7 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 					this._resetPage(page);
 				});
 			}
-			this.navigate(e.detail.path);
+			this.navigate(encodeURI(e.detail.path));
 		}
 	}
 

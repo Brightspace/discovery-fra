@@ -54,7 +54,7 @@ const internalRouteLocationsMixin = (superClass) =>
 		search(query, queryParams = {}) {
 			const sanitizedQuery = DOMPurify.sanitize(query, {ALLOWED_TAGS: []});
 			var queryParamsKeys = Object.keys(queryParams);
-			var queryParamsUrl = `query=${this.encodeURITwice(sanitizedQuery)}`;
+			var queryParamsUrl = `query=${encodeURIComponent(sanitizedQuery)}`;
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
 			}
@@ -81,10 +81,6 @@ const internalRouteLocationsMixin = (superClass) =>
 			window.D2L.frau = window.D2L.frau || {};
 			const valenceHost = window.D2L.frau.valenceHost;
 			return valenceHost + this.routeLocations().navLink();
-		}
-
-		encodeURITwice(query) {
-			return encodeURI(encodeURIComponent(query));
 		}
 	};
 
