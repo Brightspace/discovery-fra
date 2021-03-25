@@ -30,7 +30,7 @@
   "dependencies": {
     "@brightspace-ui-labs/facet-filter-sort": "^4",
     "@brightspace-ui-labs/pagination": "^1",
-    "@brightspace-ui/core": "^1.102.5",
+    "@brightspace-ui/core": "^1",
     "@polymer/app-route": "^3.0.0-pre.15",
     "@polymer/iron-pages": "^3.0.0-pre.15",
     "@polymer/iron-resizable-behavior": "^3.0.0",
