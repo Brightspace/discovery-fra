@@ -320,7 +320,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		if (_query === null || _query === undefined) {
 			return _query;
 		}
-		return DOMPurify.sanitize(_query, {ALLOWED_TAGS: []});
+		let querySanitized = DOMPurify.sanitize(_query, {ALLOWED_TAGS: []});
+		querySanitized = querySanitized.replace('&lt;', '<');
+		querySanitized = querySanitized.replace('&gt;', '>');
+		return querySanitized;
 	}
 
 	_updateDocumentTitle() {
