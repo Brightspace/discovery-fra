@@ -1,7 +1,5 @@
 'use strict';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
-import createDOMPurify from 'dompurify/dist/purify.es.js';
-const DOMPurify = createDOMPurify(window);
 
 const discoveryBasePath = '/d2l/le/discovery/view';
 

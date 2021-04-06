@@ -3,8 +3,6 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { afterNextRender, beforeNextRender } from '@polymer/polymer/lib/utils/render-status.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import createDOMPurify from 'dompurify/dist/purify.es.js';
-const DOMPurify = createDOMPurify(window);
 import 'd2l-offscreen/d2l-offscreen-shared-styles.js';
 import './components/discovery-footer.js';
 import './components/search-header.js';
