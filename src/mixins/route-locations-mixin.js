@@ -47,7 +47,7 @@ const internalRouteLocationsMixin = (superClass) =>
 		router(route, params, query) {
 			this.route = route; //The name of the route
 			this.params = params; //The parameters passed to the route ie courseId
-			query.query = decodeURIComponent(query.query);
+			query.query = query.query ? decodeURIComponent(query.query) : '';
 			this.query = query;// The query of the route, ie search query and sort.
 		}
 
