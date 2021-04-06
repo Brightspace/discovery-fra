@@ -32,7 +32,7 @@ export default {
 	enrollmentMessageSuccess: "Bydd {title} ar gael yn fuan yn y teclyn Fy Nghyrsiau.", // Displays that the enrolled activity will be available via My Courses shortly.
 	enrollmentMessageSuccessFuture: "Bydd {title} yn dod ar gael yn y teclyn Fy Nghyrsiau ar {date}", // Displays that the enrolled activity will be available via My Courses on a certain date.
 	enrollmentMessageSuccessPast: "Daeth {title} i ben ar {date}", // Displays that the enrolled activity was available via My Courses, but ended on a certain date.
-	enrollmentMessageUnenrolled: "Rydych chi wedi’ch dadgofrestru gan Weinyddwr, cysylltwch â\'ch Gweinyddwr i ailgofrestru.", // Displays when a user was un-enrolled by an activity by an administrator.
+	enrollmentMessageUnenrolled: "Rydych chi wedi’ch dadgofrestru gan Weinyddwr, cysylltwch â'ch Gweinyddwr i ailgofrestru.", // Displays when a user was un-enrolled by an activity by an administrator.
 	enrollmentOptions: "Dewisiadau Cofrestru", // Subtitle for displaying the options a user has for enrollment in an activity
 	firstPublished: "Cyhoeddwyd yn gyntaf", // A subtitle for displaying the original publishing date of a course
 	homepageDocumentTitle: "Darganfod - {instanceName}", // Displays as the page/tab header for the homepage.

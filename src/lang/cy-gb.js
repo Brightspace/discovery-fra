@@ -16,8 +16,8 @@ export default {
 	removeFromFeatured: "Cliciwch i dynnu {course} o’r adran cynnwys dan sylw.", // Action that will remove an associated course from the Featured section.
 	save: "Cadw", // Action to save the current settings for Discover.
 	saveChanges: "Cadw Newidiadau", //Dialog prompt title when user tries to navigate away the page
-	saveChangesBoldBody: "Mae\'r dudalen hon wedi\'i golygu.", //Dialog prompt body in bold when user tries to navigate away the page
-	saveChangesBody: "Ydych eisiau dileu\'r newidiadau?", //Dialog prompt body after bold text when user tries to navigate away the page
+	saveChangesBoldBody: "Mae'r dudalen hon wedi'i golygu.", //Dialog prompt body in bold when user tries to navigate away the page
+	saveChangesBody: "Ydych eisiau dileu'r newidiadau?", //Dialog prompt body after bold text when user tries to navigate away the page
 	saveCompleted: "Wedi cadw newidiadau.", // Message that occurs after changed settings have been successfully saved in Discover.
 	saveCancelled: "Wedi canslo newidiadau.", // Message that occurs after changed settings were cancelled in Discover.
 	search: "Chwilio", // When adding Featured activities to discover, this will allow you to search for different activities.
