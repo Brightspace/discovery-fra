@@ -52,9 +52,8 @@ const internalRouteLocationsMixin = (superClass) =>
 		}
 
 		search(query, queryParams = {}) {
-			const sanitizedQuery = DOMPurify.sanitize(query, {ALLOWED_TAGS: []});
-			var queryParamsKeys = Object.keys(queryParams);
-			var queryParamsUrl = `query=${encodeURIComponent(sanitizedQuery)}`;
+			var queryParamsUrl = `query=${encodeURIComponent(query)}`;
+			var queryParamsKeys = Object.keys(queryParamsUrl);
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
 			}

@@ -115,7 +115,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 						<template is="dom-if" if="[[_searchResultsTotalReady]]">
 							<template is="dom-if" if="[[!_searchResultsExists]]" on-dom-change="setUpNoResultsMessage">
 								<div class="discovery-search-results-no-results-container">
-									<h2 class="discovery-search-results-no-results-heading" id="discovery-search-results-no-results-heading"></h2>
+									<h2 class="discovery-search-results-no-results-heading" id="discovery-search-results-no-results-heading">[[_noResultsHeader]]</h2>
 									<div class="discovery-search-results-no-results-message" id="discovery-search-results-no-results-message"></div>
 								</div>
 							</template>
@@ -194,6 +194,7 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			_pageCurrent: Number,
 			_pageTotal: Number,
 			_searchResultsTotal: Number,
+			_noResultsHeader: String,
 			_noResultSkeletonItems: String,
 			_searchResultsTotalReady: {
 				type: Boolean,
@@ -466,12 +467,9 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				const noResultsSortType = 'noContent' + (this.sortParameter.charAt(0).toUpperCase()) + this.sortParameter.slice(1);
 				noResultsHeader = this.localize(noResultsSortType);
 			} else {
-				noResultsHeader = this.localize('noResultsHeading', 'searchQuery', `<b>${this.searchQuery}</b>`);
+				noResultsHeader = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
 			}
-
-			fastdom.mutate(() => {
-				noResultsHeaderElement.innerHTML = noResultsHeader;
-			});
+			this._noResultsHeader = noResultsHeader;
 		}
 
 		if (noResultsMessageElement) {
