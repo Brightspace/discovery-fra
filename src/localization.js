@@ -4,7 +4,10 @@ import da from './lang/da.js';
 import de from './lang/de.js';
 import en from './lang/en.js';
 import es from './lang/es.js';
+import eses from './lang/es-es.js';
 import fr from './lang/fr.js';
+import frfr from './lang/fr-fr.js';
+import fron from './lang/fr-on.js';
 import ja from './lang/ja.js';
 import ko from './lang/ko.js';
 import nl from './lang/nl.js';
@@ -22,7 +25,10 @@ export async function getLocalizeResources(langs) {
 		'de': de,
 		'en': en,
 		'es': es,
+		'es-es': eses,
 		'fr': fr,
+		'fr-fr': frfr,
+		'fr-on': fron,
 		'ja': ja,
 		'ko': ko,
 		'nl': nl,

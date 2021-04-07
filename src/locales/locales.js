@@ -4,7 +4,10 @@ import da from '../lang_polymer/da.js';
 import de from '../lang_polymer/de.js';
 import en from '../lang_polymer/en.js';
 import es from '../lang_polymer/es.js';
+import eses from '../lang_polymer/es-es.js';
 import fr from '../lang_polymer/fr.js';
+import frfr from '../lang_polymer/fr-fr.js';
+import fron from '../lang_polymer/fr-on.js';
 import ja from '../lang_polymer/ja.js';
 import ko from '../lang_polymer/ko.js';
 import nl from '../lang_polymer/nl.js';
@@ -24,7 +27,10 @@ window.D2L.Discovery.Locales = {
 	'de': de,
 	'en': en,
 	'es': es,
+	'es-es': eses,
 	'fr': fr,
+	'fr-fr': frfr,
+	'fr-on': fron,
 	'ja': ja,
 	'ko': ko,
 	'nl': nl,
