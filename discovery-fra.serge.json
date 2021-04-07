@@ -9,6 +9,8 @@
     "output_file_path": "src/lang_polymer/%LANG%.js",
     "output_lang_rewrite": [
       "ar-sa ar",
+      "cy-gb cy",
+      "da-dk da",
       "de-de de",
       "es-mx es",
       "fr-ca fr",
@@ -17,9 +19,7 @@
       "nl-nl nl",
       "pt-br pt",
       "sv-se sv",
-      "tr-tr tr",
-      "zh-cn zh",
-      "zh-tw zh-tw"
+      "tr-tr tr"
     ]
   },
   {
@@ -32,6 +32,8 @@
     "output_file_path": "src/lang/%LANG%.js",
     "output_lang_rewrite": [
       "ar-sa ar",
+      "cy-gb cy",
+      "da-dk da",
       "de-de de",
       "es-mx es",
       "fr-ca fr",
@@ -40,9 +42,7 @@
       "nl-nl nl",
       "pt-br pt",
       "sv-se sv",
-      "tr-tr tr",
-      "zh-cn zh",
-      "zh-tw zh-tw"
+      "tr-tr tr"
     ]
   }
 ]
