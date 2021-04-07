@@ -51,7 +51,7 @@ const internalRouteLocationsMixin = (superClass) =>
 
 		search(query, queryParams = {}) {
 			let queryParamsUrl = `query=${encodeURIComponent(query)}`;
-			let queryParamsKeys = Object.keys(queryParams);
+			const queryParamsKeys = Object.keys(queryParams);
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
 			}
