@@ -1,6 +1,7 @@
 'use strict';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
-
+import createDOMPurify from 'dompurify/dist/purify.es.js';
+const DOMPurify = createDOMPurify(window);
 const discoveryBasePath = '/d2l/le/discovery/view';
 
 /* @polymerMixin */
@@ -45,13 +46,27 @@ const internalRouteLocationsMixin = (superClass) =>
 		router(route, params, query) {
 			this.route = route; //The name of the route
 			this.params = params; //The parameters passed to the route ie courseId
-			query.query = query.query ? decodeURIComponent(query.query) : '';
+
+			if(this._isDiscoverSearchMessageEnabled()) {
+				query.query = query.query ? decodeURIComponent(query.query) : '';
+			}
+
 			this.query = query;// The query of the route, ie search query and sort.
 		}
 
 		search(query, queryParams = {}) {
-			let queryParamsUrl = `query=${encodeURIComponent(query)}`;
-			const queryParamsKeys = Object.keys(queryParams);
+			let queryParamsUrl;
+			let queryParamsKeys;
+
+			if(this._isDiscoverSearchMessageEnabled()) {
+				queryParamsUrl = `query=${encodeURIComponent(query)}`;
+				queryParamsKeys = Object.keys(queryParams);
+			} else {
+				const sanitizedQuery = DOMPurify.sanitize(query, {ALLOWED_TAGS: []});
+				queryParamsKeys = Object.keys(queryParams);
+				queryParamsUrl = `query=${encodeURIComponent(sanitizedQuery)}`;
+			}
+
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
 			}
@@ -78,6 +93,11 @@ const internalRouteLocationsMixin = (superClass) =>
 			window.D2L.frau = window.D2L.frau || {};
 			const valenceHost = window.D2L.frau.valenceHost;
 			return valenceHost + this.routeLocations().navLink();
+		}
+
+		_isDiscoverSearchMessageEnabled() {
+			const options = window.D2L && window.D2L.frau && window.D2L.frau.options;
+			return options.discoverSearchMessage && String(options.discoverSearchMessage) === 'true';
 		}
 	};
 

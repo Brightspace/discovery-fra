@@ -71,6 +71,9 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 			},
 			_discoverToggleSectionsEnabled: {
 				type: Boolean
+			},
+			_discoverSearchMessageEnabled: {
+				type: Boolean
 			}
 		};
 	}
@@ -86,15 +89,19 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 				<discovery-settings
 					name="settings"
 					?can-manage-discover="${this._manageDiscover}"
-					?discover-customizations-enabled = "${this._discoverCustomizationsEnabled}"
-					?discover-toggle-sections-enabled = "${this._discoverToggleSectionsEnabled}">
+					?discover-customizations-enabled="${this._discoverCustomizationsEnabled}"
+					?discover-toggle-sections-enabled="${this._discoverToggleSectionsEnabled}">
 				</discovery-settings>`;
 
 			case 'course': return html `
 				<discovery-course name="course" token="${this.resolvedToken}" course-id="${this.params.id}"></discovery-course>`;
 
 			case 'search': return html `
-				<discovery-search name="search" .queryParams="${this.query}"></discovery-search>`;
+				<discovery-search
+					name="search"
+					?discover-search-message-enabled="${this._discoverSearchMessageEnabled}"
+					.queryParams="${this.query}">
+				</discovery-search>`;
 
 			default: return html `
 				<discovery-404></discovery-404>`;
@@ -116,7 +123,12 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 					this._resetPage(page);
 				});
 			}
-			this.navigate(encodeURI(e.detail.path));
+			if(this.discoverSearchMessageEnabled) {
+				this.navigate(encodeURI(e.detail.path));
+			} else {
+				this.navigate(e.detail.path);
+			}
+
 		}
 	}
 
@@ -133,6 +145,7 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 		this._manageDiscover = this._canManageDiscover();
 		this._discoverCustomizationsEnabled = this._isDiscoverCustomizationsEnabled();
 		this._discoverToggleSectionsEnabled = this._isDiscoverToggleSectionsEnabled();
+		this._discoverSearchMessageEnabled = this._isDiscoverSearchMessageEnabled();
 	}
 
 	_isDiscoverInitialized(resolvedToken, options) {

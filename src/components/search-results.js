@@ -172,6 +172,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	static get properties() {
 		return {
+			discoverSearchMessageEnabled: {
+				type: Boolean,
+				attribute: 'discover-search-message-enabled'
+			},
 			href: {
 				type: String,
 				observer: '_onHrefChange'
@@ -467,9 +471,20 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				const noResultsSortType = 'noContent' + (this.sortParameter.charAt(0).toUpperCase()) + this.sortParameter.slice(1);
 				noResultsHeader = this.localize(noResultsSortType);
 			} else {
-				noResultsHeader = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
+				if(this.discoverSearchMessageEnabled) {
+					noResultsHeader = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
+				} else {
+					noResultsHeader = this.localize('noResultsHeading', 'searchQuery', `<b>${this.searchQuery}</b>`);
+				}
+
 			}
-			this._noResultsHeader = noResultsHeader;
+			if(this.discoverSearchMessageEnabled) {
+				this._noResultsHeader = noResultsHeader;
+			} else {
+				fastdom.mutate(() => {
+					noResultsHeaderElement.innerHTML = noResultsHeader;
+				});
+			}
 		}
 
 		if (noResultsMessageElement) {

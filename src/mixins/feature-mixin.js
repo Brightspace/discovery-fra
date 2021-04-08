@@ -22,6 +22,11 @@ const internalFeatureMixin = (superClass) => class extends superClass {
 		return (options && options.discoverToggleSections && String(options.discoverToggleSections) === 'true') || false;
 	}
 
+	_isDiscoverSearchMessageEnabled() {
+		const options = this._getOptions();
+		return (options && options.discoverSearchMessage && String(options.discoverSearchMessage) === 'true') || false;
+	}
+
 	_canManageDiscover() {
 		if (!this._isPromotedCoursesEnabled()) {
 			return false;
