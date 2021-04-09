@@ -47,7 +47,7 @@ const internalRouteLocationsMixin = (superClass) =>
 			this.route = route; //The name of the route
 			this.params = params; //The parameters passed to the route ie courseId
 
-			if(this._isDiscoverSearchMessageEnabled()) {
+			if (this._isDiscoverSearchMessageEnabled()) {
 				query.query = query.query ? decodeURIComponent(query.query) : '';
 			}
 
@@ -58,7 +58,7 @@ const internalRouteLocationsMixin = (superClass) =>
 			let queryParamsUrl;
 			let queryParamsKeys;
 
-			if(this._isDiscoverSearchMessageEnabled()) {
+			if (this._isDiscoverSearchMessageEnabled()) {
 				queryParamsUrl = `query=${encodeURIComponent(query)}`;
 				queryParamsKeys = Object.keys(queryParams);
 			} else {

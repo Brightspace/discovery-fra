@@ -211,7 +211,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			this._query = '';
 		}
 
-		if(!this.discoverSearchMessageEnabled) {
+		if (!this.discoverSearchMessageEnabled) {
 			this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._query);
 		}
 
@@ -233,7 +233,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this._updateDocumentTitle();
 		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
 		if (searchHeader) {
-			if(this.discoverSearchMessageEnabled) {
+			if (this.discoverSearchMessageEnabled) {
 				searchHeader.showClear(this._query);
 			} else {
 				searchHeader.showClear(this.searchQuerySanitized);

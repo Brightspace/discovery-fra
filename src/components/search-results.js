@@ -471,14 +471,14 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 				const noResultsSortType = 'noContent' + (this.sortParameter.charAt(0).toUpperCase()) + this.sortParameter.slice(1);
 				noResultsHeader = this.localize(noResultsSortType);
 			} else {
-				if(this.discoverSearchMessageEnabled) {
+				if (this.discoverSearchMessageEnabled) {
 					noResultsHeader = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
 				} else {
 					noResultsHeader = this.localize('noResultsHeading', 'searchQuery', `<b>${this.searchQuery}</b>`);
 				}
 
 			}
-			if(this.discoverSearchMessageEnabled) {
+			if (this.discoverSearchMessageEnabled) {
 				this._noResultsHeader = noResultsHeader;
 			} else {
 				fastdom.mutate(() => {

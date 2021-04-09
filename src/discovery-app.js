@@ -123,7 +123,7 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 					this._resetPage(page);
 				});
 			}
-			if(this.discoverSearchMessageEnabled) {
+			if (this.discoverSearchMessageEnabled) {
 				this.navigate(encodeURI(e.detail.path));
 			} else {
 				this.navigate(e.detail.path);
