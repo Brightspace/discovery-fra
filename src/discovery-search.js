@@ -120,7 +120,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				}
 			</style>
 
-			<h1 class="discovery-search-offscreen-text" tabindex="0">[[localize('searchResultsOffscreen', 'searchQuery', searchQuerySanitized)]]</h1>
+			<h1 class="discovery-search-offscreen-text" tabindex="0">[[localize('searchResultsOffscreen', 'searchQuery', _query)]]</h1>
 
 			<!-- IE11 Bug with min-height not working with flex unless there's an outer flex column with flex-grow: 1 -->
 			<div class="discovery-search-outer-container">
@@ -133,7 +133,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 						<div class="discovery-search-nav-container">
 							<search-header
 								id="discovery-search-search-header"
-								query="[[searchQuerySanitized]]"
+								query="[[_query]]"
 								page="[[_page]]"
 								sort-parameter="[[_sort]]">
 							</search-header>
@@ -141,8 +141,9 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 						<div class="discovery-search-results">
 							<search-results
 								href="[[_searchActionHref]]"
-								search-query="[[searchQuerySanitized]]"
-								sort-parameter="[[_sort]]">
+								search-query="[[_query]]"
+								sort-parameter="[[_sort]]"
+								discover-search-message-enabled$="[[discoverSearchMessageEnabled]]">
 							</search-results>
 						</div>
 						<discovery-footer></discovery-footer>
@@ -162,11 +163,15 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				},
 				observer: '_queryParamsChanged'
 			},
-			searchQuerySanitized: {
+			discoverSearchMessageEnabled: {
+				type: Boolean,
+				attribute: 'discover-search-message-enabled'
+			},
+			_searchActionHref: String,
+			searchQuerySanitized: { //Remove with discoverSearchMessageEnabled feature flag
 				type: String,
 				computed: '_searchQuerySanitizedComputed(_query)'
 			},
-			_searchActionHref: String,
 			_searchLoading: {
 				type: Boolean,
 				value: true
@@ -205,7 +210,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		} else {
 			this._query = '';
 		}
-		this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._query);
+
+		if (!this.discoverSearchMessageEnabled) {
+			this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._query);
+		}
 
 		if (queryParams.sort && (queryParams.sort === 'added' || queryParams.sort === 'updated' || queryParams.sort === 'enrolled')) {
 			this._sort = queryParams.sort;
@@ -225,9 +233,20 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this._updateDocumentTitle();
 		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
 		if (searchHeader) {
-			searchHeader.showClear(this.searchQuerySanitized);
+			if (this.discoverSearchMessageEnabled) {
+				searchHeader.showClear(this._query);
+			} else {
+				searchHeader.showClear(this.searchQuerySanitized);
+			}
 		}
 		this.setInitialFocusAfterRender();
+	}
+
+	_searchQuerySanitizedComputed(_query) {
+		if (_query === null || _query === undefined) {
+			return _query;
+		}
+		return DOMPurify.sanitize(_query, {ALLOWED_TAGS: []});
 	}
 
 	_getDecodedQuery(searchQuery, page) {
@@ -316,19 +335,15 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		});
 	}
 
-	_searchQuerySanitizedComputed(_query) {
-		if (_query === null || _query === undefined) {
-			return _query;
-		}
-		return DOMPurify.sanitize(_query, {ALLOWED_TAGS: []});
-	}
-
 	_updateDocumentTitle() {
 		const instanceName = window.D2L && window.D2L.frau && window.D2L.frau.options && window.D2L.frau.options.instanceName;
+
+		const query = this.discoverSearchMessageEnabled ? this._query : this.searchQuerySanitized;
+
 		document.title = this.localize(
 			'searchPageDocumentTitle',
 			'searchTerm',
-			this.searchQuerySanitized ? this.searchQuerySanitized : this.localize('browseAllContent'),
+			query ? query : this.localize('browseAllContent'),
 			'instanceName',
 			instanceName ? instanceName : '');
 	}
