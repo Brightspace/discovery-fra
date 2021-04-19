@@ -42,7 +42,7 @@
     "d2l-hypermedia-constants": "^6",
     "d2l-localize-behavior": "github:BrightspaceUI/localize-behavior#semver:^2",
     "d2l-offscreen": "github:BrightspaceUI/offscreen#semver:^4",
-    "d2l-organization-hm-behavior": "github:Brightspace/organization-hm-behavior#semver:^3",
+    "d2l-organization-hm-behavior": "github:Brightspace/organization-hm-behavior#semver:^4",
     "d2l-organizations": "github:BrightspaceHypermediaComponents/organizations#semver:^5",
     "d2l-typography": "github:BrightspaceUI/typography#semver:^7",
     "dompurify": "^2.2.7",
