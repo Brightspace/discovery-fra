@@ -21,7 +21,7 @@ const internalIfrauMixin = (superClass) => class extends superClass {
 		return client
 			.connect()
 			.then(() => {
-				/* global Promise */
+				// global Promise
 				return Promise.all([
 					client.request('options'),
 					client.getService('navigation', '0.1'),
