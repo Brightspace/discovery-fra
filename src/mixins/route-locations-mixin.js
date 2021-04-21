@@ -41,6 +41,12 @@ const internalRouteLocationsMixin = (superClass) =>
 			];
 		}
 
+		// Converts the query of the url into an object containing each separate parameter.
+		//Taken from lit-element-router.
+		parseQuery(querystring) {
+			return querystring ? JSON.parse('{"' + querystring.substring(1).replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {}
+		}
+
 		//Triggers upon this.navigate.
 		//Divides the resulting query up into components to be passed to child components as necessary, based on route name and pattern.
 		router(route, params, query) {
@@ -48,7 +54,14 @@ const internalRouteLocationsMixin = (superClass) =>
 			this.params = params; //The parameters passed to the route ie courseId
 
 			if (this._isDiscoverSearchMessageEnabled()) {
-				query.query = query.query ? decodeURIComponent(query.query) : '';
+				// Lit-element-router runs decodeURI on the query.
+				// This converts '%25' to '%' which breaks decodeURIComponent-only conversions.
+				// We must parse it ourselves to retain these symbols in search results.
+				let queryObj = this.parseQuery(window.location.search);
+				query.query = queryObj.query ? decodeURIComponent(queryObj.query) : '';
+
+				//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
+				query.query = query.query.replaceAll("&quot;",'"')
 			}
 
 			this.query = query;// The query of the route, ie search query and sort.
@@ -59,6 +72,8 @@ const internalRouteLocationsMixin = (superClass) =>
 			let queryParamsKeys;
 
 			if (this._isDiscoverSearchMessageEnabled()) {
+				//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
+				query = query.replaceAll('"', "&quot;")
 				queryParamsUrl = `query=${encodeURIComponent(query)}`;
 				queryParamsKeys = Object.keys(queryParams);
 			} else {
