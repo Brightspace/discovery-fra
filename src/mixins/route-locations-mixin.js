@@ -1,7 +1,5 @@
 'use strict';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
-import createDOMPurify from 'dompurify/dist/purify.es.js';
-const DOMPurify = createDOMPurify(window);
 const discoveryBasePath = '/d2l/le/discovery/view';
 
 /* @polymerMixin */
@@ -56,19 +54,19 @@ const internalRouteLocationsMixin = (superClass) =>
 			// Lit-element-router runs decodeURI on the query.
 			// This converts '%25' to '%' which breaks decodeURIComponent-only conversions.
 			// We must parse it ourselves to retain these symbols in search results.
-			let queryObj = this.parseQuery(window.location.search);
+			const queryObj = this.parseQuery(window.location.search);
 			query.query = queryObj.query ? decodeURIComponent(queryObj.query) : '';
 
 			//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
-			query.query = query.query.replaceAll("&quot;",'"')
+			query.query = query.query.replaceAll('&quot;','"');
 			this.query = query;// The query of the route, ie search query and sort.
 		}
 
 		search(query, queryParams = {}) {
 			//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
-			query = query.replaceAll('"', "&quot;")
+			query = query.replaceAll('"', '&quot;');
 			let queryParamsUrl = `query=${encodeURIComponent(query)}`;
-			let queryParamsKeys = Object.keys(queryParams);
+			const queryParamsKeys = Object.keys(queryParams);
 
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
