@@ -42,7 +42,7 @@ const internalRouteLocationsMixin = (superClass) =>
 		// Converts the query of the url into an object containing each separate parameter.
 		//Taken from lit-element-router.
 		parseQuery(querystring) {
-			return querystring ? JSON.parse('{"' + querystring.substring(1).replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {}
+			return querystring ? JSON.parse('{"' + querystring.substring(1).replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
 		}
 
 		//Triggers upon this.navigate.
@@ -58,7 +58,7 @@ const internalRouteLocationsMixin = (superClass) =>
 			query.query = queryObj.query ? decodeURIComponent(queryObj.query) : '';
 
 			//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
-			query.query = query.query.replaceAll('&quot;','"');
+			query.query = query.query.replaceAll('&quot;', '"');
 			this.query = query;// The query of the route, ie search query and sort.
 		}
 
