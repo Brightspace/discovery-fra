@@ -142,8 +142,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 							<search-results
 								href="[[_searchActionHref]]"
 								search-query="[[_query]]"
-								sort-parameter="[[_sort]]"
-								discover-search-message-enabled$="[[discoverSearchMessageEnabled]]">
+								sort-parameter="[[_sort]]">
 							</search-results>
 						</div>
 						<discovery-footer></discovery-footer>
@@ -163,15 +162,7 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 				},
 				observer: '_queryParamsChanged'
 			},
-			discoverSearchMessageEnabled: {
-				type: Boolean,
-				attribute: 'discover-search-message-enabled'
-			},
 			_searchActionHref: String,
-			searchQuerySanitized: { //Remove with discoverSearchMessageEnabled feature flag
-				type: String,
-				computed: '_searchQuerySanitizedComputed(_query)'
-			},
 			_searchLoading: {
 				type: Boolean,
 				value: true
@@ -211,10 +202,6 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 			this._query = '';
 		}
 
-		if (!this.discoverSearchMessageEnabled) {
-			this.searchQuerySanitized = this._searchQuerySanitizedComputed(this._query);
-		}
-
 		if (queryParams.sort && (queryParams.sort === 'added' || queryParams.sort === 'updated' || queryParams.sort === 'enrolled')) {
 			this._sort = queryParams.sort;
 		}
@@ -233,20 +220,9 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 		this._updateDocumentTitle();
 		const searchHeader = this.shadowRoot.querySelector('#discovery-search-search-header');
 		if (searchHeader) {
-			if (this.discoverSearchMessageEnabled) {
-				searchHeader.showClear(this._query);
-			} else {
-				searchHeader.showClear(this.searchQuerySanitized);
-			}
+			searchHeader.showClear(this._query);
 		}
 		this.setInitialFocusAfterRender();
-	}
-
-	_searchQuerySanitizedComputed(_query) {
-		if (_query === null || _query === undefined) {
-			return _query;
-		}
-		return DOMPurify.sanitize(_query, {ALLOWED_TAGS: []});
 	}
 
 	_getDecodedQuery(searchQuery, page) {
@@ -337,13 +313,10 @@ class DiscoverySearch extends mixinBehaviors([IronResizableBehavior], IfrauMixin
 
 	_updateDocumentTitle() {
 		const instanceName = window.D2L && window.D2L.frau && window.D2L.frau.options && window.D2L.frau.options.instanceName;
-
-		const query = this.discoverSearchMessageEnabled ? this._query : this.searchQuerySanitized;
-
 		document.title = this.localize(
 			'searchPageDocumentTitle',
 			'searchTerm',
-			query ? query : this.localize('browseAllContent'),
+			this._query ? this._query : this.localize('browseAllContent'),
 			'instanceName',
 			instanceName ? instanceName : '');
 	}
