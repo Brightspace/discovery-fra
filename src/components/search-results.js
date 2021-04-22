@@ -469,7 +469,10 @@ class SearchResults extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 			} else {
 				noResultsHeader = this.localize('noResultsHeading', 'searchQuery', this.searchQuery);
 			}
-			this._noResultsHeader = noResultsHeader;
+
+			fastdom.mutate(() => {
+				noResultsHeaderElement.innerHTML = noResultsHeader;
+			});
 		}
 
 		if (noResultsMessageElement) {
