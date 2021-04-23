@@ -71,9 +71,6 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 			},
 			_discoverToggleSectionsEnabled: {
 				type: Boolean
-			},
-			_discoverSearchMessageEnabled: {
-				type: Boolean
 			}
 		};
 	}
@@ -99,7 +96,6 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 			case 'search': return html `
 				<discovery-search
 					name="search"
-					?discover-search-message-enabled="${this._discoverSearchMessageEnabled}"
 					.queryParams="${this.query}">
 				</discovery-search>`;
 
@@ -123,12 +119,7 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 					this._resetPage(page);
 				});
 			}
-			if (this.discoverSearchMessageEnabled) {
-				this.navigate(encodeURI(e.detail.path));
-			} else {
-				this.navigate(e.detail.path);
-			}
-
+			this.navigate(e.detail.path);
 		}
 	}
 
@@ -145,7 +136,6 @@ export class DiscoveryApp extends (navigator(router(FetchMixin(FeatureMixin(Rout
 		this._manageDiscover = this._canManageDiscover();
 		this._discoverCustomizationsEnabled = this._isDiscoverCustomizationsEnabled();
 		this._discoverToggleSectionsEnabled = this._isDiscoverToggleSectionsEnabled();
-		this._discoverSearchMessageEnabled = this._isDiscoverSearchMessageEnabled();
 	}
 
 	_isDiscoverInitialized(resolvedToken, options) {

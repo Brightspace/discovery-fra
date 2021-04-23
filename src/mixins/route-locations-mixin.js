@@ -1,7 +1,5 @@
 'use strict';
 import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin.js';
-import createDOMPurify from 'dompurify/dist/purify.es.js';
-const DOMPurify = createDOMPurify(window);
 const discoveryBasePath = '/d2l/le/discovery/view';
 
 /* @polymerMixin */
@@ -41,31 +39,34 @@ const internalRouteLocationsMixin = (superClass) =>
 			];
 		}
 
+		// Converts the query of the url into an object containing each separate parameter.
+		//Taken from lit-element-router.
+		parseQuery(querystring) {
+			return querystring ? JSON.parse('{"' + querystring.substring(1).replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
+		}
+
 		//Triggers upon this.navigate.
 		//Divides the resulting query up into components to be passed to child components as necessary, based on route name and pattern.
 		router(route, params, query) {
 			this.route = route; //The name of the route
 			this.params = params; //The parameters passed to the route ie courseId
 
-			if (this._isDiscoverSearchMessageEnabled()) {
-				query.query = query.query ? decodeURIComponent(query.query) : '';
-			}
+			// Lit-element-router runs decodeURI on the query.
+			// This converts '%25' to '%' which breaks decodeURIComponent-only conversions.
+			// We must parse it ourselves to retain these symbols in search results.
+			const queryObj = this.parseQuery(window.location.search);
+			query.query = queryObj.query ? decodeURIComponent(queryObj.query) : '';
 
+			//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
+			query.query = query.query.replaceAll('&quot;', '"');
 			this.query = query;// The query of the route, ie search query and sort.
 		}
 
 		search(query, queryParams = {}) {
-			let queryParamsUrl;
-			let queryParamsKeys;
-
-			if (this._isDiscoverSearchMessageEnabled()) {
-				queryParamsUrl = `query=${encodeURIComponent(query)}`;
-				queryParamsKeys = Object.keys(queryParams);
-			} else {
-				const sanitizedQuery = DOMPurify.sanitize(query, {ALLOWED_TAGS: []});
-				queryParamsKeys = Object.keys(queryParams);
-				queryParamsUrl = `query=${encodeURIComponent(sanitizedQuery)}`;
-			}
+			//Chrome converts '%22' to '"' in the url, which breaks lit-element-router's parseQuery()."
+			query = query.replaceAll('"', '&quot;');
+			let queryParamsUrl = `query=${encodeURIComponent(query)}`;
+			const queryParamsKeys = Object.keys(queryParams);
 
 			if (queryParamsKeys.length) {
 				queryParamsUrl = `${queryParamsUrl}&${queryParamsKeys.map(key => `${key}=${queryParams[key]}`).join('&')}`;
@@ -93,11 +94,6 @@ const internalRouteLocationsMixin = (superClass) =>
 			window.D2L.frau = window.D2L.frau || {};
 			const valenceHost = window.D2L.frau.valenceHost;
 			return valenceHost + this.routeLocations().navLink();
-		}
-
-		_isDiscoverSearchMessageEnabled() {
-			const options = window.D2L && window.D2L.frau && window.D2L.frau.options;
-			return options.discoverSearchMessage && String(options.discoverSearchMessage) === 'true';
 		}
 	};
 
