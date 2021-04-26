@@ -329,7 +329,7 @@ class DiscoveryCourse extends mixinBehaviors(
 	async _handleOrganizationEntity(organizationEntity) {
 		if (!organizationEntity) return Promise.reject();
 
-		if (!organizationEntity.hasClass('active') || !organizationEntity.hasClass('self-assignable')) {
+		if (!organizationEntity.hasClass('active')) {
 			this._navigateToNotFound();
 			return;
 		}
