@@ -38,5 +38,5 @@ window.D2L.Discovery.Locales = {
 	'sv': sv,
 	'tr': tr,
 	'zh-tw': zhtw,
-	'zhcn': zhcn,
+	'zh-cn': zhcn,
 };

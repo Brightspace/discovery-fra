@@ -36,7 +36,7 @@ export async function getLocalizeResources(langs) {
 		'sv': sv,
 		'tr': tr,
 		'zh-tw': zhtw,
-		'zhcn': zhcn,
+		'zh-cn': zhcn,
 	};
 
 	//Load the first matching language from the passed langs. Default to english if none are found.
