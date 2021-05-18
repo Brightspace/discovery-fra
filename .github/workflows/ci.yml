@@ -16,6 +16,7 @@ jobs:
           node-version: '12.x'
           registry-url: https://d2lartifacts.jfrog.io/d2lartifacts/api/npm/npm-local
           scope: '@d2l'
+
       - name: Install dependencies
         run: |
             npm ci
