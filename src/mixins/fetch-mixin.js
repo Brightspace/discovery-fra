@@ -14,7 +14,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		super();
 	}
 
-	async _fetchEntity(sirenLinkOrUrl, method = 'GET') {
+	async _fetchEntity(sirenLinkOrUrl, method = 'GET', bypassCache = false) {
 		if (!sirenLinkOrUrl) {
 			return;
 		}
@@ -25,7 +25,7 @@ const internalFetchMixin = (superClass) => class extends superClass {
 			return;
 		}
 
-		const request = await this._createRequest(url, method);
+		const request = await this._createRequest(url, method, bypassCache);
 
 		const fetch = this._shouldSkipAuth(sirenLinkOrUrl)
 			? window.d2lfetch.removeTemp('auth')
@@ -110,13 +110,14 @@ const internalFetchMixin = (superClass) => class extends superClass {
 		return Promise.reject(response.status + ' ' + response.statusText);
 	}
 
-	async _createRequest(url, method) {
+	async _createRequest(url, method, bypassCache) {
 		const token = await this._getToken();
 		const request = new Request(url, {
 			method,
 			headers: {
 				Accept: 'application/vnd.siren+json',
-				Authorization: 'Bearer ' + token
+				Authorization: 'Bearer ' + token,
+				...(bypassCache && {'Cache-Control': 'no-cache'})
 			},
 		});
 

@@ -680,7 +680,7 @@ class CourseSummary extends FetchMixin(LocalizeMixin(RouteLocationsMixin(Polymer
 
 	_fetchOrganizationHomepage() {
 		if (this.organizationHref) {
-			return this._fetchEntity(this.organizationHref)
+			return this._fetchEntity(this.organizationHref, 'GET', true)
 				.then((organizationEntity) => {
 					return organizationEntity.hasLink(Rels.organizationHomepage)
 						&& organizationEntity.getLinkByRel(Rels.organizationHomepage).href;
